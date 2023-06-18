@@ -1,16 +1,15 @@
 * {
-  outline: 1px dotted red;
   margin: 0;
 }
 
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-family: 'Whitney SSm A', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji';
   line-height: 24px;
-  font-weight: 400;
+  font-weight: 500;
 
   color: #0f0f0f;
-  background-color: #f6f6f6;
+  background-color: #e9e9e6;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -19,12 +18,9 @@
   -webkit-text-size-adjust: 100%;
 }
 
-body {
-  height: 100vh;
-}
-
 #root {
   height: 100%;
+  margin: 0;
 }
 
 .container {
@@ -73,6 +69,9 @@ button {
   color: #0f0f0f;
   background-color: #ffffff;
   transition: border-color 0.25s;
+}
+
+.shadow-button {
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -120,6 +119,7 @@ button {
 .full-center {
   justify-content: center;
   align-items: center;
+  gap: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -129,16 +129,117 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 80vh;
 }
 
 .editor-container {
-  padding: 10px;
-  height: 100%;
+  padding: 20px;
 }
 
 .editor-input {
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  height: 100%;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  /* border: 1px solid rgba(0, 0, 0, 0.1); */
+  padding: 15px;
+  min-height: 400px;
+  resize: none;
+  font-weight: 500;
+  font-size: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background-color: white;
 }
+
+.save-button {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.save-button > .back-btn {
+  background-color: #fc521f;
+  color: white;
+}
+
+.contentlist-container {
+  padding: 5rem;
+}
+
+.contentlist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.contentlist-item > .title {
+  margin-right: auto;
+}
+
+.contentlist-item > .delete-btn {
+  padding: 4px 6px;
+  font-size: 14px;
+  border-radius: 4px;
+  margin-left: 10px;
+  background-color: #fc521f;
+  color: white;
+}
+
+.hr-divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.header > button {
+  padding: 10px;
+  font-size: 15px;
+}
+
+.createdAt,
+.last-edited {
+  font-size: 14px;
+  color: hsl(0, 0%, 20.5%);
+}
+
+.last-edited {
+  width: 100%;
+  margin-left: auto;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.last-edited span {
+  color: hsl(0, 0%, 13.6%);
+  font-weight: 600;
+}
+
+/* 
+* {
+  outline: 1px dotted red;
+} */
+/* .grayDark {
+  --gray1: hsl(0, 0%, 8.5%);
+  --gray2: hsl(0, 0%, 11%);
+  --gray3: hsl(0, 0%, 13.6%);
+  --gray4: hsl(0, 0%, 15.8%);
+  --gray5: hsl(0, 0%, 17.9%);
+  --gray6: hsl(0, 0%, 20.5%);
+  --gray7: hsl(0, 0%, 24.3%);
+  --gray8: hsl(0, 0%, 31.2%);
+  --gray9: hsl(0, 0%, 43.9%);
+  --gray10: hsl(0, 0%, 49.4%);
+  --gray11: hsl(0, 0%, 62.8%);
+  --gray12: hsl(0, 0%, 93%);
+} */
