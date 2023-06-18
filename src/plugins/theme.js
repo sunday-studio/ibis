@@ -12,6 +12,9 @@ export const theme = {
     h5: 'editor-heading-h5',
   },
   list: {
+    listitem: 'editor-listItem',
+    listitemChecked: 'editor-listItemChecked',
+    listitemUnchecked: 'editor-listItemUnchecked',
     nested: {
       listitem: 'editor-nested-listitem',
     },

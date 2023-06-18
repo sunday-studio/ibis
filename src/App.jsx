@@ -60,7 +60,7 @@ function App() {
       title: firstTextChild,
     };
 
-    const updatedContent = [...content.filter((item) => item.id !== currentContentState.id), entry];
+    const updatedContent = [entry, ...content.filter((item) => item.id !== currentContentState.id)];
 
     setData(CONTENT_KEY, updatedContent);
     setContent(updatedContent);
@@ -82,7 +82,7 @@ function App() {
       title: firstTextChild,
     };
 
-    const updatedContent = [...content, entry];
+    const updatedContent = [entry, ...content];
 
     setData(CONTENT_KEY, updatedContent);
     setContent(updatedContent);

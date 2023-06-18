@@ -8,17 +8,20 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
+import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { ListItemNode, ListNode } from '@lexical/list';
+
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
-import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { TRANSFORMERS } from '@lexical/markdown';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 
-// import AutoLinkPlugin from '../plugins/AutolinkPlugin';
+import AutoLinkPlugin from '../plugins/AutolinkPlugin';
 import ToolbarPlugin from '../plugins/ToolbarPlugin';
 import { theme } from '../plugins/theme';
 
@@ -89,11 +92,14 @@ export const Editor = ({ saveContent, content, onBackClick, lastEditDate }) => {
         }}
       />
 
+      {/* <ComponentPickerMenuPlugin /> */}
       <ListPlugin />
       <LinkPlugin />
       <HistoryPlugin />
       <MyCustomAutoFocusPlugin />
-      {/* <AutoLinkPlugin /> */}
+      <AutoLinkPlugin />
+      <CheckListPlugin />
+      <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
     </LexicalComposer>
   );
 };
