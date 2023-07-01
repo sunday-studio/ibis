@@ -7,17 +7,23 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "prettier": "prettier"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.4.3",
     "@lexical/list": "^0.11.1",
     "@lexical/markdown": "^0.11.1",
     "@lexical/react": "^0.11.1",
     "@lexical/rich-text": "^0.11.1",
     "@tauri-apps/api": "^1.4.0",
     "date-fns": "^2.30.0",
+    "global": "^4.4.0",
     "lexical": "^0.11.1",
+    "lexical-floating-menu": "^0.1.0",
+    "lucide-react": "^0.257.0",
     "nanoid": "^4.0.2",
+    "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -26,6 +32,7 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^3.0.0",
+    "sass": "^1.63.6",
     "vite": "^4.2.1"
   }
 }

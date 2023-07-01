@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { formatDistance } from 'date-fns';
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
@@ -20,9 +19,13 @@ import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { TRANSFORMERS } from '@lexical/markdown';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 
+import TabFocusPlugin from '../plugins/TabFocusPlugin';
 import AutoLinkPlugin from '../plugins/AutolinkPlugin';
 import ToolbarPlugin from '../plugins/ToolbarPlugin';
+import SlashCommandPickerPlugin from '../plugins/SlashCommandPicker';
+import FloatingMenuPlugin from '../plugins/FloatingMenuPlugin';
 import { theme } from '../plugins/theme';
 
 function MyCustomAutoFocusPlugin() {
@@ -69,17 +72,20 @@ export const Editor = ({ saveContent, content, onBackClick, lastEditDate }) => {
       <RichTextPlugin
         contentEditable={
           <div className="editor-container">
-            <p className="last-edited">
+            {/* <p className="last-edited">
               Last edited at: <span>{formatDistance(new Date(lastEditDate), new Date())}</span>
-            </p>
+            </p> */}
             <ToolbarPlugin />
             <ContentEditable className="editor-input" />
             <div className="save-button">
               <button className="back-btn shadow-button" onClick={onBackClick}>
-                Go Back
+                Back
               </button>
-              <button className="shadow-button" onClick={() => saveContent(editorState.current.toJSON())}>
-                Save Changes
+              <button
+                className="shadow-button"
+                onClick={() => saveContent(editorState.current.toJSON())}
+              >
+                Save
               </button>
             </div>
           </div>
@@ -92,13 +98,16 @@ export const Editor = ({ saveContent, content, onBackClick, lastEditDate }) => {
         }}
       />
 
-      {/* <ComponentPickerMenuPlugin /> */}
+      <FloatingMenuPlugin />
+      <SlashCommandPickerPlugin />
+      <TabFocusPlugin />
       <ListPlugin />
       <LinkPlugin />
       <HistoryPlugin />
-      <MyCustomAutoFocusPlugin />
       <AutoLinkPlugin />
+      <MyCustomAutoFocusPlugin />
       <CheckListPlugin />
+      <TabIndentationPlugin />
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
     </LexicalComposer>
   );

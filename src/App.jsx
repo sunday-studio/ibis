@@ -5,7 +5,6 @@ import { format } from 'date-fns';
 
 import { Editor } from './components/Editor.jsx';
 
-import './App.css';
 import './toolbar.css';
 import './fonts.css';
 
@@ -51,7 +50,8 @@ function App() {
   }, []);
 
   const saveEditedContent = (editorState) => {
-    const firstTextChild = editorState?.root?.children?.[0]?.children?.[0]?.text ?? new Date().toISOString();
+    const firstTextChild =
+      editorState?.root?.children?.[0]?.children?.[0]?.text ?? new Date().toISOString();
 
     const entry = {
       ...currentContentState,
@@ -60,7 +60,10 @@ function App() {
       title: firstTextChild,
     };
 
-    const updatedContent = [entry, ...content.filter((item) => item.id !== currentContentState.id)];
+    const updatedContent = [
+      entry,
+      ...content.filter((item) => item.id !== currentContentState.id),
+    ];
 
     setData(CONTENT_KEY, updatedContent);
     setContent(updatedContent);
@@ -73,7 +76,8 @@ function App() {
       return;
     }
 
-    const firstTextChild = editorState?.root?.children?.[0]?.children?.[0]?.text ?? new Date().toISOString();
+    const firstTextChild =
+      editorState?.root?.children?.[0]?.children?.[0]?.text ?? new Date().toISOString();
     const entry = {
       id: nanoid(),
       createdAt: new Date().toISOString(),
@@ -108,7 +112,9 @@ function App() {
           onBackClick={() => setCurrentContentState(null)}
           saveContent={saveContent}
           lastEditDate={currentContentState?.updatedAt ?? currentContentState?.createdAt}
-          content={currentContentState?.content ? JSON.parse(currentContentState.content) : null}
+          content={
+            currentContentState?.content ? JSON.parse(currentContentState.content) : null
+          }
         />
       </div>
     );

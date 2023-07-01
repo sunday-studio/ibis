@@ -136,7 +136,7 @@
 .editor-heading-h1 {
   font-size: 24px;
   color: rgb(5, 5, 5);
-  font-weight: 400;
+  font-weight: 600;
   margin: 0;
   margin-bottom: 12px;
   padding: 0;
@@ -172,7 +172,7 @@
 .editor-list-ul {
   padding: 0;
   margin: 0;
-  margin-left: 16px;
+  margin-left: px;
 }
 
 .editor-listitem {
@@ -399,7 +399,8 @@ i.chevron-down {
   z-index: 5;
   display: block;
   position: absolute;
-  box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   border-radius: 8px;
   min-width: 100px;
   min-height: 40px;
@@ -628,12 +629,13 @@ i.justify-align {
 .editor-listItemChecked,
 .editor-listItemUnchecked {
   position: relative;
-  margin-left: 8px;
-  margin-right: 8px;
+  margin-left: 12px;
+  margin-right: 24px;
   padding-left: 24px;
   padding-right: 24px;
   list-style-type: none;
   outline: none;
+  cursor: pointer;
 }
 .editor-listItemChecked {
   color: hsl(0, 0%, 50.2%);
@@ -684,10 +686,10 @@ i.justify-align {
   transform: rotate(45deg);
   border-width: 0 2px 2px 0;
 }
-.editor-nestedListItem {
+.editor-nested-listitem {
   list-style-type: none;
 }
-.editor-nestedListItem:before,
-.editor-nestedListItem:after {
+.editor-nested-listitem:before,
+.editor-nested-listitem:after {
   display: none;
 }
