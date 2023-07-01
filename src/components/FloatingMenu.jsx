@@ -104,7 +104,7 @@ export const FloatingMenu = forwardRef(function FloatingMenu(props, ref) {
         const node = getSelectedNode(selection);
         const parent = node.getParent();
 
-        if ($isLinkNode(parent) || $isLinkNode(node)) {
+        if ($isLinkNode(parent) || ($isLinkNode(node) && parent.getURL())) {
           setState((prev) => ({
             ...prev,
             isLink: true,

@@ -23,9 +23,10 @@ import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin
 
 import TabFocusPlugin from '../plugins/TabFocusPlugin';
 import AutoLinkPlugin, { validateUrl } from '../plugins/AutolinkPlugin';
-import ToolbarPlugin from '../plugins/ToolbarPlugin';
+// import ToolbarPlugin from '../plugins/ToolbarPlugin';
 import SlashCommandPickerPlugin from '../plugins/SlashCommandPicker';
 import FloatingMenuPlugin from '../plugins/FloatingMenuPlugin';
+import CodeHighlightPlugin from '../plugins/CodeHighlightPlugin';
 import { theme } from '../plugins/theme';
 
 function MyCustomAutoFocusPlugin() {
@@ -109,6 +110,7 @@ export const Editor = ({ saveContent, content, onBackClick, lastEditDate }) => {
       <CheckListPlugin />
       <TabIndentationPlugin />
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+      <CodeHighlightPlugin />
     </LexicalComposer>
   );
 };
