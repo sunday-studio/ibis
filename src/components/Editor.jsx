@@ -22,7 +22,7 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 
 import TabFocusPlugin from '../plugins/TabFocusPlugin';
-import AutoLinkPlugin from '../plugins/AutolinkPlugin';
+import AutoLinkPlugin, { validateUrl } from '../plugins/AutolinkPlugin';
 import ToolbarPlugin from '../plugins/ToolbarPlugin';
 import SlashCommandPickerPlugin from '../plugins/SlashCommandPicker';
 import FloatingMenuPlugin from '../plugins/FloatingMenuPlugin';
@@ -75,7 +75,7 @@ export const Editor = ({ saveContent, content, onBackClick, lastEditDate }) => {
             {/* <p className="last-edited">
               Last edited at: <span>{formatDistance(new Date(lastEditDate), new Date())}</span>
             </p> */}
-            <ToolbarPlugin />
+            {/* <ToolbarPlugin /> */}
             <ContentEditable className="editor-input" />
             <div className="save-button">
               <button className="back-btn shadow-button" onClick={onBackClick}>
@@ -102,7 +102,7 @@ export const Editor = ({ saveContent, content, onBackClick, lastEditDate }) => {
       <SlashCommandPickerPlugin />
       <TabFocusPlugin />
       <ListPlugin />
-      <LinkPlugin />
+      <LinkPlugin validateUrl={validateUrl} />
       <HistoryPlugin />
       <AutoLinkPlugin />
       <MyCustomAutoFocusPlugin />

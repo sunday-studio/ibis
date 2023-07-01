@@ -1,6 +1,6 @@
 import { AutoLinkPlugin } from '@lexical/react/LexicalAutoLinkPlugin';
 
-const URL_MATCHER =
+export const URL_MATCHER =
   /((https?:\/\/(www\.)?)|(www\.))[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 
 const EMAIL_MATCHER =
@@ -30,6 +30,14 @@ const MATCHERS = [
     );
   },
 ];
+
+// Source: https://stackoverflow.com/a/8234912/2013580
+const urlRegExp = new RegExp(
+  /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[\w]*))?)/,
+);
+export function validateUrl(url) {
+  return url === 'https://' || urlRegExp.test(url);
+}
 
 export default function PlaygroundAutoLinkPlugin() {
   return <AutoLinkPlugin matchers={MATCHERS} />;

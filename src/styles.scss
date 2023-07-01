@@ -5,7 +5,7 @@
 :root {
   font-family: 'Whitney SSm A', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-  line-height: 24px;
+  line-height: 22px;
   font-weight: 500;
 
   color: #0f0f0f;
@@ -303,7 +303,6 @@ button {
   border: 1px solid #e2e8f0;
   padding: 4px;
   border-radius: 4px;
-
   display: flex;
   gap: 4px;
 
@@ -328,6 +327,41 @@ button {
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+  }
+
+  .floating-link-input {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f9fafb;
+      }
+    }
+
+    * {
+    }
+
+    .vr-divider {
+      width: 1px;
+      background-color: #e2e8f0;
+      height: 80%;
+      margin: 0 2px;
+    }
+
+    input {
+      padding: 0 4px;
+      height: 100%;
+      font-size: 14px;
     }
   }
 }
