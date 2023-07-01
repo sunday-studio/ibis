@@ -25,7 +25,8 @@
     "nanoid": "^4.0.2",
     "prettier": "^2.8.8",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "use-debounce": "^9.0.4"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.4.0",

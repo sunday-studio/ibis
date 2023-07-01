@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
@@ -46,6 +47,7 @@ function onError(error) {
 
 export const Editor = ({ saveContent, content, onBackClick, lastEditDate }) => {
   const editorState = useRef();
+  const [saveStatus, setSaveStatus] = useState('Saved');
 
   const initialConfig = {
     namespace: 'ContentEditor',
@@ -68,14 +70,23 @@ export const Editor = ({ saveContent, content, onBackClick, lastEditDate }) => {
     ],
   };
 
+  const debouncedUpdates = useDebouncedCallback(async () => {
+    setSaveStatus('Saving...');
+    // setContent(json);
+    // Simulate a delay in saving.
+
+    saveContent(editorState.current.toJSON());
+    setTimeout(() => {
+      setSaveStatus('Saved');
+    }, 500);
+  }, 750);
+
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <RichTextPlugin
         contentEditable={
           <div className="editor-container">
-            {/* <p className="last-edited">
-              Last edited at: <span>{formatDistance(new Date(lastEditDate), new Date())}</span>
-            </p> */}
+            <p className="last-edited">{saveStatus}</p>
             {/* <ToolbarPlugin /> */}
             <ContentEditable className="editor-input" />
             <div className="save-button">
@@ -96,6 +107,7 @@ export const Editor = ({ saveContent, content, onBackClick, lastEditDate }) => {
       <OnChangePlugin
         onChange={(state) => {
           editorState.current = state;
+          debouncedUpdates();
         }}
       />
 
