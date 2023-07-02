@@ -29,6 +29,7 @@ import SlashCommandPickerPlugin from '../plugins/SlashCommandPicker';
 import FloatingMenuPlugin from '../plugins/FloatingMenuPlugin';
 import CodeHighlightPlugin from '../plugins/CodeHighlightPlugin';
 import { theme } from '../plugins/theme';
+import { useAppStore } from './AppContext';
 
 function MyCustomAutoFocusPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -45,9 +46,17 @@ function onError(error) {
   console.error(error);
 }
 
-export const Editor = ({ saveContent, content, onBackClick, lastEditDate }) => {
+export const Editor = ({ saveContent }) => {
+  const { activeEntry } = useAppStore();
   const editorState = useRef();
   const [saveStatus, setSaveStatus] = useState('Saved');
+  const [content, setContent] = useState();
+
+  console.log({ content });
+
+  useEffect(() => {
+    setContent(activeEntry);
+  }, [activeEntry]);
 
   const initialConfig = {
     namespace: 'ContentEditor',
@@ -89,17 +98,6 @@ export const Editor = ({ saveContent, content, onBackClick, lastEditDate }) => {
             <p className="last-edited">{saveStatus}</p>
             {/* <ToolbarPlugin /> */}
             <ContentEditable className="editor-input" />
-            <div className="save-button">
-              <button className="back-btn shadow-button" onClick={onBackClick}>
-                Back
-              </button>
-              <button
-                className="shadow-button"
-                onClick={() => saveContent(editorState.current.toJSON())}
-              >
-                Save
-              </button>
-            </div>
           </div>
         }
         ErrorBoundary={LexicalErrorBoundary}
