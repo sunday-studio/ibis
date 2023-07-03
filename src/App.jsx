@@ -1,16 +1,9 @@
-import { useState, useEffect, Fragment } from 'react';
-import { getData, setData } from './lib/storage.js';
-import { nanoid } from 'nanoid';
-import { format } from 'date-fns';
-
 import { Editor } from './components/Editor.jsx';
 import { useAppStore } from './components/AppContext.jsx';
 
 import './toolbar.css';
 import './fonts.css';
 import { Sidebar } from './components/Sidebar.jsx';
-
-const CONTENT_KEY = 'opps-content';
 
 const EmptyState = ({ addNewEntry }) => {
   return (
@@ -43,6 +36,7 @@ function App() {
       <div className="editor-container">
         {activeEntry && (
           <Editor
+            id={activeEntry.id}
             content={activeEntry?.content ? JSON.parse(activeEntry.content) : null}
           />
         )}

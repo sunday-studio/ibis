@@ -46,17 +46,11 @@ function onError(error) {
   console.error(error);
 }
 
-export const Editor = ({ saveContent }) => {
-  const { activeEntry } = useAppStore();
+export const Editor = ({ content, id }) => {
   const editorState = useRef();
   const [saveStatus, setSaveStatus] = useState('Saved');
-  const [content, setContent] = useState();
 
   console.log({ content });
-
-  useEffect(() => {
-    setContent(activeEntry);
-  }, [activeEntry]);
 
   const initialConfig = {
     namespace: 'ContentEditor',
@@ -79,46 +73,47 @@ export const Editor = ({ saveContent }) => {
     ],
   };
 
-  const debouncedUpdates = useDebouncedCallback(async () => {
-    setSaveStatus('Saving...');
-    // setContent(json);
-    // Simulate a delay in saving.
+  // const debouncedUpdates = useDebouncedCallback(async () => {
+  //   setSaveStatus('Saving...');
+  //   // setContent(json);
+  //   // Simulate a delay in saving.
 
-    saveContent(editorState.current.toJSON());
-    setTimeout(() => {
-      setSaveStatus('Saved');
-    }, 500);
-  }, 750);
+  //   saveContent(editorState.current.toJSON());
+  //   setTimeout(() => {
+  //     setSaveStatus('Saved');
+  //   }, 500);
+  // }, 750);
+  //
+  //
 
   return (
-    <LexicalComposer initialConfig={initialConfig}>
+    <LexicalComposer initialConfig={initialConfig} key={id}>
       <RichTextPlugin
         contentEditable={
           <div className="editor-container">
             <p className="last-edited">{saveStatus}</p>
-            {/* <ToolbarPlugin /> */}
             <ContentEditable className="editor-input" />
           </div>
         }
         ErrorBoundary={LexicalErrorBoundary}
       />
-      <OnChangePlugin
+      {/* <OnChangePlugin
         onChange={(state) => {
           editorState.current = state;
           debouncedUpdates();
         }}
-      />
+      /> */}
 
-      <FloatingMenuPlugin />
-      <SlashCommandPickerPlugin />
-      <TabFocusPlugin />
-      <ListPlugin />
-      <LinkPlugin validateUrl={validateUrl} />
-      <HistoryPlugin />
-      <AutoLinkPlugin />
-      <MyCustomAutoFocusPlugin />
-      <CheckListPlugin />
-      <TabIndentationPlugin />
+      {/* <FloatingMenuPlugin /> */}
+      {/* <SlashCommandPickerPlugin /> */}
+      {/* <TabFocusPlugin /> */}
+      {/* <ListPlugin /> */}
+      {/* <LinkPlugin validateUrl={validateUrl} /> */}
+      {/* <HistoryPlugin /> */}
+      {/* <AutoLinkPlugin /> */}
+      {/* <MyCustomAutoFocusPlugin /> */}
+      {/* <CheckListPlugin /> */}
+      {/* <TabIndentationPlugin /> */}
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
       <CodeHighlightPlugin />
     </LexicalComposer>
