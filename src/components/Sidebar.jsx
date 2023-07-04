@@ -3,13 +3,13 @@ import { useAppStore } from './AppContext';
 import { Plus, Text } from 'lucide-react';
 
 export const Sidebar = () => {
-  const { entries, selectEntry, activeEntry } = useAppStore();
+  const { entries, selectEntry, activeEntry, addNewEntry } = useAppStore();
 
   return (
     <div className="sidebar">
       <div className="header">
         <p className="title">Notes</p>
-        <div className="icon">
+        <div className="icon" onClick={addNewEntry}>
           <Plus size={16} strokeWidth={2.75} color="#fc521f" />
         </div>
       </div>

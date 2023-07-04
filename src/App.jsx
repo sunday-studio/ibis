@@ -18,15 +18,15 @@ const EmptyState = ({ addNewEntry }) => {
 };
 
 function App() {
-  const { entries, activeEntry } = useAppStore();
+  const { entries, activeEntry, addNewEntry } = useAppStore();
 
-  if (entries?.length <= 0) {
-    return (
-      <div className="empty-state-container">
-        <EmptyState />
-      </div>
-    );
-  }
+  // if (entries?.length <= 0) {
+  //   return (
+  //     <div className="empty-state-container">
+  //       <EmptyState addNewEntry={addNewEntry} />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="two-column-container">

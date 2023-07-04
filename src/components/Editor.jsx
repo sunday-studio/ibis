@@ -28,6 +28,8 @@ import AutoLinkPlugin, { validateUrl } from '../plugins/AutolinkPlugin';
 import SlashCommandPickerPlugin from '../plugins/SlashCommandPicker';
 import FloatingMenuPlugin from '../plugins/FloatingMenuPlugin';
 import CodeHighlightPlugin from '../plugins/CodeHighlightPlugin';
+import ClickableLinkPlugin from '../plugins/ClickableLinkPlugin';
+
 import { theme } from '../plugins/theme';
 import { useAppStore } from './AppContext';
 
@@ -49,8 +51,7 @@ function onError(error) {
 export const Editor = ({ content, id }) => {
   const editorState = useRef();
   const [saveStatus, setSaveStatus] = useState('Saved');
-
-  console.log({ content });
+  const { saveContent } = useAppStore();
 
   const initialConfig = {
     namespace: 'ContentEditor',
@@ -73,18 +74,13 @@ export const Editor = ({ content, id }) => {
     ],
   };
 
-  // const debouncedUpdates = useDebouncedCallback(async () => {
-  //   setSaveStatus('Saving...');
-  //   // setContent(json);
-  //   // Simulate a delay in saving.
-
-  //   saveContent(editorState.current.toJSON());
-  //   setTimeout(() => {
-  //     setSaveStatus('Saved');
-  //   }, 500);
-  // }, 750);
-  //
-  //
+  const debouncedUpdates = useDebouncedCallback(async () => {
+    setSaveStatus('Saving...');
+    saveContent(editorState.current.toJSON());
+    setTimeout(() => {
+      setSaveStatus('Saved');
+    }, 300);
+  }, 750);
 
   return (
     <LexicalComposer initialConfig={initialConfig} key={id}>
@@ -97,13 +93,14 @@ export const Editor = ({ content, id }) => {
         }
         ErrorBoundary={LexicalErrorBoundary}
       />
-      {/* <OnChangePlugin
+      <OnChangePlugin
         onChange={(state) => {
           editorState.current = state;
           debouncedUpdates();
         }}
-      /> */}
+      />
 
+      <ClickableLinkPlugin newTap />
       <FloatingMenuPlugin />
       <SlashCommandPickerPlugin />
       <TabFocusPlugin />
