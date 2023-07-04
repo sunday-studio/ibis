@@ -104,16 +104,16 @@ export const Editor = ({ content, id }) => {
         }}
       /> */}
 
-      {/* <FloatingMenuPlugin /> */}
-      {/* <SlashCommandPickerPlugin /> */}
-      {/* <TabFocusPlugin /> */}
-      {/* <ListPlugin /> */}
-      {/* <LinkPlugin validateUrl={validateUrl} /> */}
-      {/* <HistoryPlugin /> */}
-      {/* <AutoLinkPlugin /> */}
-      {/* <MyCustomAutoFocusPlugin /> */}
-      {/* <CheckListPlugin /> */}
-      {/* <TabIndentationPlugin /> */}
+      <FloatingMenuPlugin />
+      <SlashCommandPickerPlugin />
+      <TabFocusPlugin />
+      <ListPlugin />
+      <LinkPlugin validateUrl={validateUrl} />
+      <HistoryPlugin />
+      <AutoLinkPlugin />
+      <MyCustomAutoFocusPlugin />
+      <CheckListPlugin />
+      <TabIndentationPlugin />
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
       <CodeHighlightPlugin />
     </LexicalComposer>

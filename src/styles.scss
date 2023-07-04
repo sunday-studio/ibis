@@ -130,19 +130,14 @@ button {
 }
 
 .editor-input {
-  padding: 15px;
-  min-height: 400px;
   resize: none;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 16px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom-right-radius: 8px;
-  border-bottom-left-radius: 8px;
   background-color: white;
+  padding: 10px;
 }
 
 .save-button {
-  padding-right: 20px;
   margin-top: 10px;
   display: flex;
   justify-content: flex-end;
@@ -378,18 +373,23 @@ button {
     grid-column: span 6;
     background-color: #f3f4f6;
     box-shadow: inset 0 4px 6px 0 rgb(0 0 0 / 0.1);
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
   }
 
   .editor-container {
     background: white;
     grid-column: span 18;
     padding: 10px;
+    overflow-y: scroll;
   }
 }
 
 .sidebar {
-  * {
-  }
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
 
   .header {
     display: flex;
@@ -462,21 +462,12 @@ button {
   }
 }
 
-/* .grayDark {
-  --gray1: hsl(0, 0%, 8.5%);
-  --gray2: hsl(0, 0%, 11%);
-  --gray3: hsl(0, 0%, 13.6%);
-  --gray4: hsl(0, 0%, 15.8%);
-  --gray5: hsl(0, 0%, 17.9%);
-  --gray6: hsl(0, 0%, 20.5%);
-  --gray7: hsl(0, 0%, 24.3%);
-  --gray8: hsl(0, 0%, 31.2%);
-  --gray9: hsl(0, 0%, 43.9%);
-  --gray10: hsl(0, 0%, 49.4%);
-  --gray11: hsl(0, 0%, 62.8%);
-  --gray12: hsl(0, 0%, 93%);
-} */
+[contenteditable] {
+  outline: 0px solid transparent;
+}
 
-* {
-  // outline: 1px dotted red;
+body,
+#root,
+.two-column-container {
+  overflow: hidden;
 }

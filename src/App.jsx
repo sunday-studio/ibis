@@ -1,7 +1,7 @@
 import { Editor } from './components/Editor.jsx';
 import { useAppStore } from './components/AppContext.jsx';
 
-import './toolbar.css';
+import './editor.css';
 import './fonts.css';
 import { Sidebar } from './components/Sidebar.jsx';
 

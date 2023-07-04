@@ -174,7 +174,7 @@
 .editor-list-ul {
   padding: 0;
   margin: 0;
-  margin-left: px;
+  margin-left: 0;
 }
 
 .editor-listitem {
@@ -548,90 +548,10 @@ i.chevron-down {
   vertical-align: -0.25em;
 }
 
-i.undo {
-  background-image: url(assets/icons/arrow-counterclockwise.svg);
-}
-
-i.redo {
-  background-image: url(assets/icons/arrow-clockwise.svg);
-}
-
-.icon.paragraph {
-  background-image: url(assets/icons/text-paragraph.svg);
-}
-
-.icon.large-heading,
-.icon.h1 {
-  background-image: url(assets/icons/type-h1.svg);
-}
-
-.icon.small-heading,
-.icon.h2 {
-  background-image: url(assets/icons/type-h2.svg);
-}
-
-.icon.bullet-list,
-.icon.ul {
-  background-image: url(assets/icons/list-ul.svg);
-}
-
-.icon.numbered-list,
-.icon.ol {
-  background-image: url(assets/icons/list-ol.svg);
-}
-
-.icon.quote {
-  background-image: url(assets/icons/chat-square-quote.svg);
-}
-
-.icon.code {
-  background-image: url(assets/icons/code.svg);
-}
-
-i.bold {
-  background-image: url(assets/icons/type-bold.svg);
-}
-
-i.italic {
-  background-image: url(assets/icons/type-italic.svg);
-}
-
-i.underline {
-  background-image: url(assets/icons/type-underline.svg);
-}
-
-i.strikethrough {
-  background-image: url(assets/icons/type-strikethrough.svg);
-}
-
-i.code {
-  background-image: url(assets/icons/code.svg);
-}
-
-i.link {
-  background-image: url(assets/icons/link.svg);
-}
-
-i.left-align {
-  background-image: url(assets/icons/text-left.svg);
-}
-
-i.center-align {
-  background-image: url(assets/icons/text-center.svg);
-}
-
-i.right-align {
-  background-image: url(assets/icons/text-right.svg);
-}
-
-i.justify-align {
-  background-image: url(assets/icons/justify.svg);
-}
-
 .editor-listItemChecked,
 .editor-listItemUnchecked {
   position: relative;
-  margin-left: 12px;
+  margin-left: 6px;
   margin-right: 24px;
   padding-left: 24px;
   padding-right: 24px;
@@ -647,7 +567,7 @@ i.justify-align {
   content: '';
   width: 16px;
   height: 16px;
-  top: 2px;
+  top: 1px;
   left: 0;
   cursor: pointer;
   display: block;
@@ -665,15 +585,17 @@ i.justify-align {
   border-radius: 2px;
 }
 .editor-listItemUnchecked:before {
-  border: 1px solid #999;
-  border-radius: 2px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
 }
+
 .editor-listItemChecked:before {
-  border: 1px solid #fc521f;
-  border-radius: 2px;
+  border: 2px solid #fc521f;
+  border-radius: 8px;
   background-color: #fc521f;
   background-repeat: no-repeat;
 }
+
 .editor-listItemChecked:after {
   content: '';
   cursor: pointer;
@@ -681,13 +603,14 @@ i.justify-align {
   border-style: solid;
   position: absolute;
   display: block;
-  top: 6px;
-  width: 3px;
+  top: 5px;
+  width: 4px;
   left: 7px;
-  height: 6px;
+  height: 8px;
   transform: rotate(45deg);
   border-width: 0 2px 2px 0;
 }
+
 .editor-nested-listitem {
   list-style-type: none;
 }
