@@ -90,6 +90,15 @@ export const AppContextProvider = ({ children }) => {
     setEntries(updatedEntries);
   };
 
+  const deleteEntry = useCallback(
+    (entryId) => {
+      const updatedEntries = entries.filter((entry) => entry.id !== entryId);
+
+      setEntries(updatedEntries);
+    },
+    [entries],
+  );
+
   const value = useMemo(() => {
     return {
       entries,
@@ -97,6 +106,7 @@ export const AppContextProvider = ({ children }) => {
       selectEntry,
       addNewEntry,
       saveContent,
+      deleteEntry,
     };
   }, [entries, activeEntry, selectEntry, saveContent, addNewEntry]);
 

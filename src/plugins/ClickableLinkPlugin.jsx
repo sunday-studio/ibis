@@ -66,14 +66,7 @@ export default function LexicalClickableLinkPlugin({ newTab = true }) {
         event.preventDefault();
         return;
       }
-
-      const isMiddle = event.type === 'auxclick' && event.button === 1;
-      open(
-        url,
-        // newTab || isMiddle || event.metaKey || event.ctrlKey || urlTarget === '_blank'
-        //   ? '_blank'
-        //   : '_self',
-      );
+      open(url);
       event.preventDefault();
     };
 

@@ -3,6 +3,7 @@ import './Modal.css';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { X } from 'lucide-react';
 
 function PortalImpl({ onClose, children, title, closeOnClickOutside }) {
   const modalRef = useRef(null);
@@ -22,7 +23,11 @@ function PortalImpl({ onClose, children, title, closeOnClickOutside }) {
     };
     const clickOutsideHandler = (event) => {
       const target = event.target;
-      if (modalRef.current !== null && !modalRef.current.contains(target) && closeOnClickOutside) {
+      if (
+        modalRef.current !== null &&
+        !modalRef.current.contains(target) &&
+        closeOnClickOutside
+      ) {
         onClose();
       }
     };
@@ -47,10 +52,15 @@ function PortalImpl({ onClose, children, title, closeOnClickOutside }) {
   return (
     <div className="Modal__overlay" role="dialog">
       <div className="Modal__modal" tabIndex={-1} ref={modalRef}>
-        <h2 className="Modal__title">{title}</h2>
-        <button className="Modal__closeButton" aria-label="Close modal" type="button" onClick={onClose}>
-          X
+        <button
+          className="Modal__closeButton"
+          aria-label="Close modal"
+          type="button"
+          onClick={onClose}
+        >
+          <X size={18} color="red" />
         </button>
+
         <div className="Modal__content">{children}</div>
       </div>
     </div>
