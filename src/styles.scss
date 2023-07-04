@@ -381,6 +381,17 @@ button {
     grid-column: span 18;
     padding: 10px;
     overflow-y: scroll;
+
+    .title-input {
+      display: flex;
+      width: 100%;
+      border-radius: 0;
+      padding: 0;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 4px;
+      margin-bottom: 10px;
+    }
   }
 }
 
@@ -418,7 +429,7 @@ button {
     display: flex;
     flex-direction: column;
     padding: 0 8px;
-    gap: 2px;
+    gap: 4px;
 
     .divider {
       height: 1px;
@@ -427,7 +438,7 @@ button {
 
     .entry {
       transition: all 0.3sec ease;
-      padding: 5px 6px;
+      padding: 6px;
       border-radius: 4px;
       cursor: pointer;
       display: flex;
@@ -438,7 +449,7 @@ button {
         background-color: #e5e7eb;
 
         p {
-          font-weight: 600;
+          color: #030712;
         }
       }
 
@@ -454,7 +465,11 @@ button {
       p {
         font-size: 14px;
         font-weight: 500;
-        color: #374151;
+        color: #4b5563;
+      }
+
+      p.date {
+        font-size: 12px;
       }
 
       &:hover {

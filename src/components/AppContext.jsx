@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { nanoid } from 'nanoid';
 import { getData, setData } from '../lib/storage';
+import { useDebouncedCallback } from 'use-debounce';
 
 const CONTENT_KEY = 'opps-content';
 
@@ -16,6 +17,7 @@ const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
   const [entries, setEntries] = useState([]);
   const [activeEntry, setActiveEntry] = useState(null);
+  const [activeEntryTitle, setActiveEntryTitle] = useState(activeEntry?.title);
 
   useEffect(() => {
     const data = getData(CONTENT_KEY) ?? [];
@@ -25,19 +27,25 @@ export const AppContextProvider = ({ children }) => {
   const selectEntry = useCallback(
     (entry) => {
       setActiveEntry(entry);
+      setActiveEntryTitle(entry.title);
     },
     [setActiveEntry],
   );
 
   const addNewEntry = useCallback(() => {
-    console.log('called');
-    setActiveEntry({
+    const DEFAULT_ENTRY = {
       content: '',
       createdAt: new Date().toISOString(),
-      title: 'Undefined',
+      title: '',
       id: nanoid(),
-    });
-  }, []);
+    };
+
+    const updatedEntries = [DEFAULT_ENTRY, ...entries];
+
+    setActiveEntry(DEFAULT_ENTRY);
+    setEntries(updatedEntries);
+    setActiveEntryTitle('');
+  }, [entries]);
 
   const findAndReplaceEntry = useCallback(
     (updatedEntry) => {
@@ -50,14 +58,11 @@ export const AppContextProvider = ({ children }) => {
   );
 
   const saveEditedContent = (editorState) => {
-    const firstTextChild =
-      editorState?.root?.children?.[0]?.children?.[0]?.text ?? new Date().toISOString();
-
     const entry = {
       ...activeEntry,
       updatedAt: new Date().toISOString(),
       content: JSON.stringify(editorState),
-      title: firstTextChild,
+      title: activeEntryTitle,
     };
 
     const updatedEntries = findAndReplaceEntry(entry);
@@ -68,20 +73,18 @@ export const AppContextProvider = ({ children }) => {
 
   const saveContent = (editorState) => {
     const activeEntryIndex = entries.findIndex((entry) => entry.id === activeEntry.id);
+
     if (activeEntryIndex !== -1) {
       saveEditedContent(editorState);
       return;
     }
-
-    const firstTextChild =
-      editorState?.root?.children?.[0]?.children?.[0]?.text ?? new Date().toISOString();
 
     const entry = {
       id: nanoid(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       content: JSON.stringify(editorState),
-      title: firstTextChild,
+      title: activeEntryTitle,
     };
 
     const updatedEntries = [entry, ...entries];
@@ -99,6 +102,25 @@ export const AppContextProvider = ({ children }) => {
     [entries],
   );
 
+  const udpateActiveEntryTitle = useCallback(
+    (value) => {
+      setActiveEntryTitle(value);
+      saveTitle();
+    },
+    [activeEntryTitle],
+  );
+
+  const saveTitle = useDebouncedCallback(async () => {
+    const updatedEntry = {
+      ...activeEntry,
+      title: activeEntryTitle,
+    };
+    const updatedEntries = findAndReplaceEntry(updatedEntry);
+    setData(CONTENT_KEY, updatedEntries);
+    setEntries(updatedEntries);
+    setActiveEntry(updatedEntry);
+  }, 500);
+
   const value = useMemo(() => {
     return {
       entries,
@@ -107,6 +129,8 @@ export const AppContextProvider = ({ children }) => {
       addNewEntry,
       saveContent,
       deleteEntry,
+      activeEntryTitle,
+      udpateActiveEntryTitle,
     };
   }, [entries, activeEntry, selectEntry, saveContent, addNewEntry]);
 

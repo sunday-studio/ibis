@@ -1,8 +1,9 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { useAppStore } from './AppContext';
 import { Plus, Text, Bomb } from 'lucide-react';
 import Modal from './Modal';
-import { useState } from 'react';
+
+const truncate = (value) => (value.length >= 40 ? `${value.slice(0, 29)}...` : value);
 
 export const Sidebar = () => {
   const { entries, selectEntry, activeEntry, addNewEntry, deleteEntry } = useAppStore();
@@ -22,8 +23,7 @@ export const Sidebar = () => {
               setShowDeleteModal(false);
             }}
           >
-            {' '}
-            Delete{' '}
+            Delete
           </button>
         </Modal>
       )}
@@ -50,7 +50,8 @@ export const Sidebar = () => {
                       color={isActive ? '#fc521f' : '#6b7280'}
                     />
                   </div>
-                  <p className="entry-title">{entry.title}</p>
+
+                  <p className="entry-title">{truncate(entry.title) || 'Untitled'}</p>
 
                   <div
                     className="icon delete"

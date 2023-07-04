@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
+import { useDebouncedCallback, useDebounce } from 'use-debounce';
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
@@ -48,10 +48,10 @@ function onError(error) {
   console.error(error);
 }
 
-export const Editor = ({ content, id }) => {
+export const Editor = ({ id, content }) => {
   const editorState = useRef();
   const [saveStatus, setSaveStatus] = useState('Saved');
-  const { saveContent } = useAppStore();
+  const { saveContent, activeEntryTitle, udpateActiveEntryTitle } = useAppStore();
 
   const initialConfig = {
     namespace: 'ContentEditor',
@@ -88,6 +88,12 @@ export const Editor = ({ content, id }) => {
         contentEditable={
           <div className="editor-container">
             <p className="last-edited">{saveStatus}</p>
+            <input
+              value={activeEntryTitle}
+              onChange={(e) => udpateActiveEntryTitle(e.target.value)}
+              className="title-input"
+              placeholder="Untitled"
+            />
             <ContentEditable className="editor-input" />
           </div>
         }

@@ -24,11 +24,14 @@
 }
 
 .editor-text-code {
-  background-color: rgb(240, 242, 245);
-  padding: 1px 0.25rem;
+  background-color: #f3f4f6;
   font-family: 'BerkeleyMonoVariable', Menlo, Consolas, Monaco, monospace;
-  font-size: 94%;
+  font-size: 90%;
+  padding: 4px;
   border-radius: 4px;
+  border: 1px solid #e5e7eb;
+  color: #ea580c;
+  font-weight: 500;
 }
 
 .editor-link {
@@ -393,10 +396,6 @@ i.chevron-down {
   background-image: url(assets/icons/list-ol.svg);
 }
 
-#block-controls span.block-type.code {
-  background-image: url(assets/icons/code.svg);
-}
-
 .dropdown {
   z-index: 5;
   display: block;
@@ -582,7 +581,7 @@ i.chevron-down {
 .editor-listItemUnchecked:focus:before,
 .editor-listItemChecked:focus:before {
   box-shadow: 0 0 0 2px #a6cdfe;
-  border-radius: 2px;
+  border-radius: 8px;
 }
 .editor-listItemUnchecked:before {
   border: 2px solid #d1d5db;
