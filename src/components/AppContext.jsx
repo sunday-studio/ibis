@@ -70,8 +70,8 @@ export const AppContextProvider = ({ children }) => {
 
     const updatedEntries = findAndReplaceEntry(entry);
 
-    setData(CONTENT_KEY, updatedEntries);
     setEntries(updatedEntries);
+    setData(CONTENT_KEY, updatedEntries);
   };
 
   const saveContent = (editorState) => {
@@ -100,9 +100,14 @@ export const AppContextProvider = ({ children }) => {
     (entryId) => {
       const updatedEntries = entries.filter((entry) => entry.id !== entryId);
 
+      if (entryId === activeEntry?.id) {
+        setActiveEntry(null);
+      }
+
       setEntries(updatedEntries);
+      setData(CONTENT_KEY, updatedEntries);
     },
-    [entries],
+    [entries, activeEntry],
   );
 
   const udpateActiveEntryTitle = useCallback(
@@ -114,6 +119,8 @@ export const AppContextProvider = ({ children }) => {
   );
 
   const saveTitle = useDebouncedCallback(async () => {
+    console.log('I am called');
+
     const updatedEntry = {
       ...activeEntry,
       title: activeEntryTitle,

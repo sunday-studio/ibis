@@ -362,9 +362,10 @@ button {
 }
 
 .two-column-container {
-  height: 100vh;
+  height: calc(100vh - 30px);
   display: grid;
   grid-template-columns: repeat(24, 1fr);
+  margin-top: auto;
 
   .sidebar-container {
     height: 100%;
@@ -376,6 +377,7 @@ button {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
+    padding-top: 10px;
   }
 
   .editor-container {
@@ -509,6 +511,10 @@ button {
   outline: 0px solid transparent;
 }
 
+#root {
+  margin-top: 30px;
+}
+
 body,
 #root,
 .two-column-container {
@@ -516,7 +522,7 @@ body,
 }
 
 .PopoverContent {
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 6px;
   width: 250px;
   background-color: white;
@@ -544,7 +550,7 @@ body,
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 5px 8px;
     cursor: pointer;
 
@@ -646,4 +652,30 @@ body,
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+.titlebar {
+  height: 30px;
+  background: #329ea3;
+  user-select: none;
+  display: flex;
+  justify-content: flex-start;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.titlebar-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+}
+.titlebar-button:hover {
+  background: #5bbec3;
+}
+
+ol[data-sonner-toaster='true'] {
+  --width: 100px;
 }

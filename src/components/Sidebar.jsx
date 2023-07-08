@@ -1,16 +1,26 @@
 import { Fragment, useState } from 'react';
 import { useAppStore } from './AppContext';
-import { Plus, Text, MoreHorizontal, Trash2, Crown, Package } from 'lucide-react';
+import {
+  Plus,
+  Text,
+  MoreHorizontal,
+  Trash2,
+  Crown,
+  Package,
+  BadgeInfo,
+  SquareStack,
+} from 'lucide-react';
 import * as Popover from '@radix-ui/react-popover';
 import { AnimatePresence, motion, useIsPresent } from 'framer-motion';
 import * as ContextMenu from '@radix-ui/react-context-menu';
 import Modal from './Modal';
 import { useMemo } from 'react';
 import format from 'date-fns/format';
+import { toast } from 'sonner';
 
 const truncate = (value) => (value.length >= 40 ? `${value.slice(0, 29)}...` : value);
 
-const Entry = ({ entry, activeEntry, selectEntry }) => {
+const Entry = ({ entry, activeEntry, selectEntry, onDelete }) => {
   const isActive = entry?.id === activeEntry?.id;
   const isPresent = useIsPresent();
 
@@ -58,14 +68,14 @@ const Entry = ({ entry, activeEntry, selectEntry }) => {
 
             <Popover.Portal>
               <Popover.Content className="PopoverContent" sideOffset={5}>
-                <MoreOptions entry={entry} />
+                <MoreOptions entry={entry} onDelete={onDelete} />
               </Popover.Content>
             </Popover.Portal>
           </motion.div>
         </ContextMenu.Trigger>
         <ContextMenu.Portal>
           <ContextMenu.Content className="PopoverContent" sideOffset={5} align="end">
-            <MoreOptions entry={entry} />
+            <MoreOptions entry={entry} onDelete={onDelete} />
           </ContextMenu.Content>
         </ContextMenu.Portal>
       </ContextMenu.Root>
@@ -73,7 +83,7 @@ const Entry = ({ entry, activeEntry, selectEntry }) => {
   );
 };
 
-const MoreOptions = ({ entry }) => {
+const MoreOptions = ({ entry, onDelete }) => {
   const { favorites, updateFavories } = useAppStore();
 
   const isFavorite = favorites.includes(entry.id);
@@ -81,9 +91,16 @@ const MoreOptions = ({ entry }) => {
     return [
       {
         title: 'Delete',
-        action: () => {},
+        action: () => onDelete(),
         icon: <Trash2 size={16} />,
       },
+
+      {
+        title: 'Duplicate',
+        action: () => {},
+        icon: <SquareStack size={16} />,
+      },
+
       {
         title: isFavorite ? 'Remove from Favs' : 'Add to Favs',
         action: () =>
@@ -96,8 +113,14 @@ const MoreOptions = ({ entry }) => {
 
       {
         title: 'Archive',
-        action: () => {},
+        action: () => toast('Note removed'),
         icon: <Package size={16} />,
+      },
+
+      {
+        title: 'Info',
+        action: () => {},
+        icon: <BadgeInfo size={16} />,
       },
     ];
   }, [favorites]);
@@ -109,7 +132,7 @@ const MoreOptions = ({ entry }) => {
             className="option"
             onClick={(e) => {
               option.action();
-              // e.stopPropagation();
+              e.stopPropagation();
             }}
             key={index}
           >
@@ -199,6 +222,10 @@ export const Sidebar = () => {
                   entry={entry}
                   activeEntry={activeEntry}
                   key={entry.id}
+                  onDelete={() => {
+                    setId(entry.id);
+                    setShowDeleteModal(true);
+                  }}
                 />
               );
             })}

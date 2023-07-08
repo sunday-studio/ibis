@@ -13,6 +13,17 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "window": {
+        "all": false,
+        "close": true,
+        "hide": true,
+        "show": true,
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "startDragging": true
+      },
       "shell": {
         "all": false,
         "open": true
@@ -39,8 +50,10 @@
         "resizable": true,
         "title": "Opps",
         "width": 1200,
-        "decorations": true,
-        "height": 900
+        "height": 900,
+        "titleBarStyle": "Overlay",
+        "decorations": false,
+        "transparent": true
       }
     ]
   }
