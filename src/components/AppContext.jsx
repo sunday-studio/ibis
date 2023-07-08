@@ -11,6 +11,8 @@ import { getData, setData } from '../lib/storage';
 import { useDebouncedCallback } from 'use-debounce';
 
 const CONTENT_KEY = 'opps-content';
+const FOLDER_KEY = 'opps-folder';
+const FAVORITE_KEY = 'opps-favorite';
 
 const AppContext = createContext();
 
@@ -18,10 +20,13 @@ export const AppContextProvider = ({ children }) => {
   const [entries, setEntries] = useState([]);
   const [activeEntry, setActiveEntry] = useState(null);
   const [activeEntryTitle, setActiveEntryTitle] = useState(activeEntry?.title);
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    const data = getData(CONTENT_KEY) ?? [];
-    setEntries(data);
+    const entryData = getData(CONTENT_KEY) ?? [];
+    const favoriteData = getData(FAVORITE_KEY) ?? [];
+    setEntries(entryData);
+    setFavorites(favoriteData);
   }, []);
 
   const selectEntry = useCallback(
@@ -39,9 +44,7 @@ export const AppContextProvider = ({ children }) => {
       title: '',
       id: nanoid(),
     };
-
     const updatedEntries = [DEFAULT_ENTRY, ...entries];
-
     setActiveEntry(DEFAULT_ENTRY);
     setEntries(updatedEntries);
     setActiveEntryTitle('');
@@ -121,6 +124,24 @@ export const AppContextProvider = ({ children }) => {
     setActiveEntry(updatedEntry);
   }, 500);
 
+  const updateFavories = useCallback(
+    ({ id, type }) => {
+      if (type === 'ADD') {
+        const updatedList = [...favorites, id];
+        setFavorites(updatedList);
+        setData(FAVORITE_KEY, updatedList);
+        return;
+      }
+      if (type === 'REMOVE') {
+        const updatedList = [...favorites].filter((i) => i != id);
+        setFavorites(updatedList);
+        setData(FAVORITE_KEY, updatedList);
+        return;
+      }
+    },
+    [favorites],
+  );
+
   const value = useMemo(() => {
     return {
       entries,
@@ -131,6 +152,8 @@ export const AppContextProvider = ({ children }) => {
       deleteEntry,
       activeEntryTitle,
       udpateActiveEntryTitle,
+      favorites,
+      updateFavories,
     };
   }, [entries, activeEntry, selectEntry, saveContent, addNewEntry]);
 
