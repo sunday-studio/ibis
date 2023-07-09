@@ -120,8 +120,6 @@ export const AppContextProvider = ({ children }) => {
   );
 
   const saveTitle = useDebouncedCallback(async () => {
-    console.log('I am called');
-
     const updatedEntry = {
       ...activeEntry,
       title: activeEntryTitle,

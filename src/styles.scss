@@ -555,6 +555,19 @@ body,
     padding: 5px 8px;
     cursor: pointer;
 
+    &__disabled {
+      outline: 1px solid red;
+      cursor: auto;
+
+      p {
+        color: #71717a;
+      }
+
+      &:hover {
+        background-color: white;
+      }
+    }
+
     &:hover {
       background-color: #f4f4f5;
     }

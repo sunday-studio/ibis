@@ -17,6 +17,7 @@ import Modal from './Modal';
 import { useMemo } from 'react';
 import format from 'date-fns/format';
 import { toast } from 'sonner';
+import { clsx } from 'clsx';
 
 const truncate = (value) => (value.length >= 40 ? `${value.slice(0, 29)}...` : value);
 
@@ -93,6 +94,7 @@ const MoreOptions = ({ entry, onDelete }) => {
         title: 'Delete',
         action: () => onDelete(),
         icon: <Trash2 size={16} />,
+        disabled: false,
       },
 
       {
@@ -115,12 +117,14 @@ const MoreOptions = ({ entry, onDelete }) => {
         title: 'Archive',
         action: () => toast('Note removed'),
         icon: <Package size={16} />,
+        disabled: true,
       },
 
       {
         title: 'Info',
         action: () => {},
         icon: <BadgeInfo size={16} />,
+        disabled: true,
       },
     ];
   }, [favorites]);
@@ -129,7 +133,9 @@ const MoreOptions = ({ entry, onDelete }) => {
       {options.map((option, index) => {
         return (
           <div
-            className="option"
+            className={clsx('option', {
+              option__disabled: option.disabled,
+            })}
             onClick={(e) => {
               option.action();
               e.stopPropagation();
@@ -162,11 +168,11 @@ export const Sidebar = () => {
 
   const favoriteEntries = useMemo(() => {
     return entries.filter((entry) => favorites.includes(entry.id));
-  }, [favorites, entries]);
+  }, [favorites, entries, activeEntry]);
 
   const notes = useMemo(() => {
     return entries.filter((entry) => !favorites.includes(entry.id));
-  }, [favorites, entries]);
+  }, [favorites, entries, activeEntry]);
 
   return (
     <>
