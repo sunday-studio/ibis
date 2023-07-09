@@ -9,6 +9,7 @@ import {
 import { nanoid } from 'nanoid';
 import { getData, setData } from '../lib/storage';
 import { useDebouncedCallback } from 'use-debounce';
+import { formatDuplicatedTitle } from '../lib/utils';
 
 const CONTENT_KEY = 'opps-content';
 const FOLDER_KEY = 'opps-folder';
@@ -149,6 +150,21 @@ export const AppContextProvider = ({ children }) => {
     [favorites],
   );
 
+  // const duplicateEntry = useCallback(
+  //   (entry) => {
+  //     const duplicatedEntry = {
+  //       ...entry,
+  //       id: nanoid(),
+  //       title: formatDuplicatedTitle(entry.title),
+  //     };
+
+  //     const updatedEntries = [duplicatedEntry, ...entries];
+  //     setData(CONTENT_KEY, updatedEntries);
+  //     setEntries(updatedEntries);
+  //   },
+  //   [entries],
+  // );
+
   const value = useMemo(() => {
     return {
       entries,
@@ -161,8 +177,21 @@ export const AppContextProvider = ({ children }) => {
       udpateActiveEntryTitle,
       favorites,
       updateFavories,
+      // duplicateEntry,
     };
-  }, [entries, activeEntry, selectEntry, saveContent, addNewEntry]);
+  }, [
+    entries,
+    activeEntry,
+    selectEntry,
+    addNewEntry,
+    saveContent,
+    deleteEntry,
+    activeEntryTitle,
+    udpateActiveEntryTitle,
+    favorites,
+    updateFavories,
+    // duplicateEntry,
+  ]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

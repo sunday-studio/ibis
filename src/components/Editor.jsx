@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDebouncedCallback, useDebounce } from 'use-debounce';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
@@ -87,7 +87,6 @@ export const Editor = ({ id, content }) => {
       <RichTextPlugin
         contentEditable={
           <div className="editor-container">
-            <p className="last-edited">{saveStatus}</p>
             <input
               value={activeEntryTitle}
               onChange={(e) => udpateActiveEntryTitle(e.target.value)}

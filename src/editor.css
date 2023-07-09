@@ -37,6 +37,11 @@
 .editor-link {
   color: rgb(33, 111, 219);
   text-decoration: none;
+  cursor: pointer !important;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .tree-view-output {

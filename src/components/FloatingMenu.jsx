@@ -138,7 +138,7 @@ export const FloatingMenu = forwardRef(function FloatingMenu(props, ref) {
         return;
       }
 
-      const prevURL = parent.getURL();
+      const prevURL = parent?.getURL?.();
 
       if (prevURL && !linkValue.length) {
         editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
