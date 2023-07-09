@@ -84,7 +84,7 @@ const Entry = ({ entry, activeEntry, selectEntry, onDelete }) => {
 };
 
 const MoreOptions = ({ entry, onDelete }) => {
-  const { favorites, updateFavories } = useAppStore();
+  const { favorites, updateFavories, duplicateEntry } = useAppStore();
 
   const isFavorite = favorites.includes(entry.id);
   const options = useMemo(() => {
@@ -97,7 +97,7 @@ const MoreOptions = ({ entry, onDelete }) => {
 
       {
         title: 'Duplicate',
-        action: () => {},
+        action: () => duplicateEntry(entry),
         icon: <SquareStack size={16} />,
       },
 

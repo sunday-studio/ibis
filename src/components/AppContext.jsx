@@ -150,20 +150,21 @@ export const AppContextProvider = ({ children }) => {
     [favorites],
   );
 
-  // const duplicateEntry = useCallback(
-  //   (entry) => {
-  //     const duplicatedEntry = {
-  //       ...entry,
-  //       id: nanoid(),
-  //       title: formatDuplicatedTitle(entry.title),
-  //     };
+  const duplicateEntry = useCallback(
+    (entry) => {
+      const duplicatedEntry = {
+        ...entry,
+        id: nanoid(),
+        title: formatDuplicatedTitle(entry.title, entry?.isDuplicate),
+        isDuplicate: true,
+      };
 
-  //     const updatedEntries = [duplicatedEntry, ...entries];
-  //     setData(CONTENT_KEY, updatedEntries);
-  //     setEntries(updatedEntries);
-  //   },
-  //   [entries],
-  // );
+      const updatedEntries = [duplicatedEntry, ...entries];
+      setData(CONTENT_KEY, updatedEntries);
+      setEntries(updatedEntries);
+    },
+    [entries],
+  );
 
   const value = useMemo(() => {
     return {
@@ -177,7 +178,7 @@ export const AppContextProvider = ({ children }) => {
       udpateActiveEntryTitle,
       favorites,
       updateFavories,
-      // duplicateEntry,
+      duplicateEntry,
     };
   }, [
     entries,
@@ -190,7 +191,7 @@ export const AppContextProvider = ({ children }) => {
     udpateActiveEntryTitle,
     favorites,
     updateFavories,
-    // duplicateEntry,
+    duplicateEntry,
   ]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

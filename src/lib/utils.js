@@ -1,3 +1,15 @@
-export const formatDuplicatedTitle = (title) => {
-  console.log({ title, a: title.split(' ').map((e) => e.includes('(')) });
+export const formatDuplicatedTitle = (title, isDuplicate = false) => {
+  const isAlreadyDuplicate = Boolean(title.match(/[()]/));
+
+  if (isAlreadyDuplicate && isDuplicate) {
+    const valueInBracket = Number(title.match(/\((.*)\)/)?.[1]);
+
+    const titleWithoutIndex = title
+      .replace(/[{()}]/g, '')
+      ?.slice(0, -1)
+      ?.trim();
+    return `${titleWithoutIndex} (${valueInBracket + 1})`;
+  }
+
+  return `${title} (1)`;
 };
