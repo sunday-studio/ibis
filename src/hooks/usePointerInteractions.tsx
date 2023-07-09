@@ -1,9 +1,4 @@
-import { useEffect, useState } from "react";
-
-/**
- * Detect if the user currently presses or releases a mouse button.
- */
-
+import { useEffect, useState } from 'react';
 
 export function usePointerInteractions() {
   const [isPointerDown, setIsPointerDown] = useState(false);
@@ -13,18 +8,18 @@ export function usePointerInteractions() {
     const handlePointerUp = () => {
       setIsPointerDown(false);
       setIsPointerReleased(true);
-      document.removeEventListener("pointerup", handlePointerUp);
+      document.removeEventListener('pointerup', handlePointerUp);
     };
 
     const handlePointerDown = () => {
       setIsPointerDown(true);
       setIsPointerReleased(false);
-      document.addEventListener("pointerup", handlePointerUp);
+      document.addEventListener('pointerup', handlePointerUp);
     };
 
-    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener('pointerdown', handlePointerDown);
     return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener('pointerdown', handlePointerDown);
     };
   }, []);
 

@@ -13,3 +13,6 @@ export const formatDuplicatedTitle = (title, isDuplicate = false) => {
 
   return `${title} (1)`;
 };
+
+export const truncate = (value) =>
+  value.length >= 40 ? `${value.slice(0, 29)}...` : value;

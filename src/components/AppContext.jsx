@@ -1,14 +1,16 @@
 import {
-  useCallback,
-  useState,
-  useMemo,
-  useContext,
   createContext,
+  useCallback,
+  useContext,
   useEffect,
+  useMemo,
+  useState,
 } from 'react';
+
 import { nanoid } from 'nanoid';
-import { getData, setData } from '../lib/storage';
 import { useDebouncedCallback } from 'use-debounce';
+
+import { getData, setData } from '../lib/storage';
 import { formatDuplicatedTitle } from '../lib/utils';
 
 const CONTENT_KEY = 'opps-content';
@@ -164,6 +166,14 @@ export const AppContextProvider = ({ children }) => {
     [entries],
   );
 
+  const onReorder = useCallback(
+    (values) => {
+      // setData(CONTENT_KEY, values);
+      setEntries(values);
+    },
+    [entries, favorites, activeEntry],
+  );
+
   const value = useMemo(() => {
     return {
       entries,
@@ -177,6 +187,7 @@ export const AppContextProvider = ({ children }) => {
       favorites,
       updateFavories,
       duplicateEntry,
+      onReorder,
     };
   }, [
     entries,
@@ -190,6 +201,7 @@ export const AppContextProvider = ({ children }) => {
     favorites,
     updateFavories,
     duplicateEntry,
+    onReorder,
   ]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

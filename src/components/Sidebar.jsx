@@ -1,168 +1,35 @@
-import { Fragment, useState } from 'react';
-import { useAppStore } from './AppContext';
-import {
-  Plus,
-  Text,
-  MoreHorizontal,
-  Trash2,
-  Crown,
-  Package,
-  BadgeInfo,
-  SquareStack,
-} from 'lucide-react';
-import * as Popover from '@radix-ui/react-popover';
-import { AnimatePresence, motion, useIsPresent } from 'framer-motion';
-import * as ContextMenu from '@radix-ui/react-context-menu';
-import Modal from './Modal';
+import { useState } from 'react';
 import { useMemo } from 'react';
-import format from 'date-fns/format';
-import { toast } from 'sonner';
-import { clsx } from 'clsx';
 
-const truncate = (value) => (value.length >= 40 ? `${value.slice(0, 29)}...` : value);
+import { AnimatePresence, Reorder, useMotionValue } from 'framer-motion';
+import { Plus } from 'lucide-react';
 
-const Entry = ({ entry, activeEntry, selectEntry, onDelete }) => {
-  const isActive = entry?.id === activeEntry?.id;
-  const isPresent = useIsPresent();
+import { useRaisedShadow } from '../hooks/useRaisedShadow';
+import { useAppStore } from './AppContext';
+import Modal from './Modal';
+import { SidebarEntry } from './SidebarEntry';
 
-  const animations = {
-    style: {
-      position: isPresent ? 'static' : 'absolute',
-    },
-    initial: { opacity: 0, y: 10 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 10 },
-    transition: { type: 'linear', duration: 0.1 },
-  };
+const EntryWrapper = ({ entry, children }) => {
+  const y = useMotionValue(0);
+  const boxShadow = useRaisedShadow(y);
 
   return (
-    <Popover.Root key={entry.id}>
-      <ContextMenu.Root>
-        <ContextMenu.Trigger asChild>
-          <motion.div
-            {...animations}
-            className={`entry ${isActive ? 'active-entry' : ''}`}
-            onClick={() => selectEntry(entry)}
-          >
-            <div className="icon">
-              <Text
-                size={16}
-                strokeWidth={2.5}
-                color={isActive ? '#fc521f' : '#6b7280'}
-              />
-            </div>
-            <p className="entry-title">{truncate(entry.title) || 'Untitled'}</p>
-            <Popover.Trigger asChild>
-              <div
-                className="icon more-options"
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                <MoreHorizontal
-                  strokeWidth={2.5}
-                  size={18}
-                  color={isActive ? '#fc521f' : '#6b7280'}
-                />
-              </div>
-            </Popover.Trigger>
-
-            <Popover.Portal>
-              <Popover.Content className="PopoverContent" sideOffset={5}>
-                <MoreOptions entry={entry} onDelete={onDelete} />
-              </Popover.Content>
-            </Popover.Portal>
-          </motion.div>
-        </ContextMenu.Trigger>
-        <ContextMenu.Portal>
-          <ContextMenu.Content className="PopoverContent" sideOffset={5} align="end">
-            <MoreOptions entry={entry} onDelete={onDelete} />
-          </ContextMenu.Content>
-        </ContextMenu.Portal>
-      </ContextMenu.Root>
-    </Popover.Root>
-  );
-};
-
-const MoreOptions = ({ entry, onDelete }) => {
-  const { favorites, updateFavories, duplicateEntry } = useAppStore();
-
-  const isFavorite = favorites.includes(entry.id);
-  const options = useMemo(() => {
-    return [
-      {
-        title: 'Delete',
-        action: () => onDelete(),
-        icon: <Trash2 size={16} />,
-        disabled: false,
-      },
-
-      {
-        title: 'Duplicate',
-        action: () => duplicateEntry(entry),
-        icon: <SquareStack size={16} />,
-      },
-
-      {
-        title: isFavorite ? 'Remove from Favs' : 'Add to Favs',
-        action: () =>
-          updateFavories({
-            id: entry.id,
-            type: isFavorite ? 'REMOVE' : 'ADD',
-          }),
-        icon: <Crown size={16} />,
-      },
-
-      {
-        title: 'Archive',
-        action: () => toast('Note removed'),
-        icon: <Package size={16} />,
-        disabled: true,
-      },
-
-      {
-        title: 'Info',
-        action: () => {},
-        icon: <BadgeInfo size={16} />,
-        disabled: true,
-      },
-    ];
-  }, [favorites]);
-  return (
-    <Fragment>
-      {options.map((option, index) => {
-        return (
-          <div
-            className={clsx('option', {
-              option__disabled: option.disabled,
-            })}
-            onClick={(e) => {
-              option.action();
-              e.stopPropagation();
-            }}
-            key={index}
-          >
-            <div className="option-icon">{option.icon}</div>
-            <p>{option.title}</p>
-          </div>
-        );
-      })}
-
-      <div className="hr-divider" />
-      <div className="entry-details">
-        <p>Created on: {format(new Date(entry.createdAt), 'dd, MMMM yyy')}</p>
-
-        {entry.updatedAt && (
-          <p>Last edited on: {format(new Date(entry.createdAt), 'dd, MMM yy, h:m a')} </p>
-        )}
-      </div>
-    </Fragment>
+    <Reorder.Item value={entry} key={entry.id} style={{ boxShadow, y, borderRadius: 6 }}>
+      {children}
+    </Reorder.Item>
   );
 };
 
 export const Sidebar = () => {
-  const { entries, selectEntry, activeEntry, addNewEntry, deleteEntry, favorites } =
-    useAppStore();
+  const {
+    entries,
+    selectEntry,
+    activeEntry,
+    addNewEntry,
+    deleteEntry,
+    favorites,
+    onReorder,
+  } = useAppStore();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [id, setId] = useState(null);
 
@@ -198,16 +65,24 @@ export const Sidebar = () => {
                 <p className="title">Favorites</p>
               </div>
               <div className="entries">
-                {favoriteEntries.map((entry) => {
-                  return (
-                    <Entry
-                      selectEntry={selectEntry}
-                      entry={entry}
-                      activeEntry={activeEntry}
-                      key={entry.id}
-                    />
-                  );
-                })}
+                <Reorder.Group
+                  axis="y"
+                  values={notes}
+                  // onReorder={onReorder}
+                >
+                  {favoriteEntries.map((entry) => {
+                    return (
+                      <EntryWrapper entry={entry} key={entry.id}>
+                        <SidebarEntry
+                          selectEntry={selectEntry}
+                          entry={entry}
+                          activeEntry={activeEntry}
+                          key={entry.id}
+                        />
+                      </EntryWrapper>
+                    );
+                  })}
+                </Reorder.Group>
               </div>
             </div>
           )}
@@ -221,20 +96,24 @@ export const Sidebar = () => {
             </div>
           </div>
           <div className="entries">
-            {notes.map((entry) => {
-              return (
-                <Entry
-                  selectEntry={selectEntry}
-                  entry={entry}
-                  activeEntry={activeEntry}
-                  key={entry.id}
-                  onDelete={() => {
-                    setId(entry.id);
-                    setShowDeleteModal(true);
-                  }}
-                />
-              );
-            })}
+            <Reorder.Group axis="y" values={notes} onReorder={onReorder}>
+              {notes.map((entry) => {
+                return (
+                  <EntryWrapper entry={entry} key={entry.id}>
+                    <SidebarEntry
+                      selectEntry={selectEntry}
+                      entry={entry}
+                      activeEntry={activeEntry}
+                      key={entry.id}
+                      onDelete={() => {
+                        setId(entry.id);
+                        setShowDeleteModal(true);
+                      }}
+                    />
+                  </EntryWrapper>
+                );
+              })}
+            </Reorder.Group>
           </div>
         </div>
       </div>

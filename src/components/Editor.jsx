@@ -1,35 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
-
-import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
-import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
-import { HeadingNode, QuoteNode } from '@lexical/rich-text';
-import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-
-import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
-import { ListItemNode, ListNode } from '@lexical/list';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
-import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
+import { ListItemNode, ListNode } from '@lexical/list';
 import { TRANSFORMERS } from '@lexical/markdown';
+import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
+import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
+import { HeadingNode, QuoteNode } from '@lexical/rich-text';
+import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+import { useDebouncedCallback } from 'use-debounce';
 
-import TabFocusPlugin from '../plugins/TabFocusPlugin';
 import AutoLinkPlugin, { validateUrl } from '../plugins/AutolinkPlugin';
+import ClickableLinkPlugin from '../plugins/ClickableLinkPlugin';
+import CodeHighlightPlugin from '../plugins/CodeHighlightPlugin';
+import FloatingMenuPlugin from '../plugins/FloatingMenuPlugin';
 // import ToolbarPlugin from '../plugins/ToolbarPlugin';
 import SlashCommandPickerPlugin from '../plugins/SlashCommandPicker';
-import FloatingMenuPlugin from '../plugins/FloatingMenuPlugin';
-import CodeHighlightPlugin from '../plugins/CodeHighlightPlugin';
-import ClickableLinkPlugin from '../plugins/ClickableLinkPlugin';
-
+import TabFocusPlugin from '../plugins/TabFocusPlugin';
 import { theme } from '../plugins/theme';
 import { useAppStore } from './AppContext';
 

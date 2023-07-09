@@ -4,5 +4,8 @@
   "useTabs": false,
   "semi": true,
   "singleQuote": true,
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "importOrderSortSpecifiers": true,
+  "importOrderSeparation": true,
+  "importOrder": ["^(react)$", "<THIRD_PARTY_MODULES>", "^components/(.*)$", "^[./]"]
 }
