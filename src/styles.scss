@@ -556,15 +556,25 @@ body,
     cursor: pointer;
 
     &__disabled {
-      outline: 1px solid red;
-      cursor: auto;
+      cursor: auto !important;
+      pointer-events: none;
 
       p {
         color: #71717a;
       }
 
+      .option-icon {
+        svg {
+          path,
+          line,
+          polyline {
+            stroke: #71717a;
+          }
+        }
+      }
+
       &:hover {
-        background-color: white;
+        background-color: white !important;
       }
     }
 
