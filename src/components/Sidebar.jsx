@@ -62,7 +62,7 @@ export const Sidebar = () => {
           {favoriteEntries.length && (
             <div className="section">
               <div className="header">
-                <p className="title">Favorites</p>
+                <p className="title">Pinned</p>
               </div>
               <div className="entries">
                 <Reorder.Group
@@ -90,7 +90,7 @@ export const Sidebar = () => {
 
         <div className="section">
           <div className="header">
-            <p className="title">Notes</p>
+            <p className="title">Private notes </p>
             <div className="icon" onClick={addNewEntry}>
               <Plus size={16} strokeWidth={2.75} color="#fc521f" />
             </div>

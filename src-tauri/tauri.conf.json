@@ -49,11 +49,10 @@
         "fullscreen": false,
         "resizable": true,
         "title": "Opps",
-        "width": 1200,
+        "width": 1400,
         "height": 900,
         "titleBarStyle": "Overlay",
-        "decorations": false,
-        "transparent": true
+        "hiddenTitle": true
       }
     ]
   }
