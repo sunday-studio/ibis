@@ -1,23 +1,16 @@
+import React from 'react';
 import { Fragment } from 'react';
 import { useMemo } from 'react';
 
+import { truncate } from '@/lib/utils';
 import * as ContextMenu from '@radix-ui/react-context-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
 import format from 'date-fns/format';
 import { motion, useIsPresent } from 'framer-motion';
-import {
-  BadgeInfo,
-  Crown,
-  MoreHorizontal,
-  Package,
-  SquareStack,
-  Text,
-  Trash2,
-} from 'lucide-react';
+import { BadgeInfo, Crown, MoreHorizontal, Package, SquareStack, Text, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { truncate } from '../lib/utils';
 import { useAppStore } from './AppContext';
 
 export const SidebarEntry = ({ entry, activeEntry, selectEntry, onDelete }) => {
@@ -44,11 +37,7 @@ export const SidebarEntry = ({ entry, activeEntry, selectEntry, onDelete }) => {
             onClick={() => selectEntry(entry)}
           >
             <div className="icon">
-              <Text
-                size={16}
-                strokeWidth={2.5}
-                color={isActive ? '#fc521f' : '#6b7280'}
-              />
+              <Text size={16} strokeWidth={2.5} color={isActive ? '#fc521f' : '#6b7280'} />
             </div>
             <p className="entry-title">{truncate(entry.title) || 'Untitled'}</p>
             <Popover.Trigger asChild>
