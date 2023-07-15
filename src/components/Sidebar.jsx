@@ -43,7 +43,7 @@ export const Sidebar = () => {
 
   return (
     <>
-      {showDeleteModal && id && (
+      {/* {showDeleteModal && id && (
         <Modal title="" onClose={() => setShowDeleteModal(false)}>
           <p>Are you sure you wanna delete this entry? </p>
           <button
@@ -56,67 +56,8 @@ export const Sidebar = () => {
             Delete
           </button>
         </Modal>
-      )}
-      <div className="sidebar">
-        <AnimatePresence>
-          {favoriteEntries.length && (
-            <div className="section">
-              <div className="header">
-                <p className="title">Pinned</p>
-              </div>
-              <div className="entries">
-                <Reorder.Group
-                  axis="y"
-                  values={notes}
-                  // onReorder={onReorder}
-                >
-                  {favoriteEntries.map((entry) => {
-                    return (
-                      <EntryWrapper entry={entry} key={entry.id}>
-                        <SidebarEntry
-                          selectEntry={selectEntry}
-                          entry={entry}
-                          activeEntry={activeEntry}
-                          key={entry.id}
-                        />
-                      </EntryWrapper>
-                    );
-                  })}
-                </Reorder.Group>
-              </div>
-            </div>
-          )}
-        </AnimatePresence>
-
-        <div className="section">
-          <div className="header">
-            <p className="title">Private notes </p>
-            <div className="icon" onClick={addNewEntry}>
-              <Plus size={16} strokeWidth={2.75} color="#fc521f" />
-            </div>
-          </div>
-          <div className="entries">
-            <Reorder.Group axis="y" values={notes} onReorder={onReorder}>
-              {notes.map((entry) => {
-                return (
-                  <EntryWrapper entry={entry} key={entry.id}>
-                    <SidebarEntry
-                      selectEntry={selectEntry}
-                      entry={entry}
-                      activeEntry={activeEntry}
-                      key={entry.id}
-                      onDelete={() => {
-                        setId(entry.id);
-                        setShowDeleteModal(true);
-                      }}
-                    />
-                  </EntryWrapper>
-                );
-              })}
-            </Reorder.Group>
-          </div>
-        </div>
-      </div>
+      )} */}
+      <div className="sidebar"></div>
     </>
   );
 };
