@@ -1335,6 +1335,11 @@ mobx-react-lite@^4.0.3:
   dependencies:
     use-sync-external-store "^1.2.0"
 
+mobx@^6.9.1:
+  version "6.9.1"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.9.1.tgz#e22764561ea89bfe1ed4bf14e4ba733eae465f50"
+  integrity sha512-7V41hvBmzCQg5n/xoZi2qkhREbnF3wHbzbIdR1sLJhVt6yWq2Zq0FlNahEt/RccOmEIjipvBqeQ4mlOEyMhaaA==
+
 ms@2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
@@ -1398,6 +1403,11 @@ process@^0.11.10:
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==
+
+proxy-compare@2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/proxy-compare/-/proxy-compare-2.5.1.tgz#17818e33d1653fbac8c2ec31406bce8a2966f600"
+  integrity sha512-oyfc0Tx87Cpwva5ZXezSp5V9vht1c7dZBhvuV/y3ctkgMVUmiAGDVeeB0dKhGSyT0v1ZTEQYpe/RXlBVBNuCLA==
 
 react-dom@^18.2.0:
   version "18.2.0"
@@ -1593,10 +1603,18 @@ use-sidecar@^1.1.2:
     detect-node-es "^1.1.0"
     tslib "^2.0.0"
 
-use-sync-external-store@^1.2.0:
+use-sync-external-store@1.2.0, use-sync-external-store@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
+
+valtio@^1.10.7:
+  version "1.10.7"
+  resolved "https://registry.yarnpkg.com/valtio/-/valtio-1.10.7.tgz#0843b8bc8382060b3e6a0d31be645c3ef9a7f7dc"
+  integrity sha512-XUwXJ9twXqwfVhXlcbYlCcRUUSOmp8RcJODVAxPrUZc2jh3com13B49MOL/cbgcTOX+5yf7wdMqbFGR7ba2sPg==
+  dependencies:
+    proxy-compare "2.5.1"
+    use-sync-external-store "1.2.0"
 
 vite@^4.2.1:
   version "4.4.4"

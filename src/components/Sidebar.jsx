@@ -1,12 +1,12 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { AnimatePresence, Reorder, useMotionValue } from 'framer-motion';
-import { Plus, Search, DoorOpen, Inbox, Settings } from 'lucide-react';
+import { DoorOpen, Inbox, Plus, Search, Settings } from 'lucide-react';
+import { observer } from 'mobx-react-lite';
+import { useNavigate } from 'react-router-dom';
 
 import { useRaisedShadow } from '../hooks/useRaisedShadow';
-import { useNavigate } from 'react-router-dom';
-import { useAppStore } from './AppContext';
-// import Modal from './Modal';
+import { entriesStore } from '../store/entries';
 import { SidebarEntry } from './SidebarEntry';
 
 const EntryWrapper = ({ entry, children }) => {
@@ -24,53 +24,24 @@ const RouteLink = ({ link, title, icon: Icon }) => {
   const navigate = useNavigate();
   return (
     <div className="route" onClick={() => navigate('/today')}>
-      <div className="icon">
-        {Icon && <Icon color="#6b7280" size={16} strokeWidth={2.5} />}
-      </div>
+      <div className="icon">{Icon && <Icon color="#6b7280" size={16} strokeWidth={2.5} />}</div>
       <p className="route-text">{title}</p>
     </div>
   );
 };
 
-export const Sidebar = () => {
-  const {
-    entries,
-    selectEntry,
-    activeEntry,
-    addNewEntry,
-    deleteEntry,
-    favorites,
-    onReorder,
-  } = useAppStore();
-
+export const Sidebar = observer((props) => {
   const navigate = useNavigate();
-  // const [showDeleteModal, setShowDeleteModal] = useState(false);
-  // const [id, setId] = useState(null);
 
-  // const favoriteEntries = useMemo(() => {
-  //   return entries.filter((entry) => favorites.includes(entry.id));
-  // }, [favorites, entries, activeEntry]);
+  const { entries, selectEntry, activeEntry, addNewEntry, deleteEntry, favorites, onReorder } =
+    entriesStore;
 
-  const notes = useMemo(() => {
-    return entries.filter((entry) => !favorites.includes(entry.id));
-  }, [favorites, entries, activeEntry]);
+  useEffect(() => {
+    entriesStore.load();
+  }, []);
 
   return (
     <>
-      {/* {showDeleteModal && id && (
-        <Modal title="" onClose={() => setShowDeleteModal(false)}>
-          <p>Are you sure you wanna delete this entry? </p>
-          <button
-            className="save-button button"
-            onClick={() => {
-              deleteEntry(id);
-              setShowDeleteModal(false);
-            }}
-          >
-            Delete
-          </button>
-        </Modal>
-      )} */}
       <div className="sidebar">
         <div className="section header-section">
           <RouteLink title="Today" icon={DoorOpen} />
@@ -79,11 +50,37 @@ export const Sidebar = () => {
           <RouteLink title="Settings" icon={Settings} />
         </div>
 
-        <div className="section">
-          <div className="header">
-            <p className="title">Pinned</p>
+        {Boolean(entriesStore.pinnedEntriesId.length) && (
+          <div className="section">
+            <div className="header">
+              <p className="title">Pinned</p>
+            </div>
+
+            <div className="entries">
+              <Reorder.Group axis="y" values={entriesStore.pinnedEntries} onReorder={() => {}}>
+                {entriesStore?.pinnedEntries?.map((entry) => {
+                  return (
+                    <EntryWrapper entry={entry} key={entry.id}>
+                      <SidebarEntry
+                        selectEntry={(entry) => {
+                          navigate(`/entry/${entry.id}`);
+                          entriesStore.selectEntry(entry);
+                        }}
+                        entry={entry}
+                        activeEntry={activeEntry}
+                        key={entry.id}
+                        onDelete={() => {
+                          setId(entry.id);
+                          setShowDeleteModal(true);
+                        }}
+                      />
+                    </EntryWrapper>
+                  );
+                })}
+              </Reorder.Group>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="section">
           <div className="header">
@@ -97,8 +94,8 @@ export const Sidebar = () => {
           </div>
 
           <div className="entries">
-            <Reorder.Group axis="y" values={notes} onReorder={onReorder}>
-              {notes.map((entry) => {
+            <Reorder.Group axis="y" values={entriesStore?.privateEntries} onReorder={() => {}}>
+              {entriesStore?.privateEntries?.map((entry) => {
                 return (
                   <EntryWrapper entry={entry} key={entry.id}>
                     <SidebarEntry
@@ -123,4 +120,4 @@ export const Sidebar = () => {
       </div>
     </>
   );
-};
+});

@@ -8,10 +8,21 @@ import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
 import format from 'date-fns/format';
 import { motion, useIsPresent } from 'framer-motion';
-import { BadgeInfo, Crown, MoreHorizontal, Package, SquareStack, Text, Trash2 } from 'lucide-react';
+import {
+  BadgeInfo,
+  Copy,
+  Crown,
+  MoreHorizontal,
+  Package,
+  // SquareStack,
+  Text,
+  Trash2,
+} from 'lucide-react';
+import { observer } from 'mobx-react-lite';
 import { toast } from 'sonner';
 
-import { useAppStore } from './AppContext';
+import { entriesStore, Entry } from '../store/entries';
+// import { useAppStore } from './AppContext';
 
 export const SidebarEntry = ({ entry, activeEntry, selectEntry, onDelete }) => {
   const isActive = entry?.id === activeEntry?.id;
@@ -72,10 +83,13 @@ export const SidebarEntry = ({ entry, activeEntry, selectEntry, onDelete }) => {
   );
 };
 
-const MoreOptions = ({ entry, onDelete }) => {
-  const { favorites, updateFavories, duplicateEntry } = useAppStore();
+const MoreOptions = observer(({ entry, onDelete }: { entry: Entry, onDelete: () => void }) => {
+  const { pinnedEntriesId, updatePinned, duplicateEntry } = entriesStore
 
-  const isFavorite = favorites.includes(entry.id);
+  const isPinned = pinnedEntriesId.includes(entry.id!);
+
+
+
   const options = useMemo(() => {
     return [
       {
@@ -88,15 +102,15 @@ const MoreOptions = ({ entry, onDelete }) => {
       {
         title: 'Duplicate',
         action: () => duplicateEntry(entry),
-        icon: <SquareStack size={16} />,
+        icon: <Copy size={16} />,
       },
 
       {
-        title: isFavorite ? 'Remove from Favs' : 'Add to Favs',
+        title: isPinned ? 'Remove from Pinned' : 'Add to Pinned',
         action: () =>
-          updateFavories({
+          entriesStore.updatePinned({
             id: entry.id,
-            type: isFavorite ? 'REMOVE' : 'ADD',
+            type: isPinned ? 'REMOVE' : 'ADD',
           }),
         icon: <Crown size={16} />,
       },
@@ -110,12 +124,14 @@ const MoreOptions = ({ entry, onDelete }) => {
 
       {
         title: 'Info',
-        action: () => {},
+        action: () => { },
         icon: <BadgeInfo size={16} />,
         disabled: true,
       },
     ];
-  }, [favorites]);
+  }, [pinnedEntriesId]);
+
+
   return (
     <Fragment>
       {options.map((option, index) => {
@@ -146,4 +162,4 @@ const MoreOptions = ({ entry, onDelete }) => {
       </div>
     </Fragment>
   );
-};
+});

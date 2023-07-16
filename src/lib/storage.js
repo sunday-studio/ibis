@@ -1,7 +1,7 @@
-
 export const getData = (name) => {
-  const cookie = window?.localStorage.getItem(name);
-  return (cookie && JSON.parse(cookie)) || null;
+  const data = window?.localStorage.getItem(name);
+
+  return (data && JSON.parse(data)) || null;
 };
 
 export const clearData = (name) => {

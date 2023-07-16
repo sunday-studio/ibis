@@ -28,7 +28,8 @@ import FloatingMenuPlugin from '../plugins/FloatingMenuPlugin';
 import SlashCommandPickerPlugin from '../plugins/SlashCommandPicker';
 import TabFocusPlugin from '../plugins/TabFocusPlugin';
 import { theme } from '../plugins/theme';
-import { useAppStore } from './AppContext';
+import { entriesStore } from '../store/entries';
+// import { useAppStore } from './AppContext';
 
 function MyCustomAutoFocusPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -48,7 +49,7 @@ function onError(error) {
 export const Editor = ({ id, content }) => {
   const editorState = useRef();
   const [saveStatus, setSaveStatus] = useState('Saved');
-  const { saveContent, activeEntryTitle, udpateActiveEntryTitle } = useAppStore();
+  const { saveContent, activeEntryTitle, updateActiveEntireTitle } = entriesStore;
 
   const initialConfig = {
     namespace: 'ContentEditor',
@@ -86,7 +87,7 @@ export const Editor = ({ id, content }) => {
           <div className="editor-container">
             <input
               value={activeEntryTitle}
-              onChange={(e) => udpateActiveEntryTitle(e.target.value)}
+              onChange={(e) => updateActiveEntireTitle(e.target.value)}
               className="title-input"
               placeholder="Untitled"
             />

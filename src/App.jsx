@@ -1,5 +1,5 @@
 import { Editor } from './components/Editor.jsx';
-import { useAppStore } from './components/AppContext.jsx';
+// import { useAppStore } from './components/AppContext.jsx';
 import { Toaster } from 'sonner';
 
 // import './editor.css';
@@ -19,11 +19,11 @@ import { Sidebar } from './components/Sidebar.jsx';
 // };
 
 function App() {
-  const { activeEntry } = useAppStore();
+  // const { activeEntry } = useAppStore();
 
   return (
     <>
-      <Toaster theme="dark" richColors />
+      {/* <Toaster theme="dark" richColors />
       <div className="page-container">
         <div className="two-column-container">
           <div className="sidebar-container">
@@ -38,7 +38,7 @@ function App() {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

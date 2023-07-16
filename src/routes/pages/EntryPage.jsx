@@ -1,8 +1,9 @@
-import { useAppStore } from '../../components/AppContext';
+import { observer } from 'mobx-react-lite';
 import { Editor } from '../../components/Editor';
+import { entriesStore } from '../../store/entries';
 
-export default function EntryPage() {
-  const { activeEntry } = useAppStore();
+const EntryPage = observer(() => {
+  const { activeEntry } = entriesStore;
 
   return (
     <div className="editor-container">
@@ -14,4 +15,6 @@ export default function EntryPage() {
       )}
     </div>
   );
-}
+});
+
+export default EntryPage;
