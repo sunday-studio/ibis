@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
@@ -24,12 +25,11 @@ import AutoLinkPlugin, { validateUrl } from '../plugins/AutolinkPlugin';
 import ClickableLinkPlugin from '../plugins/ClickableLinkPlugin';
 import CodeHighlightPlugin from '../plugins/CodeHighlightPlugin';
 import FloatingMenuPlugin from '../plugins/FloatingMenuPlugin';
-// import ToolbarPlugin from '../plugins/ToolbarPlugin';
+
 import SlashCommandPickerPlugin from '../plugins/SlashCommandPicker';
 import TabFocusPlugin from '../plugins/TabFocusPlugin';
 import { theme } from '../plugins/theme';
 import { entriesStore } from '../store/entries';
-// import { useAppStore } from './AppContext';
 
 function MyCustomAutoFocusPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -46,9 +46,21 @@ function onError(error) {
   console.error(error);
 }
 
+const EntryHeader = observer(() => {
+  const entryStore = entriesStore;
+  return (
+    <input
+      value={entryStore.activeEntryTitle}
+      onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
+      className="title-input"
+      placeholder="Untitled"
+    />
+  );
+});
+
 export const Editor = ({ id, content }) => {
   const editorState = useRef();
-  const [saveStatus, setSaveStatus] = useState('Saved');
+  // const [setSaveStatus] = useState('Saved');
   const { saveContent, activeEntryTitle, updateActiveEntireTitle } = entriesStore;
 
   const initialConfig = {
@@ -73,11 +85,11 @@ export const Editor = ({ id, content }) => {
   };
 
   const debouncedUpdates = useDebouncedCallback(async () => {
-    setSaveStatus('Saving...');
-    saveContent(editorState.current.toJSON());
-    setTimeout(() => {
-      setSaveStatus('Saved');
-    }, 300);
+    // setSaveStatus('Saving...');
+    entriesStore.saveContent(editorState.current.toJSON());
+    // setTimeout(() => {
+    //   setSaveStatus('Saved');
+    // }, 300);
   }, 750);
 
   return (
@@ -85,12 +97,7 @@ export const Editor = ({ id, content }) => {
       <RichTextPlugin
         contentEditable={
           <div className="editor-container">
-            <input
-              value={activeEntryTitle}
-              onChange={(e) => updateActiveEntireTitle(e.target.value)}
-              className="title-input"
-              placeholder="Untitled"
-            />
+            <EntryHeader />
             <ContentEditable className="editor-input" />
           </div>
         }

@@ -1,13 +1,27 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { AnimatePresence, Reorder, useMotionValue } from 'framer-motion';
-import { DoorOpen, Inbox, Plus, Search, Settings } from 'lucide-react';
+import {
+  DoorOpen,
+  Inbox,
+  Plus,
+  Search,
+  Settings,
+  BadgePlus,
+  Trash2Icon,
+  Sun,
+  MoonStar,
+  Orbit,
+  PanelRightOpen,
+} from 'lucide-react';
 import { observer } from 'mobx-react-lite';
-import { useNavigate } from 'react-router-dom';
+import * as Popover from '@radix-ui/react-popover';
 
 import { useRaisedShadow } from '../hooks/useRaisedShadow';
 import { entriesStore } from '../store/entries';
 import { SidebarEntry } from './SidebarEntry';
+import { appState } from '../store/app-state';
 
 const EntryWrapper = ({ entry, children }) => {
   const y = useMotionValue(0);
@@ -33,9 +47,6 @@ const RouteLink = ({ link, title, icon: Icon }) => {
 export const Sidebar = observer((props) => {
   const navigate = useNavigate();
 
-  const { entries, selectEntry, activeEntry, addNewEntry, deleteEntry, favorites, onReorder } =
-    entriesStore;
-
   useEffect(() => {
     entriesStore.load();
   }, []);
@@ -43,11 +54,21 @@ export const Sidebar = observer((props) => {
   return (
     <>
       <div className="sidebar">
+        <div
+          className="sidebar-toggle"
+          role="button"
+          onClick={() => appState.toggleSidebarOpenState()}
+        >
+          <PanelRightOpen size={18} />
+        </div>
+
         <div className="section header-section">
           <RouteLink title="Today" icon={DoorOpen} />
-          <RouteLink title="Search" icon={Search} />
-          <RouteLink title="Inbox" icon={Inbox} />
+          {/* <RouteLink title="Search" icon={Search} /> */}
+          {/* <RouteLink title="Inbox" icon={Inbox} /> */}
           <RouteLink title="Settings" icon={Settings} />
+          <RouteLink title="Trash" icon={Trash2Icon} />
+          <RouteLink title="New Entry" icon={BadgePlus} />
         </div>
 
         {Boolean(entriesStore.pinnedEntriesId.length) && (
@@ -57,7 +78,11 @@ export const Sidebar = observer((props) => {
             </div>
 
             <div className="entries">
-              <Reorder.Group axis="y" values={entriesStore.pinnedEntries} onReorder={() => {}}>
+              <Reorder.Group
+                axis="y"
+                values={entriesStore.pinnedEntries}
+                onReorder={entriesStore.onReorder}
+              >
                 {entriesStore?.pinnedEntries?.map((entry) => {
                   return (
                     <EntryWrapper entry={entry} key={entry.id}>
@@ -67,7 +92,7 @@ export const Sidebar = observer((props) => {
                           entriesStore.selectEntry(entry);
                         }}
                         entry={entry}
-                        activeEntry={activeEntry}
+                        activeEntry={entriesStore.activeEntry}
                         key={entry.id}
                         onDelete={() => {
                           setId(entry.id);
@@ -84,27 +109,28 @@ export const Sidebar = observer((props) => {
 
         <div className="section">
           <div className="header">
-            <p className="title">Shared</p>
-          </div>
-        </div>
-
-        <div className="section">
-          <div className="header">
             <p className="title">Private</p>
-          </div>
 
+            <div className="icon" onClick={() => entriesStore.addNewEntry()}>
+              <Plus size={16} />
+            </div>
+          </div>
           <div className="entries">
-            <Reorder.Group axis="y" values={entriesStore?.privateEntries} onReorder={() => {}}>
+            <Reorder.Group
+              axis="y"
+              values={entriesStore?.privateEntries}
+              onReorder={entriesStore.onReorder}
+            >
               {entriesStore?.privateEntries?.map((entry) => {
                 return (
                   <EntryWrapper entry={entry} key={entry.id}>
                     <SidebarEntry
                       selectEntry={(entry) => {
                         navigate(`/entry/${entry.id}`);
-                        selectEntry(entry);
+                        entriesStore.selectEntry(entry);
                       }}
                       entry={entry}
-                      activeEntry={activeEntry}
+                      activeEntry={entriesStore.activeEntry}
                       key={entry.id}
                       onDelete={() => {
                         setId(entry.id);
@@ -116,6 +142,54 @@ export const Sidebar = observer((props) => {
               })}
             </Reorder.Group>
           </div>
+        </div>
+
+        <div className="sidebar-footer">
+          <p className="version">version 0.01 ✨</p>
+
+          <Popover.Root>
+            <Popover.Trigger asChild>
+              <div className="theme-toggle">
+                <p className="">Light</p>
+              </div>
+            </Popover.Trigger>
+
+            <Popover.Portal>
+              <Popover.Content className="theme-menu PopoverContent" sideOffset={5}>
+                <div className="theme-menu-options">
+                  <div className="option">
+                    <div className="option-icon">
+                      <Sun size={16} />
+                    </div>
+                    <p>Light</p>
+                  </div>
+
+                  {/* <div className="option">
+                    <div className="option-icon">
+                      <Sun size={16} />
+                    </div>
+                    <p>Cream</p>
+                  </div> */}
+
+                  <div className="option">
+                    <div className="option-icon">
+                      <MoonStar size={16} />
+                    </div>
+                    <p>Night</p>
+                  </div>
+
+                  <div className="option">
+                    <div className="option-icon">
+                      <Orbit size={16} />
+                    </div>
+                    <p>System</p>
+                  </div>
+                </div>
+
+                {/* <MoreOptions entry={entry} onDelete={onDelete} /> */}
+              </Popover.Content>
+            </Popover.Portal>
+          </Popover.Root>
         </div>
       </div>
     </>

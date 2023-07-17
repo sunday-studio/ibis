@@ -23,6 +23,10 @@
   text-decoration: underline line-through;
 }
 
+code > * {
+  font-family: 'BerkeleyMonoVariable', Menlo, Consolas, Monaco, monospace;
+}
+
 .editor-text-code {
   background-color: #f3f4f6;
   font-family: 'BerkeleyMonoVariable', Menlo, Consolas, Monaco, monospace;

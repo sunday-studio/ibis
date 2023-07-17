@@ -14,8 +14,11 @@ import {
   Crown,
   MoreHorizontal,
   Package,
+  Pin,
+  PinOff,
   // SquareStack,
   Text,
+  Columns,
   Trash2,
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
@@ -24,7 +27,7 @@ import { toast } from 'sonner';
 import { entriesStore, Entry } from '../store/entries';
 // import { useAppStore } from './AppContext';
 
-export const SidebarEntry = ({ entry, activeEntry, selectEntry, onDelete }) => {
+export const SidebarEntry = observer(({ entry, activeEntry, selectEntry, onDelete }) => {
   const isActive = entry?.id === activeEntry?.id;
   const isPresent = useIsPresent();
 
@@ -47,9 +50,9 @@ export const SidebarEntry = ({ entry, activeEntry, selectEntry, onDelete }) => {
             className={`entry ${isActive ? 'active-entry' : ''}`}
             onClick={() => selectEntry(entry)}
           >
-            <div className="icon">
+            {/* <div className="icon">
               <Text size={16} strokeWidth={2.5} color={isActive ? '#fc521f' : '#6b7280'} />
-            </div>
+            </div> */}
             <p className="entry-title">{truncate(entry.title) || 'Untitled'}</p>
             <Popover.Trigger asChild>
               <div
@@ -81,14 +84,12 @@ export const SidebarEntry = ({ entry, activeEntry, selectEntry, onDelete }) => {
       </ContextMenu.Root>
     </Popover.Root>
   );
-};
+});
 
-const MoreOptions = observer(({ entry, onDelete }: { entry: Entry, onDelete: () => void }) => {
-  const { pinnedEntriesId, updatePinned, duplicateEntry } = entriesStore
+const MoreOptions = observer(({ entry, onDelete }: { entry: Entry; onDelete: () => void }) => {
+  const { pinnedEntriesId, updatePinned, duplicateEntry } = entriesStore;
 
   const isPinned = pinnedEntriesId.includes(entry.id!);
-
-
 
   const options = useMemo(() => {
     return [
@@ -106,13 +107,20 @@ const MoreOptions = observer(({ entry, onDelete }: { entry: Entry, onDelete: () 
       },
 
       {
-        title: isPinned ? 'Remove from Pinned' : 'Add to Pinned',
+        title: isPinned ? 'Unpin' : 'Pin',
         action: () =>
           entriesStore.updatePinned({
             id: entry.id,
             type: isPinned ? 'REMOVE' : 'ADD',
           }),
-        icon: <Crown size={16} />,
+        icon: isPinned ? <PinOff size={16} /> : <Pin size={16} />,
+      },
+
+      {
+        title: 'Open in split view',
+        action: () => {},
+        icon: <Columns size={16} />,
+        disabled: true,
       },
 
       {
@@ -124,13 +132,12 @@ const MoreOptions = observer(({ entry, onDelete }: { entry: Entry, onDelete: () 
 
       {
         title: 'Info',
-        action: () => { },
+        action: () => {},
         icon: <BadgeInfo size={16} />,
         disabled: true,
       },
     ];
   }, [pinnedEntriesId]);
-
 
   return (
     <Fragment>
@@ -155,7 +162,6 @@ const MoreOptions = observer(({ entry, onDelete }: { entry: Entry, onDelete: () 
       <div className="hr-divider" />
       <div className="entry-details">
         <p>Created on: {format(new Date(entry.createdAt), 'dd, MMMM yyy')}</p>
-
         {entry.updatedAt && (
           <p>Last edited on: {format(new Date(entry.createdAt), 'dd, MMM yy, h:m a')} </p>
         )}

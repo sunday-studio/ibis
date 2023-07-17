@@ -1,6 +1,5 @@
 * {
   margin: 0;
-  outline: 1px dotted red;
 }
 
 :root {
@@ -366,6 +365,26 @@ button {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 100%;
+  bottom: 0;
+  width: 100%;
+
+  &-toggle {
+    outline: 1px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    cursor: pointer;
+    background: red;
+
+    width: 32px;
+    height: 32px;
+  }
 
   .header-section {
     margin-bottom: 20px;
@@ -373,37 +392,31 @@ button {
 
   .section {
     margin-top: 30px;
-    padding: 0 8px;
-
-    * {
-    }
+    padding: 0 0px;
+    width: 100%;
 
     .route {
       display: flex;
-      padding: 4px;
       align-items: center;
       cursor: pointer;
       border: 2px solid transparent;
       transition: all 0.3sec ease-in;
-      // border-radius: 4px;
-      margin-bottom: 4px;
-
-      * {
-      }
+      padding: 2px 12px;
 
       &:hover {
+        background-color: #e5e7eb;
       }
 
       .icon {
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-right: 12px;
       }
 
       &-text {
-        font-weight: 500;
+        font-weight: 600;
         font-size: 14px;
-        margin-left: 6px;
         color: #1f2937;
       }
     }
@@ -411,7 +424,7 @@ button {
     .header {
       display: flex;
       align-items: center;
-      padding: 4px 8px;
+      padding: 8px 12px;
 
       p.title {
         font-size: 13px;
@@ -419,13 +432,12 @@ button {
       }
 
       .icon {
-        width: 32px;
-        height: 32px;
         display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
         border-radius: 4px;
+        padding: 2px;
 
         &:hover {
           background-color: #d4d4d4;
@@ -436,8 +448,6 @@ button {
     .entries {
       display: flex;
       flex-direction: column;
-      padding: 0 8px;
-      gap: 4px;
 
       ul,
       li {
@@ -458,19 +468,20 @@ button {
 
       .entry {
         transition: all 0.3sec ease;
-        padding: 6px;
-        border-radius: 4px;
+        padding: 4px 12px;
+        border-radius: 0px;
         cursor: pointer;
         display: flex;
         align-items: center;
         gap: 6px;
+        border-bottom: 1px solid #e5e7eb;
 
         &[data-state='open'] {
           background-color: #e5e7eb;
         }
 
         &.active-entry {
-          background-color: #e5e7eb;
+          background-color: #d1d5db;
 
           p {
             color: #030712;
@@ -496,10 +507,9 @@ button {
         }
 
         p {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 500;
           color: #4b5563;
-          paddin: 4px;
         }
 
         p.date {
@@ -517,6 +527,42 @@ button {
             }
           }
         }
+      }
+    }
+  }
+
+  &-footer {
+    width: 300px;
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid #e5e7eb;
+
+    p.version {
+      font-weight: 600;
+      font-size: 14px;
+      color: #1f2937;
+      margin-left: 12px;
+    }
+
+    .theme-toggle {
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-right: 12px;
+      background-color: #e5e7eb;
+      cursor: pointer;
+      border: 1px solid #d1d5db;
+      box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+
+      &:hover {
+        background-color: #d1d5db;
+      }
+
+      p {
+        font-size: 12px;
+        font-weight: 600;
       }
     }
   }
@@ -572,7 +618,8 @@ button {
         svg {
           path,
           line,
-          polyline {
+          polyline,
+          rect {
             stroke: #71717a;
           }
         }
@@ -598,6 +645,11 @@ button {
     }
   }
 }
+
+.theme-menu {
+  width: 180px;
+}
+
 .PopoverContent:focus {
   outline: none;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);

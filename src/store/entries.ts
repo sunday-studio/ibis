@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import { CONTENT_KEY, PINNED_KEY } from '../lib/constants';
 import { getData, setData } from '../lib/storage';
 import { formatDuplicatedTitle } from '../lib/utils';
+import { mobxDebounce } from '../lib/mobx-debounce';
 
 export interface Entry {
   title: string;
@@ -48,7 +49,6 @@ class Entries {
       const updatedList = [...this.pinnedEntriesId, id];
 
       runInAction(() => (this.pinnedEntriesId = updatedList));
-
       setData(PINNED_KEY, updatedList);
       return;
     }
@@ -69,13 +69,8 @@ class Entries {
   }
 
   selectEntry(entry: Entry) {
-    console.log('entry =>', entry);
-
-    runInAction(() => {
-      this.activeEntry = entry;
-      // this.activeEntry = entry;
-      // this.activeEntryTitle = entry.title;
-    });
+    this.activeEntry = entry;
+    this.activeEntryTitle = entry.title;
   }
 
   saveEditedContent(editorState) {
@@ -158,8 +153,25 @@ class Entries {
     console.log('entries => ', entries);
   }
 
-  updateActiveEntireTitle(title) {
-    console.log('title => ', title);
+  saveTitle = mobxDebounce(() => {
+    const updatedEntry = {
+      ...this.activeEntry,
+      title: this.activeEntryTitle!,
+    } as Entry;
+
+    const updatedEntries = this.findAndReplaceEntry(updatedEntry);
+
+    runInAction(() => {
+      this.activeEntry = updatedEntry;
+      this.entries = updatedEntries;
+    });
+
+    setData(CONTENT_KEY, updatedEntries);
+  }, 500);
+
+  updateActiveEntireTitle(title: string) {
+    this.activeEntryTitle = title;
+    this.saveTitle();
   }
 }
 
