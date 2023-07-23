@@ -358,12 +358,12 @@ button {
   width: 100%;
 
   &-toggle {
+    margin-top: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-left: auto;
     cursor: pointer;
-
     width: 32px;
     height: 32px;
   }

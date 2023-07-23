@@ -158,6 +158,9 @@ class Entries {
     };
 
     const updatedEntries = [duplicatedEntry, ...this.entries];
+
+    console.log({ updatedEntries });
+
     this.entries = updatedEntries;
     setData(CONTENT_KEY, updatedEntries);
   }

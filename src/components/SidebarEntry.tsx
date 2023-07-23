@@ -10,21 +10,21 @@ import format from 'date-fns/format';
 import { motion, useIsPresent } from 'framer-motion';
 import {
   BadgeInfo,
+  Columns,
   Copy,
   Crown,
   MoreHorizontal,
   Package,
   Pin,
-  PinOff,
-  // SquareStack,
+  PinOff, // SquareStack,
   Text,
-  Columns,
   Trash2,
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { toast } from 'sonner';
 
-import { entriesStore, Entry } from '../store/entries';
+import { Entry, entriesStore } from '../store/entries';
+
 // import { useAppStore } from './AppContext';
 
 export const SidebarEntry = observer(({ entry, activeEntry, selectEntry, onDelete }) => {
@@ -87,7 +87,7 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry, onDelet
 });
 
 const MoreOptions = observer(({ entry, onDelete }: { entry: Entry; onDelete: () => void }) => {
-  const { pinnedEntriesId, updatePinned, duplicateEntry } = entriesStore;
+  const { pinnedEntriesId } = entriesStore;
 
   const isPinned = pinnedEntriesId.includes(entry.id!);
 
@@ -102,7 +102,7 @@ const MoreOptions = observer(({ entry, onDelete }: { entry: Entry; onDelete: () 
 
       {
         title: 'Duplicate',
-        action: () => duplicateEntry(entry),
+        action: () => entriesStore.duplicateEntry(entry),
         icon: <Copy size={16} />,
       },
 
