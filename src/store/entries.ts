@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { nanoid } from 'nanoid';
 
-import { CONTENT_KEY, PINNED_KEY } from '../lib/constants';
+import { CONTENT_KEY, PINNED_KEY, TRASH_KEY } from '../lib/constants';
 import { getData, setData } from '../lib/storage';
 import { formatDuplicatedTitle } from '../lib/utils';
 import { mobxDebounce } from '../lib/mobx-debounce';
@@ -17,6 +17,7 @@ export interface Entry {
 
 class Entries {
   entries: Entry[] | [] = [];
+  deletedEntries: Entry[] | [] = [];
   pinnedEntriesId: string[] | [] = [];
   activeEntry?: Entry | null = null;
   activeEntryTitle?: string | null = this.activeEntry?.title;
@@ -28,6 +29,9 @@ class Entries {
   load() {
     const entryData = getData(CONTENT_KEY);
     const pinnedData = getData(PINNED_KEY) ?? [];
+    const deletedData = getData(TRASH_KEY) ?? [];
+
+    this.deletedEntries = deletedData;
     this.entries = entryData;
     this.pinnedEntriesId = pinnedData;
   }
@@ -88,17 +92,20 @@ class Entries {
   }
 
   addNewEntry() {
+    const id = nanoid();
     const DEFAULT_ENTRY = {
       content: '',
       createdAt: new Date().toISOString(),
       title: '',
-      id: nanoid(),
+      id,
     };
 
     const updatedEntries = [DEFAULT_ENTRY, ...this.entries];
     this.activeEntry = DEFAULT_ENTRY;
     this.entries = updatedEntries;
     this.activeEntryTitle = '';
+
+    return id;
   }
 
   saveContent(editorState) {
@@ -127,12 +134,18 @@ class Entries {
 
   deleteEntry(entryId: string) {
     const updatedEntries = this.entries.filter((entry) => entry.id !== entryId);
+    const deletedEntry = this.entries.filter((entry) => entry.id === entryId);
 
     if (entryId === this.activeEntry?.id) {
       this.activeEntry = null;
     }
 
+    const updatedDeletedEntry = [...deletedEntry, ...this.deletedEntries];
+
     this.entries = updatedEntries;
+    this.deletedEntries = updatedDeletedEntry;
+
+    setData(TRASH_KEY, updatedDeletedEntry);
     setData(CONTENT_KEY, updatedEntries);
   }
 
@@ -172,6 +185,24 @@ class Entries {
   updateActiveEntireTitle(title: string) {
     this.activeEntryTitle = title;
     this.saveTitle();
+  }
+
+  removeActiveEntry() {
+    this.activeEntry = null;
+    this.activeEntryTitle = '';
+  }
+
+  restoreEntry(entryId: string) {
+    const restoredEntry = this.deletedEntries.filter((entry) => entry.id === entryId);
+    const updatedDeletedEntries = this.deletedEntries.filter((entry) => entry.id !== entryId);
+
+    const updatedEntries = [...this.entries, ...restoredEntry];
+
+    this.entries = updatedEntries;
+    this.deletedEntries = updatedDeletedEntries;
+
+    setData(TRASH_KEY, updatedDeletedEntries);
+    setData(CONTENT_KEY, updatedEntries);
   }
 }
 

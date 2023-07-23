@@ -57,7 +57,6 @@ const Root = observer(() => {
               <Sidebar />
             </motion.div>
           </motion.div>
-
           <Outlet />
         </div>
       </div>

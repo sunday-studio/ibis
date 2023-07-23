@@ -1,4 +1,24 @@
-.Modal__overlay {
+.modal__container {
+  padding: 20px;
+  min-height: 100px;
+  min-width: 400px;
+  display: flex;
+  flex-grow: 0px;
+  background-color: #fff;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+
+  .modal__title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+}
+
+.modal__overlay {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,45 +32,4 @@
   flex-grow: 0px;
   flex-shrink: 1px;
   z-index: 100;
-}
-.Modal__modal {
-  padding: 20px;
-  min-height: 100px;
-  min-width: 300px;
-  display: flex;
-  flex-grow: 0px;
-  background-color: #fff;
-  flex-direction: column;
-  position: relative;
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  border-radius: 10px;
-}
-.Modal__title {
-  color: #444;
-  margin: 0px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ccc;
-}
-.Modal__closeButton {
-  border: 0px;
-  position: absolute;
-  right: 20px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  cursor: pointer;
-  padding: 0;
-  font-size: auto;
-  background-color: white;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-}
-.Modal__closeButton:hover {
-  background-color: #ddd;
-}
-.Modal__content {
-  padding-top: 50px;
 }

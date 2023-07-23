@@ -1,3 +1,7 @@
 export default function TodayPage() {
-  return <p> Today page </p>;
+  return (
+    <div className="container">
+      <p> Today page </p>
+    </div>
+  );
 }

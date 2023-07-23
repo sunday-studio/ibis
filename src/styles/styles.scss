@@ -7,7 +7,6 @@
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
   line-height: 22px;
   font-weight: 500;
-
   color: #0f0f0f;
 
   font-synthesis: none;
@@ -48,8 +47,7 @@ a {
   color: #646cff;
 }
 
-input,
-button {
+input {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -60,6 +58,10 @@ button {
   background-color: #ffffff;
   transition: border-color 0.25s;
 }
+button {
+  border-radius: 4px;
+  border: 2px solid #4b5563;
+}
 
 .shadow-button {
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
@@ -67,6 +69,7 @@ button {
 
 button {
   cursor: pointer;
+  background-color: white;
 }
 
 button:hover {
@@ -86,26 +89,6 @@ button {
   margin-right: 5px;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
-  }
-
-  a:hover {
-    color: #24c8db;
-  }
-
-  input,
-  button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
-  }
-  button:active {
-    background-color: #0f0f0f69;
-  }
-} */
-
 .full-center {
   justify-content: center;
   align-items: center;
@@ -123,7 +106,9 @@ button {
 }
 
 .editor-container {
+  overflow-y: scroll;
   position: relative;
+  height: 100vh;
 }
 
 .editor-input {
@@ -135,7 +120,6 @@ button {
 }
 
 .save-button {
-  margin-top: 10px;
   display: flex;
   justify-content: flex-end;
   gap: 10px;
@@ -735,4 +719,50 @@ button {
 
 ol[data-sonner-toaster='true'] {
   --width: 100px;
+}
+
+.delete-entry-content {
+  .description {
+    color: #4b5563;
+  }
+
+  .modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+  }
+
+  button {
+    border: 2px solid #4b5563;
+    padding: 0;
+    height: 38px;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 0 1.2em;
+    font-size: 15px;
+  }
+
+  .delete-button {
+    background-color: rgb(255, 229, 229);
+    color: rgb(205, 43, 49);
+    border-color: rgb(205, 43, 49);
+  }
+}
+
+.trash-page {
+  margin-top: 50px;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 0 20px;
+
+  .entry {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e7eb;
+  }
 }

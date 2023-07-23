@@ -1,13 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { AnimatePresence, Reorder, useMotionValue } from 'framer-motion';
+import { Reorder, useMotionValue } from 'framer-motion';
 import {
   DoorOpen,
-  Inbox,
   Plus,
-  Search,
-  Settings,
   BadgePlus,
   Trash2Icon,
   Sun,
@@ -17,11 +14,12 @@ import {
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import * as Popover from '@radix-ui/react-popover';
+import Modal from './Modal';
 
 import { useRaisedShadow } from '../hooks/useRaisedShadow';
-import { entriesStore } from '../store/entries';
 import { SidebarEntry } from './SidebarEntry';
 import { appState } from '../store/app-state';
+import { entriesStore } from '../store/entries';
 
 const EntryWrapper = ({ entry, children }) => {
   const y = useMotionValue(0);
@@ -34,25 +32,67 @@ const EntryWrapper = ({ entry, children }) => {
   );
 };
 
-const RouteLink = ({ link, title, icon: Icon }) => {
-  const navigate = useNavigate();
+const RouteLink = ({ onClick, title, icon: Icon }) => {
   return (
-    <div className="route" onClick={() => navigate('/today')}>
+    <div className="route" onClick={onClick}>
       <div className="icon">{Icon && <Icon color="#6b7280" size={16} strokeWidth={2.5} />}</div>
       <p className="route-text">{title}</p>
     </div>
   );
 };
 
-export const Sidebar = observer((props) => {
+export const Sidebar = observer(() => {
   const navigate = useNavigate();
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [id, setId] = useState(null);
 
   useEffect(() => {
     entriesStore.load();
   }, []);
 
+  function goToPage(route) {
+    entriesStore.removeActiveEntry();
+    navigate(route);
+  }
+
+  function closeDeleteModal() {
+    setShowDeleteModal(false);
+    setId(null);
+  }
+
   return (
     <>
+      {showDeleteModal && id && (
+        <Modal
+          isDialog
+          closeOnClickOutside={() => closeDeleteModal()}
+          title="Delete entry"
+          onClose={() => closeDeleteModal()}
+          className="delete-entry-content"
+        >
+          <p className="description">Are you sure you wanna delete this entry? </p>
+          <div className="modal__footer">
+            <button
+              className="button"
+              onClick={() => {
+                closeDeleteModal();
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="delete-button button"
+              onClick={() => {
+                entriesStore.deleteEntry(id);
+                setShowDeleteModal(false);
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </Modal>
+      )}
       <div className="sidebar">
         <div
           className="sidebar-toggle"
@@ -63,12 +103,22 @@ export const Sidebar = observer((props) => {
         </div>
 
         <div className="section header-section">
-          <RouteLink title="Today" icon={DoorOpen} />
-          {/* <RouteLink title="Search" icon={Search} /> */}
-          {/* <RouteLink title="Inbox" icon={Inbox} /> */}
-          <RouteLink title="Settings" icon={Settings} />
-          <RouteLink title="Trash" icon={Trash2Icon} />
-          <RouteLink title="New Entry" icon={BadgePlus} />
+          <RouteLink
+            title="Today"
+            icon={DoorOpen}
+            onClick={() => {
+              goToPage('/today');
+            }}
+          />
+          <RouteLink title="Trash" icon={Trash2Icon} onClick={() => goToPage('/trash')} />
+          <RouteLink
+            title="New Entry"
+            icon={BadgePlus}
+            onClick={() => {
+              const entryId = entriesStore.addNewEntry();
+              navigate(`/entry/${entryId}`);
+            }}
+          />
         </div>
 
         {Boolean(entriesStore.pinnedEntriesId.length) && (

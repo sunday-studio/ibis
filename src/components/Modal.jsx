@@ -1,12 +1,12 @@
-import './Modal.css';
-
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
+import './Modal.css';
 
-function PortalImpl({ onClose, children, title, closeOnClickOutside }) {
+function PortalImpl({ onClose, children, title, closeOnClickOutside, isDialog, className = '' }) {
   const modalRef = useRef(null);
+
+  const propClassName = className ?? '';
 
   useEffect(() => {
     if (modalRef.current !== null) {
@@ -23,11 +23,7 @@ function PortalImpl({ onClose, children, title, closeOnClickOutside }) {
     };
     const clickOutsideHandler = (event) => {
       const target = event.target;
-      if (
-        modalRef.current !== null &&
-        !modalRef.current.contains(target) &&
-        closeOnClickOutside
-      ) {
+      if (modalRef.current !== null && !modalRef.current.contains(target) && closeOnClickOutside) {
         onClose();
       }
     };
@@ -50,26 +46,39 @@ function PortalImpl({ onClose, children, title, closeOnClickOutside }) {
   }, [closeOnClickOutside, onClose]);
 
   return (
-    <div className="Modal__overlay" role="dialog">
-      <div className="Modal__modal" tabIndex={-1} ref={modalRef}>
-        <button
-          className="Modal__closeButton"
-          aria-label="Close modal"
-          type="button"
-          onClick={onClose}
-        >
-          <X size={18} color="red" />
-        </button>
-
-        <div className="Modal__content">{children}</div>
+    <div className={`modal ${propClassName}`}>
+      <div className="modal__overlay" role="dialog">
+        <div className="modal__container" tabIndex={-1} ref={modalRef}>
+          {isDialog ? (
+            <div className="modal__content">
+              <p className="modal__title">{title}</p>
+              {children}
+            </div>
+          ) : (
+            <div className="modal__content">{children}</div>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-export default function Modal({ onClose, children, title, closeOnClickOutside = false }) {
+export default function Modal({
+  onClose,
+  children,
+  title,
+  closeOnClickOutside = false,
+  className,
+  isDialog,
+}) {
   return createPortal(
-    <PortalImpl onClose={onClose} title={title} closeOnClickOutside={closeOnClickOutside}>
+    <PortalImpl
+      className={className}
+      isDialog={isDialog}
+      onClose={onClose}
+      title={title}
+      closeOnClickOutside={closeOnClickOutside}
+    >
       {children}
     </PortalImpl>,
     document.body,

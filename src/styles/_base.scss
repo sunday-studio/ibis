@@ -1,9 +1,25 @@
+body {
+  position: relative;
+}
+
+* {
+  outline: 1px dotted red;
+}
+
 div[data-tauri-drag-region] {
   height: 28px;
-  position: absolute;
   top: 0;
-  background-color: blue;
+  background-color: transparent;
+  border-bottom: 1px solid #e2e8f0;
   z-index: 2;
+  width: 100%;
+  position: absolute;
+}
+
+.page {
+  padding-top: 30px;
+  width: 100%;
+  position: relative;
 }
 
 .page-container {

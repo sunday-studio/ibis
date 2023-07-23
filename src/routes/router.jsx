@@ -4,6 +4,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Today from './pages/Today';
 import EntryPage from './pages/EntryPage';
 import Root from './Root';
+import TrashPage from './pages/TrashPage';
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,11 @@ export const router = createBrowserRouter([
       {
         path: '/entry/:noteId',
         element: <EntryPage />,
+      },
+
+      {
+        path: '/trash',
+        element: <TrashPage />,
       },
     ],
   },
