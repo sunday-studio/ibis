@@ -1,4 +1,4 @@
-import React from 'react';
+// @ts-nocheck
 import { Fragment } from 'react';
 import { useMemo } from 'react';
 
@@ -12,12 +12,10 @@ import {
   BadgeInfo,
   Columns,
   Copy,
-  Crown,
   MoreHorizontal,
   Package,
   Pin,
   PinOff, // SquareStack,
-  Text,
   Trash2,
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
@@ -27,7 +25,7 @@ import { Entry, entriesStore } from '../store/entries';
 
 // import { useAppStore } from './AppContext';
 
-export const SidebarEntry = observer(({ entry, activeEntry, selectEntry, onDelete }) => {
+export const SidebarEntry = observer(({ entry, activeEntry, onDelete }) => {
   const isActive = entry?.id === activeEntry?.id;
   const isPresent = useIsPresent();
 
@@ -48,7 +46,7 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry, onDelet
           <motion.div
             {...animations}
             className={`entry ${isActive ? 'active-entry' : ''}`}
-            onClick={() => selectEntry(entry)}
+            onClick={() => entriesStore.selectEntry(entry)}
           >
             {/* <div className="icon">
               <Text size={16} strokeWidth={2.5} color={isActive ? '#fc521f' : '#6b7280'} />

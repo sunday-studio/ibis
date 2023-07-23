@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { makeAutoObservable, runInAction } from 'mobx';
 import { nanoid } from 'nanoid';
 
