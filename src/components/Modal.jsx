@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
+
 import { createPortal } from 'react-dom';
-import './Modal.css';
+
+import './Modal.scss';
 
 function PortalImpl({ onClose, children, title, closeOnClickOutside, isDialog, className = '' }) {
   const modalRef = useRef(null);
