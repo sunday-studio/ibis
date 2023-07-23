@@ -808,11 +808,33 @@ ol[data-sonner-toaster='true'] {
     }
 
     .todos {
+      padding-top: 40px;
       border-bottom: 1px solid #e5e7eb;
     }
 
     .calendar {
       flex: 1;
+    }
+  }
+
+  .daily-note {
+    .header {
+      display: flex;
+      padding: 2px 0;
+
+      .timeline {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        padding-right: 2px;
+
+        button {
+          border: none;
+          font-weight: 600;
+          font-size: 14px;
+          color: #1f2937;
+        }
+      }
     }
   }
 }

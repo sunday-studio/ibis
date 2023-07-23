@@ -30,6 +30,10 @@ import TabFocusPlugin from '../plugins/TabFocusPlugin';
 import { theme } from '../plugins/theme';
 import { entriesStore } from '../store/entries';
 
+function Placeholder() {
+  return <div className="editor-placeholder">Enter some rich text...</div>;
+}
+
 function MyCustomAutoFocusPlugin() {
   const [editor] = useLexicalComposerContext();
 
@@ -98,6 +102,7 @@ export const Editor = ({ id, content }) => {
             <ContentEditable className="editor-input" />
           </div>
         }
+        placeholder={Placeholder}
         ErrorBoundary={LexicalErrorBoundary}
       />
       <OnChangePlugin
