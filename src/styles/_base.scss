@@ -2,10 +2,6 @@ body {
   position: relative;
 }
 
-* {
-  outline: 1px dotted red;
-}
-
 div[data-tauri-drag-region] {
   height: 28px;
   top: 0;
@@ -54,11 +50,13 @@ body {
 
   .editor-container {
     background: white;
-    padding: 10px;
     overflow-y: scroll;
     position: relative;
     flex: 1;
-    padding: 20px;
+    padding: 40px 20px;
+    margin-top: 20px;
+    padding-bottom: 100px;
+    outline: 1px dotted;
 
     .title-input {
       display: flex;

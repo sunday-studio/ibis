@@ -60,8 +60,6 @@ const EntryHeader = observer(() => {
 
 export const Editor = ({ id, content }) => {
   const editorState = useRef();
-  // const [setSaveStatus] = useState('Saved');
-  const { saveContent, activeEntryTitle, updateActiveEntireTitle } = entriesStore;
 
   const initialConfig = {
     namespace: 'ContentEditor',
