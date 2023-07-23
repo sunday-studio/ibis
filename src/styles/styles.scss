@@ -758,15 +758,19 @@ ol[data-sonner-toaster='true'] {
 }
 
 .trash-page {
-  // margin-top: 50px;
   display: flex;
   flex-direction: column;
-
-  // width: 100%;
-  // padding: 0 20px;
+  padding: 40px 20px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  outline: 1px solid;
 
   .entry {
     display: flex;
+    flex: 1;
+    outline: 1px solid;
+    width: 100%;
     align-items: center;
     padding: 5px 0;
     justify-content: space-between;
@@ -778,6 +782,37 @@ ol[data-sonner-toaster='true'] {
 
     button {
       margin-left: 5px;
+    }
+  }
+}
+
+.today-page {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  .notes {
+    grid-column: span 4;
+    padding: 40px 20px;
+  }
+
+  .sider {
+    border-left: 1px solid #e5e7eb;
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+
+    .todos,
+    .calendar {
+      padding: 10px;
+      flex: 1;
+    }
+
+    .todos {
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .calendar {
+      flex: 1;
     }
   }
 }
