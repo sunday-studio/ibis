@@ -751,12 +751,19 @@ ol[data-sonner-toaster='true'] {
   }
 }
 
+.delete-button {
+  background-color: rgb(255, 229, 229);
+  color: rgb(205, 43, 49);
+  border-color: rgb(205, 43, 49);
+}
+
 .trash-page {
-  margin-top: 50px;
+  // margin-top: 50px;
   display: flex;
-  width: 100%;
   flex-direction: column;
-  padding: 0 20px;
+
+  // width: 100%;
+  // padding: 0 20px;
 
   .entry {
     display: flex;
@@ -764,5 +771,13 @@ ol[data-sonner-toaster='true'] {
     padding: 5px 0;
     justify-content: space-between;
     border-bottom: 1px solid #e5e7eb;
+
+    p {
+      margin-right: auto;
+    }
+
+    button {
+      margin-left: 5px;
+    }
   }
 }

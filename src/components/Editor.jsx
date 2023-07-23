@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { observer } from 'mobx-react-lite';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
@@ -19,13 +18,13 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+import { observer } from 'mobx-react-lite';
 import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '../plugins/AutolinkPlugin';
 import ClickableLinkPlugin from '../plugins/ClickableLinkPlugin';
 import CodeHighlightPlugin from '../plugins/CodeHighlightPlugin';
 import FloatingMenuPlugin from '../plugins/FloatingMenuPlugin';
-
 import SlashCommandPickerPlugin from '../plugins/SlashCommandPicker';
 import TabFocusPlugin from '../plugins/TabFocusPlugin';
 import { theme } from '../plugins/theme';
@@ -94,7 +93,7 @@ export const Editor = ({ id, content }) => {
     <LexicalComposer initialConfig={initialConfig} key={id}>
       <RichTextPlugin
         contentEditable={
-          <div className="editor-container">
+          <div className="editor-wrapper">
             <EntryHeader />
             <ContentEditable className="editor-input" />
           </div>

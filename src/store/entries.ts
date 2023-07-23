@@ -2,9 +2,9 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { nanoid } from 'nanoid';
 
 import { CONTENT_KEY, PINNED_KEY, TRASH_KEY } from '../lib/constants';
+import { mobxDebounce } from '../lib/mobx-debounce';
 import { getData, setData } from '../lib/storage';
 import { formatDuplicatedTitle } from '../lib/utils';
-import { mobxDebounce } from '../lib/mobx-debounce';
 
 export interface Entry {
   title: string;
@@ -203,6 +203,14 @@ class Entries {
 
     setData(TRASH_KEY, updatedDeletedEntries);
     setData(CONTENT_KEY, updatedEntries);
+  }
+
+  permanentDelete(entryId: string) {
+    const updatedDeletedEntries = this.deletedEntries.filter((entry) => entry.id !== entryId);
+    const updatedDeletedEntry = [...updatedDeletedEntries];
+
+    this.deletedEntries = updatedDeletedEntry;
+    setData(TRASH_KEY, updatedDeletedEntry);
   }
 }
 

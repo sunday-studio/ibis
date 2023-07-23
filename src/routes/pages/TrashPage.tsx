@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { observer } from 'mobx-react-lite';
-import { entriesStore, Entry } from '../../store/entries';
+
+import { Entry, entriesStore } from '../../store/entries';
 
 const TrashPage = observer(() => {
   const { deletedEntries } = entriesStore;
@@ -13,6 +15,12 @@ const TrashPage = observer(() => {
             <div className="entry" key={entry.id}>
               <p className="title">{entry.title || 'Untitled'}</p>
               <button onClick={() => entriesStore.restoreEntry(entry.id)}>Restore</button>
+              <button
+                className="delete-button"
+                onClick={() => entriesStore.permanentDelete(entry.id)}
+              >
+                Delete
+              </button>
             </div>
           );
         })}

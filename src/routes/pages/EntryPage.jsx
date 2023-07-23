@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite';
+
 import { Editor } from '../../components/Editor';
 import { entriesStore } from '../../store/entries';
 

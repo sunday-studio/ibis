@@ -23,6 +23,7 @@ div[data-tauri-drag-region] {
   justify-content: center;
   align-items: center;
   background-color: white;
+  height: 100%;
 }
 
 body {
@@ -37,26 +38,27 @@ body {
   width: 100%;
   height: 100vh;
 
+  .page-wrapper {
+    flex: 1;
+    overflow-y: scroll;
+    position: relative;
+    padding: 40px 20px;
+  }
+
   .sidebar-container {
     height: 100%;
-    width: 300px;
     flex-shrink: 0;
-    background-color: #f3f4f6;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
+    background-color: #f3f4f6;
     border-right: 1px solid #e5e7eb;
   }
 
-  .editor-container {
+  .editor-wrapper {
     background: white;
     overflow-y: scroll;
     position: relative;
-    flex: 1;
-    padding: 40px 20px;
-    margin-top: 20px;
-    padding-bottom: 100px;
-    outline: 1px dotted;
 
     .title-input {
       display: flex;
