@@ -25,7 +25,7 @@ import { Entry, entriesStore } from '../store/entries';
 
 // import { useAppStore } from './AppContext';
 
-export const SidebarEntry = observer(({ entry, activeEntry, onDelete }) => {
+export const SidebarEntry = observer(({ entry, activeEntry, onDelete, selectEntry }) => {
   const isActive = entry?.id === activeEntry?.id;
   const isPresent = useIsPresent();
 
@@ -46,7 +46,7 @@ export const SidebarEntry = observer(({ entry, activeEntry, onDelete }) => {
           <motion.div
             {...animations}
             className={`entry ${isActive ? 'active-entry' : ''}`}
-            onClick={() => entriesStore.selectEntry(entry)}
+            onClick={() => selectEntry(entry)}
           >
             {/* <div className="icon">
               <Text size={16} strokeWidth={2.5} color={isActive ? '#fc521f' : '#6b7280'} />

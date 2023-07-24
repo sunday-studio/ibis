@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
+import * as Popover from '@radix-ui/react-popover';
 import { Reorder, useMotionValue } from 'framer-motion';
 import {
-  DoorOpen,
-  Plus,
   BadgePlus,
-  Trash2Icon,
-  Sun,
+  DoorOpen,
   MoonStar,
   Orbit,
   PanelRightOpen,
+  Plus,
+  Sun,
+  Trash2Icon,
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
-import * as Popover from '@radix-ui/react-popover';
-import Modal from './Modal';
+import { useNavigate } from 'react-router-dom';
 
 import { useRaisedShadow } from '../hooks/useRaisedShadow';
-import { SidebarEntry } from './SidebarEntry';
 import { appState } from '../store/app-state';
 import { entriesStore } from '../store/entries';
+import Modal from './Modal';
+import { SidebarEntry } from './SidebarEntry';
 
 const EntryWrapper = ({ entry, children }) => {
   const y = useMotionValue(0);
@@ -176,6 +176,7 @@ export const Sidebar = observer(() => {
                   <EntryWrapper entry={entry} key={entry.id}>
                     <SidebarEntry
                       selectEntry={(entry) => {
+                        console.log('i am caleed');
                         navigate(`/entry/${entry.id}`);
                         entriesStore.selectEntry(entry);
                       }}
