@@ -28,7 +28,7 @@ class Entries {
   }
 
   load() {
-    const entryData = getData(CONTENT_KEY);
+    const entryData = getData(CONTENT_KEY) ?? [];
     const pinnedData = getData(PINNED_KEY) ?? [];
     const deletedData = getData(TRASH_KEY) ?? [];
 
