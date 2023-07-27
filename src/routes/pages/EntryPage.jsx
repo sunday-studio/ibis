@@ -7,14 +7,14 @@ const EntryPage = observer(() => {
   const { activeEntry } = entriesStore;
 
   return (
-    <>
+    <div className="editor-page">
       {activeEntry && (
         <Editor
           id={activeEntry.id}
           content={activeEntry?.content ? JSON.parse(activeEntry.content) : null}
         />
       )}
-    </>
+    </div>
   );
 });
 

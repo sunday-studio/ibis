@@ -1,5 +1,6 @@
 * {
   margin: 0;
+  box-sizing: border-box;
 }
 
 :root {
@@ -788,23 +789,32 @@ ol[data-sonner-toaster='true'] {
 
 .today-page {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+  background-color: #f4f6f8;
 
   .notes {
-    grid-column: span 4;
-    padding: 40px 20px;
+    grid-column: span 2;
+    padding: 8px 20px;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
   }
 
   .sider {
-    border-left: 1px solid #e5e7eb;
-    grid-column: span 3;
+    grid-column: span 1;
     display: flex;
     flex-direction: column;
+    background-color: #f4f6f8;
+    gap: 8px;
 
     .todos,
     .calendar {
       padding: 10px;
       flex: 1;
+      background-color: white;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
     }
 
     .todos {
@@ -837,4 +847,10 @@ ol[data-sonner-toaster='true'] {
       }
     }
   }
+}
+
+.editor-page {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
 }
