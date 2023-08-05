@@ -51,18 +51,25 @@ function onError(error) {
 
 const EntryHeader = observer(() => {
   const entryStore = entriesStore;
+  const [editor] = useLexicalComposerContext();
+
   return (
-    <input
-      value={entryStore.activeEntryTitle}
-      onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
-      className="title-input"
-      placeholder="Untitled"
-    />
+    <>
+      {/* <button onClick={() => editor.focus()}>Focus</button> */}
+      <input
+        value={entryStore.activeEntryTitle}
+        onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
+        className="title-input"
+        placeholder="Untitled"
+      />
+    </>
   );
 });
 
 export const Editor = ({ id, content }) => {
   const editorState = useRef();
+
+  console.log('editor state', content ? JSON.stringify(content) : null);
 
   const initialConfig = {
     namespace: 'ContentEditor',

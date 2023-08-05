@@ -3,12 +3,50 @@ body {
 }
 
 div[data-tauri-drag-region] {
-  height: 30px;
+  height: 40px;
   top: 0;
   z-index: 2;
   width: 100%;
   background-color: #f4f6f8;
-  // background: linear-gradient(#f4f6f8, 80%, transparent);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .search-button {
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+    cursor: pointer;
+    color: #6b7280;
+    margin-top: 4px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #d1d5db;
+    }
+
+    p {
+      font-weight: 500;
+      padding-right: 8px;
+    }
+
+    .shortcut-button {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #6b7280;
+      font-size: 13px;
+      border-radius: 6px;
+    }
+
+    span {
+      margin: 0 2px;
+    }
+  }
 }
 
 .page {
@@ -20,7 +58,7 @@ div[data-tauri-drag-region] {
 .page-container {
   background-color: #f4f6f8;
   padding: 8px;
-  height: calc(100vh - 30px);
+  height: calc(100vh - 40px);
 }
 
 #root,
@@ -40,9 +78,12 @@ body {
     flex: 1;
     overflow-y: scroll;
     position: relative;
-    // background-color: white;
-    // border-radius: 8px;
-    // border: 1px solid #e5e7eb;
+
+    &__withborder {
+      background-color: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+    }
   }
 
   .sidebar-container {

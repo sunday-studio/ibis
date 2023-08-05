@@ -161,7 +161,13 @@ export const Sidebar = observer(() => {
           <div className="header">
             <p className="title">Private</p>
 
-            <div className="icon" onClick={() => entriesStore.addNewEntry()}>
+            <div
+              className="icon"
+              onClick={() => {
+                entriesStore.addNewEntry();
+                navigate(`/entry/${activeEntry.id}`);
+              }}
+            >
               <Plus size={16} />
             </div>
           </div>
@@ -176,7 +182,6 @@ export const Sidebar = observer(() => {
                   <EntryWrapper entry={entry} key={entry.id}>
                     <SidebarEntry
                       selectEntry={(entry) => {
-                        console.log('i am caleed');
                         navigate(`/entry/${entry.id}`);
                         entriesStore.selectEntry(entry);
                       }}
