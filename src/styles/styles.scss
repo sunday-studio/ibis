@@ -112,7 +112,8 @@ button {
   height: 100vh;
 }
 
-.editor-input {
+.editor-input,
+.daily-editor-wrapper {
   resize: none;
   font-weight: 500;
   font-size: 16px;
@@ -792,10 +793,10 @@ ol[data-sonner-toaster='true'] {
   grid-gap: 8px;
   grid-template-columns: repeat(3, 1fr);
   background-color: #f4f6f8;
+  overflow: hidden;
 
   .notes {
     grid-column: span 2;
-    padding: 8px 20px;
     background-color: white;
     border-radius: 8px;
     border: 1px solid #e5e7eb;
@@ -828,21 +829,79 @@ ol[data-sonner-toaster='true'] {
   }
 
   .daily-note {
-    .header {
-      display: flex;
-      padding: 2px 0;
+    padding: 10px;
 
-      .timeline {
-        display: flex;
-        gap: 5px;
-        align-items: center;
-        padding-right: 2px;
+    * {
+      outline: 1px dotted red;
+    }
 
-        button {
-          border: none;
+    .note {
+      position: relative;
+
+      .title {
+        padding: 15px 10px;
+
+        h3 {
+          font-size: 27px;
+          line-height: 28px;
           font-weight: 600;
-          font-size: 14px;
-          color: #1f2937;
+          color: #111111;
+        }
+      }
+    }
+
+    .daily-note-placeholder {
+      padding: 0 10px;
+      color: #4b5563;
+      overflow: hidden;
+      position: absolute;
+      text-overflow: ellipsis;
+      top: 10px;
+      font-size: 15px;
+      user-select: none;
+      display: inline-block;
+      pointer-events: none;
+      font-style: italic;
+    }
+
+    .editor-container {
+      position: relative;
+    }
+
+    .note-editor-container {
+      position: relative;
+      overflow-y: scroll;
+      height: calc(100vh - 200px);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-end;
+      padding: 8px;
+
+      .active-date {
+        margin-right: auto;
+      }
+
+      button {
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0;
+        border-radius: 100%;
+        transition: all 0.3s ease;
+
+        &.icon {
+          border: 1px solid #dde2e6;
+        }
+
+        &:hover {
+          background-color: #dde2e6;
         }
       }
     }

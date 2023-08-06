@@ -1,29 +1,4 @@
-@font-face {
-  font-family: 'Sans';
-  src: url('../assets/fonts/InstrumentSans-Regular.ttf');
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Sans';
-  src: url('../assets/fonts/InstrumentSans-Medium.ttf');
-  font-weight: 500;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Sans';
-  src: url('../assets/fonts/InstrumentSans-SemiBold.ttf');
-  font-weight: 600;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Sans';
-  src: url('../assets/fonts/InstrumentSans-Bold.ttf');
-  font-weight: 700;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 
 @font-face {
   font-family: 'BerkeleyMonoVariable';
@@ -36,14 +11,6 @@
 @font-face {
   font-family: 'BerkeleyMonoVariable';
   src: url('../assets/fonts/BerkeleyMonoVariable-Italic.woff2');
-  font-weight: normal;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Sohne';
-  src: url('../assets/fonts/test-soehne-breit-buch.woff2');
   font-weight: normal;
   font-style: italic;
   font-display: swap;

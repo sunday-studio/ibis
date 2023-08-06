@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -7,6 +9,7 @@ import { Key } from 'ts-key-enum';
 
 import { Sidebar } from '../components/Sidebar';
 import { appState } from '../store/app-state';
+import { dailyEntryState } from '../store/daily-state';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -15,6 +18,10 @@ const Root = observer(() => {
   useHotkeys(`${Key.Control}+s`, () => appState.toggleSidebarOpenState());
 
   const location = useLocation();
+
+  useEffect(() => {
+    dailyEntryState.load();
+  }, []);
 
   const isEntryPageActive = location.pathname.includes('entry');
 

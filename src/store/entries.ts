@@ -93,12 +93,11 @@ class Entries {
   }
 
   addNewEntry() {
-    const id = nanoid();
     const DEFAULT_ENTRY = {
       content: null,
       createdAt: new Date().toISOString(),
       title: '',
-      id,
+      id: nanoid(),
     };
 
     const updatedEntries = [DEFAULT_ENTRY, ...this.entries];

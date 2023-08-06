@@ -51,11 +51,9 @@ function onError(error) {
 
 const EntryHeader = observer(() => {
   const entryStore = entriesStore;
-  const [editor] = useLexicalComposerContext();
 
   return (
     <>
-      {/* <button onClick={() => editor.focus()}>Focus</button> */}
       <input
         value={entryStore.activeEntryTitle}
         onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
@@ -68,8 +66,6 @@ const EntryHeader = observer(() => {
 
 export const Editor = ({ id, content }) => {
   const editorState = useRef();
-
-  console.log('editor state', content ? JSON.stringify(content) : null);
 
   const initialConfig = {
     namespace: 'ContentEditor',
@@ -93,11 +89,7 @@ export const Editor = ({ id, content }) => {
   };
 
   const debouncedUpdates = useDebouncedCallback(async () => {
-    // setSaveStatus('Saving...');
     entriesStore.saveContent(editorState.current.toJSON());
-    // setTimeout(() => {
-    //   setSaveStatus('Saved');
-    // }, 300);
   }, 750);
 
   return (
