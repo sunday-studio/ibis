@@ -53,14 +53,12 @@ const EntryHeader = observer(() => {
   const entryStore = entriesStore;
 
   return (
-    <>
-      <input
-        value={entryStore.activeEntryTitle}
-        onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
-        className="title-input"
-        placeholder="Untitled"
-      />
-    </>
+    <input
+      value={entryStore.activeEntryTitle}
+      onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
+      className="title-input"
+      placeholder="Untitled"
+    />
   );
 });
 

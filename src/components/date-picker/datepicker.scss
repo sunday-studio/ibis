@@ -1,0 +1,116 @@
+.datepicker-container {
+  padding: 20px;
+  overflow: hidden;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+  border: 1px solid #e2e8f0;
+
+  .calendar {
+    border-radius: 10px;
+    background-color: white;
+    border: 1.5px solid #e5e7eb;
+  }
+
+  &__header {
+    .date-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .datestamp {
+      font-size: 1.1rem;
+    }
+
+    button {
+      all: unset;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      border-radius: 99999;
+    }
+
+    .days {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .day {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 40px;
+      }
+    }
+  }
+
+  .week-container {
+    display: flex;
+    overflow: hidden;
+    border-bottom: 1.5px solid #e5e7eb;
+
+    &.is-last-week {
+      border-width: 0;
+    }
+  }
+
+  .day-container {
+    width: 50px;
+    height: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border-left: 1.5px solid #e5e7eb;
+
+    &.is-first-day {
+      border-left-width: 0;
+    }
+
+    &.is-today {
+      p {
+        font-weight: 600;
+        color: #fc521f;
+      }
+    }
+
+    &.out-of-month {
+      color: hsl(0, 0%, 62.8%);
+    }
+
+    &.is-selected-day {
+      p {
+        font-weight: 600;
+        background-color: #fee2e2;
+
+        &:hover {
+          background-color: #fca5a5;
+        }
+      }
+    }
+
+    p {
+      width: 25px;
+      height: 25px;
+      font-size: 13px;
+      border-radius: 9999px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

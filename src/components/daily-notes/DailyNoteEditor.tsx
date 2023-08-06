@@ -1,19 +1,24 @@
 // @ts-nocheck
 import { FunctionComponent, useEffect, useRef } from 'react';
 
+import { CodeHighlightNode, CodeNode } from '@lexical/code';
+import { AutoLinkNode, LinkNode } from '@lexical/link';
+import { ListItemNode, ListNode } from '@lexical/list';
 import { TRANSFORMERS } from '@lexical/markdown';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
+import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
+import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { observer } from 'mobx-react-lite';
 import { useDebouncedCallback } from 'use-debounce';
 
+import AutoLinkPlugin, { validateUrl } from '../../plugins/AutolinkPlugin';
 import { theme } from '../../plugins/theme';
 
 function placeholder() {
@@ -24,7 +29,6 @@ const CustomAutoFocusPlugin = () => {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
-    console.log('editor => ', editor);
     editor.focus();
   }, []);
 
@@ -91,6 +95,10 @@ export const DailyNoteEditor: FunctionComponent<DailyNoteEditorProps> = ({
         }}
       />
       <CustomAutoFocusPlugin />
+      <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+      <TabIndentationPlugin />
+      <LinkPlugin validateUrl={validateUrl} />
+      <AutoLinkPlugin />
     </LexicalComposer>
   );
 };

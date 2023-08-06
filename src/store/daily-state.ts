@@ -68,7 +68,6 @@ class DailyStore {
 
   goToNextDay() {
     const nextDate = getDateInStringFormat(addDays(new Date(this.dailyEntry.date), 1));
-
     let entryForToday: DailyEntry = this.dailyEntries[nextDate];
 
     if (!entryForToday) {

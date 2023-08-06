@@ -1,8 +1,10 @@
 import { dailyEntryState } from '@/store/daily-state';
+import * as Popover from '@radix-ui/react-popover';
 import { format, isToday } from 'date-fns';
 import { Calendar, ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 
+import { DatePicker } from '../date-picker/DatePicker';
 import { DailyNoteEditor } from './DailyNoteEditor';
 
 function getTitle(date: Date) {
@@ -18,38 +20,48 @@ const DailyPage = observer(() => {
   const title = getTitle(new Date(dailyEntry?.date));
 
   return (
-    <div className="daily-note">
-      <div className="section-header">
-        <button className="icon">
-          <Calendar size={14} strokeWidth={2.3} />
-        </button>
-        <button className="icon" onClick={() => dailyEntryState.goToPreviousDay()}>
-          <ChevronLeft size={16} strokeWidth={2.5} />
-        </button>
-        <button className="icon" onClick={() => dailyEntryState.goToNextDay()}>
-          <ChevronRight size={16} strokeWidth={2.5} />
-        </button>
-        <button>
-          <MoreHorizontal size={16} strokeWidth={2.3} />
-        </button>
-      </div>
-
-      <div className="note">
-        <div className="title">
-          <h3 className="active-date">{title}</h3>
+    <Popover.Root>
+      <div className="daily-note">
+        <div className="section-header">
+          <Popover.Trigger asChild>
+            <button className="icon" onClick={(e) => e.stopPropagation()}>
+              <Calendar size={14} strokeWidth={2.3} />
+            </button>
+          </Popover.Trigger>
+          <button className="icon" onClick={() => dailyEntryState.goToPreviousDay()}>
+            <ChevronLeft size={16} strokeWidth={2.5} />
+          </button>
+          <button className="icon" onClick={() => dailyEntryState.goToNextDay()}>
+            <ChevronRight size={16} strokeWidth={2.5} />
+          </button>
+          <button>
+            <MoreHorizontal size={16} strokeWidth={2.3} />
+          </button>
         </div>
 
-        <div className="note-editor-container">
-          {dailyEntry && (
-            <DailyNoteEditor
-              onChange={(state) => dailyEntryState.saveNoteContent(state)}
-              content={JSON.parse(dailyEntry.noteContent)}
-              id={dailyEntry.id}
-            />
-          )}
+        <div className="note">
+          <div className="title">
+            <h3 className="active-date">{title}</h3>
+          </div>
+
+          <div className="note-editor-container">
+            {dailyEntry && (
+              <DailyNoteEditor
+                onChange={(state) => dailyEntryState.saveNoteContent(state)}
+                content={JSON.parse(dailyEntry.noteContent)}
+                id={dailyEntry.id}
+              />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      <Popover.Portal>
+        <Popover.Content>
+          <DatePicker />
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
   );
 });
 

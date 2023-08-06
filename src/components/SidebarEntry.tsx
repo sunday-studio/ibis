@@ -23,8 +23,6 @@ import { toast } from 'sonner';
 
 import { Entry, entriesStore } from '../store/entries';
 
-// import { useAppStore } from './AppContext';
-
 export const SidebarEntry = observer(({ entry, activeEntry, onDelete, selectEntry }) => {
   const isActive = entry?.id === activeEntry?.id;
   const isPresent = useIsPresent();
@@ -48,9 +46,6 @@ export const SidebarEntry = observer(({ entry, activeEntry, onDelete, selectEntr
             className={`entry ${isActive ? 'active-entry' : ''}`}
             onClick={() => selectEntry(entry)}
           >
-            {/* <div className="icon">
-              <Text size={16} strokeWidth={2.5} color={isActive ? '#fc521f' : '#6b7280'} />
-            </div> */}
             <p className="entry-title">{truncate(entry.title) || 'Untitled'}</p>
             <Popover.Trigger asChild>
               <div
