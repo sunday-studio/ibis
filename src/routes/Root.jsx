@@ -21,6 +21,7 @@ const Root = observer(() => {
 
   useEffect(() => {
     dailyEntryState.load();
+    appState.load();
   }, []);
 
   const isEntryPageActive = location.pathname.includes('entry');
