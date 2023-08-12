@@ -117,7 +117,7 @@ button {
 .editor-input,
 .daily-editor-wrapper {
   resize: none;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 16px;
   background-color: var(--panel-background);
   padding: 10px;
@@ -911,13 +911,10 @@ ol[data-sonner-toaster='true'] {
 }
 
 .entry-header {
-  * {
-    // outline: 1px dotted red;
-  }
   .row {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     gap: 5px;
     margin-bottom: 5px;
 
@@ -938,7 +935,12 @@ ol[data-sonner-toaster='true'] {
       color: var(--subtitle-text-color);
     }
 
+    input {
+      margin-top: -0.5px;
+    }
+
     &.tags {
+      min-height: 23px;
       p {
         text-transform: lowercase;
         &:hover {

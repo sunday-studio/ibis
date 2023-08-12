@@ -80,14 +80,23 @@ const TagEditor = observer(() => {
   return (
     <div className="value tags">
       {showTags ? (
-        <div style={{ display: 'flex', gap: 5 }} onClick={() => setShowInput(true)}>
+        <div
+          style={{
+            display: 'flex',
+            gap: 5,
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+          }}
+          onClick={() => setShowInput(true)}
+        >
           {tagsToRender.map((o, i) => (
             <p key={i}>#{o}</p>
           ))}
         </div>
       ) : null}
 
-      {showInput && (
+      {!showTags && (
         <input
           type="text"
           value={tags}
