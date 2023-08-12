@@ -160,12 +160,11 @@ export const Sidebar = observer(() => {
         <div className="section">
           <div className="header">
             <p className="title">Private</p>
-
             <div
               className="icon"
               onClick={() => {
-                entriesStore.addNewEntry();
-                navigate(`/entry/${activeEntry.id}`);
+                const id = entriesStore.addNewEntry();
+                navigate(`/entry/${id}`);
               }}
             >
               <Plus size={16} />

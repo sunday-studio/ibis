@@ -165,7 +165,10 @@ const EntryHeader = observer(() => {
         </div>
       )}
 
-      <div className="hr-divider"></div>
+      <div className="zigzag-divider">
+        <div className="zigzag"></div>
+        <div className="zigzag"></div>
+      </div>
     </div>
   );
 });

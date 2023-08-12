@@ -140,3 +140,10 @@ body {
 [contenteditable] {
   outline: 0px solid transparent;
 }
+
+.editor-page {
+  // display: flex;
+  * {
+    // outline: 1px dotted red;
+  }
+}
