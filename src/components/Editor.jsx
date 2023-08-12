@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
@@ -18,6 +18,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+import { useClickAway } from '@uidotdev/usehooks';
 import { formatDistance } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import { useDebouncedCallback } from 'use-debounce';
@@ -51,12 +52,63 @@ function onError(error) {
   console.error(error);
 }
 
+const TagEditor = observer(() => {
+  const entryStore = entriesStore;
+  const { activeEntry } = entryStore;
+
+  const [showInput, setShowInput] = useState(false);
+  const [tags, setTags] = useState(activeEntry?.tags ?? '');
+
+  const inputRef = useClickAway(() => {
+    handleOnBlur();
+  });
+
+  useEffect(() => {
+    if (tags.length <= 0) {
+      setShowInput(true);
+    }
+  }, [tags]);
+
+  const handleOnBlur = () => {
+    setShowInput(false);
+  };
+
+  const tagsToRender = tags.replace(/\s/g, '').split(',');
+
+  const showTags = !showInput && tags.length > 0;
+
+  return (
+    <div className="value tags">
+      {showTags ? (
+        <div style={{ display: 'flex', gap: 5 }} onClick={() => setShowInput(true)}>
+          {tagsToRender.map((o, i) => (
+            <p key={i}>#{o}</p>
+          ))}
+        </div>
+      ) : null}
+
+      {showInput && (
+        <input
+          type="text"
+          value={tags}
+          onBlur={handleOnBlur}
+          ref={inputRef}
+          className="tag-input"
+          onChange={(e) => {
+            setTags(e.target.value);
+            entriesStore.updateActiveEntryTags(e.target.value);
+          }}
+          placeholder="add types with comma separated..."
+        />
+      )}
+    </div>
+  );
+});
+
 const EntryHeader = observer(() => {
   const entryStore = entriesStore;
 
   const { activeEntry } = entryStore;
-
-  console.log(entryStore.activeEntry.createdAt);
 
   return (
     <div className="entry-header">
@@ -78,14 +130,7 @@ const EntryHeader = observer(() => {
         <div className="label">
           <p>Tags:</p>
         </div>
-        <div className="value">
-          <input
-            value={entryStore.activeEntryTitle}
-            onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
-            className="title-input"
-            placeholder="Untitled"
-          />
-        </div>
+        <TagEditor />
       </div>
 
       <div className="row">

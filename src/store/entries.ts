@@ -14,7 +14,16 @@ export interface Entry {
   createdAt: string;
   updatedAt?: string;
   isDuplicate?: boolean;
+  tags?: string;
 }
+
+const DEFAULT_ENTRY: Entry = {
+  content: null,
+  createdAt: new Date().toISOString(),
+  title: '',
+  id: nanoid(),
+  tags: '',
+};
 
 class Entries {
   entries: Entry[] | [] = [];
@@ -93,13 +102,6 @@ class Entries {
   }
 
   addNewEntry() {
-    const DEFAULT_ENTRY = {
-      content: null,
-      createdAt: new Date().toISOString(),
-      title: '',
-      id: nanoid(),
-    };
-
     const updatedEntries = [DEFAULT_ENTRY, ...this.entries];
     this.activeEntry = DEFAULT_ENTRY;
     this.entries = updatedEntries;
@@ -117,7 +119,6 @@ class Entries {
       this.saveEditedContent(editorState);
       return;
     }
-
     const entry = {
       id: nanoid(),
       createdAt: new Date().toISOString(),
@@ -130,6 +131,20 @@ class Entries {
 
     setData(CONTENT_KEY, updatedEntries);
     this.entries = updatedEntries;
+  }
+
+  updateActiveEntryTags(tags: string) {
+    const updateEntry = {
+      ...this.activeEntry,
+      tags,
+    };
+
+    const updatedEntries = this.findAndReplaceEntry(updateEntry);
+    this.activeEntry = updateEntry;
+
+    setData(CONTENT_KEY, updatedEntries);
+
+    // this;
   }
 
   deleteEntry(entryId: string) {
