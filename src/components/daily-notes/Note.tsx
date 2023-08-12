@@ -48,7 +48,7 @@ const DailyPage = observer(() => {
             {dailyEntry && (
               <DailyNoteEditor
                 onChange={(state) => dailyEntryState.saveNoteContent(state)}
-                content={JSON.parse(dailyEntry.noteContent)}
+                content={JSON.parse(dailyEntry.noteContent as string)}
                 id={dailyEntry.id}
               />
             )}
@@ -57,8 +57,11 @@ const DailyPage = observer(() => {
       </div>
 
       <Popover.Portal>
-        <Popover.Content>
-          <DatePicker />
+        <Popover.Content sideOffset={10}>
+          <DatePicker
+            onChange={(date: Date) => dailyEntryState.goToDate(date)}
+            selectedDate={new Date(dailyEntry?.date)}
+          />
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

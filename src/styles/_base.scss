@@ -2,6 +2,15 @@ body {
   position: relative;
 }
 
+* {
+  // outline: 1px dotted red;
+  &::-webkit-scrollbar {
+    display: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
+
 div[data-tauri-drag-region] {
   height: 40px;
   top: 0;

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /** @type {import('vite').UserConfig} */
 import react from '@vitejs/plugin-react';
 import * as path from 'path';
@@ -6,17 +8,14 @@ import { defineConfig } from 'vite';
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [react()],
+  define: {
+    APP_VERSION: JSON.stringify(process.env.npm_package_version),
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
-    // alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },
-
-  // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
-  // prevent vite from obscuring rust errors
-  clearScreen: false,
-  // tauri expects a fixed port, fail if that port is not available
   server: {
     port: 1420,
     strictPort: true,

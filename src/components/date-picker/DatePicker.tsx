@@ -13,7 +13,6 @@ type DatePickerProps = {
 };
 
 export const DatePicker: FunctionComponent<DatePickerProps> = ({
-  size = 'default',
   selectedDate = new Date(),
   onChange,
 }) => {
@@ -22,6 +21,10 @@ export const DatePicker: FunctionComponent<DatePickerProps> = ({
 
   const weeksInMonth = getWeeksInMonth(weeksToRender);
   const headerValues = getHeaderDays();
+
+  const handleOnClick = (day: Date) => {
+    onChange(day);
+  };
 
   return (
     <div className="datepicker-container">
@@ -69,9 +72,10 @@ export const DatePicker: FunctionComponent<DatePickerProps> = ({
                       'is-today': isToday,
                       'out-of-month': !isInMonth,
                     })}
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setCurrentDate(day);
-                      // onChange(day);
+                      handleOnClick(day);
                     }}
                     tabIndex={1}
                     key={index}

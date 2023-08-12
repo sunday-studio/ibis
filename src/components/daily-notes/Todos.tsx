@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function DailyTodos() {
   return (
     <div className="daily-todos">

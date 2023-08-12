@@ -201,7 +201,7 @@ export const Sidebar = observer(() => {
         </div>
 
         <div className="sidebar-footer">
-          <p className="version">version 0.01 ✨</p>
+          <p className="version">version {APP_VERSION} ✨</p>
 
           <Popover.Root>
             <Popover.Trigger asChild>

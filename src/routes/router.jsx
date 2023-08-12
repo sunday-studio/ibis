@@ -1,9 +1,10 @@
 import * as React from 'react';
 
 import { createBrowserRouter } from 'react-router-dom';
-import Today from './pages/Today';
-import EntryPage from './pages/EntryPage';
+
 import Root from './Root';
+import EntryPage from './pages/EntryPage';
+import Today from './pages/Today';
 import TrashPage from './pages/TrashPage';
 
 export const router = createBrowserRouter([
@@ -11,6 +12,10 @@ export const router = createBrowserRouter([
     path: '/',
     element: <Root />,
     children: [
+      {
+        path: '/',
+        element: <Today />,
+      },
       {
         path: '/today',
         element: <Today />,

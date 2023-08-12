@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { addDays, format, subDays } from 'date-fns';
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import { nanoid } from 'nanoid';
 
 import { DAILY_NOTES_KEY } from '../lib/constants';
@@ -67,40 +67,28 @@ class DailyStore {
   }
 
   goToNextDay() {
-    const nextDate = getDateInStringFormat(addDays(new Date(this.dailyEntry.date), 1));
-    let entryForToday: DailyEntry = this.dailyEntries[nextDate];
-
-    if (!entryForToday) {
-      entryForToday = {
-        id: nanoid(),
-        noteContent: null,
-        todos: [],
-        date: nextDate,
-      };
-    }
-
-    this.dailyEntry = entryForToday;
-    this.dailyEntries[nextDate] = entryForToday;
-
-    setData(DAILY_NOTES_KEY, Object.assign({}, this.dailyEntries));
+    const nextDate = addDays(new Date(this.dailyEntry.date), 1);
+    this.goToDate(nextDate);
   }
 
   goToPreviousDay() {
-    const prevDate = getDateInStringFormat(subDays(new Date(this.dailyEntry.date), 1));
+    const prevDate = subDays(new Date(this.dailyEntry.date), 1);
+    this.goToDate(prevDate);
+  }
 
-    let entryForToday: DailyEntry = this.dailyEntries[prevDate];
-
+  goToDate(date: Date) {
+    const dateString = getDateInStringFormat(date);
+    let entryForToday: DailyEntry = this.dailyEntries[dateString];
     if (!entryForToday) {
       entryForToday = {
         id: nanoid(),
         noteContent: null,
         todos: [],
-        date: prevDate,
+        date: dateString,
       };
     }
-
     this.dailyEntry = entryForToday;
-    this.dailyEntries[prevDate] = entryForToday;
+    this.dailyEntries[dateString] = entryForToday;
     setData(DAILY_NOTES_KEY, Object.assign({}, this.dailyEntries));
   }
 }
