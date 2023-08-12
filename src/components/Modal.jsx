@@ -29,6 +29,7 @@ function PortalImpl({ onClose, children, title, closeOnClickOutside, isDialog, c
         onClose();
       }
     };
+
     const modelElement = modalRef.current;
     if (modelElement !== null) {
       modalOverlayElement = modelElement.parentElement;

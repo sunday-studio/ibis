@@ -57,7 +57,7 @@ export const SidebarEntry = observer(({ entry, activeEntry, onDelete, selectEntr
                 <MoreHorizontal
                   strokeWidth={2.5}
                   size={18}
-                  color={isActive ? '#fc521f' : '#6b7280'}
+                  color={isActive ? 'var(--primary-color)' : '#6b7280'}
                 />
               </div>
             </Popover.Trigger>

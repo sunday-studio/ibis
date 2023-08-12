@@ -4,7 +4,7 @@
   min-width: 400px;
   display: flex;
   flex-grow: 0px;
-  background-color: #fff;
+  background-color: var(--panel-background);
   flex-direction: column;
   position: relative;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);

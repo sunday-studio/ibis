@@ -4,12 +4,23 @@
   --panel-background: white;
   --main-border: #e2e8f0;
   --darker-border: #6b7280;
+  --base-text-color: black;
+  --subtitle-text-color: #4b5563;
+  --hover-background: #e5e7eb;
+  --active-item-state: #d1d5db;
+  --primary-color: #fc521f;
 }
 
 html[data-theme='night'] {
-  --main-background: red;
-  --panel-background: yellow;
-  --main-border: white;
+  --main-background: rgb(32, 32, 32);
+  --panel-background: rgb(25, 25, 25);
+  --main-border: rgb(155, 155, 155, 0.3);
+  --darker-border: rgb(32, 32, 32);
+  --base-text-color: white;
+  --hover-background: rgb(32, 32, 32);
+  --subtitle-text-color: #a1a1aa;
+  --active-item-state: #71717a;
+  --primary-color: #fc521f;
 }
 
 body {
@@ -17,7 +28,6 @@ body {
 }
 
 * {
-  // outline: 1px dotted red;
   &::-webkit-scrollbar {
     display: none;
     scrollbar-width: none;
@@ -134,6 +144,8 @@ body {
       font-weight: 800;
       padding: 4px;
       margin-bottom: 10px;
+      background-color: var(--panel-background);
+      color: var(--base-text-color);
     }
   }
 }

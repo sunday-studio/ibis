@@ -8,7 +8,7 @@
     'Apple Color Emoji', 'Segoe UI Emoji';
   line-height: 22px;
   font-weight: 500;
-  color: #0f0f0f;
+  color: var(--base-text-color);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -62,6 +62,7 @@ input {
 button {
   border-radius: 4px;
   border: 2px solid #4b5563;
+  color: var(--base-text-color);
 }
 
 .shadow-button {
@@ -159,8 +160,8 @@ button {
 
 .hr-divider {
   width: 100%;
-  height: 1px;
-  background-color: rgba(0, 0, 0, 0.1);
+  height: 1.5px;
+  background-color: var(--main-border);
 }
 
 .header {
@@ -388,7 +389,7 @@ button {
       padding: 2px 12px;
 
       &:hover {
-        background-color: #e5e7eb;
+        background-color: var(--hover-background);
       }
 
       .icon {
@@ -401,7 +402,7 @@ button {
       &-text {
         font-weight: 600;
         font-size: 14px;
-        color: #1f2937;
+        color: var(--base-text-color);
       }
     }
 
@@ -447,7 +448,7 @@ button {
 
       .divider {
         height: 1px;
-        background-color: #d4d4d4;
+        background-color: var(--main-border);
       }
 
       .entry {
@@ -458,17 +459,21 @@ button {
         display: flex;
         align-items: center;
         gap: 6px;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 0.5px solid var(--main-border);
 
         &[data-state='open'] {
-          background-color: #e5e7eb;
+          background-color: var(--hover-background);
         }
 
         &.active-entry {
-          background-color: #d1d5db;
+          background-color: var(--active-item-state);
 
           p {
             color: #030712;
+          }
+
+          &:hover {
+            background-color: var(--active-item-state);
           }
         }
 
@@ -486,14 +491,14 @@ button {
           &[data-state='open'] {
             background-color: #f4f4f5;
             visibility: visible;
-            background-color: #d4d4d8;
+            background-color: var(--hover-background);
           }
         }
 
         p {
           font-size: 13px;
           font-weight: 500;
-          color: #4b5563;
+          color: var(--base-text-color);
         }
 
         p.date {
@@ -501,13 +506,13 @@ button {
         }
 
         &:hover {
-          background-color: #e5e7eb;
+          background-color: var(--hover-background);
 
           .more-options {
             visibility: visible;
 
             &:hover {
-              background-color: #d4d4d8;
+              background-color: var(--hover-background);
             }
           }
         }
@@ -522,12 +527,12 @@ button {
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1.5px solid var(--main-border);
 
     p.version {
       font-weight: 600;
       font-size: 14px;
-      color: #1f2937;
+      color: var(--base-text-color);
       margin-left: 12px;
     }
 
@@ -535,18 +540,19 @@ button {
       padding: 2px 8px;
       border-radius: 4px;
       margin-right: 12px;
-      background-color: #e5e7eb;
+      background-color: var(--main-background);
       cursor: pointer;
-      border: 1px solid #d1d5db;
+      border: 1.5px solid var(--main-border);
       box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
 
       &:hover {
-        background-color: #d1d5db;
+        background-color: var(--main-background);
       }
 
       p {
         font-size: 12px;
         font-weight: 600;
+        text-transform: uppercase;
       }
     }
   }
@@ -565,7 +571,7 @@ button {
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
-  border: 1px solid var(--main-border);
+  border: 1.5px solid var(--main-border);
 
   .hr-divider {
     margin-top: 4px;
@@ -615,7 +621,7 @@ button {
     }
 
     &:hover {
-      background-color: #f4f4f5;
+      background-color: var(--hover-background);
     }
 
     &-icon {
@@ -725,7 +731,7 @@ ol[data-sonner-toaster='true'] {
 
 .delete-entry-content {
   .description {
-    color: #4b5563;
+    color: var(--subtitle-text-color);
   }
 
   .modal__footer {
@@ -737,7 +743,7 @@ ol[data-sonner-toaster='true'] {
   }
 
   button {
-    border: 2px solid #4b5563;
+    border: 2px solid var(--main-border);
     padding: 0;
     height: 38px;
     font-weight: 500;
@@ -799,7 +805,7 @@ ol[data-sonner-toaster='true'] {
     grid-column: span 2;
     background-color: var(--panel-background);
     border-radius: 8px;
-    border: 1px solid #e5e7eb;
+    border: 1.5px solid var(--main-border);
   }
 
   .sider {
@@ -815,12 +821,11 @@ ol[data-sonner-toaster='true'] {
       flex: 1;
       background-color: var(--panel-background);
       border-radius: 8px;
-      border: 1px solid #e5e7eb;
+      border: 1.5px solid var(--main-border);
     }
 
     .todos {
       padding-top: 40px;
-      border-bottom: 1px solid #e5e7eb;
     }
 
     .calendar {
@@ -841,14 +846,14 @@ ol[data-sonner-toaster='true'] {
           font-size: 27px;
           line-height: 28px;
           font-weight: 600;
-          color: #111111;
+          color: var(--base-text-color);
         }
       }
     }
 
     .daily-note-placeholder {
       padding: 0 10px;
-      color: #4b5563;
+      color: var(--subtitle-text-color);
       overflow: hidden;
       position: absolute;
       text-overflow: ellipsis;
