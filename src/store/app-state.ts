@@ -16,6 +16,14 @@ class AppState {
 
   toggleTheme(t: Theme) {
     this.theme = t;
+
+    document.documentElement.setAttribute('data-theme', t);
+
+    // const tag = document.documentElement.getAttribute('data-theme');
+
+    // console.log('html =>', tag);
+
+    // html.dataset.theme = this.theme;
   }
 }
 

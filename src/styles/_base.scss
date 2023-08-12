@@ -1,3 +1,17 @@
+// default/light theme
+:root {
+  --main-background: #f4f6f8;
+  --panel-background: white;
+  --main-border: #e2e8f0;
+  --darker-border: #6b7280;
+}
+
+html[data-theme='night'] {
+  --main-background: red;
+  --panel-background: yellow;
+  --main-border: white;
+}
+
 body {
   position: relative;
 }
@@ -16,7 +30,7 @@ div[data-tauri-drag-region] {
   top: 0;
   z-index: 2;
   width: 100%;
-  background-color: #f4f6f8;
+  background-color: var(--main-background);
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -26,7 +40,7 @@ div[data-tauri-drag-region] {
     align-items: center;
     margin-right: 24px;
     cursor: pointer;
-    color: #6b7280;
+    color: var(--darker-border);
     margin-top: 4px;
     padding: 6px 10px;
     border-radius: 8px;
@@ -47,7 +61,7 @@ div[data-tauri-drag-region] {
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 1px solid #6b7280;
+      border: 1.5px solid var(--darker-border);
       font-size: 13px;
       border-radius: 6px;
     }
@@ -65,7 +79,7 @@ div[data-tauri-drag-region] {
 }
 
 .page-container {
-  background-color: #f4f6f8;
+  background-color: var(--main-background);
   padding: 8px;
   height: calc(100vh - 40px);
 }
@@ -88,8 +102,8 @@ body {
     position: relative;
 
     &__withborder {
-      background-color: white;
-      border: 1px solid #e5e7eb;
+      background-color: var(--panel-background);
+      border: 1.5px solid var(--main-border);
       border-radius: 8px;
       overflow-y: scroll;
     }
@@ -101,9 +115,9 @@ body {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    background-color: white;
+    background-color: var(--panel-background);
     border-radius: 8px;
-    border: 1px solid #e5e7eb;
+    border: 1.5px solid var(--main-border);
   }
 
   .editor-wrapper {

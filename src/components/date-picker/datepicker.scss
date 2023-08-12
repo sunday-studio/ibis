@@ -1,17 +1,17 @@
 .datepicker-container {
   padding: 10px;
   overflow: hidden;
-  background-color: white;
+  background-color: var(--panel-background);
   border-radius: 12px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--main-border);
 
   .calendar {
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--panel-background);
     border: 1.5px solid #e5e7eb;
   }
 
@@ -35,7 +35,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: white;
+      background-color: var(--panel-background);
       border-radius: 99999;
     }
 
