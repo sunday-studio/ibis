@@ -1,4 +1,6 @@
-export const formatDuplicatedTitle = (title, isDuplicate = false) => {
+import { format } from 'date-fns';
+
+export const formatDuplicatedTitle = (title: string, isDuplicate = false) => {
   const isAlreadyDuplicate = Boolean(title.match(/[()]/));
 
   if (isAlreadyDuplicate && isDuplicate) {
@@ -14,4 +16,9 @@ export const formatDuplicatedTitle = (title, isDuplicate = false) => {
   return `${title} (1)`;
 };
 
-export const truncate = (value) => (value.length >= 40 ? `${value.slice(0, 26)}...` : value);
+export const truncate = (value: string) =>
+  value.length >= 40 ? `${value.slice(0, 26)}...` : value;
+
+export function formatDateString(date: Date, pattern = 'y-MM-dd') {
+  return format(date, pattern);
+}

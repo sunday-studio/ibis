@@ -2,7 +2,7 @@
 import { Fragment } from 'react';
 import { useMemo } from 'react';
 
-import { truncate } from '@/lib/utils';
+import { truncate } from '@/lib/utils.Ts';
 import * as ContextMenu from '@radix-ui/react-context-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';

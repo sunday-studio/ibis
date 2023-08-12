@@ -6,8 +6,8 @@ import { nanoid } from 'nanoid';
 import { DAILY_NOTES_KEY } from '../lib/constants';
 import { getData, setData } from '../lib/storage';
 
-function getDateInStringFormat(date: Date) {
-  return format(date, 'y-MM-dd');
+export function getDateInStringFormat(date: Date, pattern = 'y-MM-dd') {
+  return format(date, pattern);
 }
 
 type DailyEntry = {

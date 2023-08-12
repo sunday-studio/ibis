@@ -599,9 +599,9 @@ i.chevron-down {
 }
 
 .editor-listItemChecked:before {
-  border: 2px solid #fc521f;
+  border: 2px solid var(--primary-color);
   border-radius: 8px;
-  background-color: #fc521f;
+  background-color: var(--primary-color);
   background-repeat: no-repeat;
 }
 

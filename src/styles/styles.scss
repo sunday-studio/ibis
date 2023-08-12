@@ -4,8 +4,8 @@
 }
 
 :root {
-  font-family: 'Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji';
+  font-family: 'Favorit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
   line-height: 22px;
   font-weight: 500;
   color: var(--base-text-color);
@@ -906,5 +906,39 @@ ol[data-sonner-toaster='true'] {
         }
       }
     }
+  }
+}
+
+.entry-header {
+  .row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+
+    p {
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+
+  .value {
+    p {
+      color: var(--subtitle-text-color);
+    }
+  }
+
+  input {
+    padding: 0;
+    border-radius: 0;
+    color: var(--subtitle-text-color);
+    font-weight: 600;
+    background-color: var(--panel-background);
+    font-size: 16px;
+  }
+
+  .hr-divider {
+    margin: 40px 0;
   }
 }

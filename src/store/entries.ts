@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 import { CONTENT_KEY, PINNED_KEY, TRASH_KEY } from '../lib/constants';
 import { mobxDebounce } from '../lib/mobx-debounce';
 import { getData, setData } from '../lib/storage';
-import { formatDuplicatedTitle } from '../lib/utils';
+import { formatDuplicatedTitle } from '../lib/utils.ts';
 
 export interface Entry {
   title: string;

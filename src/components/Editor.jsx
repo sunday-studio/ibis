@@ -18,9 +18,11 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+import { formatDistance } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import { useDebouncedCallback } from 'use-debounce';
 
+import { formatDateString } from '../lib/utils';
 import AutoLinkPlugin, { validateUrl } from '../plugins/AutolinkPlugin';
 import ClickableLinkPlugin from '../plugins/ClickableLinkPlugin';
 import CodeHighlightPlugin from '../plugins/CodeHighlightPlugin';
@@ -52,13 +54,65 @@ function onError(error) {
 const EntryHeader = observer(() => {
   const entryStore = entriesStore;
 
+  const { activeEntry } = entryStore;
+
+  console.log(entryStore.activeEntry.createdAt);
+
   return (
-    <input
-      value={entryStore.activeEntryTitle}
-      onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
-      className="title-input"
-      placeholder="Untitled"
-    />
+    <div className="entry-header">
+      <div className="row">
+        <div className="label">
+          <p>Title:</p>
+        </div>
+        <div className="value">
+          <input
+            value={entryStore.activeEntryTitle}
+            onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
+            className="title-input"
+            placeholder="Untitled"
+          />
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="label">
+          <p>Tags:</p>
+        </div>
+        <div className="value">
+          <input
+            value={entryStore.activeEntryTitle}
+            onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
+            className="title-input"
+            placeholder="Untitled"
+          />
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="label">
+          <p>Date created:</p>
+        </div>
+        <div className="value">
+          <p>{formatDateString(new Date(activeEntry.createdAt), 'dd-MM-y')}</p>
+        </div>
+      </div>
+
+      {activeEntry.updatedAt && (
+        <div className="row">
+          <div className="label">
+            <p>Last edited:</p>
+          </div>
+          <div className="value">
+            {/* <p>{formatDateString(new Date(activeEntry.updatedAt), 'dd-MM-y ')}</p> */}
+            <p>
+              {formatDistance(new Date(activeEntry.updatedAt), new Date(), { addSuffix: true })}
+            </p>
+          </div>
+        </div>
+      )}
+
+      <div className="hr-divider"></div>
+    </div>
   );
 });
 
