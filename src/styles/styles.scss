@@ -4,10 +4,10 @@
 }
 
 :root {
-  font-family: 'Favorit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
-    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-  line-height: 22px;
+  line-height: 23px;
   font-weight: 500;
+  font-family: 'Instrument Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   color: var(--base-text-color);
 
   font-synthesis: none;
@@ -921,7 +921,6 @@ ol[data-sonner-toaster='true'] {
     margin-bottom: 5px;
 
     p {
-      font-weight: 600;
       font-size: 16px;
     }
   }
@@ -956,7 +955,6 @@ ol[data-sonner-toaster='true'] {
     padding: 0;
     border-radius: 0;
     color: var(--subtitle-text-color);
-    font-weight: 600;
     background-color: var(--panel-background);
     font-size: 16px;
     width: 100%;
@@ -966,14 +964,13 @@ ol[data-sonner-toaster='true'] {
     }
   }
 
-  .zigzag-divider {
+  .hr-divider {
     width: 100%;
     margin: 40px 0;
 
-    .zigzag {
+    div {
       width: 100%;
-      height: 1px;
-      background-color: var(--main-border);
+
       margin-bottom: 2px;
     }
   }

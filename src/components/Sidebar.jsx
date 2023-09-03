@@ -124,7 +124,7 @@ export const Sidebar = observer(() => {
         {Boolean(entriesStore.pinnedEntriesId.length) && (
           <div className="section">
             <div className="header">
-              <p className="title">Pinned</p>
+              <p className="title favorit-font">Pinned</p>
             </div>
 
             <div className="entries">
@@ -159,7 +159,7 @@ export const Sidebar = observer(() => {
 
         <div className="section">
           <div className="header">
-            <p className="title">Private</p>
+            <p className="title favorit-font">Private</p>
             <div
               className="icon"
               onClick={() => {
@@ -200,7 +200,7 @@ export const Sidebar = observer(() => {
         </div>
 
         <div className="sidebar-footer">
-          <p className="version">version {APP_VERSION} ✨</p>
+          <p className="version favorit-font">version {APP_VERSION} ✨</p>
 
           <Popover.Root>
             <Popover.Trigger asChild>

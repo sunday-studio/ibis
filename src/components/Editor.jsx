@@ -91,14 +91,16 @@ const TagEditor = observer(() => {
           onClick={() => setShowInput(true)}
         >
           {tagsToRender.map((o, i) => (
-            <p key={i}>#{o}</p>
+            <p className="favorit-font" key={i}>
+              #{o}
+            </p>
           ))}
         </div>
       ) : null}
 
       {!showTags && (
         <input
-          type="text"
+          type="text favorit-font"
           value={tags}
           onBlur={handleOnBlur}
           ref={inputRef}
@@ -157,7 +159,6 @@ const EntryHeader = observer(() => {
             <p>Last edited:</p>
           </div>
           <div className="value">
-            {/* <p>{formatDateString(new Date(activeEntry.updatedAt), 'dd-MM-y ')}</p> */}
             <p>
               {formatDistance(new Date(activeEntry.updatedAt), new Date(), { addSuffix: true })}
             </p>
@@ -165,9 +166,9 @@ const EntryHeader = observer(() => {
         </div>
       )}
 
-      <div className="zigzag-divider">
-        <div className="zigzag"></div>
-        <div className="zigzag"></div>
+      <div className="hr-divider">
+        <div></div>
+        <div></div>
       </div>
     </div>
   );
