@@ -4,7 +4,7 @@ export default function DailyCalendar() {
   return (
     <div className="daily-calendar">
       <div className="header">
-        <h3>Calendar</h3>
+        <h3 className="favorit-font">Calendar</h3>
       </div>
     </div>
   );

@@ -14,8 +14,8 @@ import { dailyEntryState } from '../store/daily-state';
 const SIDEBAR_WIDTH = 300;
 
 const Root = observer(() => {
-  useHotkeys(`${Key.Meta}+s`, () => appState.toggleSidebarOpenState());
-  useHotkeys(`${Key.Control}+s`, () => appState.toggleSidebarOpenState());
+  useHotkeys(`${Key.Meta}+d`, () => appState.toggleSidebarOpenState());
+  useHotkeys(`${Key.Control}+d`, () => appState.toggleSidebarOpenState());
 
   const location = useLocation();
 

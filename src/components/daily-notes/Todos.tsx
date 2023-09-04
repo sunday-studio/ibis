@@ -1,7 +1,7 @@
 export default function DailyTodos() {
   return (
     <div className="daily-todos">
-      <h3>Todos</h3>
+      <h3 className="favorit-font">Todos</h3>
     </div>
   );
 }

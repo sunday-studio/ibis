@@ -41,7 +41,7 @@ const DailyPage = observer(() => {
 
         <div className="note">
           <div className="title">
-            <h3 className="active-date">{title}</h3>
+            <h3 className="active-date favorit-font">{title}</h3>
           </div>
 
           <div className="note-editor-container">
