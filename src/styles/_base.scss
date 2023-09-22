@@ -2,6 +2,7 @@
 :root {
   --main-background: #f4f6f8;
   --panel-background: white;
+  --sidebar-background: #fafafa;
   --main-border: #e2e8f0;
   --darker-border: #6b7280;
   --base-text-color: #27272a;
@@ -9,18 +10,20 @@
   --hover-background: #e5e7eb;
   --active-item-state: #d1d5db;
   --primary-color: #fc521f;
+  --hover-shadow: #d1d5db;
 }
 
 html[data-theme='night'] {
   --main-background: rgb(32, 32, 32);
   --panel-background: rgb(25, 25, 25);
+  --sidebar-background: rgb(25, 25, 25, 0.4);
   --main-border: rgb(155, 155, 155, 0.3);
-  --darker-border: rgb(32, 32, 32);
   --base-text-color: #d4d4d8;
   --hover-background: rgb(32, 32, 32);
   --subtitle-text-color: #a1a1aa;
-  --active-item-state: #71717a;
+  --active-item-state: #737373;
   --primary-color: #fc521f;
+  --hover-shadow: rgb(155, 155, 155, 0.2);
 }
 
 body {
@@ -40,7 +43,8 @@ div[data-tauri-drag-region] {
   top: 0;
   z-index: 2;
   width: 100%;
-  background-color: var(--main-background);
+  position: absolute;
+  // background-color: var(--main-background);
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -90,8 +94,9 @@ div[data-tauri-drag-region] {
 
 .page-container {
   background-color: var(--main-background);
-  padding: 8px;
-  height: calc(100vh - 40px);
+  height: 100vh;
+  // padding: 8px;
+  // height: calc(100vh - 40px);
 }
 
 #root,
@@ -104,8 +109,8 @@ body {
   display: flex;
   margin-top: auto;
   width: 100%;
-  gap: 8px;
   height: 100%;
+  // gap: 8px;
 
   .page-wrapper {
     flex: 1;
@@ -113,9 +118,21 @@ body {
 
     &__withborder {
       background-color: var(--panel-background);
-      border: 1.5px solid var(--main-border);
-      border-radius: 8px;
+      // border: 1.5px solid var(--main-border);
+      // border-radius: 8px;
       overflow-y: scroll;
+    }
+  }
+
+  .ruler {
+    width: 1px;
+    background-color: var(--main-border);
+    align-self: stretch;
+    cursor: move;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background-color: var(--primary-color);
     }
   }
 
@@ -125,9 +142,9 @@ body {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    background-color: var(--panel-background);
-    border-radius: 8px;
-    border: 1.5px solid var(--main-border);
+    background-color: var(--sidebar-background);
+    // border-right: 1.5px solid var(--main-border);
+    // border-radius: 8px;
   }
 
   .editor-wrapper {
@@ -139,11 +156,4 @@ body {
 
 [contenteditable] {
   outline: 0px solid transparent;
-}
-
-.editor-page {
-  // display: flex;
-  * {
-    // outline: 1px dotted red;
-  }
 }

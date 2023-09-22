@@ -5,11 +5,13 @@ import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { TRANSFORMERS } from '@lexical/markdown';
+import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
@@ -19,6 +21,7 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '../../plugins/AutolinkPlugin';
+import SlashCommandPickerPlugin from '../../plugins/SlashCommandPicker';
 import { theme } from '../../plugins/theme';
 
 function placeholder() {
@@ -99,6 +102,9 @@ export const DailyNoteEditor: FunctionComponent<DailyNoteEditorProps> = ({
       <TabIndentationPlugin />
       <LinkPlugin validateUrl={validateUrl} />
       <AutoLinkPlugin />
+      <SlashCommandPickerPlugin />
+      <ListPlugin />
+      <CheckListPlugin />
     </LexicalComposer>
   );
 };

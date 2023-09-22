@@ -7,7 +7,7 @@ import { ScrollRestoration, useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import { Key } from 'ts-key-enum';
 
-import { Sidebar } from '../components/Sidebar';
+import { Sidebar } from '../components/Sidebar/Sidebar';
 import { appState } from '../store/app-state';
 import { dailyEntryState } from '../store/daily-state';
 
@@ -28,7 +28,7 @@ const Root = observer(() => {
 
   return (
     <div className="page-container">
-      <ScrollRestoration />
+      {/* <ScrollRestoration /> */}
       <div className="two-column-container">
         <div
           className="sidebar-container"
@@ -38,6 +38,7 @@ const Root = observer(() => {
         >
           <Sidebar />
         </div>
+        <div className="ruler"></div>
         <div
           className={clsx('page-wrapper', {
             'page-wrapper__withborder': isEntryPageActive,
