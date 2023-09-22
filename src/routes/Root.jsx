@@ -7,7 +7,7 @@ import { ScrollRestoration, useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import { Key } from 'ts-key-enum';
 
-import { Sidebar } from '../components/Sidebar/Sidebar';
+import { Sidebar } from '../components/sidebar/Sidebar';
 import { appState } from '../store/app-state';
 import { dailyEntryState } from '../store/daily-state';
 

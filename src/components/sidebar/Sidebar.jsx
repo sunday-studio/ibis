@@ -1,8 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import * as Popover from '@radix-ui/react-popover';
 import clsx from 'clsx';
-import { Reorder, useMotionValue } from 'framer-motion';
 import { BadgePlus, DoorOpen, PanelRightOpen, Trash2Icon } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
