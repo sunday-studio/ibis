@@ -1,8 +1,9 @@
-import { ReactNode } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 
 import { Entry } from '@/store/entries';
+import clsx from 'clsx';
 import { Reorder, useMotionValue } from 'framer-motion';
-import { Plus } from 'lucide-react';
+import { ArrowDown, CornerDownRight, MoveDown, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 import { useRaisedShadow } from '../../hooks/useRaisedShadow';
@@ -44,48 +45,37 @@ export const SidebarEntrySection: React.FC<SidebarSectionProps> = ({
 }) => {
   const navigate = useNavigate();
 
+  const [show, setShow] = useState(false);
+
   return (
-    <div className="section">
-      <div className="header">
-        <p className="title favorit-font">{sectionTitle}</p>
-        {actions?.newEntry && (
-          <div
-            className="icon"
-            onClick={() => {
-              const id = entriesStore.addNewEntry();
-              navigate(`/entry/${id}`);
-            }}
-          >
-            <Plus size={16} />
+    <div className="">
+      <div className="folder">
+        <div className="folder-item" onClick={() => setShow((prev) => !prev)}>
+          <div className="icon">
+            {show ? <ArrowDown size={12} /> : <CornerDownRight size={12} />}
           </div>
-        )}
-      </div>
-      <div className="entries">
-        <Reorder.Group
-          axis="y"
-          values={entriesStore?.privateEntries}
-          onReorder={entriesStore.onReorder}
-        >
-          {entries.map((entry) => {
-            return (
-              <EntryWrapper entry={entry} key={entry.id}>
-                <SidebarEntry
-                  selectEntry={(entry: Entry) => {
-                    navigate(`/entry/${entry.id}`);
-                    entriesStore.selectEntry(entry);
-                  }}
-                  entry={entry}
-                  activeEntry={entriesStore.activeEntry}
-                  key={entry.id}
-                  onDelete={() => {
-                    entriesStore.deleteEntry(entry.id);
-                  }}
-                />
-              </EntryWrapper>
-            );
+          <p className="folder-item__title">Folder {sectionTitle}</p>
+        </div>
+
+        <div
+          className={clsx('folder-entries', {
+            'folder-entries__open': show,
           })}
-        </Reorder.Group>
+        >
+          {entries.map((entry, index) => (
+            <div
+              className={clsx('entry', {
+                entry__before: entries.length - 1 !== index,
+              })}
+              key={index}
+            >
+              <p>{entry.title}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
+
+// export { SidebarEntrySection: useMemo(SidebarEntrySection)}

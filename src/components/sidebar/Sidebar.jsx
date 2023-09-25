@@ -56,6 +56,14 @@ export const Sidebar = observer(() => {
 
   const [scrollTop, scrollProps] = useScrollTop();
 
+  const { privateEntries } = entriesStore;
+  const newSet = [];
+  const chunkSize = 4;
+
+  for (let i = 0; i < privateEntries.length; i += chunkSize) {
+    newSet.push(privateEntries.slice(i, i + chunkSize));
+  }
+
   return (
     <>
       <div className="sidebar">
@@ -90,9 +98,9 @@ export const Sidebar = observer(() => {
           className={clsx('sidebar-entries', {
             'sidebar-entries__withborder': scrollTop > 50,
           })}
-          {...scrollProps}
+          // {...scrollProps}
         >
-          {Boolean(entriesStore.pinnedEntriesId.length) && (
+          {/* {Boolean(entriesStore.pinnedEntriesId.length) && (
             <SidebarEntrySection
               entries={entriesStore.pinnedEntries}
               sectionTitle="Private"
@@ -101,8 +109,13 @@ export const Sidebar = observer(() => {
                 newFolder: false,
               }}
             />
-          )}
-          <SidebarEntrySection entries={entriesStore.privateEntries} sectionTitle="Private" />
+          )} */}
+
+          {newSet.map((set, index) => {
+            return (
+              <SidebarEntrySection key={index} entries={set} sectionTitle={`Private ${index}`} />
+            );
+          })}
         </div>
 
         <div className="sidebar-footer">
