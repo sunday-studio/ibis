@@ -515,7 +515,7 @@ ol[data-sonner-toaster='true'] {
 
 .today-page {
   display: grid;
-  grid-gap: 8px;
+  // grid-gap: 8px;
   grid-template-columns: repeat(3, 1fr);
   background-color: var(--main-background);
   overflow: hidden;
@@ -523,8 +523,7 @@ ol[data-sonner-toaster='true'] {
   .notes {
     grid-column: span 2;
     background-color: var(--panel-background);
-    // border-radius: 8px;
-    // border: 1.5px solid var(--main-border);
+    border-right: 1.5px solid var(--main-border);
   }
 
   .sider {
@@ -532,19 +531,19 @@ ol[data-sonner-toaster='true'] {
     display: flex;
     flex-direction: column;
     background-color: var(--main-background);
-    gap: 8px;
+    // gap: 8px;
 
     .todos,
     .calendar {
       padding: 10px;
       flex: 1;
       background-color: var(--panel-background);
-      border-radius: 8px;
-      border: 1.5px solid var(--main-border);
+      // border-radius: 8px;
     }
 
     .todos {
       padding-top: 40px;
+      border-bottom: 1.5px solid var(--main-border);
     }
 
     .calendar {

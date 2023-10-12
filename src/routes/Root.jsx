@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { ScrollRestoration, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import { Key } from 'ts-key-enum';
 
@@ -28,7 +28,6 @@ const Root = observer(() => {
 
   return (
     <div className="page-container">
-      {/* <ScrollRestoration /> */}
       <div className="two-column-container">
         <div
           className="sidebar-container"
@@ -38,7 +37,6 @@ const Root = observer(() => {
         >
           <Sidebar />
         </div>
-        <div className="ruler"></div>
         <div
           className={clsx('page-wrapper', {
             'page-wrapper__withborder': isEntryPageActive,

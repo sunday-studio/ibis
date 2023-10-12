@@ -67,6 +67,10 @@ export const SidebarEntrySection: React.FC<SidebarSectionProps> = ({
               className={clsx('entry', {
                 entry__before: entries.length - 1 !== index,
               })}
+              onClick={() => {
+                entriesStore.selectEntry(entry);
+                navigate(`/entry/${entry.id}`);
+              }}
               key={index}
             >
               <p>{entry.title}</p>

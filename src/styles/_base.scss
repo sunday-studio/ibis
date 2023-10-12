@@ -1,8 +1,8 @@
 // default/light theme
 :root {
-  --main-background: #f4f6f8;
+  --main-background: #f4f4f5;
   --panel-background: white;
-  --sidebar-background: #fafafa;
+  --sidebar-background: #f4f4f5;
   --main-border: #e2e8f0;
   --darker-border: #6b7280;
   --base-text-color: #27272a;
@@ -11,6 +11,8 @@
   --active-item-state: #d1d5db;
   --primary-color: #fc521f;
   --hover-shadow: #d1d5db;
+
+  --drag-region-height: 8px;
 }
 
 html[data-theme='night'] {
@@ -39,15 +41,16 @@ body {
 }
 
 div[data-tauri-drag-region] {
-  height: 40px;
+  height: var(--drag-region-height);
   top: 0;
   z-index: 2;
   width: 100%;
   position: absolute;
-  // background-color: var(--main-background);
+  background-color: var(--main-background);
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-bottom: 10px;
 
   .search-button {
     display: flex;
@@ -93,10 +96,12 @@ div[data-tauri-drag-region] {
 }
 
 .page-container {
-  background-color: var(--main-background);
   height: 100vh;
-  // padding: 8px;
-  // height: calc(100vh - 40px);
+  padding: 10px;
+  padding-top: 3px;
+  background-color: var(--main-background);
+  height: calc(100vh - var(--drag-region-height));
+  margin-top: var(--drag-region-height);
 }
 
 #root,
@@ -110,16 +115,18 @@ body {
   margin-top: auto;
   width: 100%;
   height: 100%;
-  // gap: 8px;
 
   .page-wrapper {
     flex: 1;
     position: relative;
+    border-radius: 8px;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1),
+      0 0 0 1px var(--main-border);
+    transition: all 0.3s ease-in-out;
 
     &__withborder {
-      background-color: var(--panel-background);
-      // border: 1.5px solid var(--main-border);
-      // border-radius: 8px;
       overflow-y: scroll;
     }
   }
@@ -142,9 +149,7 @@ body {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    background-color: var(--sidebar-background);
-    // border-right: 1.5px solid var(--main-border);
-    // border-radius: 8px;
+    background-color: var(--main-background);
   }
 
   .editor-wrapper {
