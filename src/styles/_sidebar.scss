@@ -9,11 +9,7 @@
   height: 100%;
   bottom: 0;
   width: 100%;
-  padding: 0 10px;
-
-  // * {
-  //   outline: 1px dotted red;
-  // }
+  padding-right: 10px;
 
   &-entries {
     width: 100%;
@@ -24,7 +20,6 @@
 
     &__withborder {
       border-color: var(--main-border);
-      // border-top: 1.5px solid var(--main-border);
     }
   }
 
@@ -198,7 +193,6 @@
     $striaghtLine: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='28' fill='none'%3E%3Cpath fill='%23B5B5B5' d='M9 0h1.5v28H9z'/%3E%3C/svg%3E";
     $firstArrow: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='28' fill='none'%3E%3Cpath fill='%23B5B5B5' d='M19 14.25h.75v1.5H19v-1.5Zm-8.923-.888.668-.34-.668.34Zm1.311 1.311.34-.668-.34.668ZM10.5 0v10.2H9V0h1.5Zm4.05 14.25H19v1.5h-4.45v-1.5ZM10.5 10.2c0 .853 0 1.447.038 1.91.037.453.107.714.207.912l-1.336.68c-.227-.444-.321-.924-.366-1.47C9 11.694 9 11.027 9 10.2h1.5Zm4.05 5.55c-.828 0-1.494 0-2.032-.043-.546-.045-1.026-.14-1.47-.366l.68-1.336c.198.1.459.17.913.207.462.037 1.056.038 1.909.038v1.5Zm-3.805-2.729c.216.424.56.768.984.984l-.681 1.336a3.75 3.75 0 0 1-1.64-1.638l1.337-.681Z'/%3E%3Cpath stroke='%23B5B5B5' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m17 12 3 3-3 3'/%3E%3C/svg%3E";
     $smallArrow: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='21' height='28' fill='none'%3E%3Cpath fill='%23B5B5B5' d='M9 24.75a.75.75 0 0 1 1.5 0V28H9v-3.25Z'/%3E%3C/svg%3E";
-    // outline: 1px solid red;
 
     p {
       font-size: 12px;
@@ -256,25 +250,9 @@
         gap: 6px;
         border-radius: 8px;
         align-self: stretch;
-        // padding-left: 26px;
-        // margin-bottom: -1px;
         background-origin: padding-box;
         box-sizing: border-box;
         height: 30px;
-        // border: 1px solid white;
-
-        // &::before {
-        //   width: 24px;
-        //   height: 24px;
-        //   content: url($firstArrow);
-        //   filter: invert(1);
-        // }
-
-        // &__before {
-        //   &::before {
-        //     content: url($striaghtLine);
-        //   }
-        // }
 
         &:hover {
           background-color: var(--hover-background);
@@ -285,38 +263,48 @@
   }
 
   &-footer {
-    width: 300px;
+    width: 100%;
     margin-top: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-top: 1.5px solid var(--main-border);
 
-    p.version {
-      font-weight: 600;
-      font-size: 14px;
-      color: var(--base-text-color);
-      margin-left: 12px;
-    }
-
-    .theme-toggle {
-      padding: 2px 8px;
-      border-radius: 4px;
-      margin-right: 12px;
-      background-color: var(--main-background);
+    .usertile {
+      padding: 12px;
+      border-radius: 8px;
+      transition: all 0.4s ease-in-out;
       cursor: pointer;
-      border: 1.5px solid var(--main-border);
-      box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+      margin-top: 20px;
 
       &:hover {
-        background-color: var(--main-background);
+        box-shadow: var(--main-box-shadow), 0 0 0 1px var(--main-border);
+        background-color: white;
       }
 
-      p {
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
+      .user {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 12px;
+
+        &-avatar {
+          width: 28px;
+          height: 28px;
+          text-align: center;
+          align-items: center;
+          display: flex;
+          justify-content: center;
+          border-radius: 99px;
+          background-color: var(--primary-color);
+          color: white;
+        }
+
+        .user-info {
+          font-size: 15px;
+          line-height: 20px;
+
+          .email {
+            font-size: 14px;
+            color: var(--darker-border);
+          }
+        }
       }
     }
   }
@@ -327,11 +315,9 @@
   padding: 6px;
   width: 250px;
   background-color: var(--panel-background);
-  box-shadow: 0 4px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
-  border: 1.5px solid var(--main-border);
 
   .hr-divider {
     margin-top: 4px;
@@ -400,4 +386,8 @@
       font-size: 15px;
     }
   }
+}
+
+.usertile-menu {
+  width: 300px;
 }

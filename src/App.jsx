@@ -1,7 +1,7 @@
-import { Editor } from './components/Editor.jsx';
 // import { useAppStore } from './components/AppContext.jsx';
 import { Toaster } from 'sonner';
 
+import { Editor } from './components/Editor.jsx';
 // import './editor.css';
 // import './fonts.css';
 import { Sidebar } from './components/Sidebar.jsx';

@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { appState } from '../../store/app-state';
 import { entriesStore } from '../../store/entries';
-import { SidebarEntrySection } from './SidebarEntrySection';
-import { ThemeToggle } from './ThemeToggle';
+import { SidebarEntry } from './SidebarEntry';
+import { UserTile } from './UserTile';
 
 const RouteLink = ({ onClick, title, icon: Icon }) => {
   return (
@@ -23,7 +23,7 @@ function useScrollTop() {
   const [scrollTop, setScrollTop] = useState(0);
   const scrollContainerRef = useRef(null);
 
-  const handleScroll = (event) => {
+  const handleScroll = (event: any) => {
     setScrollTop(event.target.scrollTop);
   };
 
@@ -31,9 +31,11 @@ function useScrollTop() {
     const scrollContainer = scrollContainerRef.current;
 
     if (scrollContainer) {
+      // @ts-ignore
       scrollContainer.addEventListener('scroll', handleScroll);
 
       return () => {
+        // @ts-ignore
         scrollContainer.removeEventListener('scroll', handleScroll);
       };
     }
@@ -55,14 +57,6 @@ export const Sidebar = observer(() => {
   }
 
   const [scrollTop, scrollProps] = useScrollTop();
-
-  const { privateEntries } = entriesStore;
-  const newSet = [];
-  const chunkSize = 4;
-
-  for (let i = 0; i < privateEntries.length; i += chunkSize) {
-    newSet.push(privateEntries.slice(i, i + chunkSize));
-  }
 
   return (
     <>
@@ -98,8 +92,68 @@ export const Sidebar = observer(() => {
           className={clsx('sidebar-entries', {
             'sidebar-entries__withborder': scrollTop > 50,
           })}
-          // {...scrollProps}
+          {...scrollProps}
         >
+          {Boolean(entriesStore.pinnedEntriesId.length) && (
+            <div className="section">
+              <div className="header">
+                <p className="title favorit-font">Pinned</p>
+              </div>
+
+              <div className="entries">
+                {entriesStore?.pinnedEntries?.map((entry) => {
+                  return (
+                    <SidebarEntry
+                      selectEntry={(entry) => {
+                        navigate(`/entry/${entry.id}`);
+                        entriesStore.selectEntry(entry);
+                      }}
+                      entry={entry}
+                      activeEntry={entriesStore.activeEntry}
+                      key={entry.id}
+                      onDelete={() => {
+                        entriesStore.deleteEntry(entry.id);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          <div className="section">
+            <div className="header">
+              <p className="title favorit-font">Private</p>
+              <div
+                className="icon"
+                onClick={() => {
+                  const id = entriesStore.addNewEntry();
+                  navigate(`/entry/${id}`);
+                }}
+              >
+                {/* <Plus size={16} /> */}
+              </div>
+            </div>
+            <div className="entries">
+              {entriesStore?.privateEntries?.map((entry) => {
+                return (
+                  <SidebarEntry
+                    selectEntry={(entry) => {
+                      navigate(`/entry/${entry.id}`);
+                      entriesStore.selectEntry(entry);
+                    }}
+                    entry={entry}
+                    activeEntry={entriesStore.activeEntry}
+                    key={entry.id}
+                    onDelete={() => {
+                      entriesStore.deleteEntry(entry.id);
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </div>
+
           {/* {Boolean(entriesStore.pinnedEntriesId.length) && (
             <SidebarEntrySection
               entries={entriesStore.pinnedEntries}
@@ -111,16 +165,29 @@ export const Sidebar = observer(() => {
             />
           )} */}
 
-          {newSet.map((set, index) => {
+          {/* {privateEntries.map((entry: Entry, index) => {
+            return (
+              <SidebarEntry
+                entry={entry}
+                onDelete={() => entriesStore.deleteEntry(entry.id)}
+                selectEntry={() => {
+                  entriesStore.selectEntry(entry);
+                  navigate(`/entry/${entry.id}`);
+                }}
+                key={index}
+              />
+            );
+          })} */}
+
+          {/* {newSet.map((set, index) => {
             return (
               <SidebarEntrySection key={index} entries={set} sectionTitle={`Private ${index}`} />
             );
-          })}
+          })} */}
         </div>
 
         <div className="sidebar-footer">
-          <p className="version favorit-font">version {APP_VERSION} ✨</p>
-          <ThemeToggle />
+          <UserTile />
         </div>
       </div>
     </>

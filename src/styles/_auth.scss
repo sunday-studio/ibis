@@ -38,6 +38,25 @@
           text-decoration: underline;
         }
       }
+
+      span.description {
+        font-size: 13px;
+        color: var(--subtitle-text-color);
+        margin-top: 2px;
+      }
+
+      .location-picker {
+        text-align: center;
+        border: 1.5px solid var(--main-border);
+        background-color: transparent;
+        color: var(--base-text-color);
+        width: 100%;
+        padding: 0.5em 1.2em;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 0.9em;
+        cursor: pointer;
+      }
     }
 
     .form-control {

@@ -1,13 +1,94 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 
+import { generateNewDirectory } from '@/lib/auth/auth-helpers';
 import { supabase } from '@/lib/auth/supabase';
 import { ACCESS_TOKEN, USER_DATA } from '@/lib/constants';
 import { setData } from '@/lib/storage';
+import { open } from '@tauri-apps/api/dialog';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
+type Views = 'login' | 'signup' | 'onboarding';
+
+type ViewType = React.ReactNode | JSX.Element | (() => JSX.Element);
+
+const Onboarding = () => {
+  const [location, setLocation] = useState<null | string>(null);
+  const [name, setName] = useState('');
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const openPicker = async () => {
+    const selected = await open({
+      directory: true,
+    });
+    setLocation(selected as unknown as string);
+  };
+
+  const createDirectoryAndStartService = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const directoryName = `${location}/${name}`;
+
+    try {
+      await generateNewDirectory(directoryName);
+
+      const { data, error } = await supabase.auth.updateUser({
+        data: {
+          hasCompletedOnboarding: true,
+          safeDirectory: directoryName,
+        },
+      });
+
+      setLoading(false);
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      toast.success(`${name} safe is all set up and ready to go`);
+
+      if (data) {
+        navigate('/');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <form action="">
+      <div className="form-control">
+        <label htmlFor="safe-name">Safe name</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          placeholder="Apple-store"
+          required
+          autoCapitalize="none"
+        />
+      </div>
+
+      <div className="form-control">
+        <label htmlFor="safe-name">Location</label>
+        <div className="location-picker" onClick={() => openPicker()}>
+          {location ?? 'Pick location'}
+        </div>
+        <span className="description">Pick a place on your workspace to put your safe</span>
+      </div>
+
+      <button type="submit" onClick={createDirectoryAndStartService}>
+        {loading ? 'Setting up for you.....' : 'Continue'}
+      </button>
+    </form>
+  );
+};
+
 const AuthPage = () => {
-  const [type, setType] = useState<'login' | 'signup'>('login');
+  const [type, setType] = useState<Views>('login');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -23,12 +104,21 @@ const AuthPage = () => {
       password: formData.get('password') as string,
     });
 
-    console.log({ data, error });
-
     setLoading(false);
 
     if (error) {
       toast.error(error.message);
+      return;
+    }
+
+    // check if user has completed onboarding & has directory route
+    if (
+      !data?.user?.user_metadata?.hasCompletedOnboarding ||
+      !data?.user?.user_metadata?.safeDirectory
+    ) {
+      setData(USER_DATA, data?.session);
+      setData(ACCESS_TOKEN, data?.session?.access_token);
+      setType('onboarding');
       return;
     }
 
@@ -41,9 +131,7 @@ const AuthPage = () => {
 
   const signup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const formData = new FormData(event.currentTarget);
-
     setLoading(true);
 
     const { data, error } = await supabase.auth.signUp({
@@ -51,6 +139,7 @@ const AuthPage = () => {
       password: formData.get('password') as string,
       options: {
         data: {
+          hasCompletedOnboarding: false,
           name: formData.get('name'),
         },
       },
@@ -69,6 +158,79 @@ const AuthPage = () => {
     }
   };
 
+  const viewToRender: Record<Views, ViewType> = {
+    login: (
+      <form onSubmit={login}>
+        <div className="form-control">
+          <label htmlFor="email">Email</label>
+          <input
+            autoCapitalize="none"
+            required
+            type="email"
+            placeholder="jon@appleseed.com"
+            name="email"
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="password">Password</label>
+          <input
+            autoCapitalize="none"
+            required
+            placeholder="something stronger than black"
+            type="password"
+            name="password"
+          />
+        </div>
+
+        <button type="submit">{loading ? 'Doing somethings.....' : 'Login'}</button>
+        <div className="footnote" onClick={() => setType('signup')}>
+          No account? Signup
+        </div>
+      </form>
+    ),
+
+    signup: (
+      <form onSubmit={signup}>
+        <div className="form-control">
+          <label htmlFor="Name">Name</label>
+          <input
+            autoCapitalize="none"
+            required
+            type="text"
+            placeholder="Jon Appleseed"
+            name="name"
+          />
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="email">Email</label>
+          <input
+            autoCapitalize="none"
+            required
+            type="email"
+            placeholder="jon@appleseed.com"
+            name="email"
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="password">Password</label>
+          <input
+            required
+            placeholder="something stronger than black"
+            type="password"
+            name="password"
+          />
+        </div>
+
+        <button type="submit">{loading ? 'Doing somethings.....' : 'Create an account'}</button>
+        <div className="footnote" onClick={() => setType('login')}>
+          Have an account? Login
+        </div>
+      </form>
+    ),
+    onboarding: <Onboarding />,
+  };
+
   return (
     <div className="page-container auth-page">
       <div className="form-wrapper">
@@ -76,59 +238,7 @@ const AuthPage = () => {
           <h2>Opps</h2>
           <p>Ditch all your productivity apps for me.</p>
         </div>
-
-        {type === 'login' && (
-          <form onSubmit={login}>
-            <div className="form-control">
-              <label htmlFor="email">Email</label>
-              <input required type="email" placeholder="jon@appleseed.com" name="email" />
-            </div>
-            <div className="form-control">
-              <label htmlFor="password">Password</label>
-              <input
-                required
-                placeholder="something stronger than black"
-                type="password"
-                name="password"
-              />
-            </div>
-
-            <button type="submit">{loading ? 'Doing somethings.....' : 'Login'}</button>
-
-            <div className="footnote" onClick={() => setType('signup')}>
-              No account? Signup
-            </div>
-          </form>
-        )}
-
-        {type === 'signup' && (
-          <form onSubmit={signup}>
-            <div className="form-control">
-              <label htmlFor="Name">Name</label>
-              <input required type="text" placeholder="Jon Appleseed" name="name" />
-            </div>
-
-            <div className="form-control">
-              <label htmlFor="email">Email</label>
-              <input required type="email" placeholder="jon@appleseed.com" name="email" />
-            </div>
-            <div className="form-control">
-              <label htmlFor="password">Password</label>
-              <input
-                required
-                placeholder="something stronger than black"
-                type="password"
-                name="password"
-              />
-            </div>
-
-            <button type="submit">{loading ? 'Doing somethings.....' : 'Signup'}</button>
-
-            <div className="footnote" onClick={() => setType('login')}>
-              Have an account? Login
-            </div>
-          </form>
-        )}
+        {viewToRender?.[type]}
       </div>
     </div>
   );

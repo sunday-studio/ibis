@@ -12,7 +12,9 @@
   --primary-color: #fc521f;
   --hover-shadow: #d1d5db;
 
-  --drag-region-height: 8px;
+  --drag-region-height: 30px;
+  --main-box-shadow: 0 0.25rem 0.375rem -0.125rem #0003, 0 0 0 1px var(--main-border);
+  --lg-box-shadow: 0 0.75rem 1.25rem -0.5rem #0000003d, 0 0 0 2px var(--main-border);
 
   // fonts
   --code-font: 'BerkeleyMonoVariable';
@@ -127,8 +129,7 @@ body {
     border-radius: 8px;
     background-color: white;
     overflow: hidden;
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1),
-      0 0 0 1px var(--main-border);
+    box-shadow: var(--main-box-shadow);
     transition: all 0.3s ease-in-out;
 
     &__withborder {

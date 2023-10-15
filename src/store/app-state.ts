@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
-import { APP_STATE } from '../lib/constants';
+import { APP_STATE, USER_DATA } from '../lib/constants';
 import { getData, setData } from '../lib/storage';
 
 type Theme = 'light' | 'night' | 'system';
@@ -13,6 +13,7 @@ const DEFAULT_APPSTATE = {
 class AppState {
   sidebarIsOpen: boolean = true;
   theme: Theme = 'light';
+  session: any | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -20,9 +21,11 @@ class AppState {
 
   load() {
     const state = getData(APP_STATE) ?? DEFAULT_APPSTATE;
+    const session = getData(USER_DATA) || null;
 
     this.sidebarIsOpen = state.sidebarIsOpen;
     this.theme = state.theme;
+    this.session = session;
     document.documentElement.setAttribute('data-theme', state.theme);
   }
 

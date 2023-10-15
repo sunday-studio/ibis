@@ -13,6 +13,9 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "path": {
+        "all": true
+      },
       "window": {
         "all": false,
         "close": true,
@@ -27,6 +30,27 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "dialog": {
+        "all": true,
+        "ask": true,
+        "confirm": true,
+        "message": true,
+        "open": true,
+        "save": true
+      },
+      "fs": {
+        "scope": ["$APP/*", "$DESKTOP/**", "*"],
+        "all": true,
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "copyFile": true,
+        "createDir": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
+        "exists": true
       }
     },
     "bundle": {
@@ -49,8 +73,8 @@
         "fullscreen": false,
         "resizable": true,
         "title": "Opps",
-        "width": 1400,
-        "height": 900,
+        "width": 1200,
+        "height": 800,
         "titleBarStyle": "Overlay",
         "hiddenTitle": true
       }

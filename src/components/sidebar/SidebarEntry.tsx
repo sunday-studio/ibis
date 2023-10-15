@@ -15,7 +15,7 @@ import {
   MoreHorizontal,
   Package,
   Pin,
-  PinOff, // SquareStack,
+  PinOff,
   Trash2,
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';

@@ -1,9 +1,10 @@
+import { createDir } from '@tauri-apps/api/fs';
 import { redirect } from 'react-router-dom';
 
 import { ACCESS_TOKEN } from '../constants';
 import { getData } from '../storage';
 
-export const checkIfLoggedIn = async (args: any) => {
+export const checkIfLoggedIn = async () => {
   const hasToken = Boolean(await getData(ACCESS_TOKEN));
 
   if (hasToken) {
@@ -12,13 +13,26 @@ export const checkIfLoggedIn = async (args: any) => {
   return redirect('/auth');
 };
 
-// const loader = async () => {
-//   try {
-//     const res = await fetch('/api/userprofile');
-//     if (!res.ok) {
-//       throw Error('User Invalid');
-//     }
-//   } catch (error) {
-//     return redirect('/login');
-//   }
-// };
+export const generateNewDirectory = async (name: string) => {
+  const currentYear = new Date().getFullYear().toString();
+  const basePath = `${name}/${currentYear}`;
+
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  for (let index = 0; index < months.length; index++) {
+    await createDir(`${basePath}/${months[index]}`, { recursive: true });
+  }
+};
