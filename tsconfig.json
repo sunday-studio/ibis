@@ -18,7 +18,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["node", "@testing-library/jest-dom", "vitest/globals"]
   },
   "include": ["src"],
   "references": [

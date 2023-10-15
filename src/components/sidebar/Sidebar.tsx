@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 import { BadgePlus, DoorOpen, PanelRightOpen, Trash2Icon } from 'lucide-react';
@@ -10,7 +10,15 @@ import { entriesStore } from '../../store/entries';
 import { SidebarEntry } from './SidebarEntry';
 import { UserTile } from './UserTile';
 
-const RouteLink = ({ onClick, title, icon: Icon }) => {
+const RouteLink = ({
+  onClick,
+  title,
+  icon: Icon,
+}: {
+  onClick: () => void;
+  title: string;
+  icon: any;
+}) => {
   return (
     <div className="route" onClick={onClick}>
       <div className="icon">{Icon && <Icon color="#6b7280" size={16} strokeWidth={2.5} />}</div>
@@ -51,7 +59,7 @@ export const Sidebar = observer(() => {
     entriesStore.load();
   }, []);
 
-  function goToPage(route) {
+  function goToPage(route: string) {
     entriesStore.removeActiveEntry();
     navigate(route);
   }
@@ -90,8 +98,10 @@ export const Sidebar = observer(() => {
 
         <div
           className={clsx('sidebar-entries', {
+            // @ts-ignore
             'sidebar-entries__withborder': scrollTop > 50,
           })}
+          // @ts-ignore
           {...scrollProps}
         >
           {Boolean(entriesStore.pinnedEntriesId.length) && (

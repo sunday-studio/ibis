@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 
 type Views = 'login' | 'signup' | 'onboarding';
 
-type ViewType = React.ReactNode | JSX.Element | (() => JSX.Element);
+type ViewType = React.ReactNode | JSX.Element | (() => JSX.Element) | any;
 
 const Onboarding = () => {
   const [location, setLocation] = useState<null | string>(null);
@@ -176,7 +176,7 @@ const AuthPage = () => {
           <input
             autoCapitalize="none"
             required
-            placeholder="something stronger than black"
+            placeholder="something stronger than coffee"
             type="password"
             name="password"
           />

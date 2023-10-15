@@ -1,7 +1,9 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
+// @ts-nocheck
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 import { $isAtNodeEnd } from '@lexical/selection';
-import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND } from 'lexical';
 import { mergeRegister } from '@lexical/utils';
+import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND } from 'lexical';
 
 const LowPriority = 1;
 

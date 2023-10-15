@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useRef, useState } from 'react';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';

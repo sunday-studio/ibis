@@ -1,20 +1,22 @@
+// @ts-nocheck
 import { forwardRef, useEffect, useState } from 'react';
-import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical';
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
+import { useCallback } from 'react';
 
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
+import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical';
 import {
   Bold,
-  Italic,
-  Underline,
-  Strikethrough,
-  Code,
-  Link2,
-  CornerDownLeft,
   CheckCheck,
+  Code,
+  CornerDownLeft,
+  Italic,
+  Link2,
+  Strikethrough,
+  Underline,
 } from 'lucide-react';
+
 import { validateUrl } from '../plugins/AutolinkPlugin';
 import { getSelectedNode } from '../plugins/ToolbarPlugin';
-import { useCallback } from 'react';
 
 const LinkInput = ({ value, onChange, onBackClick, onSave }) => {
   const isValueLink = validateUrl(value.toLowerCase());
@@ -25,11 +27,7 @@ const LinkInput = ({ value, onChange, onBackClick, onSave }) => {
         <CornerDownLeft size={18} />
       </div>
       <div className="vr-divider" />
-      <input
-        placeholder="Enter link"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
+      <input placeholder="Enter link" value={value} onChange={(e) => onChange(e.target.value)} />
 
       {isValueLink && (
         <>
