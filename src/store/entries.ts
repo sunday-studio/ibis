@@ -75,7 +75,6 @@ class Entries {
   }
 
   selectEntry(entry: Entry) {
-    console.log(entry);
     this.activeEntry = entry;
     this.activeEntryTitle = entry.title;
   }

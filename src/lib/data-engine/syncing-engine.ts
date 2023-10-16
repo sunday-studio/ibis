@@ -1,5 +1,4 @@
 import { createDir, exists, writeTextFile } from '@tauri-apps/api/fs';
-import { format } from 'date-fns';
 
 import { USER_DATA } from '../constants';
 import { getData } from '../storage';
@@ -8,6 +7,8 @@ type Data = {
   dateString: string;
   content: any;
 };
+
+type DirFunction = (dateString: string, basePath: string) => [string, string];
 
 /**
  * this is the main sync service to save files changes on device and in the future in the cloud
@@ -24,19 +25,8 @@ class Meili {
    * This async function takes a date string and some content as parameters
    * and writes the content to a JSON file on disk, organizing the file based on the date.
    */
-  async writeFileContentToDisk(dateString: string, content: any) {
-    // Convert the provided dateString to a JavaScript Date object.
-    const date = new Date(dateString);
-
-    // Extract the year and month from the date.
-    const year = date.getFullYear().toString();
-    const month = format(date, 'LLL');
-
-    // Generate a unique filename based on the date and time.
-    const filename = `${format(date, 'uqqdd')}-${format(date, 't')}.json`;
-
-    // Construct the directory path where the file will be saved.
-    const dirPath = `${this.basePath}/${year}/${month}`;
+  async writeFileContentToDisk(dateString: string, content: any, dirFn: DirFunction) {
+    const [dirPath, filename] = dirFn?.(dateString, this.basePath);
 
     // Check if the directory already exists on disk.
     const directoryExist = await exists(dirPath);
@@ -54,11 +44,11 @@ class Meili {
    * This async function takes an array of data objects and performs bulk saving of each data object
    * by calling the writeFileContentToDisk function for each element in the array.
    */
-  async bulkSavingToFile(data: Array<Data>) {
+  async bulkSavingToFile(data: Array<Data>, dirFn: DirFunction) {
     // Iterate through each element (Data object) in the data array.
     data.forEach((element: Data) => {
       // Call the writeFileContentToDisk function for each element, passing the date string and content.
-      this.writeFileContentToDisk(element.dateString, element.content);
+      this.writeFileContentToDisk(element.dateString, element.content, dirFn);
     });
   }
 }

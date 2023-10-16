@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { checkIfLoggedIn } from '@/lib/auth/auth-helpers';
 import AppLayout from '@/routes/layout/AppLayout';
 import { createBrowserRouter } from 'react-router-dom';
@@ -9,6 +7,7 @@ import EntryPage from './pages/EntryPage';
 import Today from './pages/Today';
 import TrashPage from './pages/TrashPage';
 import AuthPage from './pages/auth/Auth';
+import SettingsPage from './pages/settings/Settings';
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +38,12 @@ export const router = createBrowserRouter([
           },
         ],
       },
+
+      {
+        path: '/settings',
+        element: <SettingsPage />,
+      },
+
       {
         path: '/auth',
         element: <AuthPage />,

@@ -10,6 +10,7 @@ import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
@@ -21,6 +22,7 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '../../plugins/AutolinkPlugin';
+import FloatingMenuPlugin from '../../plugins/FloatingMenuPlugin';
 import SlashCommandPickerPlugin from '../../plugins/SlashCommandPicker';
 import { theme } from '../../plugins/theme';
 
@@ -105,6 +107,8 @@ export const DailyNoteEditor: FunctionComponent<DailyNoteEditorProps> = ({
       <SlashCommandPickerPlugin />
       <ListPlugin />
       <CheckListPlugin />
+      <FloatingMenuPlugin />
+      <HistoryPlugin />
     </LexicalComposer>
   );
 };

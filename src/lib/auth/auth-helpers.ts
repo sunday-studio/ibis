@@ -32,7 +32,11 @@ export const generateNewDirectory = async (name: string) => {
     'Dec',
   ];
 
+  // create months
   for (let index = 0; index < months.length; index++) {
-    await createDir(`${basePath}/${months[index]}`, { recursive: true });
+    await createDir(`${basePath}/${months[index].toLowerCase()}`, { recursive: true });
   }
+
+  // create today directory
+  await createDir(`${basePath}/today`);
 };

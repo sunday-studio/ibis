@@ -2,7 +2,7 @@ import { Fragment, useCallback, useMemo, useState } from 'react';
 
 import { supabase } from '@/lib/auth/supabase';
 import { ACCESS_TOKEN, USER_DATA } from '@/lib/constants';
-import { meili } from '@/lib/data-engine/syncing-engine';
+import { syncAllEntriesToDisk, syncAllTodaysToDisk } from '@/lib/data-engine/syncing-helpers';
 import { clearData } from '@/lib/storage';
 import { appState } from '@/store/app-state';
 import { entriesStore } from '@/store/entries';
@@ -30,28 +30,17 @@ const UserTileMenu = () => {
 
   const syncToDevice = useCallback(async () => {
     // TODO: optimize to only sync items that have changed since last sync
-    const itemsToSync = entriesStore.privateEntries.map((entry) => {
-      return {
-        dateString: entry.createdAt,
-        content: entry,
-      };
-    });
+    await syncAllTodaysToDisk();
+    await syncAllEntriesToDisk();
 
-    try {
-      await meili.bulkSavingToFile(itemsToSync);
-
-      toast.success('All entries synced');
-    } catch (error) {
-      console.error(error);
-      toast.error("Don't fret, not your fault, sending the issue over to God");
-    }
+    toast.success('All entries synced');
   }, [entriesStore]);
 
   const options = useMemo(() => {
     return [
       {
         title: 'Settings',
-        action: () => {},
+        action: () => navigate('/settings'),
         icon: <Tv2 size={16} />,
         disable: false,
         active: false,
@@ -124,7 +113,7 @@ export const UserTile = () => {
           <Popover.Content
             className="usertile-menu PopoverContent"
             sideOffset={5}
-            alignOffset={-50}
+            alignOffset={-28}
             align="end"
           >
             <UserTileMenu />
