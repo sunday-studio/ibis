@@ -8,14 +8,14 @@ export default function TodayPage() {
       <div className="notes">
         <DailyNote />
       </div>
-      <div className="sider">
+      {/* <div className="sider">
         <div className="todos">
           <DailyTodos />
         </div>
         <div className="calendar">
           <DailyCalendar />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
