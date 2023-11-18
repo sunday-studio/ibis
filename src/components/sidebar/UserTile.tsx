@@ -48,7 +48,7 @@ const UserTileMenu = () => {
 
       {
         title: 'Dark Mode',
-        action: () => {},
+        action: () => appState.toggleTheme('light'),
         icon: <Palette size={16} />,
       },
 

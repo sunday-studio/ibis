@@ -131,38 +131,40 @@ export const Sidebar = observer(() => {
             </div>
           )}
 
-          <div className="section">
-            <div className="header">
-              <p className="title favorit-font">Private</p>
-              <div
-                className="icon"
-                onClick={() => {
-                  const id = entriesStore.addNewEntry();
-                  navigate(`/entry/${id}`);
-                }}
-              >
-                {/* <Plus size={16} /> */}
+          {entriesStore?.privateEntries.length > 0 && (
+            <div className="section">
+              <div className="header">
+                <p className="title favorit-font">Private</p>
+                <div
+                  className="icon"
+                  onClick={() => {
+                    const id = entriesStore.addNewEntry();
+                    navigate(`/entry/${id}`);
+                  }}
+                >
+                  {/* <Plus size={16} /> */}
+                </div>
+              </div>
+              <div className="entries">
+                {entriesStore?.privateEntries?.map((entry) => {
+                  return (
+                    <SidebarEntry
+                      selectEntry={(entry) => {
+                        navigate(`/entry/${entry.id}`);
+                        entriesStore.selectEntry(entry);
+                      }}
+                      entry={entry}
+                      activeEntry={entriesStore.activeEntry}
+                      key={entry.id}
+                      onDelete={() => {
+                        entriesStore.deleteEntry(entry.id);
+                      }}
+                    />
+                  );
+                })}
               </div>
             </div>
-            <div className="entries">
-              {entriesStore?.privateEntries?.map((entry) => {
-                return (
-                  <SidebarEntry
-                    selectEntry={(entry) => {
-                      navigate(`/entry/${entry.id}`);
-                      entriesStore.selectEntry(entry);
-                    }}
-                    entry={entry}
-                    activeEntry={entriesStore.activeEntry}
-                    key={entry.id}
-                    onDelete={() => {
-                      entriesStore.deleteEntry(entry.id);
-                    }}
-                  />
-                );
-              })}
-            </div>
-          </div>
+          )}
 
           {/* {Boolean(entriesStore.pinnedEntriesId.length) && (
             <SidebarEntrySection
