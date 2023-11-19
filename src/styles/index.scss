@@ -1,8 +1,10 @@
-@import 'base';
-@import 'editor';
 @import 'fonts';
-@import 'sidebar';
-@import 'styles';
-@import 'auth';
-@import 'settings';
-@import 'today';
+@import 'global';
+
+// components styling
+@import '../components/components.scss';
+
+// page styling
+@import '../routes/pages/today/today';
+@import '../routes/pages/auth/auth';
+@import '../routes/pages/settings/settings';

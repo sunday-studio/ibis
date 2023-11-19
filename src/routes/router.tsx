@@ -3,11 +3,11 @@ import AppLayout from '@/routes/layout/AppLayout';
 import { createBrowserRouter } from 'react-router-dom';
 
 import Root from './Root';
-import EntryPage from './pages/EntryPage';
-import Today from './pages/Today';
 import TrashPage from './pages/TrashPage';
 import AuthPage from './pages/auth/Auth';
+import EntryPage from './pages/entry/EntryPage';
 import SettingsPage from './pages/settings/Settings';
+import Today from './pages/today/Today';
 
 export const router = createBrowserRouter([
   {

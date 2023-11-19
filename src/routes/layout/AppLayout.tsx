@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { PageTitleBar } from '@/components/page-titlebar/PageTitleBar';
 import { Sidebar } from '@/components/sidebar/Sidebar';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
@@ -37,6 +38,7 @@ const AppLayout = observer(() => {
         >
           <Sidebar />
         </div>
+        <div className="layout-divider"></div>
         <div
           className={clsx('page-wrapper', {
             'page-wrapper__withborder': isEntryPageActive,
@@ -45,6 +47,7 @@ const AppLayout = observer(() => {
             width: appState.sidebarIsOpen ? `calc(100% - ${SIDEBAR_WIDTH}` : '100%',
           }}
         >
+          <PageTitleBar />
           <Outlet />
         </div>
       </div>

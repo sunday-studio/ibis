@@ -1,2 +1,6 @@
-@import './modal.scss';
+@import './modal/modal.scss';
 @import './date-picker/datepicker.scss';
+@import './page-titlebar/_page-titlebar.scss';
+@import './editor/editor';
+@import './sidebar/sidebar';
+@import './editor/editor-components';

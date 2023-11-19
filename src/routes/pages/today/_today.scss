@@ -1,14 +1,11 @@
 .today-page {
   display: grid;
-  // grid-gap: 8px;
-  //   grid-template-columns: repeat(3, 1fr);
   background-color: var(--main-background);
   overflow: hidden;
 
   .notes {
     grid-column: span 2;
     background-color: var(--panel-background);
-    //     border-right: 1.5px solid var(--main-border);
   }
 
   .sider {
@@ -16,14 +13,12 @@
     display: flex;
     flex-direction: column;
     background-color: var(--main-background);
-    // gap: 8px;
 
     .todos,
     .calendar {
       padding: 10px;
       flex: 1;
       background-color: var(--panel-background);
-      // border-radius: 8px;
     }
 
     .todos {

@@ -15,8 +15,8 @@ import {
   Underline,
 } from 'lucide-react';
 
-import { validateUrl } from '../plugins/AutolinkPlugin';
-import { getSelectedNode } from '../plugins/ToolbarPlugin';
+import { validateUrl } from '../../plugins/AutolinkPlugin';
+import { getSelectedNode } from '../../plugins/ToolbarPlugin';
 
 const LinkInput = ({ value, onChange, onBackClick, onSave }) => {
   const isValueLink = validateUrl(value.toLowerCase());

@@ -24,15 +24,16 @@ import { formatDistance } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { formatDateString } from '../lib/utils';
-import AutoLinkPlugin, { validateUrl } from '../plugins/AutolinkPlugin';
-import ClickableLinkPlugin from '../plugins/ClickableLinkPlugin';
-import CodeHighlightPlugin from '../plugins/CodeHighlightPlugin';
-import FloatingMenuPlugin from '../plugins/FloatingMenuPlugin';
-import SlashCommandPickerPlugin from '../plugins/SlashCommandPicker';
-import TabFocusPlugin from '../plugins/TabFocusPlugin';
-import { theme } from '../plugins/theme';
-import { entriesStore } from '../store/entries';
+import { formatDateString } from '../../lib/utils';
+import AutoLinkPlugin, { validateUrl } from '../../plugins/AutolinkPlugin';
+import ClickableLinkPlugin from '../../plugins/ClickableLinkPlugin';
+import CodeHighlightPlugin from '../../plugins/CodeHighlightPlugin';
+import FloatingMenuPlugin from '../../plugins/FloatingMenuPlugin';
+import SlashCommandPickerPlugin from '../../plugins/SlashCommandPicker';
+import TabFocusPlugin from '../../plugins/TabFocusPlugin';
+import { theme } from '../../plugins/theme';
+import { entriesStore } from '../../store/entries';
+import { PageTitleBar } from '../page-titlebar/PageTitleBar';
 
 function Placeholder() {
   return <div className="editor-placeholder">Enter some rich text...</div>;

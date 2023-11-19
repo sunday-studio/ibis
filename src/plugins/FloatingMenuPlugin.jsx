@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+
+import { computePosition, flip, offset, shift } from '@floating-ui/dom';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
   $getSelection,
   $isRangeSelection,
   COMMAND_PRIORITY_NORMAL as NORMAL_PRIORITY,
   SELECTION_CHANGE_COMMAND as ON_SELECTION_CHANGE,
 } from 'lexical';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { computePosition, shift, flip, offset } from '@floating-ui/dom';
+import { createPortal } from 'react-dom';
 
+import { FloatingMenu } from '../components/editor/FloatingMenu';
 import { usePointerInteractions } from '../hooks/usePointerInteractions';
-import { FloatingMenu } from '../components/FloatingMenu';
 
 const DEFAULT_DOM_ELEMENT = document.body;
 

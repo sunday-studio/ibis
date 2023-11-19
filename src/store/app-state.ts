@@ -1,6 +1,6 @@
+import { APP_STATE, USER_DATA } from '@/lib/constants';
 import { makeAutoObservable } from 'mobx';
 
-import { APP_STATE, USER_DATA } from '../lib/constants';
 import { getData, setData } from '../lib/storage';
 
 type Theme = 'light' | 'night' | 'system';

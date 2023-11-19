@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
-import { Editor } from '../../components/Editor';
-import { entriesStore } from '../../store/entries';
+import { Editor } from '../../../components/editor/Editor';
+import { entriesStore } from '../../../store/entries';
 
 const EntryPage = observer(() => {
   const { activeEntry } = entriesStore;
@@ -14,13 +14,6 @@ const EntryPage = observer(() => {
           content={activeEntry?.content ? JSON.parse(activeEntry.content) : null}
         />
       )}
-      {/* 
-      {activeEntry && (
-        <Editor
-          id={activeEntry.id}
-          content={activeEntry?.content ? JSON.parse(activeEntry.content) : null}
-        />
-      )} */}
     </div>
   );
 });

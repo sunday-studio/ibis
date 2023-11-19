@@ -9,7 +9,65 @@
   height: 100%;
   bottom: 0;
   width: 100%;
-  padding-right: 10px;
+
+  &-content {
+    padding: 0 12px;
+    width: 100%;
+  }
+
+  &-header {
+    height: 40px;
+    width: 100%;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .window-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      svg {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+
+      &:hover {
+        svg {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+
+      .window-action {
+        width: 14px;
+        height: 14px;
+        border-radius: 99px;
+        line-height: unset;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease-out;
+        color: black;
+
+        &:first-child {
+          background-color: #e5484d;
+        }
+
+        &:nth-child(2) {
+          background-color: #ffca16;
+        }
+
+        &:last-child {
+          background-color: #3dd68c;
+        }
+      }
+    }
+  }
 
   &-entries {
     width: 100%;
@@ -17,25 +75,12 @@
     overflow: scroll;
     transition: border-color 0.2s ease-in-out;
     border-top: 1.5px solid transparent;
-
-    &__withborder {
-      border-color: var(--main-border);
-    }
-  }
-
-  &-toggle {
-    margin-top: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: auto;
-    cursor: pointer;
-    width: 32px;
-    height: 32px;
   }
 
   .header-section {
     padding: 10px;
+    background-color: #e7e5e4;
+    border-radius: 8px;
   }
 
   .section {
@@ -50,11 +95,6 @@
       padding: 4px 12px;
       border-radius: 8px;
 
-      &:hover {
-        background-color: var(--hover-background);
-        box-shadow: inset 0 0 0 1.5px var(--hover-shadow);
-      }
-
       .icon {
         display: flex;
         justify-content: center;
@@ -64,7 +104,7 @@
 
       &-text {
         font-weight: 600;
-        font-size: 14px;
+        font-size: 15px;
         color: var(--base-text-color);
       }
     }
@@ -96,6 +136,7 @@
     .entries {
       display: flex;
       flex-direction: column;
+      width: 100%;
 
       ul,
       li {
@@ -125,9 +166,6 @@
         border-radius: 8px;
 
         &:hover {
-          background-color: var(--hover-background);
-          box-shadow: inset 0 0 0 1.5px var(--hover-shadow);
-
           .more-options {
             visibility: visible;
 
@@ -390,4 +428,19 @@
 
 .usertile-menu {
   width: 300px;
+}
+
+.sidebar-toggle {
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-out;
+
+  &:hover {
+    background-color: #e7e5e4;
+  }
 }
