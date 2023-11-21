@@ -34,9 +34,8 @@ const DailyPage = observer(() => {
           <button className="icon" onClick={() => dailyEntryState.goToNextDay()}>
             <ChevronRight size={16} strokeWidth={2.5} />
           </button>
-          <button className="action">Todos</button>
-
-          <button className="action">Calendar</button>
+          {/* <button className="action">Todos</button> */}
+          {/* <button className="action">Calendar</button> */}
         </div>
 
         <div className="note">

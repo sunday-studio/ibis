@@ -7,7 +7,7 @@ const EntryPage = observer(() => {
   const { activeEntry } = entriesStore;
 
   return (
-    <div className="editor-page">
+    <div className="entry-page">
       {activeEntry && (
         <Editor
           id={activeEntry.id}

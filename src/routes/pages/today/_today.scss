@@ -2,6 +2,8 @@
   display: grid;
   background-color: var(--main-background);
   overflow: hidden;
+  width: 60%;
+  margin: 0 auto;
 
   .notes {
     grid-column: span 2;
