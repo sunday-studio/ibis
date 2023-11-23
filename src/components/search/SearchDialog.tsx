@@ -1,7 +1,16 @@
 import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
 import { Command } from 'cmdk';
-import { BadgePlus, Library, LucideIcon, Palette, Search, Settings, Sparkles } from 'lucide-react';
+import {
+  BadgePlus,
+  Library,
+  LucideIcon,
+  MonitorDown,
+  Palette,
+  Search,
+  Settings,
+  Sparkles,
+} from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
@@ -62,33 +71,34 @@ export const SearchDialog = observer(() => {
       },
       icon: Palette,
     },
+
+    {
+      name: 'Sync data locally',
+      onClick: () => {},
+      icon: MonitorDown,
+    },
   ];
 
   return (
-    <div>
-      <Command.Dialog
-        open={showSearchModal}
-        onOpenChange={() => searchStore.toggleSearchModal()}
-        className="search-dialog"
-      >
-        <div className="search-input">
-          <div className="search-icon">
-            <Search size={15} strokeWidth={3} />
-          </div>
-          <Command.Input
-            className="geist-mono-font"
-            placeholder="Search through everyone on Opps"
-          />
+    <Command.Dialog
+      open={showSearchModal}
+      onOpenChange={() => searchStore.toggleSearchModal()}
+      className="search-dialog"
+    >
+      <div className="search-input">
+        <div className="search-icon">
+          <Search size={15} strokeWidth={3} />
         </div>
-        <Command.List>
-          <Command.Empty>No results found.</Command.Empty>
-          <Command.Group heading="Actions">
-            {defaultActions.map((action: ActionProps, index) => {
-              return <ActionItem {...action} key={index} />;
-            })}
-          </Command.Group>
-        </Command.List>
-      </Command.Dialog>
-    </div>
+        <Command.Input className="geist-mono-font" placeholder="Search through everyone on Opps" />
+      </div>
+      <Command.List>
+        <Command.Empty>No results found.</Command.Empty>
+        <Command.Group heading="Actions">
+          {defaultActions.map((action: ActionProps, index) => {
+            return <ActionItem {...action} key={index} />;
+          })}
+        </Command.Group>
+      </Command.List>
+    </Command.Dialog>
   );
 });

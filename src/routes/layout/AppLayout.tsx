@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 
 import { SearchDialog } from '@/components';
-import { PageTitleBar } from '@/components/page-titlebar/PageTitleBar';
-import { Sidebar } from '@/components/sidebar/Sidebar';
 import { searchStore } from '@/store/search';
+import { register, unregisterAll } from '@tauri-apps/api/globalShortcut';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
-import { useHotkeys } from 'react-hotkeys-hook';
 import { useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
-import { Key } from 'ts-key-enum';
+
+import { PageTitleBar } from '@/components/page-titlebar/PageTitleBar';
+import { Sidebar } from '@/components/sidebar/Sidebar';
 
 import { appState } from '../../store/app-state';
 import { dailyEntryState } from '../../store/daily-state';
@@ -17,15 +17,25 @@ import { dailyEntryState } from '../../store/daily-state';
 const SIDEBAR_WIDTH = 300;
 
 const AppLayout = observer(() => {
-  useHotkeys(`${Key.Meta}+d`, () => appState.toggleSidebarOpenState());
-  useHotkeys(`${Key.Control}+d`, () => appState.toggleSidebarOpenState());
-  useHotkeys(`${Key.Meta}+k`, () => searchStore.toggleSearchModal());
-
   const location = useLocation();
+
+  const registerShortcuts = async () => {
+    await register('CommandOrControl+d', () => appState.toggleSidebarOpenState());
+    await register('CommandOrControl+k', () => searchStore.toggleSearchModal());
+  };
+
+  const unregisterShortcuts = async () => {
+    await unregisterAll();
+  };
 
   useEffect(() => {
     dailyEntryState.load();
     appState.load();
+    registerShortcuts();
+
+    return () => {
+      unregisterShortcuts();
+    };
   }, []);
 
   const isEntryPageActive = location.pathname.includes('entry');

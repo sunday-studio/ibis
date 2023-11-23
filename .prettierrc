@@ -7,5 +7,5 @@
   "trailingComma": "all",
   "importOrderSortSpecifiers": true,
   "importOrderSeparation": true,
-  "importOrder": ["^(react)$", "<THIRD_PARTY_MODULES>", "^components/(.*)$", "^[./]"]
+  "importOrder": ["^(react)$", "<THIRD_PARTY_MODULES>", "@/components/(.*)$", "^[./]"]
 }

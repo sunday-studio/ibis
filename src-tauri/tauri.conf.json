@@ -16,6 +16,9 @@
       "path": {
         "all": true
       },
+      "globalShortcut": {
+        "all": true
+      },
       "window": {
         "all": false,
         "close": true,
