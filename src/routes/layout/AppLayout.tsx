@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 
+import { SearchDialog } from '@/components';
 import { PageTitleBar } from '@/components/page-titlebar/PageTitleBar';
 import { Sidebar } from '@/components/sidebar/Sidebar';
+import { searchStore } from '@/store/search';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -17,6 +19,7 @@ const SIDEBAR_WIDTH = 300;
 const AppLayout = observer(() => {
   useHotkeys(`${Key.Meta}+d`, () => appState.toggleSidebarOpenState());
   useHotkeys(`${Key.Control}+d`, () => appState.toggleSidebarOpenState());
+  useHotkeys(`${Key.Meta}+k`, () => searchStore.toggleSearchModal());
 
   const location = useLocation();
 
@@ -29,6 +32,7 @@ const AppLayout = observer(() => {
 
   return (
     <div className="page-container">
+      <SearchDialog />
       <div className="two-column-container">
         <div
           className="sidebar-container"

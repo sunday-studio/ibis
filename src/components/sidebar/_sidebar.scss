@@ -79,7 +79,7 @@
 
   .header-section {
     padding: 10px;
-    background-color: #e7e5e4;
+    background-color: var(--main-border);
     border-radius: 8px;
   }
 
@@ -94,12 +94,14 @@
       transition: all 0.3s ease-in;
       padding: 4px 12px;
       border-radius: 8px;
+      color: var(--base-text-color);
 
       .icon {
         display: flex;
         justify-content: center;
         align-items: center;
         margin-right: 12px;
+        color: var(--base-text-color);
       }
 
       &-text {

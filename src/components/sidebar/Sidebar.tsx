@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { searchStore } from '@/store/search';
 import clsx from 'clsx';
 import { BadgePlus, DoorOpen, Search, Sparkles, Trash2Icon } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
@@ -20,7 +21,7 @@ const RouteLink = ({
 }) => {
   return (
     <div className="route" onClick={onClick}>
-      <div className="icon">{Icon && <Icon color="#6b7280" size={16} strokeWidth={2.5} />}</div>
+      <div className="icon">{Icon && <Icon size={16} strokeWidth={2.5} />}</div>
       <p className="route-text satoshi-font">{title}</p>
     </div>
   );
@@ -52,7 +53,11 @@ export const Sidebar = observer(() => {
               }}
             />
             <RouteLink title="Highlights" icon={Sparkles} onClick={() => {}} />
-            <RouteLink title="Search" icon={Search} onClick={() => {}} />
+            <RouteLink
+              title="Search"
+              icon={Search}
+              onClick={() => searchStore.toggleSearchModal()}
+            />
             <RouteLink title="Trash" icon={Trash2Icon} onClick={() => goToPage('/trash')} />
             <RouteLink
               title="New Entry"
