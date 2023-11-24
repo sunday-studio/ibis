@@ -34,8 +34,6 @@ import TabFocusPlugin from '../../plugins/TabFocusPlugin';
 import { theme } from '../../plugins/theme';
 import { entriesStore } from '../../store/entries';
 
-// import { PageTitleBar } from '../page-titlebar/PageTitleBar';
-
 function Placeholder() {
   return <div className="editor-placeholder">Enter some rich text...</div>;
 }

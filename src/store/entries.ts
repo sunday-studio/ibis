@@ -28,14 +28,23 @@ class Entries {
     makeAutoObservable(this);
   }
 
+  loadLocalData(data) {
+    const entryData = data.filter((e) => e.content).map((e) => e.content);
+    setData(CONTENT_KEY, entryData);
+
+    this.entries = entryData;
+    this.deletedEntries = [];
+    this.pinnedEntriesId = [];
+  }
+
   load() {
     const entryData = getData(CONTENT_KEY) ?? [];
-    const pinnedData = getData(PINNED_KEY) ?? [];
-    const deletedData = getData(TRASH_KEY) ?? [];
+    // const pinnedData = getData(PINNED_KEY) ?? [];
+    // const deletedData = getData(TRASH_KEY) ?? [];
+    // this.deletedEntries = deletedData;
 
-    this.deletedEntries = deletedData;
     this.entries = entryData;
-    this.pinnedEntriesId = pinnedData;
+    // this.pinnedEntriesId = pinnedData;
   }
 
   get pinnedEntries() {

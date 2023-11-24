@@ -35,6 +35,30 @@ class DailyStore {
     makeAutoObservable(this);
   }
 
+  localLocalData(data) {
+    const allEntries = data.reduce((acc, obj) => {
+      if (!acc[obj.content?.date]) {
+        acc[obj.content?.date] = {};
+      }
+      acc[obj.content?.date] = obj.content;
+      return acc;
+    }, {});
+    const today = getDateInStringFormat(new Date());
+    let entryForToday: DailyEntry = allEntries[today];
+
+    if (!entryForToday) {
+      entryForToday = {
+        id: nanoid(),
+        noteContent: null,
+        todos: [],
+        date: today,
+      };
+    }
+
+    this.dailyEntry = entryForToday;
+    this.dailyEntries = allEntries;
+  }
+
   load() {
     const allEntries = getData(DAILY_NOTES_KEY) ?? {};
     const today = getDateInStringFormat(new Date());

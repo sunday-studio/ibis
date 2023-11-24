@@ -119,9 +119,7 @@ export const Sidebar = observer(() => {
                     const id = entriesStore.addNewEntry();
                     navigate(`/entry/${id}`);
                   }}
-                >
-                  {/* <Plus size={16} /> */}
-                </div>
+                ></div>
               </div>
               <div className="entries">
                 {entriesStore?.privateEntries?.map((entry) => {
@@ -143,23 +141,6 @@ export const Sidebar = observer(() => {
               </div>
             </div>
           )}
-        </div>
-
-        <div
-          className="sidebar-footer"
-          style={{
-            padding: '0 10px',
-          }}
-        >
-          <div
-            style={{
-              padding: '10px 12px',
-            }}
-            onClick={toggleTheme}
-          >
-            <Palette color="#6b7280" size={16} strokeWidth={2.5} />
-          </div>
-          {/* <UserTile /> */}
         </div>
       </div>
     </>

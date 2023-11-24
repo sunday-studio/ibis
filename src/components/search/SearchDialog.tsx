@@ -76,7 +76,7 @@ export const SearchDialog = observer(() => {
     {
       name: 'Sync data locally',
       onClick: () => {
-        loadAllEntries();
+        // loadAllEntries();
       },
       icon: MonitorDown,
     },
@@ -98,7 +98,16 @@ export const SearchDialog = observer(() => {
         <Command.Empty>No results found.</Command.Empty>
         <Command.Group heading="Actions">
           {defaultActions.map((action: ActionProps, index) => {
-            return <ActionItem {...action} key={index} />;
+            return (
+              <ActionItem
+                {...action}
+                key={index}
+                onClick={() => {
+                  action.onClick();
+                  searchStore.toggleSearchModal();
+                }}
+              />
+            );
           })}
         </Command.Group>
       </Command.List>

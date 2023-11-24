@@ -5,6 +5,8 @@ import { toast } from 'sonner';
 
 import { meili } from './syncing-engine';
 
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 export const syncAllTodaysToDisk = async () => {
   const dailyEntries = Object.entries(dailyEntryState.dailyEntries);
 
@@ -39,8 +41,49 @@ export const syncAllEntriesToDisk = async () => {
   }
 };
 
-export const loadAllEntries = async () => {
-  meili.read();
+const getFileType = (url: string, baseURL: string) => {
+  const cleanedurl = url.replace(baseURL, '').toLowerCase();
+
+  if (cleanedurl.includes('today')) {
+    return 'dailyNotes';
+  }
+
+  if (cleanedurl.includes('highlight')) {
+    return 'highlights';
+  }
+
+  if (months.some((month) => cleanedurl.includes(month.toLowerCase()))) {
+    return 'entries';
+  }
+  const splitURL = cleanedurl.split('/');
+
+  return cleanedurl.split('/')[splitURL.length - 1];
+};
+
+export const loadAllEntries = async (safeURL: string) => {
+  const flatEntries = await meili.readDirectoryContent(safeURL);
+
+  const promises = flatEntries.map(async (entry: string) => {
+    return {
+      type: getFileType(entry, safeURL),
+      content: await meili.readFileContent(entry),
+    };
+  });
+
+  const content = await Promise.all(promises);
+
+  const groupedData = content.reduce((acc, obj) => {
+    if (!acc[obj.type]) {
+      acc[obj.type] = [];
+    }
+
+    acc[obj.type].push(obj);
+    return acc;
+  });
+
+  // load data into localStores
+  dailyEntryState.localLocalData(groupedData.dailyNotes);
+  entriesStore.loadLocalData(groupedData.entries);
 };
 
 const generateEntryPath = (dateString: string, basePath: string): [string, string] => {

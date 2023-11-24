@@ -6,14 +6,14 @@ import { entriesStore } from '../../../store/entries';
 const EntryPage = observer(() => {
   const { activeEntry } = entriesStore;
 
+  const content =
+    JSON.parse(activeEntry?.content)?.root?.children.length > 0
+      ? JSON.parse(activeEntry?.content)
+      : null;
+
   return (
     <div className="entry-page">
-      {activeEntry && (
-        <Editor
-          id={activeEntry.id}
-          content={activeEntry?.content ? JSON.parse(activeEntry.content) : null}
-        />
-      )}
+      {activeEntry && <Editor id={activeEntry.id} content={content} />}
     </div>
   );
 });

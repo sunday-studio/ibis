@@ -1,7 +1,7 @@
 import { createDir, writeTextFile } from '@tauri-apps/api/fs';
 import { redirect } from 'react-router-dom';
 
-import { ACCESS_TOKEN, SAFE_LOCATION_KEY } from '../constants';
+import { SAFE_LOCATION_KEY } from '../constants';
 import { getData } from '../storage';
 
 export const checkIfLoggedIn = async () => {

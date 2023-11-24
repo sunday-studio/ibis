@@ -1,7 +1,14 @@
 import { invoke } from '@tauri-apps/api';
-import { BaseDirectory, createDir, exists, readDir, writeTextFile } from '@tauri-apps/api/fs';
+import {
+  BaseDirectory,
+  createDir,
+  exists,
+  readDir,
+  readTextFile,
+  writeTextFile,
+} from '@tauri-apps/api/fs';
 
-import { USER_DATA } from '../constants';
+import { SAFE_LOCATION_KEY, USER_DATA } from '../constants';
 import { getData } from '../storage';
 
 type Data = {
@@ -18,8 +25,9 @@ class Meili {
   basePath = '';
 
   constructor() {
-    const data = getData(USER_DATA);
-    this.basePath = data?.user?.user_metadata?.safeDirectory;
+    const data = getData(SAFE_LOCATION_KEY);
+    this.basePath = data;
+    // this.basePath = data?.user?.user_metadata?.safeDirectory;
   }
 
   /**
@@ -53,18 +61,26 @@ class Meili {
     });
   }
 
-  async read() {
-    // console.log('url =>', this.basePath);
+  async readDirectoryContent(url = this.basePath) {
+    console.log(url);
     try {
-      const entries = await invoke('get_all_files', {
-        path: `/Users/cas/Desktop/opps-test/dev1-opps`,
+      const { files } = await invoke('get_all_files', {
+        path: url,
       });
 
-      // console.log(JSON.stringify(entries, null, 2));
-      console.log(entries);
+      return files;
     } catch (error) {
       console.log('error ->', error);
     }
+  }
+
+  async readFileContent(url: string) {
+    try {
+      const content = await readTextFile(url);
+
+      return JSON.parse(content);
+      console.log({ content });
+    } catch (error) {}
   }
 }
 
