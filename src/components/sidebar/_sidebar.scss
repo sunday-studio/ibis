@@ -73,14 +73,15 @@
     width: 100%;
     padding: 10px;
     overflow: scroll;
-    transition: border-color 0.2s ease-in-out;
+    transition: $ease-out-200;
     border-top: 1.5px solid transparent;
   }
 
   .header-section {
     padding: 10px;
-    background-color: var(--main-border);
+    background-color: var(--background-secondary);
     border-radius: 8px;
+    transition: $ease-out-200;
   }
 
   .section {
@@ -94,14 +95,12 @@
       transition: all 0.3s ease-in;
       padding: 4px 12px;
       border-radius: 8px;
-      color: var(--base-text-color);
 
       .icon {
         display: flex;
         justify-content: center;
         align-items: center;
         margin-right: 12px;
-        color: var(--base-text-color);
       }
 
       &-text {
@@ -314,7 +313,7 @@
       margin-top: 20px;
 
       &:hover {
-        box-shadow: var(--main-box-shadow), 0 0 0 1px var(--main-border);
+        box-shadow: var(--main-box-shadow), 0 0 0 1px var(--background-secondary);
         background-color: white;
       }
 

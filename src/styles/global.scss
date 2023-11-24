@@ -1,3 +1,6 @@
+// SCSS global variables
+$ease-out-200: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
 :root {
   // colors
   --main-background: #f4f4f5;
@@ -11,7 +14,23 @@
   --active-item-state: #d1d5db;
   --primary-color: #fc521f;
   --hover-shadow: #d1d5db;
-  --floating-panel-background: #d6d3d1;
+
+  // theme colors
+  --background-primary: #f4f4f5;
+  --background-secondary: #e7e5e4;
+  --background-tertiary: #f5f5f4;
+  --background-accent: #f5f5f4;
+  --background-floating: #ffffff;
+  --background-hover-floating: #DFDFE2;
+  --background-active-floating: #DFDFE2;
+  --background-inverse-primary: #292524;
+  --background-inverse-secondary: #6b7280;
+  --background-inverse-tertiary: #6b7280;
+  --background-inverse-accent: #4b5563;
+  --background-inverse-floating: #050505;
+  --text-primary: #292524;
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
 
   --drag-region-height: 30px;
   --main-box-shadow: 0 0.25rem 0.375rem -0.125rem #0003, 0 0 0 1px var(--main-border);
@@ -26,6 +45,36 @@
 }
 
 html[data-theme='night'] {
+  --main-background: rgb(32, 32, 32);
+  --panel-background: rgb(25, 25, 25);
+  --sidebar-background: rgb(25, 25, 25, 0.4);
+  --main-border: rgb(155, 155, 155, 0.3);
+  --base-text-color: #d4d4d8;
+  --hover-background: rgb(32, 32, 32);
+  --subtitle-text-color: #a1a1aa;
+  --active-item-state: #737373;
+  --primary-color: #fc521f;
+  --hover-shadow: rgb(155, 155, 155, 0.2);
+
+   // theme colors
+   --background-primary: rgb(32, 32, 32);
+   --background-secondary: rgb(155, 155, 155, 0.3);
+   --background-tertiary: rgb(25, 25, 25, 0.4);
+   --background-accent: #f5f5f4;
+   --background-floating: rgb(51, 51, 51, 1);
+   --background-hover-floating: #DFDFE2;
+   --background-active-floating: #DFDFE2;
+   --background-inverse-primary: #f3f4f6;
+   --background-inverse-secondary: #ffffff;
+   --background-inverse-tertiary: #6b7280;
+   --background-inverse-accent: #4b5563;
+   --background-inverse-floating: #f3f4f6;
+   --text-primary: #292524;
+   --text-secondary: #4b5563;
+   --text-tertiary: #6b7280;
+}
+
+html[data-theme='green'] {
   --main-background: rgb(32, 32, 32);
   --panel-background: rgb(25, 25, 25);
   --sidebar-background: rgb(25, 25, 25, 0.4);
@@ -86,6 +135,10 @@ ol[data-sonner-toaster='true'] {
   --width: 100px;
 }
 
+.icon-inner {
+  color: var(--background-inverse-secondary)
+}
+
 // start layout styling
 .page {
   width: 100%;
@@ -97,10 +150,11 @@ ol[data-sonner-toaster='true'] {
   height: 100vh;
 
   .layout-divider {
-    background-color: #e7e5e4;
+    background-color: var(--background-secondary);
     height: 100vh;
     width: 1px;
-    transition: all 0.3s ease-in;
+    transition: $ease-out-200;
+
 
     &:hover {
       padding: 0 2px;
@@ -118,8 +172,9 @@ ol[data-sonner-toaster='true'] {
     flex: 1;
     position: relative;
     overflow: hidden;
-    background-color: white;
-    transition: all 0.3s ease-in-out;
+    background-color: var(--background-primary);
+    transition: $ease-out-200;
+
 
     &__withborder {
       overflow-y: scroll;
@@ -144,8 +199,10 @@ ol[data-sonner-toaster='true'] {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    background-color: var(--sidebar-background);
+    background-color: var(--background-tertiary);
     width: 270px;
+    transition: $ease-out-200;
+
   }
 
   .editor-wrapper {
@@ -198,6 +255,10 @@ ol[data-sonner-toaster='true'] {
 .PopoverClose:focus {
   box-shadow: 0 0 0 2px var(--violet-7);
 }
+
+// Transitions
+
+
 
 @keyframes slideUpAndFade {
   from {

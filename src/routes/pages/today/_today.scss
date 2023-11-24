@@ -1,13 +1,17 @@
 .today-page {
   display: grid;
-  background-color: var(--main-background);
+  background-color: var(--background-primary);
   overflow: hidden;
   width: 60%;
   margin: 0 auto;
+  transition: $ease-out-200;
+
 
   .notes {
     grid-column: span 2;
-    background-color: var(--panel-background);
+    background-color: var(--background-primary);
+    transition: $ease-out-200;
+
   }
 
   .sider {
@@ -95,8 +99,13 @@
         align-items: center;
         border: 0;
         border-radius: 100%;
-        transition: all 0.3s ease;
-        border: 1.5px solid var(--main-border);
+        transition: $ease-out-200;
+        // border: 1.5px solid var(--main-border);
+        background-color: var(--background-secondary);
+
+        &-icon {
+
+        }
 
         &.action {
           width: auto;

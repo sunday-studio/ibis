@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 
+import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
 import clsx from 'clsx';
-import { BadgePlus, DoorOpen, Search, Sparkles, Trash2Icon } from 'lucide-react';
+import { BadgePlus, DoorOpen, Palette, Search, Sparkles, Trash2Icon } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +22,9 @@ const RouteLink = ({
 }) => {
   return (
     <div className="route" onClick={onClick}>
-      <div className="icon">{Icon && <Icon size={16} strokeWidth={2.5} />}</div>
+      <div className="icon">
+        {Icon && <Icon className="icon-inner" size={16} strokeWidth={2.5} />}
+      </div>
       <p className="route-text satoshi-font">{title}</p>
     </div>
   );
@@ -37,6 +40,14 @@ export const Sidebar = observer(() => {
   function goToPage(route: string) {
     entriesStore.removeActiveEntry();
     navigate(route);
+  }
+
+  function toggleTheme() {
+    if (appState.theme === 'night') {
+      appState.toggleTheme('light');
+    } else {
+      appState.toggleTheme('night');
+    }
   }
 
   return (
@@ -134,9 +145,22 @@ export const Sidebar = observer(() => {
           )}
         </div>
 
-        {/* <div className="sidebar-footer">
-          <UserTile />
-        </div> */}
+        <div
+          className="sidebar-footer"
+          style={{
+            padding: '0 10px',
+          }}
+        >
+          <div
+            style={{
+              padding: '10px 12px',
+            }}
+            onClick={toggleTheme}
+          >
+            <Palette color="#6b7280" size={16} strokeWidth={2.5} />
+          </div>
+          {/* <UserTile /> */}
+        </div>
       </div>
     </>
   );

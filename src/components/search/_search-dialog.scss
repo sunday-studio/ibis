@@ -55,6 +55,7 @@
   background-color: var(--floating-panel-background);
   border-radius: 12px;
   border: 0;
+  backdrop-filter: blur(20px) saturate(190%) contrast(70%) brightness(80%);
 
   .search-input {
     display: flex;

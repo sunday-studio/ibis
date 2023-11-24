@@ -6,7 +6,7 @@ import { getData, setData } from '../lib/storage';
 type Theme = 'light' | 'night' | 'system';
 
 const DEFAULT_APPSTATE = {
-  theme: 'night',
+  theme: 'light',
   sidebarIsOpen: true,
 };
 

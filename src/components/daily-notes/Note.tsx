@@ -25,14 +25,14 @@ const DailyPage = observer(() => {
         <div className="section-header">
           <Popover.Trigger asChild>
             <button className="icon" onClick={(e) => e.stopPropagation()}>
-              <Calendar size={14} strokeWidth={2.3} />
+              <Calendar className="icon-inner" size={14} strokeWidth={2.3} />
             </button>
           </Popover.Trigger>
           <button className="icon" onClick={() => dailyEntryState.goToPreviousDay()}>
-            <ChevronLeft size={16} strokeWidth={2.5} />
+            <ChevronLeft className="icon-inner" size={16} strokeWidth={2.5} />
           </button>
           <button className="icon" onClick={() => dailyEntryState.goToNextDay()}>
-            <ChevronRight size={16} strokeWidth={2.5} />
+            <ChevronRight className="icon-inner" size={16} strokeWidth={2.5} />
           </button>
           {/* <button className="action">Todos</button> */}
           {/* <button className="action">Calendar</button> */}
