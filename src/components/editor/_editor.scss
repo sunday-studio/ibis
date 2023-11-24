@@ -152,11 +152,12 @@ code > * {
 
 .editor-heading-h1 {
   font-size: 24px;
-  color: rgb(5, 5, 5);
+  color: var(--text-primary);
   font-weight: 600;
   margin: 0;
   margin-bottom: 12px;
   padding: 0;
+  transition: $ease-out-200;
 }
 
 .editor-heading-h2 {
@@ -167,6 +168,8 @@ code > * {
   margin-top: 10px;
   padding: 0;
   text-transform: uppercase;
+  transition: $ease-out-200;
+
 }
 
 .editor-quote {
@@ -178,18 +181,24 @@ code > * {
   border-left-width: 4px;
   border-left-style: solid;
   padding-left: 16px;
+  transition: $ease-out-200;
+
 }
 
 .editor-list-ol {
   padding: 0;
   margin: 0;
   margin-left: 16px;
+  transition: $ease-out-200;
+
 }
 
 .editor-list-ul {
   padding: 0;
   margin: 0;
   margin-left: 0;
+  transition: $ease-out-200;
+
 }
 
 .editor-listitem {
