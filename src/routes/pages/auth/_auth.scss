@@ -20,7 +20,6 @@
         margin-bottom: 15px;
         font-size: 30px;
         color: var(--base-text-color);
-        font-family: var(--favorit-font);
       }
     }
 
@@ -77,9 +76,11 @@
         border: 1.5px solid var(--main-border);
         background-color: transparent;
         color: var(--base-text-color);
+        padding: 10px;
+        border-radius: 8px;
+        font-family: 'Geist';
 
         &::placeholder {
-          font-family: var(--favorit-font);
           font-size: 14px;
         }
 

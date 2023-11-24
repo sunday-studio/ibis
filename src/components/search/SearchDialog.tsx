@@ -1,3 +1,4 @@
+import { loadAllEntries } from '@/lib/data-engine/syncing-helpers';
 import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
 import { Command } from 'cmdk';
@@ -74,7 +75,9 @@ export const SearchDialog = observer(() => {
 
     {
       name: 'Sync data locally',
-      onClick: () => {},
+      onClick: () => {
+        loadAllEntries();
+      },
       icon: MonitorDown,
     },
   ];

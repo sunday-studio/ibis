@@ -1,21 +1,36 @@
 [package]
-name = "opps"
-version = "0.0.0"
-description = "personal live app"
 authors = ["casprine"]
-license = ""
-repository = ""
+description = "personal live app"
 edition = "2021"
+license = ""
+name = "opps"
+repository = ""
+version = "0.0.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.4", features = [] }
+tauri-build = {version = "1.4", features = [] }
 
 [dependencies]
-tauri = { version = "1.4", features = [ "global-shortcut-all", "path-all", "fs-all", "dialog-all", "window-minimize", "window-start-dragging", "window-close", "window-show", "window-unminimize", "window-hide", "window-maximize", "window-unmaximize", "shell-open"] }
-serde = { version = "1.0", features = ["derive"] }
+serde = {version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+tauri = {version = "1.4", features = [
+  "path-all",
+  "global-shortcut-all",
+  "fs-all",
+  "dialog-all",
+  "window-minimize",
+  "window-start-dragging",
+  "window-close",
+  "window-show",
+  "window-unminimize",
+  "window-hide",
+  "window-maximize",
+  "window-unmaximize",
+  "shell-open",
+] }
+walkdir = "2"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

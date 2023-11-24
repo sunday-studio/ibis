@@ -39,6 +39,10 @@ export const syncAllEntriesToDisk = async () => {
   }
 };
 
+export const loadAllEntries = async () => {
+  meili.read();
+};
+
 const generateEntryPath = (dateString: string, basePath: string): [string, string] => {
   // Convert the provided dateString to a JavaScript Date object.
   const date = new Date(dateString);

@@ -1,15 +1,16 @@
-import { createDir } from '@tauri-apps/api/fs';
+import { createDir, writeTextFile } from '@tauri-apps/api/fs';
 import { redirect } from 'react-router-dom';
 
-import { ACCESS_TOKEN } from '../constants';
+import { ACCESS_TOKEN, SAFE_LOCATION_KEY } from '../constants';
 import { getData } from '../storage';
 
 export const checkIfLoggedIn = async () => {
-  const hasToken = Boolean(await getData(ACCESS_TOKEN));
+  const safe = Boolean(await getData(SAFE_LOCATION_KEY));
 
-  if (hasToken) {
+  if (safe) {
     return null;
   }
+
   return redirect('/auth');
 };
 
@@ -32,11 +33,21 @@ export const generateNewDirectory = async (name: string) => {
     'Dec',
   ];
 
+  const files = ['index.json', 'tags.json'];
+
   // create months
   for (let index = 0; index < months.length; index++) {
     await createDir(`${basePath}/${months[index].toLowerCase()}`, { recursive: true });
   }
 
   // create today directory
-  await createDir(`${basePath}/today`);
+  await createDir(`${basePath}/today`, { recursive: true });
+
+  // create highlights directory
+  await createDir(`${basePath}/highlights`, { recursive: true });
+
+  // create initial files
+  for (let index = 0; index < files.length; index++) {
+    await writeTextFile(`${name}/${files[index]}`, JSON.stringify({}));
+  }
 };

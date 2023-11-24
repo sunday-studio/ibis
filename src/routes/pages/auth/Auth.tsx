@@ -5,6 +5,7 @@ import { supabase } from '@/lib/auth/supabase';
 import { ACCESS_TOKEN, USER_DATA } from '@/lib/constants';
 import { setData } from '@/lib/storage';
 import { open } from '@tauri-apps/api/dialog';
+import { appConfigDir } from '@tauri-apps/api/path';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -21,7 +22,10 @@ const Onboarding = () => {
   const openPicker = async () => {
     const selected = await open({
       directory: true,
+      defaultPath: await appConfigDir(),
+      recursive: true,
     });
+
     setLocation(selected as unknown as string);
   };
 
@@ -88,7 +92,7 @@ const Onboarding = () => {
 };
 
 const AuthPage = () => {
-  const [type, setType] = useState<Views>('login');
+  const [type, setType] = useState<Views>('onboarding');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 

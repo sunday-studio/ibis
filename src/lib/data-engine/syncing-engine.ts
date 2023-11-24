@@ -1,4 +1,5 @@
-import { createDir, exists, writeTextFile } from '@tauri-apps/api/fs';
+import { invoke } from '@tauri-apps/api';
+import { BaseDirectory, createDir, exists, readDir, writeTextFile } from '@tauri-apps/api/fs';
 
 import { USER_DATA } from '../constants';
 import { getData } from '../storage';
@@ -50,6 +51,20 @@ class Meili {
       // Call the writeFileContentToDisk function for each element, passing the date string and content.
       this.writeFileContentToDisk(element.dateString, element.content, dirFn);
     });
+  }
+
+  async read() {
+    // console.log('url =>', this.basePath);
+    try {
+      const entries = await invoke('get_all_files', {
+        path: `/Users/cas/Desktop/opps-test/dev1-opps`,
+      });
+
+      // console.log(JSON.stringify(entries, null, 2));
+      console.log(entries);
+    } catch (error) {
+      console.log('error ->', error);
+    }
   }
 }
 

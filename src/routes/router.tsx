@@ -4,7 +4,8 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import Root from './Root';
 import TrashPage from './pages/TrashPage';
-import AuthPage from './pages/auth/Auth';
+// import AuthPage from './pages/auth/Auth';
+import { Onboarding } from './pages/auth/Onboarding';
 import EntryPage from './pages/entry/EntryPage';
 import SettingsPage from './pages/settings/Settings';
 import Today from './pages/today/Today';
@@ -46,7 +47,7 @@ export const router = createBrowserRouter([
 
       {
         path: '/auth',
-        element: <AuthPage />,
+        element: <Onboarding />,
       },
     ],
   },
