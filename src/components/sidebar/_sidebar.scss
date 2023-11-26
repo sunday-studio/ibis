@@ -445,3 +445,39 @@
     background-color: #e7e5e4;
   }
 }
+
+.saving-indicator {
+  width: 28px;
+  height: 28px;
+  background-color: #e7e5e4;
+  margin-left: auto;
+  margin-right: 4px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 8px;
+  cursor: pointer;
+
+  .loading-indicator {
+    -webkit-animation: spin 1.5s linear infinite;
+    -moz-animation: spin 1.5s linear infinite;
+    animation: spin 1.5s linear infinite;
+  }
+}
+
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

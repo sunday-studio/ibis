@@ -1,12 +1,5 @@
 import { invoke } from '@tauri-apps/api';
-import {
-  BaseDirectory,
-  createDir,
-  exists,
-  readDir,
-  readTextFile,
-  writeTextFile,
-} from '@tauri-apps/api/fs';
+import { createDir, exists, readTextFile, writeTextFile } from '@tauri-apps/api/fs';
 
 import { SAFE_LOCATION_KEY, USER_DATA } from '../constants';
 import { getData } from '../storage';
