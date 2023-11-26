@@ -239,7 +239,7 @@ const AuthPage = () => {
     <div className="page-container auth-page">
       <div className="form-wrapper">
         <div className="form-wrapper-header">
-          <h2>Opps</h2>
+          <h2>Ibis</h2>
           <p>Ditch all your productivity apps for me.</p>
         </div>
         {viewToRender?.[type]}

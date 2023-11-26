@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "Opps",
+    "productName": "Ibis",
     "version": "0.0.0"
   },
   "tauri": {
@@ -76,7 +76,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "Opps",
+        "title": "Ibis",
         "width": 1200,
         "height": 800,
         "titleBarStyle": "Overlay",
