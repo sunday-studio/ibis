@@ -88,6 +88,11 @@ class Entries {
     this.activeEntryTitle = entry.title;
   }
 
+  removeActiveEntry() {
+    this.activeEntry = null;
+    this.activeEntryTitle = null;
+  }
+
   saveEditedContent(editorState) {
     const entry: Entry = {
       ...this.activeEntry,
