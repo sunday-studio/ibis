@@ -41,7 +41,7 @@ class DailyStore {
       if (!acc[obj.content?.date]) {
         acc[obj.content?.date] = {};
       }
-      acc[obj.content?.date] = JSON.parse(obj.noteContent);
+      acc[obj.content?.date] = JSON.parse(obj.content?.noteContent);
       return acc;
     }, {});
 

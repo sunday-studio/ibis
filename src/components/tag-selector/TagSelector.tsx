@@ -30,26 +30,6 @@ export const TagSelector = observer((props: TagSelectorProps) => {
         options={tagsState.tags}
         {...rest}
       />
-
-      {/* {isCreatable ? (
-        <CreatableSelect
-          value={valueTags}
-          onCreateOption={(newValue: string) => {
-            const id = tagsState.createNewTag(newValue);
-            onTagSelect([id]);
-          }}
-          isMulti
-          onChange={(newValue) => {
-            const ids = newValue.map((option) => option.value);
-            // console.log({ ids });
-            onTagSelect(ids);
-          }}
-          options={tagsState.tags}
-        />
-      ) 
-      : (
-        <Select isMulti options={tagsState.tags} />
-      )} */}
     </div>
   );
 });

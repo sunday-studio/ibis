@@ -164,13 +164,15 @@ class Entries {
   }
 
   updateActiveEntryTags(tags: string[]) {
-    const currentTags = this?.activeEntry?.tags ?? [];
-
     const updateEntry = {
       ...this.activeEntry,
       tags: tags?.filter(Boolean),
     };
 
+    saveFileToDisk({
+      type: 'entry',
+      data: updateEntry,
+    });
     const updatedEntries = this.findAndReplaceEntry(updateEntry);
     this.activeEntry = updateEntry;
     setData(CONTENT_KEY, updatedEntries);
