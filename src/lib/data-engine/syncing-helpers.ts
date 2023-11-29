@@ -99,12 +99,14 @@ export const loadDirectoryContent = async (safeURL: string) => {
     return acc;
   });
 
-  console.log({ groupedData, AS: groupedData['tags.json'] });
-
   // load data into localStores
-  entriesStore.loadLocalData(groupedData.entries);
-  dailyEntryState.localLocalData(groupedData.dailyNotes);
-  tagsState.loadLocalData(groupedData['tags.json']);
+  try {
+    entriesStore.loadLocalData(groupedData.entries);
+    dailyEntryState.localLocalData(groupedData.dailyNotes);
+    tagsState.loadLocalData(groupedData['tags.json']?.[0]);
+  } catch (error) {
+    console.log('error =>', error);
+  }
 };
 
 const generateEntryPath = (dateString: string, basePath: string): [string, string] => {

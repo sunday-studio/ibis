@@ -57,6 +57,8 @@ class Tags {
   loadLocalData(tags: any) {
     const localTags = tags?.content || {};
     this.tagsMap = localTags;
+
+    console.log('localTags => ', localTags);
   }
 
   make() {

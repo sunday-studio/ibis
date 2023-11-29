@@ -15,10 +15,13 @@ export const checkIfLoggedIn = async () => {
 };
 
 const createNewDirectory = async (path: string) => {
-  const directoryExist = exists(path);
+  const directoryExist = await exists(path);
+
   if (!directoryExist) {
-    createDir(path, { recursive: true });
+    await createDir(path, { recursive: true });
   }
+
+  return;
 };
 
 export const generateNewDirectory = async (name: string) => {
@@ -44,7 +47,7 @@ export const generateNewDirectory = async (name: string) => {
 
   // create months
   for (let index = 0; index < months.length; index++) {
-    await createDir(`${basePath}/${months[index].toLowerCase()}`);
+    await createNewDirectory(`${basePath}/${months[index].toLowerCase()}`);
   }
 
   // create today directory
@@ -60,5 +63,6 @@ export const generateNewDirectory = async (name: string) => {
     if (!fileExist) {
       await writeTextFile(`${name}/${files[index]}`, JSON.stringify({}));
     }
+    return;
   }
 };

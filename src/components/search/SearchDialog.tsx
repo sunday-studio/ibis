@@ -1,7 +1,11 @@
 import { useCallback } from 'react';
 
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
-import { syncAllEntriesToDisk, syncAllTodaysToDisk } from '@/lib/data-engine/syncing-helpers';
+import {
+  loadDirectoryContent,
+  syncAllEntriesToDisk,
+  syncAllTodaysToDisk,
+} from '@/lib/data-engine/syncing-helpers';
 import { clearData } from '@/lib/storage';
 import { appState } from '@/store/app-state';
 import { entriesStore } from '@/store/entries';
@@ -14,6 +18,7 @@ import {
   MonitorDown,
   MonitorUp,
   Palette,
+  RefreshCcwDot,
   Search,
   Settings,
   Sparkles,
@@ -42,13 +47,13 @@ export const SearchDialog = observer(() => {
   const { showSearchModal } = searchStore;
   const navigate = useNavigate();
 
-  const syncToDevice = useCallback(async () => {
-    // TODO: optimize to only sync items that have changed since last sync
-    await syncAllTodaysToDisk();
-    await syncAllEntriesToDisk();
+  // const syncToDevice = useCallback(async () => {
+  //   // TODO: optimize to only sync items that have changed since last sync
+  //   await syncAllTodaysToDisk();
+  //   await syncAllEntriesToDisk();
 
-    toast.success('All entries synced');
-  }, [entriesStore]);
+  //   toast.success('All entries synced');
+  // }, [entriesStore]);
 
   const defaultActions: ActionProps[] = [
     {
@@ -90,12 +95,11 @@ export const SearchDialog = observer(() => {
     },
 
     {
-      name: 'Sync data locally',
+      name: 'Reload local data',
       onClick: () => {
-        syncToDevice();
-        // loadDirectoryContent();
+        loadDirectoryContent();
       },
-      icon: MonitorDown,
+      icon: RefreshCcwDot,
     },
     {
       name: 'Load new safe',
