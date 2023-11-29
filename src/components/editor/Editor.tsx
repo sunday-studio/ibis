@@ -1,6 +1,7 @@
 // @ts-nocheck
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { tagsState } from '@/store/tags-state';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
@@ -19,12 +20,9 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { useClickAway } from '@uidotdev/usehooks';
-import { formatDistance } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { formatDateString } from '../../lib/utils';
 import AutoLinkPlugin, { validateUrl } from '../../plugins/AutolinkPlugin';
 import ClickableLinkPlugin from '../../plugins/ClickableLinkPlugin';
 import CodeHighlightPlugin from '../../plugins/CodeHighlightPlugin';
@@ -33,6 +31,7 @@ import SlashCommandPickerPlugin from '../../plugins/SlashCommandPicker';
 import TabFocusPlugin from '../../plugins/TabFocusPlugin';
 import { theme } from '../../plugins/theme';
 import { entriesStore } from '../../store/entries';
+import { TagSelector } from '../tag-selector/TagSelector';
 
 function Placeholder() {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -56,32 +55,21 @@ function onError(error) {
 const TagEditor = observer(() => {
   const entryStore = entriesStore;
   const { activeEntry } = entryStore;
+  const [showTags, setShowTags] = useState(false);
 
-  const [showInput, setShowInput] = useState(false);
-  const [tags, setTags] = useState(activeEntry?.tags ?? '');
+  const tags = useMemo(() => {
+    return activeEntry?.tags.map((t) => tagsState.tagsMap[t]).filter(Boolean);
+  }, [activeEntry?.tags, tagsState.tagsMap]);
 
-  const inputRef = useClickAway(() => {
-    handleOnBlur();
-  });
-
-  useEffect(() => {
-    if (tags.length <= 0) {
-      setShowInput(true);
-    }
-  }, [tags]);
-
-  const handleOnBlur = () => {
-    setShowInput(false);
+  const onTagSelectorBlur = () => {
+    setShowTags(true);
   };
-
-  const tagsToRender = tags.replace(/\s/g, '').split(',');
-
-  const showTags = !showInput && tags.length > 0;
 
   return (
     <div className="value tags">
       {showTags ? (
         <div
+          onClick={() => setShowTags(false)}
           style={{
             display: 'flex',
             gap: 5,
@@ -89,28 +77,18 @@ const TagEditor = observer(() => {
             alignItems: 'center',
             flexWrap: 'wrap',
           }}
-          onClick={() => setShowInput(true)}
         >
-          {tagsToRender.map((o, i) => (
-            <p className="favorit-font" key={i}>
-              #{o}
-            </p>
-          ))}
+          {tags?.map((tag: any) => {
+            return <p key={tag}>#{tag.label}</p>;
+          })}
         </div>
-      ) : null}
-
-      {!showTags && (
-        <input
-          type="text favorit-font"
-          value={tags}
-          onBlur={handleOnBlur}
-          ref={inputRef}
-          className="tag-input"
-          onChange={(e) => {
-            setTags(e.target.value);
-            entriesStore.updateActiveEntryTags(e.target.value);
+      ) : (
+        <TagSelector
+          onTagSelect={(selectedTags: string[]) => {
+            entriesStore.updateActiveEntryTags(selectedTags);
           }}
-          placeholder="add types with comma separated..."
+          tags={tags}
+          onBlur={onTagSelectorBlur}
         />
       )}
     </div>
@@ -124,54 +102,61 @@ const EntryHeader = observer(() => {
 
   return (
     <div className="entry-header">
-      <div className="row">
-        <div className="label">
-          <p>Title:</p>
-        </div>
-        <div className="value">
-          <input
-            value={entryStore.activeEntryTitle}
-            onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
-            className="title-input"
-            placeholder="Untitled"
-          />
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="label">
-          <p>Tags:</p>
-        </div>
+      <h2 className="entry-title">{activeEntry?.title}</h2>
+      <div className="tags">
         <TagEditor />
       </div>
-
-      <div className="row">
-        <div className="label">
-          <p>Date created:</p>
-        </div>
-        <div className="value">
-          <p>{formatDateString(new Date(activeEntry.createdAt), 'dd-MM-y')}</p>
-        </div>
-      </div>
-
-      {activeEntry.updatedAt && (
-        <div className="row">
-          <div className="label">
-            <p>Last edited:</p>
-          </div>
-          <div className="value">
-            <p>
-              {formatDistance(new Date(activeEntry.updatedAt), new Date(), { addSuffix: true })}
-            </p>
-          </div>
-        </div>
-      )}
-
-      <div className="hr-divider">
-        <div></div>
-        <div></div>
-      </div>
     </div>
+
+    // <div className="entry-header">
+    //   <div className="row">
+    //     <div className="label">
+    //       <p>Title:</p>
+    //     </div>
+    //     <div className="value">
+    //       <input
+    //         value={entryStore.activeEntryTitle}
+    //         onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
+    //         className="title-input"
+    //         placeholder="Untitled"
+    //       />
+    //     </div>
+    //   </div>
+
+    //   <div className="row">
+    //     <div className="label">
+    //       <p>Tags:</p>
+    //     </div>
+    //     <TagEditor />
+    //   </div>
+
+    //   <div className="row">
+    //     <div className="label">
+    //       <p>Date created:</p>
+    //     </div>
+    //     <div className="value">
+    //       <p>{formatDateString(new Date(activeEntry.createdAt), 'dd-MM-y')}</p>
+    //     </div>
+    //   </div>
+
+    //   {activeEntry.updatedAt && (
+    //     <div className="row">
+    //       <div className="label">
+    //         <p>Last edited:</p>
+    //       </div>
+    //       <div className="value">
+    //         <p>
+    //           {formatDistance(new Date(activeEntry.updatedAt), new Date(), { addSuffix: true })}
+    //         </p>
+    //       </div>
+    //     </div>
+    //   )}
+
+    //   <div className="hr-divider">
+    //     <div></div>
+    //     <div></div>
+    //   </div>
+    // </div>
   );
 });
 

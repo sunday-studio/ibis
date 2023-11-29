@@ -1,5 +1,12 @@
-import { loadAllEntries } from '@/lib/data-engine/syncing-helpers';
+import { useCallback } from 'react';
+
+import {
+  loadAllEntries,
+  syncAllEntriesToDisk,
+  syncAllTodaysToDisk,
+} from '@/lib/data-engine/syncing-helpers';
 import { appState } from '@/store/app-state';
+import { entriesStore } from '@/store/entries';
 import { searchStore } from '@/store/search';
 import { Command } from 'cmdk';
 import {
@@ -14,6 +21,7 @@ import {
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 type ActionProps = {
   name: string;
@@ -34,6 +42,15 @@ const ActionItem = (props: ActionProps) => {
 export const SearchDialog = observer(() => {
   const { showSearchModal } = searchStore;
   const navigate = useNavigate();
+
+  const syncToDevice = useCallback(async () => {
+    // TODO: optimize to only sync items that have changed since last sync
+    await syncAllTodaysToDisk();
+    await syncAllEntriesToDisk();
+
+    toast.success('All entries synced');
+  }, [entriesStore]);
+
   const defaultActions: ActionProps[] = [
     {
       name: 'New Entry',
@@ -76,6 +93,7 @@ export const SearchDialog = observer(() => {
     {
       name: 'Sync data locally',
       onClick: () => {
+        syncToDevice();
         // loadAllEntries();
       },
       icon: MonitorDown,

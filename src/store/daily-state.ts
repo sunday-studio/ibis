@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 import { addDays, format, subDays } from 'date-fns';
 import { makeAutoObservable } from 'mobx';
 import { nanoid } from 'nanoid';
@@ -10,7 +11,7 @@ export function getDateInStringFormat(date: Date, pattern = 'y-MM-dd') {
   return format(date, pattern);
 }
 
-type DailyEntry = {
+export type DailyEntry = {
   id: string;
   noteContent?: string | null;
   todos: Todo[] | [];
@@ -40,9 +41,10 @@ class DailyStore {
       if (!acc[obj.content?.date]) {
         acc[obj.content?.date] = {};
       }
-      acc[obj.content?.date] = obj.content;
+      acc[obj.content?.date] = JSON.parse(obj.content);
       return acc;
     }, {});
+
     const today = getDateInStringFormat(new Date());
     let entryForToday: DailyEntry = allEntries[today];
 
@@ -50,7 +52,6 @@ class DailyStore {
       entryForToday = {
         id: nanoid(),
         noteContent: null,
-        todos: [],
         date: today,
       };
     }
@@ -83,6 +84,11 @@ class DailyStore {
       ...(this.dailyEntry as DailyEntry),
       noteContent: JSON.stringify(editorState),
     };
+
+    saveFileToDisk({
+      type: 'today',
+      data: updatedEntry,
+    });
 
     this.dailyEntry = updatedEntry;
     this.dailyEntries[updatedEntry.date] = updatedEntry;

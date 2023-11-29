@@ -1,9 +1,21 @@
-import { dailyEntryState } from '@/store/daily-state';
-import { entriesStore } from '@/store/entries';
+import { DailyEntry, dailyEntryState } from '@/store/daily-state';
+import { Entry, entriesStore } from '@/store/entries';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
 import { meili } from './syncing-engine';
+
+type EntryType = {
+  type: 'entry';
+  data: Entry;
+};
+
+type DailyEntryType = {
+  type: 'today';
+  data: DailyEntry;
+};
+
+type SaveFileToDiskProps = EntryType | DailyEntryType;
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -82,8 +94,8 @@ export const loadAllEntries = async (safeURL: string) => {
   });
 
   // load data into localStores
-  dailyEntryState.localLocalData(groupedData.dailyNotes);
   entriesStore.loadLocalData(groupedData.entries);
+  dailyEntryState.localLocalData(groupedData.dailyNotes);
 };
 
 const generateEntryPath = (dateString: string, basePath: string): [string, string] => {
@@ -116,4 +128,23 @@ const generateTodayPath = (dateString: string, basePath: string): [string, strin
   const dirPath = `${basePath}/${year}/Today`;
 
   return [dirPath, filename];
+};
+
+export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
+  const { type, data } = props;
+
+  switch (type) {
+    case 'entry':
+      try {
+        await meili.writeFileContentToDisk(data?.createdAt, data, generateEntryPath);
+      } catch (error) {}
+      break;
+
+    case 'today':
+      await meili.writeFileContentToDisk(data?.date, data, generateTodayPath);
+      break;
+
+    default:
+      break;
+  }
 };

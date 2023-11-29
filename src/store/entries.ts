@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 import { makeAutoObservable, runInAction } from 'mobx';
 import { nanoid } from 'nanoid';
 
@@ -14,7 +15,7 @@ export interface Entry {
   createdAt: string;
   updatedAt?: string;
   isDuplicate?: boolean;
-  tags?: string;
+  tags?: string[];
 }
 
 class Entries {
@@ -101,6 +102,11 @@ class Entries {
       title: this.activeEntryTitle!,
     } as Entry;
 
+    saveFileToDisk({
+      type: 'entry',
+      data: entry,
+    });
+
     const updatedEntries = this.findAndReplaceEntry(entry);
 
     this.entries = updatedEntries;
@@ -113,7 +119,8 @@ class Entries {
       createdAt: new Date().toISOString(),
       title: '',
       id: nanoid(),
-      tags: '',
+      // TODO: always set the first tag to private
+      tags: [''],
     };
 
     const updatedEntries = [DEFAULT_ENTRY, ...this.entries];
@@ -136,6 +143,7 @@ class Entries {
       this.saveEditedContent(editorState);
       return;
     }
+
     const entry = {
       id: nanoid(),
       createdAt: new Date().toISOString(),
@@ -144,24 +152,28 @@ class Entries {
       title: this.activeEntryTitle!,
     };
 
+    saveFileToDisk({
+      type: 'entry',
+      data: entry,
+    });
+
     const updatedEntries = [entry, ...this.entries];
 
     setData(CONTENT_KEY, updatedEntries);
     this.entries = updatedEntries;
   }
 
-  updateActiveEntryTags(tags: string) {
+  updateActiveEntryTags(tags: string[]) {
+    const currentTags = this?.activeEntry?.tags ?? [];
+
     const updateEntry = {
       ...this.activeEntry,
-      tags,
+      tags: tags?.filter(Boolean),
     };
 
     const updatedEntries = this.findAndReplaceEntry(updateEntry);
     this.activeEntry = updateEntry;
-
     setData(CONTENT_KEY, updatedEntries);
-
-    // this;
   }
 
   deleteEntry(entryId: string) {
@@ -218,11 +230,6 @@ class Entries {
   updateActiveEntireTitle(title: string) {
     this.activeEntryTitle = title;
     this.saveTitle();
-  }
-
-  removeActiveEntry() {
-    this.activeEntry = null;
-    this.activeEntryTitle = '';
   }
 
   restoreEntry(entryId: string) {

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
@@ -7,7 +7,7 @@ import { BadgePlus, DoorOpen, Palette, Search, Sparkles, Trash2Icon } from 'luci
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
-import { entriesStore } from '../../store/entries';
+import { Entry, entriesStore } from '../../store/entries';
 import { SidebarEntry } from './SidebarEntry';
 import { SidebarHeader } from './SidebarHeader';
 
@@ -50,6 +50,18 @@ export const Sidebar = observer(() => {
     }
   }
 
+  const pinnedEntries = useMemo(() => {
+    return entriesStore?.pinnedEntries.sort((a: Entry, b: Entry) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }, [entriesStore?.pinnedEntries]);
+
+  const privateEntries = useMemo(() => {
+    return entriesStore?.privateEntries.sort((a: Entry, b: Entry) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }, [entriesStore?.privateEntries]);
+
   return (
     <>
       <div className="sidebar">
@@ -82,14 +94,14 @@ export const Sidebar = observer(() => {
         </div>
 
         <div className={clsx('sidebar-entries', {})}>
-          {Boolean(entriesStore.pinnedEntriesId.length) && (
+          {Boolean(pinnedEntries?.length) && (
             <div className="section">
               <div className="header">
                 <p className="title cabinet-font">Pinned</p>
               </div>
 
               <div className="entries">
-                {entriesStore?.pinnedEntries?.map((entry) => {
+                {pinnedEntries?.map((entry) => {
                   return (
                     <SidebarEntry
                       selectEntry={(entry) => {
@@ -109,7 +121,7 @@ export const Sidebar = observer(() => {
             </div>
           )}
 
-          {entriesStore?.privateEntries.length > 0 && (
+          {privateEntries.length > 0 && (
             <div className="section">
               <div className="header">
                 <p className="title satoshi-font">Private</p>
@@ -122,7 +134,7 @@ export const Sidebar = observer(() => {
                 ></div>
               </div>
               <div className="entries">
-                {entriesStore?.privateEntries?.map((entry) => {
+                {privateEntries?.map((entry) => {
                   return (
                     <SidebarEntry
                       selectEntry={(entry) => {

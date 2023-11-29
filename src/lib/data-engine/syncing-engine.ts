@@ -55,7 +55,6 @@ class Meili {
   }
 
   async readDirectoryContent(url = this.basePath) {
-    console.log(url);
     try {
       const { files } = await invoke('get_all_files', {
         path: url,
