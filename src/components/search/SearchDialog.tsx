@@ -2,11 +2,10 @@ import { useCallback } from 'react';
 
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import {
-  loadDirectoryContent,
-  syncAllEntriesToDisk,
-  syncAllTodaysToDisk,
+  loadDirectoryContent, // syncAllEntriesToDisk,
+  // syncAllTodaysToDisk,
 } from '@/lib/data-engine/syncing-helpers';
-import { clearData } from '@/lib/storage';
+import { clearData, getData } from '@/lib/storage';
 import { appState } from '@/store/app-state';
 import { entriesStore } from '@/store/entries';
 import { searchStore } from '@/store/search';
@@ -97,7 +96,8 @@ export const SearchDialog = observer(() => {
     {
       name: 'Reload local data',
       onClick: () => {
-        loadDirectoryContent();
+        const SAFEURL = getData(SAFE_LOCATION_KEY);
+        loadDirectoryContent(SAFEURL);
       },
       icon: RefreshCcwDot,
     },
