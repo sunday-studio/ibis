@@ -1,3 +1,4 @@
+import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 import { makeAutoObservable } from 'mobx';
 import { nanoid } from 'nanoid';
 
@@ -6,22 +7,7 @@ type Tag = {
   value: string;
 };
 
-type TagsMap = Record<string, Tag>;
-
-const DEFAULT_TAGS: Tag[] = [
-  {
-    value: 'private_5SggNEXrXhrhh6bA_9veW',
-    label: 'Private',
-  },
-  {
-    value: 'today_hzwpYBFRBIfc3YsgGi1cx',
-    label: 'Today',
-  },
-  {
-    value: 'highlights_0bDK41N9R5a0G5EOWl5Nc',
-    label: 'Highlights',
-  },
-];
+export type TagsMap = Record<string, Tag>;
 
 const DEFAULT_MAP_TAGS = {
   private_5SggNEXrXhrhh6bA_9veW: {
@@ -39,11 +25,14 @@ const DEFAULT_MAP_TAGS = {
 };
 
 class Tags {
-  tags: Tag[] | [] = DEFAULT_TAGS;
   tagsMap: TagsMap = DEFAULT_MAP_TAGS;
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  get tags() {
+    return Object.values(this.tagsMap);
   }
 
   createNewTag(tagLabel: string) {
@@ -54,25 +43,26 @@ class Tags {
       label: tagLabel,
     };
 
-    this.tags = [
-      ...this.tags,
-      {
-        value,
-        label: tagLabel,
-      },
-    ];
-
     this.tagsMap[value] = newTag;
+
+    saveFileToDisk({
+      type: 'tags',
+      // @ts-ignore
+      data: this.tagsMap,
+    });
 
     return value;
   }
 
+  loadLocalData(tags: any) {
+    const localTags = tags?.content || {};
+    this.tagsMap = localTags;
+  }
+
   make() {
     const tags = ['Private', 'Today', 'Highlights'];
-
     const s = tags.map((t) => {
       const value = `${t.replace(' ', '-').toLocaleLowerCase()}_${nanoid()}`;
-
       this.tagsMap[value] = {
         value,
         label: t,

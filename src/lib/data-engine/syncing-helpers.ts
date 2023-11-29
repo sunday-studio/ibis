@@ -1,5 +1,6 @@
 import { DailyEntry, dailyEntryState } from '@/store/daily-state';
 import { Entry, entriesStore } from '@/store/entries';
+import { tagsState } from '@/store/tags-state';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
@@ -15,7 +16,12 @@ type DailyEntryType = {
   data: DailyEntry;
 };
 
-type SaveFileToDiskProps = EntryType | DailyEntryType;
+type TagsType = {
+  type: 'tags';
+  data: TagsType;
+};
+
+type SaveFileToDiskProps = EntryType | DailyEntryType | TagsType;
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -72,7 +78,7 @@ const getFileType = (url: string, baseURL: string) => {
   return cleanedurl.split('/')[splitURL.length - 1];
 };
 
-export const loadAllEntries = async (safeURL: string) => {
+export const loadDirectoryContent = async (safeURL: string) => {
   const flatEntries = await meili.readDirectoryContent(safeURL);
 
   const promises = flatEntries.map(async (entry: string) => {
@@ -93,9 +99,12 @@ export const loadAllEntries = async (safeURL: string) => {
     return acc;
   });
 
+  console.log({ groupedData, AS: groupedData['tags.json'] });
+
   // load data into localStores
   entriesStore.loadLocalData(groupedData.entries);
   dailyEntryState.localLocalData(groupedData.dailyNotes);
+  tagsState.loadLocalData(groupedData['tags.json']);
 };
 
 const generateEntryPath = (dateString: string, basePath: string): [string, string] => {
@@ -130,6 +139,10 @@ const generateTodayPath = (dateString: string, basePath: string): [string, strin
   return [dirPath, filename];
 };
 
+const generateTagsPath = (_: any, basePath: string): [string, string] => {
+  return [basePath, 'tags.json'];
+};
+
 export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
   const { type, data } = props;
 
@@ -142,6 +155,10 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
 
     case 'today':
       await meili.writeFileContentToDisk(data?.date, data, generateTodayPath);
+      break;
+
+    case 'tags':
+      await meili.writeFileContentToDisk('', data, generateTagsPath);
       break;
 
     default:

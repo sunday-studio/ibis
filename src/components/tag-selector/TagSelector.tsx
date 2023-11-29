@@ -9,13 +9,10 @@ type TagSelectorProps = {
   onTagSelect: (tag: MultiValue<string>) => void;
 };
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
 export const TagSelector = observer((props: TagSelectorProps) => {
   const { isCreatable = true, tags, onTagSelect, ...rest } = props;
+
+  const currentTagsId = tags.map((a) => a.value);
 
   return (
     <div className="tag-selector">
@@ -23,7 +20,7 @@ export const TagSelector = observer((props: TagSelectorProps) => {
         value={tags}
         onCreateOption={(newValue: string) => {
           const id = tagsState.createNewTag(newValue);
-          onTagSelect([...tags, id]);
+          onTagSelect([...currentTagsId, id]);
         }}
         isMulti
         onChange={(newValue) => {

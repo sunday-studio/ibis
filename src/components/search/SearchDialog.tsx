@@ -1,10 +1,8 @@
 import { useCallback } from 'react';
 
-import {
-  loadAllEntries,
-  syncAllEntriesToDisk,
-  syncAllTodaysToDisk,
-} from '@/lib/data-engine/syncing-helpers';
+import { SAFE_LOCATION_KEY } from '@/lib/constants';
+import { syncAllEntriesToDisk, syncAllTodaysToDisk } from '@/lib/data-engine/syncing-helpers';
+import { clearData } from '@/lib/storage';
 import { appState } from '@/store/app-state';
 import { entriesStore } from '@/store/entries';
 import { searchStore } from '@/store/search';
@@ -14,6 +12,7 @@ import {
   Library,
   LucideIcon,
   MonitorDown,
+  MonitorUp,
   Palette,
   Search,
   Settings,
@@ -94,7 +93,15 @@ export const SearchDialog = observer(() => {
       name: 'Sync data locally',
       onClick: () => {
         syncToDevice();
-        // loadAllEntries();
+        // loadDirectoryContent();
+      },
+      icon: MonitorDown,
+    },
+    {
+      name: 'Load new safe',
+      onClick: () => {
+        clearData(SAFE_LOCATION_KEY);
+        navigate(0);
       },
       icon: MonitorDown,
     },

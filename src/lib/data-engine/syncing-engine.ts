@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api';
 import { createDir, exists, readTextFile, writeTextFile } from '@tauri-apps/api/fs';
 
-import { SAFE_LOCATION_KEY, USER_DATA } from '../constants';
+import { SAFE_LOCATION_KEY } from '../constants';
 import { getData } from '../storage';
 
 type Data = {
@@ -56,11 +56,12 @@ class Meili {
 
   async readDirectoryContent(url = this.basePath) {
     try {
-      const { files } = await invoke('get_all_files', {
+      // TODO: ignore all hidden files. safe guide for git files
+      const data = await invoke('get_all_files', {
         path: url,
       });
-
-      return files;
+      // @ts-ignore
+      return data?.files;
     } catch (error) {
       console.log('error ->', error);
     }
@@ -69,9 +70,7 @@ class Meili {
   async readFileContent(url: string) {
     try {
       const content = await readTextFile(url);
-
       return JSON.parse(content);
-      console.log({ content });
     } catch (error) {}
   }
 }

@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { generateNewDirectory } from '@/lib/auth/auth-helpers';
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
-import { loadAllEntries } from '@/lib/data-engine/syncing-helpers';
+import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { setData } from '@/lib/storage';
 import { open } from '@tauri-apps/api/dialog';
 import { useNavigate } from 'react-router-dom';
@@ -32,7 +32,7 @@ export const Onboarding = () => {
     try {
       await generateNewDirectory(directoryName);
       setData(SAFE_LOCATION_KEY, directoryName);
-      loadAllEntries(directoryName);
+      loadDirectoryContent(directoryName);
       navigate('/today');
     } catch (error) {
     } finally {

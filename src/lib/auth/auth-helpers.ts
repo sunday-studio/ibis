@@ -1,4 +1,4 @@
-import { createDir, writeTextFile } from '@tauri-apps/api/fs';
+import { createDir, exists, writeTextFile } from '@tauri-apps/api/fs';
 import { redirect } from 'react-router-dom';
 
 import { SAFE_LOCATION_KEY } from '../constants';
@@ -12,6 +12,13 @@ export const checkIfLoggedIn = async () => {
   }
 
   return redirect('/auth');
+};
+
+const createNewDirectory = async (path: string) => {
+  const directoryExist = exists(path);
+  if (!directoryExist) {
+    createDir(path, { recursive: true });
+  }
 };
 
 export const generateNewDirectory = async (name: string) => {
@@ -37,17 +44,21 @@ export const generateNewDirectory = async (name: string) => {
 
   // create months
   for (let index = 0; index < months.length; index++) {
-    await createDir(`${basePath}/${months[index].toLowerCase()}`, { recursive: true });
+    await createDir(`${basePath}/${months[index].toLowerCase()}`);
   }
 
   // create today directory
-  await createDir(`${basePath}/today`, { recursive: true });
+  await createNewDirectory(`${basePath}/today`);
 
   // create highlights directory
-  await createDir(`${basePath}/highlights`, { recursive: true });
+  await createNewDirectory(`${basePath}/highlights`);
 
   // create initial files
   for (let index = 0; index < files.length; index++) {
-    await writeTextFile(`${name}/${files[index]}`, JSON.stringify({}));
+    const path = `${name}/${files[index]}`;
+    const fileExist = await exists(path);
+    if (!fileExist) {
+      await writeTextFile(`${name}/${files[index]}`, JSON.stringify({}));
+    }
   }
 };

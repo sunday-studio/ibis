@@ -20,6 +20,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -58,7 +59,7 @@ const TagEditor = observer(() => {
   const [showTags, setShowTags] = useState(false);
 
   const tags = useMemo(() => {
-    return activeEntry?.tags.map((t) => tagsState.tagsMap[t]).filter(Boolean);
+    return activeEntry?.tags.map((t) => toJS(tagsState.tagsMap[t])).filter(Boolean);
   }, [activeEntry?.tags, tagsState.tagsMap]);
 
   const onTagSelectorBlur = () => {
@@ -107,56 +108,6 @@ const EntryHeader = observer(() => {
         <TagEditor />
       </div>
     </div>
-
-    // <div className="entry-header">
-    //   <div className="row">
-    //     <div className="label">
-    //       <p>Title:</p>
-    //     </div>
-    //     <div className="value">
-    //       <input
-    //         value={entryStore.activeEntryTitle}
-    //         onChange={(e) => entriesStore.updateActiveEntireTitle(e.target.value)}
-    //         className="title-input"
-    //         placeholder="Untitled"
-    //       />
-    //     </div>
-    //   </div>
-
-    //   <div className="row">
-    //     <div className="label">
-    //       <p>Tags:</p>
-    //     </div>
-    //     <TagEditor />
-    //   </div>
-
-    //   <div className="row">
-    //     <div className="label">
-    //       <p>Date created:</p>
-    //     </div>
-    //     <div className="value">
-    //       <p>{formatDateString(new Date(activeEntry.createdAt), 'dd-MM-y')}</p>
-    //     </div>
-    //   </div>
-
-    //   {activeEntry.updatedAt && (
-    //     <div className="row">
-    //       <div className="label">
-    //         <p>Last edited:</p>
-    //       </div>
-    //       <div className="value">
-    //         <p>
-    //           {formatDistance(new Date(activeEntry.updatedAt), new Date(), { addSuffix: true })}
-    //         </p>
-    //       </div>
-    //     </div>
-    //   )}
-
-    //   <div className="hr-divider">
-    //     <div></div>
-    //     <div></div>
-    //   </div>
-    // </div>
   );
 });
 

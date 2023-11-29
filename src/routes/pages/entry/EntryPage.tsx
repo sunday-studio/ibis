@@ -7,7 +7,7 @@ const EntryPage = observer(() => {
   const { activeEntry } = entriesStore;
 
   const content =
-    JSON.parse(activeEntry?.content)?.root?.children.length > 0
+    activeEntry && JSON.parse(activeEntry?.content)?.root?.children.length > 0
       ? JSON.parse(activeEntry?.content)
       : null;
 
