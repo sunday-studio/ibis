@@ -44,7 +44,7 @@ export const Onboarding = () => {
     <div className="page-container auth-page" data-tauri-drag-region>
       <div className="form-wrapper">
         <div className="form-wrapper-header">
-          <h2 className="satoshi-font">Opps</h2>
+          <h2 className="satoshi-font">Ibis</h2>
           <p>Ditch all your productivity apps for me.</p>
         </div>
         <form action="">
