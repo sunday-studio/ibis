@@ -2,7 +2,11 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use serde::{Deserialize, Serialize};
-use std::path::PathBuf;
+use std::fs;
+use std::io::{self, Read};
+use std::path::Path;
+use std::sync::mpsc;
+use std::thread;
 use tauri::command;
 use walkdir::{DirEntry, WalkDir};
 
@@ -54,9 +58,25 @@ fn get_all_files(path: String) -> CommandResult<FileList> {
     Ok(FileList { files })
 }
 
+#[command]
+async fn read_file_content(path: String) -> Result<String, String> {
+    let path = Path::new(&path);
+
+    let mut file = match fs::File::open(&path) {
+        Ok(file) => file,
+        Err(e) => return Err(e.to_string()),
+    };
+
+    let mut contents = String::new();
+    match file.read_to_string(&mut contents) {
+        Ok(_) => Ok(contents),
+        Err(e) => Err(e.to_string()),
+    }
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![get_all_files])
+        .invoke_handler(tauri::generate_handler![get_all_files, read_file_content])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

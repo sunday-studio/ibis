@@ -71,7 +71,9 @@ class Meili {
     // console.log('url =>', url);
     // TODO: fix, doesn't work on load
     try {
-      const content = await readTextFile(url);
+      const content = await invoke('read_file_content', {
+        path: url,
+      });
       return JSON.parse(content);
     } catch (error) {
       console.error('unable to read file content =>', error);
