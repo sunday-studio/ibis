@@ -68,10 +68,14 @@ class Meili {
   }
 
   async readFileContent(url: string) {
+    // console.log('url =>', url);
+    // TODO: fix, doesn't work on load
     try {
       const content = await readTextFile(url);
       return JSON.parse(content);
-    } catch (error) {}
+    } catch (error) {
+      console.error('unable to read file content =>', error);
+    }
   }
 }
 

@@ -30,8 +30,8 @@ export const Onboarding = () => {
     const directoryName = `${location}${name ? `/${name}` : ''}`;
 
     try {
-      await generateNewDirectory(directoryName);
       setData(SAFE_LOCATION_KEY, directoryName);
+      await generateNewDirectory(directoryName);
       loadDirectoryContent(directoryName);
       navigate('/today');
     } catch (error) {

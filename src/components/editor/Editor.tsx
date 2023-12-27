@@ -53,34 +53,50 @@ function onError(error) {
   console.error(error);
 }
 
+const EntryTitle = observer(() => {
+  const entryStore = entriesStore;
+  const { activeEntry } = entryStore;
+
+  const [inputValue, setInputValue] = useState(activeEntry.title);
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setInputValue(value);
+    entryStore.updateActiveEntireTitle(value);
+  };
+
+  return (
+    <div className="entry-input">
+      <input type="text" onChange={handleInputChange} value={inputValue} />
+    </div>
+  );
+});
+
 const TagEditor = observer(() => {
   const entryStore = entriesStore;
   const { activeEntry } = entryStore;
-  const [showTags, setShowTags] = useState(false);
+  const [showTags, setShowTags] = useState(true);
 
   const tags = useMemo(() => {
     return activeEntry?.tags.map((t) => toJS(tagsState.tagsMap[t])).filter(Boolean);
   }, [activeEntry?.tags, tagsState.tagsMap]);
 
   const onTagSelectorBlur = () => {
-    setShowTags(true);
+    setShowTags(false);
   };
 
+  const hasTags = tags.length > 0 && showTags;
+
   return (
-    <div className="value tags">
-      {showTags ? (
-        <div
-          onClick={() => setShowTags(false)}
-          style={{
-            display: 'flex',
-            gap: 5,
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-          }}
-        >
+    <div className="tags">
+      {hasTags ? (
+        <div onClick={() => setShowTags(false)} className="tags-container">
           {tags?.map((tag: any) => {
-            return <p key={tag}>#{tag.label}</p>;
+            return (
+              <div key={tag.value} className="tag">
+                <p>{tag.label}</p>
+              </div>
+            );
           })}
         </div>
       ) : (
@@ -99,11 +115,9 @@ const TagEditor = observer(() => {
 const EntryHeader = observer(() => {
   const entryStore = entriesStore;
 
-  const { activeEntry } = entryStore;
-
   return (
     <div className="entry-header">
-      <h2 className="entry-title">{activeEntry?.title}</h2>
+      <EntryTitle />
       <div className="tags">
         <TagEditor />
       </div>

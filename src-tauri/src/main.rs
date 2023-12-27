@@ -20,8 +20,6 @@ type CommandResult<T> = Result<T, ErrorResponse>;
 
 #[command]
 fn get_all_files(path: String) -> CommandResult<FileList> {
-    println!("Accessing path: {}", path);
-
     let mut files = Vec::new();
     for entry in WalkDir::new(&path) {
         match entry {

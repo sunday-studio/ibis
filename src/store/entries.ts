@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable, observable, runInAction } from 'mobx';
 import { nanoid } from 'nanoid';
 
 import { CONTENT_KEY, PINNED_KEY, TRASH_KEY } from '../lib/constants';
@@ -33,7 +33,7 @@ class Entries {
     const entryData = data.filter((e) => e.content).map((e) => e.content);
     setData(CONTENT_KEY, entryData);
 
-    this.entries = entryData;
+    this.entries = observable(entryData);
     this.deletedEntries = [];
     this.pinnedEntriesId = [];
   }

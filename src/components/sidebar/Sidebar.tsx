@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react';
 import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
 import clsx from 'clsx';
-import { BadgePlus, DoorOpen, Palette, Search, Sparkles, Trash2Icon } from 'lucide-react';
+import { BadgePlus, DoorOpen, Search, Sparkles, Trash2Icon } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 

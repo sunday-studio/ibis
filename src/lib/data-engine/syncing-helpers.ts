@@ -81,10 +81,10 @@ const getFileType = (url: string, baseURL: string) => {
 export const loadDirectoryContent = async (safeURL: string) => {
   const flatEntries = await meili.readDirectoryContent(safeURL);
 
-  const promises = flatEntries.map(async (entry: string) => {
+  const promises = flatEntries.map(async (file: string) => {
     return {
-      type: getFileType(entry, safeURL),
-      content: await meili.readFileContent(entry),
+      type: getFileType(file, safeURL),
+      content: await meili.readFileContent(file),
     };
   });
 
@@ -152,7 +152,10 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
     case 'entry':
       try {
         await meili.writeFileContentToDisk(data?.createdAt, data, generateEntryPath);
-      } catch (error) {}
+      } catch (error) {
+        // TODO: fix instances of this.basePath being null
+        console.log('error =>', error);
+      }
       break;
 
     case 'today':

@@ -1,5 +1,5 @@
 import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, observable } from 'mobx';
 import { nanoid } from 'nanoid';
 
 type Tag = {
@@ -43,7 +43,7 @@ class Tags {
       label: tagLabel,
     };
 
-    this.tagsMap[value] = newTag;
+    this.tagsMap[value] = observable(newTag);
 
     saveFileToDisk({
       type: 'tags',
@@ -56,26 +56,7 @@ class Tags {
 
   loadLocalData(tags: any) {
     const localTags = tags?.content || {};
-    this.tagsMap = localTags;
-  }
-
-  make() {
-    const tags = ['Private', 'Today', 'Highlights'];
-    const s = tags.map((t) => {
-      const value = `${t.replace(' ', '-').toLocaleLowerCase()}_${nanoid()}`;
-      this.tagsMap[value] = {
-        value,
-        label: t,
-      };
-
-      return {
-        value,
-        label: t,
-      };
-    });
-
-    console.log(JSON.stringify(s, null, 2));
-    console.log(JSON.stringify(this.tagsMap, null, 2));
+    Object.assign(this.tagsMap, localTags);
   }
 }
 

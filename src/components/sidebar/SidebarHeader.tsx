@@ -17,10 +17,10 @@ export const SidebarHeader = () => {
         </div>
       </div>
 
-      <div className="saving-indicator">
+      {/* <div className="saving-indicator">
         <CheckCheck size={18} color="green" />
-        {/* <RotateCw size={18} color="green" className="loading-indicator" /> */}
-      </div>
+        <RotateCw size={18} color="green" className="loading-indicator" />
+      </div> */}
 
       <div
         className="sidebar-toggle"
