@@ -23,6 +23,7 @@ import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useDebouncedCallback } from 'use-debounce';
+import { useOnClickOutside } from 'usehooks-ts';
 
 import AutoLinkPlugin, { validateUrl } from '../../plugins/AutolinkPlugin';
 import ClickableLinkPlugin from '../../plugins/ClickableLinkPlugin';
@@ -76,16 +77,19 @@ const TagEditor = observer(() => {
   const entryStore = entriesStore;
   const { activeEntry } = entryStore;
   const [showTags, setShowTags] = useState(true);
+  const tagsRef = useRef(null);
 
   const tags = useMemo(() => {
     return activeEntry?.tags.map((t) => toJS(tagsState.tagsMap[t])).filter(Boolean);
   }, [activeEntry?.tags, tagsState.tagsMap]);
 
   const onTagSelectorBlur = () => {
-    setShowTags(false);
+    setShowTags(true);
   };
 
   const hasTags = tags.length > 0 && showTags;
+
+  useOnClickOutside(tagsRef, onTagSelectorBlur);
 
   return (
     <div className="tags">
@@ -105,7 +109,7 @@ const TagEditor = observer(() => {
             entriesStore.updateActiveEntryTags(selectedTags);
           }}
           tags={tags}
-          onBlur={onTagSelectorBlur}
+          containerRef={tagsRef}
         />
       )}
     </div>

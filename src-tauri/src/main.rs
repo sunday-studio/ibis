@@ -4,7 +4,7 @@
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 use tauri::command;
-use walkdir::WalkDir;
+use walkdir::{DirEntry, WalkDir};
 
 #[derive(Serialize, Deserialize)]
 struct FileList {
@@ -19,9 +19,23 @@ struct ErrorResponse {
 type CommandResult<T> = Result<T, ErrorResponse>;
 
 #[command]
+
 fn get_all_files(path: String) -> CommandResult<FileList> {
     let mut files = Vec::new();
-    for entry in WalkDir::new(&path) {
+
+    // Helper function to determine if an entry is a hidden directory or file
+    fn is_hidden(entry: &DirEntry) -> bool {
+        entry
+            .file_name()
+            .to_str()
+            .map(|s| s.starts_with('.'))
+            .unwrap_or(false)
+    }
+
+    for entry in WalkDir::new(&path)
+        .into_iter()
+        .filter_entry(|e| !is_hidden(e))
+    {
         match entry {
             Ok(e) => {
                 println!("Found: {}", e.path().display());
