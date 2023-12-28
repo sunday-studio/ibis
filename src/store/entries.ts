@@ -3,9 +3,9 @@ import { deleteFile, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 import { makeAutoObservable, observable, runInAction } from 'mobx';
 import { nanoid } from 'nanoid';
 
-import { CONTENT_KEY, PINNED_KEY, TRASH_KEY } from '../lib/constants';
+import { CONTENT_KEY, TRASH_KEY } from '../lib/constants';
 import { mobxDebounce } from '../lib/mobx-debounce';
-import { getData, setData } from '../lib/storage';
+import { setData } from '../lib/storage';
 import { formatDuplicatedTitle } from '../lib/utils.ts';
 
 export interface Entry {
@@ -165,8 +165,6 @@ class Entries {
     });
 
     const updatedEntries = [entry, ...this.entries];
-
-    setData(CONTENT_KEY, updatedEntries);
     this.entries = updatedEntries;
   }
 
@@ -181,9 +179,8 @@ class Entries {
       data: updateEntry,
     });
 
-    const updatedEntries = this.findAndReplaceEntry(updateEntry);
+    this.entries = updatedEntries;
     this.activeEntry = updateEntry;
-    setData(CONTENT_KEY, updatedEntries);
   }
 
   deleteEntry(entryId: string) {
@@ -199,11 +196,9 @@ class Entries {
       type: 'index',
       data: {
         deletedEntries: updatedDeletedIds,
-        pinnedEntries: this.pinnedEntries,
+        pinnedEntries: this.pinnedEntriesId,
       },
     });
-
-    setData(TRASH_KEY, updatedDeletedIds);
   }
 
   restoreEntry(entryId: string) {

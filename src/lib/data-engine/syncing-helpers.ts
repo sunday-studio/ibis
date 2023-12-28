@@ -184,6 +184,7 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
       break;
 
     case 'index':
+      console.log({ data });
       await meili.writeFileContentToDisk('', data, generateIndexPath);
 
     default:
