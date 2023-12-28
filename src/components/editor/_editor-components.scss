@@ -180,10 +180,26 @@
           font-size: 14px;
           background-color: var(--background-tertiary);
           border-radius: 8px;
-          // margin-right: -1px;
           border: 1.5px solid var(--background-secondary);
         }
       }
     }
   }
+}
+
+.editor-wrapper {
+  overflow-y: scroll;
+  position: relative;
+  padding: 40px 80px;
+}
+
+.editor-placeholder {
+  position: absolute;
+  text-overflow: ellipsis;
+  top: 197px;
+  left: 80px;
+  user-select: none;
+  display: inline-block;
+  pointer-events: none;
+  color: var(--text-tertiary);
 }

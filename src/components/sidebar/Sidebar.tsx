@@ -99,9 +99,6 @@ export const Sidebar = observer(() => {
                       entry={entry}
                       activeEntry={entriesStore.activeEntry}
                       key={entry.id}
-                      onDelete={() => {
-                        entriesStore.deleteEntry(entry.id);
-                      }}
                     />
                   );
                 })}

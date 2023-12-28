@@ -117,8 +117,6 @@ const TagEditor = observer(() => {
 });
 
 const EntryHeader = observer(() => {
-  const entryStore = entriesStore;
-
   return (
     <div className="entry-header">
       <EntryTitle />

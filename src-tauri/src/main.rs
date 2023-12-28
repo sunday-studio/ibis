@@ -83,7 +83,7 @@ async fn write_to_file(path: String, content: String) -> Result<(), String> {
     };
 
     match file.write_all(content.as_bytes()) {
-        Ok(_) => Ok(println!("file saved in time")),
+        Ok(_) => Ok(()),
         Err(e) => Err(e.to_string()),
     }
 }
