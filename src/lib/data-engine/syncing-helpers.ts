@@ -194,6 +194,5 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
 export const deleteFile = async (entry: Entry) => {
   const [_, _s, path] = generateEntryPath(entry.createdAt, meili.basePath);
 
-  console.log({ path });
   await meili.deletefile(path);
 };

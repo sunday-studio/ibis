@@ -27,69 +27,66 @@ type SidebarEntry = {
   selectEntry: (entry: Entry) => void;
   entry: Entry;
   activeEntry?: Entry | null;
-  onDelete: () => void;
 };
 
-export const SidebarEntry = observer(
-  ({ entry, activeEntry, onDelete, selectEntry }: SidebarEntry) => {
-    const isActive = entry?.id === activeEntry?.id;
-    const isPresent = useIsPresent();
+export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: SidebarEntry) => {
+  const isActive = entry?.id === activeEntry?.id;
+  const isPresent = useIsPresent();
 
-    const animations = {
-      style: {
-        position: isPresent ? 'static' : 'absolute',
-      },
-      initial: { opacity: 0, y: 10 },
-      animate: { opacity: 1, y: 0 },
-      exit: { opacity: 0, y: 10 },
-      transition: { type: 'linear', duration: 0.1 },
-    };
+  const animations = {
+    style: {
+      position: isPresent ? 'static' : 'absolute',
+    },
+    initial: { opacity: 0, y: 10 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 10 },
+    transition: { type: 'linear', duration: 0.1 },
+  };
 
-    return (
-      <Popover.Root key={entry.id}>
-        <ContextMenu.Root>
-          <ContextMenu.Trigger asChild>
-            <motion.div
-              {...animations}
-              className={`entry ${isActive ? 'active-entry' : ''}`}
-              onClick={() => selectEntry(entry)}
-            >
-              <p className="entry-title">{truncate(entry.title) || 'Untitled'}</p>
-              <Popover.Trigger asChild>
-                <div
-                  className="icon more-options"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <MoreHorizontal
-                    strokeWidth={2.5}
-                    size={18}
-                    color={isActive ? 'var(--primary-color)' : '#6b7280'}
-                  />
-                </div>
-              </Popover.Trigger>
+  return (
+    <Popover.Root key={entry.id}>
+      <ContextMenu.Root>
+        <ContextMenu.Trigger asChild>
+          <motion.div
+            {...animations}
+            className={`entry ${isActive ? 'active-entry' : ''}`}
+            onClick={() => selectEntry(entry)}
+          >
+            <p className="entry-title">{truncate(entry.title) || 'Untitled'}</p>
+            <Popover.Trigger asChild>
+              <div
+                className="icon more-options"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <MoreHorizontal
+                  strokeWidth={2.5}
+                  size={18}
+                  color={isActive ? 'var(--primary-color)' : '#6b7280'}
+                />
+              </div>
+            </Popover.Trigger>
 
-              <Popover.Portal>
-                <Popover.Content className="PopoverContent" sideOffset={5}>
-                  <MoreOptions entry={entry} onDelete={onDelete} />
-                </Popover.Content>
-              </Popover.Portal>
-            </motion.div>
-          </ContextMenu.Trigger>
-          <ContextMenu.Portal>
-            <ContextMenu.Content className="PopoverContent" sideOffset={5} align="end">
-              <MoreOptions entry={entry} onDelete={onDelete} />
-            </ContextMenu.Content>
-          </ContextMenu.Portal>
-        </ContextMenu.Root>
-      </Popover.Root>
-    );
-  },
-);
+            <Popover.Portal>
+              <Popover.Content className="PopoverContent" sideOffset={5}>
+                <MoreOptions entry={entry} />
+              </Popover.Content>
+            </Popover.Portal>
+          </motion.div>
+        </ContextMenu.Trigger>
+        <ContextMenu.Portal>
+          <ContextMenu.Content className="PopoverContent" sideOffset={5} align="end">
+            <MoreOptions entry={entry} />
+          </ContextMenu.Content>
+        </ContextMenu.Portal>
+      </ContextMenu.Root>
+    </Popover.Root>
+  );
+});
 
 const MoreOptions = observer(({ entry, onDelete }: { entry: Entry; onDelete: () => void }) => {
-  const { pinnedEntriesId } = entriesStore;
+  const { pinnedEntriesId, deleteEntry } = entriesStore;
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
 
   const isPinned = pinnedEntriesId.includes(entry.id!);
@@ -98,7 +95,7 @@ const MoreOptions = observer(({ entry, onDelete }: { entry: Entry; onDelete: () 
     return [
       {
         title: isDoubleClicked ? 'Click again to delete' : 'Delete',
-        action: () => (isDoubleClicked ? onDelete() : setIsDoubleClicked(true)),
+        action: () => (isDoubleClicked ? deleteEntry(entry.id) : setIsDoubleClicked(true)),
         icon: <Trash2 size={16} />,
         disabled: false,
         active: isDoubleClicked,

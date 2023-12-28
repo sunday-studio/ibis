@@ -33,22 +33,10 @@ const RouteLink = ({
 export const Sidebar = observer(() => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    entriesStore.load();
-  }, []);
-
   function goToPage(route: string) {
     entriesStore.removeActiveEntry();
     navigate(route);
   }
-
-  // function toggleTheme() {
-  //   if (appState.theme === 'night') {
-  //     appState.toggleTheme('light');
-  //   } else {
-  //     appState.toggleTheme('night');
-  //   }
-  // }
 
   const pinnedEntries = useMemo(() => {
     return entriesStore?.pinnedEntries.sort((a: Entry, b: Entry) => {
@@ -144,9 +132,6 @@ export const Sidebar = observer(() => {
                       entry={entry}
                       activeEntry={entriesStore.activeEntry}
                       key={entry.id}
-                      onDelete={() => {
-                        entriesStore.deleteEntry(entry.id);
-                      }}
                     />
                   );
                 })}
