@@ -47,7 +47,6 @@ class Tags {
 
     saveFileToDisk({
       type: 'tags',
-      // @ts-ignore
       data: this.tagsMap,
     });
 

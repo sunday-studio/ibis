@@ -17,8 +17,6 @@ import { Sidebar } from '@/components/sidebar/Sidebar';
 
 import { appState } from '../../store/app-state';
 
-// import { dailyEntryState } from '../../store/daily-state';
-
 const SIDEBAR_WIDTH = 300;
 
 const AppLayout = observer(() => {
@@ -30,7 +28,6 @@ const AppLayout = observer(() => {
 
   useEffect(() => {
     const SAFEURL = getData(SAFE_LOCATION_KEY);
-    console.log({ SAFEURL });
     loadDirectoryContent(SAFEURL);
     appState.load();
   }, []);

@@ -42,13 +42,13 @@ export const Sidebar = observer(() => {
     navigate(route);
   }
 
-  function toggleTheme() {
-    if (appState.theme === 'night') {
-      appState.toggleTheme('light');
-    } else {
-      appState.toggleTheme('night');
-    }
-  }
+  // function toggleTheme() {
+  //   if (appState.theme === 'night') {
+  //     appState.toggleTheme('light');
+  //   } else {
+  //     appState.toggleTheme('night');
+  //   }
+  // }
 
   const pinnedEntries = useMemo(() => {
     return entriesStore?.pinnedEntries.sort((a: Entry, b: Entry) => {

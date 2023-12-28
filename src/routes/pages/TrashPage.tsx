@@ -1,11 +1,11 @@
-import React from 'react';
-
 import { observer } from 'mobx-react-lite';
 
 import { Entry, entriesStore } from '../../store/entries';
 
 const TrashPage = observer(() => {
-  const { deletedEntries } = entriesStore;
+  const { deletedEntries: entries } = entriesStore;
+
+  const deletedEntries = entries.filter(Boolean) as Entry[];
 
   return (
     <div className="trash-page page">

@@ -3,10 +3,11 @@
 
 use serde::{Deserialize, Serialize};
 use std::fs;
-use std::io::{self, Read};
+use std::fs::File;
+use std::io::Read;
+use std::io::Write;
 use std::path::Path;
-use std::sync::mpsc;
-use std::thread;
+
 use tauri::command;
 use walkdir::{DirEntry, WalkDir};
 
@@ -42,7 +43,6 @@ fn get_all_files(path: String) -> CommandResult<FileList> {
     {
         match entry {
             Ok(e) => {
-                println!("Found: {}", e.path().display());
                 if e.file_type().is_file() {
                     files.push(e.path().to_string_lossy().into_owned());
                 }
@@ -74,9 +74,40 @@ async fn read_file_content(path: String) -> Result<String, String> {
     }
 }
 
+#[command]
+async fn write_to_file(path: String, content: String) -> Result<(), String> {
+    let path = Path::new(&path);
+    let mut file = match File::create(&path) {
+        Ok(file) => file,
+        Err(e) => return Err(e.to_string()),
+    };
+
+    match file.write_all(content.as_bytes()) {
+        Ok(_) => Ok(println!("file saved in time")),
+        Err(e) => Err(e.to_string()),
+    }
+}
+
+#[command]
+async fn path_exists(path: String) -> bool {
+    Path::new(&path).exists()
+}
+
+#[command]
+async fn delete_file(path: String) -> Result<(), String> {
+    let path = Path::new(&path);
+    fs::remove_file(&path).map_err(|e| e.to_string())
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![get_all_files, read_file_content])
+        .invoke_handler(tauri::generate_handler![
+            get_all_files,
+            read_file_content,
+            write_to_file,
+            path_exists,
+            delete_file
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
