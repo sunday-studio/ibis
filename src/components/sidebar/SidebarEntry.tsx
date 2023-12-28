@@ -85,8 +85,8 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
   );
 });
 
-const MoreOptions = observer(({ entry, onDelete }: { entry: Entry; onDelete: () => void }) => {
-  const { pinnedEntriesId, deleteEntry } = entriesStore;
+const MoreOptions = observer(({ entry }: { entry: Entry; onDelete: () => void }) => {
+  const { pinnedEntriesId } = entriesStore;
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
 
   const isPinned = pinnedEntriesId.includes(entry.id!);
@@ -95,7 +95,8 @@ const MoreOptions = observer(({ entry, onDelete }: { entry: Entry; onDelete: () 
     return [
       {
         title: isDoubleClicked ? 'Click again to delete' : 'Delete',
-        action: () => (isDoubleClicked ? deleteEntry(entry.id) : setIsDoubleClicked(true)),
+        action: () =>
+          isDoubleClicked ? entriesStore.deleteEntry(entry.id) : setIsDoubleClicked(true),
         icon: <Trash2 size={16} />,
         disabled: false,
         active: isDoubleClicked,
