@@ -5,7 +5,6 @@ import { nanoid } from 'nanoid';
 
 import { CONTENT_KEY, TRASH_KEY } from '../lib/constants';
 import { mobxDebounce } from '../lib/mobx-debounce';
-import { setData } from '../lib/storage';
 import { formatDuplicatedTitle } from '../lib/utils.ts';
 
 export interface Entry {
@@ -31,7 +30,6 @@ class Entries {
 
   loadLocalData({ entries, index }) {
     const entryData = entries.filter((e) => e.content).map((e) => e.content);
-    setData(CONTENT_KEY, entryData);
 
     this.entries = observable(entryData);
     this.deletedEntriesId = observable(index?.content?.deletedEntries ?? []);
@@ -117,7 +115,6 @@ class Entries {
     const updatedEntries = this.findAndReplaceEntry(entry);
 
     this.entries = updatedEntries;
-    setData(CONTENT_KEY, updatedEntries);
   }
 
   addNewEntry() {
@@ -173,6 +170,8 @@ class Entries {
       ...this.activeEntry,
       tags: tags?.filter(Boolean),
     };
+
+    const updatedEntries = this.findAndReplaceEntry(updateEntry);
 
     saveFileToDisk({
       type: 'entry',
@@ -245,7 +244,6 @@ class Entries {
     const updatedEntries = [duplicatedEntry, ...this.entries];
 
     this.entries = updatedEntries;
-    setData(CONTENT_KEY, updatedEntries);
   }
 
   onReorder(entries: Entry[]) {
@@ -269,8 +267,6 @@ class Entries {
       this.activeEntry = updatedEntry;
       this.entries = updatedEntries;
     });
-
-    setData(CONTENT_KEY, updatedEntries);
   }, 500);
 
   updateActiveEntireTitle(title: string) {

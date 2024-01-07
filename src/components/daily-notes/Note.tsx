@@ -7,7 +7,12 @@ import { observer } from 'mobx-react-lite';
 import { DatePicker } from '../date-picker/DatePicker';
 import { DailyNoteEditor } from './DailyNoteEditor';
 
-function getTitle(date: Date) {
+function getTitle(d: string) {
+  console.log('d=>', d);
+  if (!d) return '';
+
+  const date = new Date(d);
+
   const isDateToday = isToday(date);
   return isDateToday ? 'Today' : format(date, 'do LLL, yyy');
 }
@@ -15,9 +20,7 @@ function getTitle(date: Date) {
 const DailyPage = observer(() => {
   const { dailyEntry } = dailyEntryState;
 
-  if (!dailyEntry?.date) return null;
-
-  const title = getTitle(new Date(dailyEntry?.date));
+  const title = getTitle(dailyEntry?.date);
 
   return (
     <Popover.Root>
@@ -34,8 +37,6 @@ const DailyPage = observer(() => {
           <button className="icon" onClick={() => dailyEntryState.goToNextDay()}>
             <ChevronRight className="icon-inner" size={16} strokeWidth={2.5} />
           </button>
-          {/* <button className="action">Todos</button> */}
-          {/* <button className="action">Calendar</button> */}
         </div>
 
         <div className="note">
@@ -44,7 +45,7 @@ const DailyPage = observer(() => {
           </div>
 
           <div className="note-editor-container">
-            {dailyEntry && (
+            {dailyEntry.noteContent && (
               <DailyNoteEditor
                 onChange={(state) => dailyEntryState.saveNoteContent(state)}
                 content={JSON.parse(dailyEntry.noteContent as string)}

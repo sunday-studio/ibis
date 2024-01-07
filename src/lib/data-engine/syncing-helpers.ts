@@ -6,6 +6,9 @@ import { toast } from 'sonner';
 
 import { meili } from './syncing-engine';
 
+// pattern year-month-day; 2023-01-12
+const DATE_PATTERN = 'y-MM-dd';
+
 type EntryType = {
   type: 'entry';
   data: Entry;
@@ -129,7 +132,7 @@ const generateEntryPath = (dateString: string, basePath: string): [string, strin
   const month = format(date, 'LLL');
 
   // Generate a unique filename based on the date and time.
-  const filename = `${format(date, 'uqqdd')}-${format(date, 't')}.json`;
+  const filename = `${format(date, DATE_PATTERN)}.${format(date, 't')}.json`;
 
   // Construct the directory path where the file will be saved.
   const dirPath = `${basePath}/${year}/${month}`;
@@ -146,7 +149,7 @@ const generateTodayPath = (dateString: string, basePath: string): [string, strin
   // Extract the year and month from the date.
   const year = date.getFullYear().toString();
 
-  const filename = `${format(date, 'uqqdd')}.json`;
+  const filename = `${format(date, DATE_PATTERN)}.json`;
 
   // Construct the directory path where the file will be saved.
   const dirPath = `${basePath}/${year}/Today`;
@@ -184,7 +187,6 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
       break;
 
     case 'index':
-      console.log({ data });
       await meili.writeFileContentToDisk('', data, generateIndexPath);
 
     default:

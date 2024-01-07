@@ -1,6 +1,7 @@
-import DailyCalendar from '../../../components/daily-notes/Calendar';
 import DailyNote from '../../../components/daily-notes/Note';
-import DailyTodos from '../../../components/daily-notes/Todos';
+
+// import DailyCalendar from '../../../components/daily-notes/Calendar';
+// import DailyTodos from '../../../components/daily-notes/Todos';
 
 export default function TodayPage() {
   return (
