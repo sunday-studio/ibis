@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
-import { makeAutoObservable, runInAction } from 'mobx';
+import { deleteFile, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
+import { makeAutoObservable, observable, runInAction } from 'mobx';
 import { nanoid } from 'nanoid';
 
-import { CONTENT_KEY, PINNED_KEY, TRASH_KEY } from '../lib/constants';
+import { CONTENT_KEY, TRASH_KEY } from '../lib/constants';
 import { mobxDebounce } from '../lib/mobx-debounce';
-import { getData, setData } from '../lib/storage';
+import { setData } from '../lib/storage';
 import { formatDuplicatedTitle } from '../lib/utils.ts';
 
 export interface Entry {
@@ -20,7 +20,7 @@ export interface Entry {
 
 class Entries {
   entries: Entry[] | [] = [];
-  deletedEntries: Entry[] | [] = [];
+  deletedEntriesId: string[] | [] = [];
   pinnedEntriesId: string[] | [] = [];
   activeEntry?: Entry | null = null;
   activeEntryTitle?: string | null = this.activeEntry?.title;
@@ -29,23 +29,13 @@ class Entries {
     makeAutoObservable(this);
   }
 
-  loadLocalData(data) {
-    const entryData = data.filter((e) => e.content).map((e) => e.content);
+  loadLocalData({ entries, index }) {
+    const entryData = entries.filter((e) => e.content).map((e) => e.content);
     setData(CONTENT_KEY, entryData);
 
-    this.entries = entryData;
-    this.deletedEntries = [];
-    this.pinnedEntriesId = [];
-  }
-
-  load() {
-    const entryData = getData(CONTENT_KEY) ?? [];
-    // const pinnedData = getData(PINNED_KEY) ?? [];
-    // const deletedData = getData(TRASH_KEY) ?? [];
-    // this.deletedEntries = deletedData;
-
-    this.entries = entryData;
-    // this.pinnedEntriesId = pinnedData;
+    this.entries = observable(entryData);
+    this.deletedEntriesId = observable(index?.content?.deletedEntries ?? []);
+    this.pinnedEntriesId = observable(index?.content?.pinnedEntries ?? []);
   }
 
   get pinnedEntries() {
@@ -56,23 +46,40 @@ class Entries {
 
   get privateEntries() {
     return this.entries.filter((entry: Entry) => {
-      return !this?.pinnedEntriesId?.includes(entry?.id);
+      return (
+        !this?.pinnedEntriesId?.includes(entry?.id) && !this.deletedEntriesId.includes(entry.id)
+      );
     });
+  }
+
+  get deletedEntries() {
+    return this.deletedEntriesId.map((id) => this.entries.find((entry) => entry.id === id));
   }
 
   updatePinned({ id, type }) {
     if (type === 'ADD') {
       const updatedList = [...this.pinnedEntriesId, id];
+      this.pinnedEntriesId = updatedList;
 
-      runInAction(() => (this.pinnedEntriesId = updatedList));
-      setData(PINNED_KEY, updatedList);
-      return;
+      saveFileToDisk({
+        type: 'index',
+        data: {
+          pinnedEntries: updatedList,
+          deletedEntries: this.deletedEntriesId,
+        },
+      });
     }
     if (type === 'REMOVE') {
       const updatedList = [...this.pinnedEntriesId].filter((i) => i != id);
       this.pinnedEntriesId = updatedList;
-      setData(PINNED_KEY, updatedList);
-      return;
+
+      saveFileToDisk({
+        type: 'index',
+        data: {
+          pinnedEntries: updatedList,
+          deletedEntries: this.deletedEntriesId,
+        },
+      });
     }
   }
 
@@ -117,7 +124,7 @@ class Entries {
     const DEFAULT_ENTRY: Entry = {
       content: null,
       createdAt: new Date().toISOString(),
-      title: '',
+      title: 'Untitled',
       id: nanoid(),
       // TODO: always set the first tag to private
       tags: [''],
@@ -158,8 +165,6 @@ class Entries {
     });
 
     const updatedEntries = [entry, ...this.entries];
-
-    setData(CONTENT_KEY, updatedEntries);
     this.entries = updatedEntries;
   }
 
@@ -173,26 +178,60 @@ class Entries {
       type: 'entry',
       data: updateEntry,
     });
-    const updatedEntries = this.findAndReplaceEntry(updateEntry);
+
+    this.entries = updatedEntries;
     this.activeEntry = updateEntry;
-    setData(CONTENT_KEY, updatedEntries);
   }
 
   deleteEntry(entryId: string) {
-    const updatedEntries = this.entries.filter((entry) => entry.id !== entryId);
-    const deletedEntry = this.entries.filter((entry) => entry.id === entryId);
-
     if (entryId === this.activeEntry?.id) {
       this.activeEntry = null;
     }
 
-    const updatedDeletedEntry = [...deletedEntry, ...this.deletedEntries];
+    const updatedDeletedIds = [entryId, ...this.deletedEntriesId];
 
+    this.deletedEntriesId = updatedDeletedIds;
+
+    saveFileToDisk({
+      type: 'index',
+      data: {
+        deletedEntries: updatedDeletedIds,
+        pinnedEntries: this.pinnedEntriesId,
+      },
+    });
+  }
+
+  restoreEntry(entryId: string) {
+    const updatedDeletedEntries = this.deletedEntriesId.filter((id) => id !== entryId);
+
+    this.deletedEntriesId = updatedDeletedEntries;
+
+    saveFileToDisk({
+      type: 'index',
+      data: {
+        deletedEntries: updatedDeletedEntries,
+        pinnedEntries: this.pinnedEntriesId,
+      },
+    });
+  }
+
+  permanentDelete(entryId: string) {
+    const updatedDeletedEntries = this.deletedEntriesId.filter((id) => id !== entryId);
+    const updatedEntries = this.entries.filter((entry) => entry.id !== entryId);
+    const entry = this.entries.filter((entry) => entry.id === entryId);
+
+    this.deletedEntriesId = updatedDeletedEntries;
     this.entries = updatedEntries;
-    this.deletedEntries = updatedDeletedEntry;
 
-    setData(TRASH_KEY, updatedDeletedEntry);
-    setData(CONTENT_KEY, updatedEntries);
+    saveFileToDisk({
+      type: 'index',
+      data: {
+        deletedEntries: updatedDeletedEntries,
+        pinnedEntries: this.pinnedEntriesId,
+      },
+    });
+
+    deleteFile(entry?.[0]);
   }
 
   duplicateEntry(entry: Entry) {
@@ -213,11 +252,16 @@ class Entries {
     console.log('entries => ', entries);
   }
 
-  saveTitle = mobxDebounce(() => {
+  private saveTitle = mobxDebounce(() => {
     const updatedEntry = {
       ...this.activeEntry,
       title: this.activeEntryTitle!,
     } as Entry;
+
+    saveFileToDisk({
+      type: 'entry',
+      data: updatedEntry,
+    });
 
     const updatedEntries = this.findAndReplaceEntry(updatedEntry);
 
@@ -232,27 +276,6 @@ class Entries {
   updateActiveEntireTitle(title: string) {
     this.activeEntryTitle = title;
     this.saveTitle();
-  }
-
-  restoreEntry(entryId: string) {
-    const restoredEntry = this.deletedEntries.filter((entry) => entry.id === entryId);
-    const updatedDeletedEntries = this.deletedEntries.filter((entry) => entry.id !== entryId);
-
-    const updatedEntries = [...this.entries, ...restoredEntry];
-
-    this.entries = updatedEntries;
-    this.deletedEntries = updatedDeletedEntries;
-
-    setData(TRASH_KEY, updatedDeletedEntries);
-    setData(CONTENT_KEY, updatedEntries);
-  }
-
-  permanentDelete(entryId: string) {
-    const updatedDeletedEntries = this.deletedEntries.filter((entry) => entry.id !== entryId);
-    const updatedDeletedEntry = [...updatedDeletedEntries];
-
-    this.deletedEntries = updatedDeletedEntry;
-    setData(TRASH_KEY, updatedDeletedEntry);
   }
 }
 

@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 
 import { SearchDialog } from '@/components';
+import { SAFE_LOCATION_KEY } from '@/lib/constants';
+import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
+import { getData } from '@/lib/storage';
 import { searchStore } from '@/store/search';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
@@ -13,7 +16,6 @@ import { PageTitleBar } from '@/components/page-titlebar/PageTitleBar';
 import { Sidebar } from '@/components/sidebar/Sidebar';
 
 import { appState } from '../../store/app-state';
-import { dailyEntryState } from '../../store/daily-state';
 
 const SIDEBAR_WIDTH = 300;
 
@@ -25,7 +27,8 @@ const AppLayout = observer(() => {
   const location = useLocation();
 
   useEffect(() => {
-    dailyEntryState.load();
+    const SAFEURL = getData(SAFE_LOCATION_KEY);
+    loadDirectoryContent(SAFEURL);
     appState.load();
   }, []);
 

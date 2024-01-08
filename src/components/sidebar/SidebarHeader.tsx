@@ -1,8 +1,11 @@
 import { appState } from '@/store/app-state';
 import { appWindow } from '@tauri-apps/api/window';
-import { CheckCheck, Maximize2, Minus, PanelRight, RotateCw, X } from 'lucide-react';
+import { Maximize2, Minus, PanelRight, RefreshCcw, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const SidebarHeader = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="sidebar-header" data-tauri-drag-region>
       <div className="window-actions">
@@ -15,11 +18,10 @@ export const SidebarHeader = () => {
         <div className="window-action" onClick={() => appWindow.maximize()}>
           <Maximize2 size={8} strokeWidth={3} />
         </div>
-      </div>
 
-      <div className="saving-indicator">
-        <CheckCheck size={18} color="green" />
-        {/* <RotateCw size={18} color="green" className="loading-indicator" /> */}
+        <div className="window-action" onClick={() => navigate(0)}>
+          <RefreshCcw size={8} strokeWidth={3} />
+        </div>
       </div>
 
       <div

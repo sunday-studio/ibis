@@ -62,8 +62,12 @@
           background-color: #ffca16;
         }
 
-        &:last-child {
+        &:nth-child(3) {
           background-color: #3dd68c;
+        }
+
+        &:last-child {
+          background-color: #0891b2;
         }
       }
     }

@@ -1,13 +1,9 @@
 import { useCallback } from 'react';
 
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
-import {
-  loadDirectoryContent, // syncAllEntriesToDisk,
-  // syncAllTodaysToDisk,
-} from '@/lib/data-engine/syncing-helpers';
+import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { clearData, getData } from '@/lib/storage';
 import { appState } from '@/store/app-state';
-import { entriesStore } from '@/store/entries';
 import { searchStore } from '@/store/search';
 import { Command } from 'cmdk';
 import {
@@ -15,7 +11,6 @@ import {
   Library,
   LucideIcon,
   MonitorDown,
-  MonitorUp,
   Palette,
   RefreshCcwDot,
   Search,

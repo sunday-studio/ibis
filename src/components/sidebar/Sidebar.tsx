@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react';
 import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
 import clsx from 'clsx';
-import { BadgePlus, DoorOpen, Palette, Search, Sparkles, Trash2Icon } from 'lucide-react';
+import { BadgePlus, DoorOpen, Search, Sparkles, Trash2Icon } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,21 +33,9 @@ const RouteLink = ({
 export const Sidebar = observer(() => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    entriesStore.load();
-  }, []);
-
   function goToPage(route: string) {
     entriesStore.removeActiveEntry();
     navigate(route);
-  }
-
-  function toggleTheme() {
-    if (appState.theme === 'night') {
-      appState.toggleTheme('light');
-    } else {
-      appState.toggleTheme('night');
-    }
   }
 
   const pinnedEntries = useMemo(() => {
@@ -111,9 +99,6 @@ export const Sidebar = observer(() => {
                       entry={entry}
                       activeEntry={entriesStore.activeEntry}
                       key={entry.id}
-                      onDelete={() => {
-                        entriesStore.deleteEntry(entry.id);
-                      }}
                     />
                   );
                 })}
@@ -144,9 +129,6 @@ export const Sidebar = observer(() => {
                       entry={entry}
                       activeEntry={entriesStore.activeEntry}
                       key={entry.id}
-                      onDelete={() => {
-                        entriesStore.deleteEntry(entry.id);
-                      }}
                     />
                   );
                 })}

@@ -1,3 +1,5 @@
+import { RefObject, forwardRef } from 'react';
+
 import { tagsState } from '@/store/tags-state';
 import { observer } from 'mobx-react-lite';
 import Select, { MultiValue } from 'react-select';
@@ -7,15 +9,16 @@ type TagSelectorProps = {
   isCreatable?: boolean;
   tags: any[];
   onTagSelect: (tag: MultiValue<string>) => void;
+  containerRef?: RefObject<HTMLDivElement>;
 };
 
 export const TagSelector = observer((props: TagSelectorProps) => {
-  const { isCreatable = true, tags, onTagSelect, ...rest } = props;
+  const { isCreatable = true, tags, onTagSelect, containerRef, ...rest } = props;
 
   const currentTagsId = tags.map((a) => a.value);
 
   return (
-    <div className="tag-selector">
+    <div className="tag-selector" ref={containerRef}>
       <CreatableSelect
         value={tags}
         onCreateOption={(newValue: string) => {

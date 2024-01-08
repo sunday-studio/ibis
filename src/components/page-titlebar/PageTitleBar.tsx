@@ -33,10 +33,10 @@ export const PageTitleBar = observer(() => {
     <div className={clsx('page-titlebar', 'multi-page')} data-tauri-drag-region>
       {!appState.sidebarIsOpen && (
         <div className="sidebar-toggle-container">
-          <div className="saving-indicator">
+          {/* <div className="saving-indicator">
             <CheckCheck size={18} color="green" />
-            {/* <RotateCw size={18} color="green" className="loading-indicator" /> */}
-          </div>
+            <RotateCw size={18} color="green" className="loading-indicator" />
+          </div> */}
           <div className="sidebar-toggle" onClick={() => appState.toggleSidebarOpenState()}>
             <PanelLeft size={18} />
           </div>

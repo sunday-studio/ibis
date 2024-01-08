@@ -150,76 +150,57 @@
 
 // entry header styling
 .entry-header {
-  margin-bottom: 30px;
-  font-weight: 600;
+  margin-bottom: 20px;
 
-  // * {
-  //   outline: 1px dotted red;
-  // }
+  .entry-input {
+    margin-bottom: 20px;
+    input {
+      all: unset;
+      width: 100%;
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1;
+    }
+  }
 
   .tags {
     margin-top: 5px;
+
+    &-container {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 3px;
+
+      .tag {
+        p {
+          font-weight: 500;
+          text-transform: lowercase;
+          padding: 2px 8px;
+          font-size: 14px;
+          background-color: var(--background-tertiary);
+          border-radius: 8px;
+          border: 1.5px solid var(--background-secondary);
+        }
+      }
+    }
   }
+}
 
-  // .row {
-  //   display: flex;
-  //   justify-content: flex-start;
-  //   align-items: flex-start;
-  //   gap: 5px;
-  //   margin-bottom: 5px;
+.editor-wrapper {
+  overflow-y: scroll;
+  position: relative;
+  padding: 40px 80px;
+  height: calc(100vh - var(--page-title-height));
+}
 
-  //   p {
-  //     font-size: 16px;
-  //   }
-  // }
-
-  // .value {
-  //   display: flex;
-  //   justify-content: flex-start;
-  //   align-items: center;
-  //   gap: 5px;
-  //   flex: 1;
-
-  //   p {
-  //     color: var(--subtitle-text-color);
-  //   }
-
-  //   input {
-  //     margin-top: -0.5px;
-  //   }
-
-  //   &.tags {
-  //     min-height: 23px;
-  //     p {
-  //       text-transform: lowercase;
-  //       &:hover {
-  //         text-decoration: underline;
-  //       }
-  //     }
-  //   }
-  // }
-
-  // input {
-  //   padding: 0;
-  //   border-radius: 0;
-  //   color: var(--subtitle-text-color);
-  //   background-color: var(--panel-background);
-  //   font-size: 16px;
-  //   width: 100%;
-
-  //   &::placeholder {
-  //     font-style: italic;
-  //   }
-  // }
-
-  // .hr-divider {
-  //   width: 100%;
-  //   margin: 40px 0;
-
-  //   div {
-  //     width: 100%;
-
-  //     margin-bottom: 2px;
-  //   }
-  // }
+.editor-placeholder {
+  position: absolute;
+  text-overflow: ellipsis;
+  top: 197px;
+  left: 80px;
+  user-select: none;
+  display: inline-block;
+  pointer-events: none;
+  color: var(--text-tertiary);
 }

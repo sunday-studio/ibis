@@ -18,10 +18,18 @@ type DailyEntryType = {
 
 type TagsType = {
   type: 'tags';
-  data: TagsType;
+  data: Record<string, { value: string; label: string }>;
 };
 
-type SaveFileToDiskProps = EntryType | DailyEntryType | TagsType;
+type IndexType = {
+  type: 'index';
+  data: {
+    deletedEntries: string[];
+    pinnedEntries: string[];
+  };
+};
+
+type SaveFileToDiskProps = EntryType | DailyEntryType | TagsType | IndexType;
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -81,10 +89,10 @@ const getFileType = (url: string, baseURL: string) => {
 export const loadDirectoryContent = async (safeURL: string) => {
   const flatEntries = await meili.readDirectoryContent(safeURL);
 
-  const promises = flatEntries.map(async (entry: string) => {
+  const promises = flatEntries.map(async (file: string) => {
     return {
-      type: getFileType(entry, safeURL),
-      content: await meili.readFileContent(entry),
+      type: getFileType(file, safeURL),
+      content: await meili.readFileContent(file),
     };
   });
 
@@ -101,7 +109,10 @@ export const loadDirectoryContent = async (safeURL: string) => {
 
   // load data into localStores
   try {
-    entriesStore.loadLocalData(groupedData.entries);
+    entriesStore.loadLocalData({
+      entries: groupedData.entries,
+      index: groupedData['index.json']?.[0],
+    });
     dailyEntryState.localLocalData(groupedData.dailyNotes);
     tagsState.loadLocalData(groupedData['tags.json']?.[0]);
   } catch (error) {
@@ -109,7 +120,7 @@ export const loadDirectoryContent = async (safeURL: string) => {
   }
 };
 
-const generateEntryPath = (dateString: string, basePath: string): [string, string] => {
+const generateEntryPath = (dateString: string, basePath: string): [string, string, string] => {
   // Convert the provided dateString to a JavaScript Date object.
   const date = new Date(dateString);
 
@@ -123,7 +134,9 @@ const generateEntryPath = (dateString: string, basePath: string): [string, strin
   // Construct the directory path where the file will be saved.
   const dirPath = `${basePath}/${year}/${month}`;
 
-  return [dirPath, filename];
+  const path = `${dirPath}/${filename}`;
+
+  return [dirPath, filename, path];
 };
 
 const generateTodayPath = (dateString: string, basePath: string): [string, string] => {
@@ -145,6 +158,10 @@ const generateTagsPath = (_: any, basePath: string): [string, string] => {
   return [basePath, 'tags.json'];
 };
 
+const generateIndexPath = (_: any, basePath: string): [string, string] => {
+  return [basePath, 'index.json'];
+};
+
 export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
   const { type, data } = props;
 
@@ -152,7 +169,10 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
     case 'entry':
       try {
         await meili.writeFileContentToDisk(data?.createdAt, data, generateEntryPath);
-      } catch (error) {}
+      } catch (error) {
+        // TODO: fix instances of this.basePath being null
+        console.log('error =>', error);
+      }
       break;
 
     case 'today':
@@ -163,7 +183,17 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
       await meili.writeFileContentToDisk('', data, generateTagsPath);
       break;
 
+    case 'index':
+      console.log({ data });
+      await meili.writeFileContentToDisk('', data, generateIndexPath);
+
     default:
       break;
   }
+};
+
+export const deleteFile = async (entry: Entry) => {
+  const [_, _s, path] = generateEntryPath(entry.createdAt, meili.basePath);
+
+  await meili.deletefile(path);
 };

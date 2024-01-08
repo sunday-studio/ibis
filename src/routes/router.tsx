@@ -2,9 +2,9 @@ import { checkIfLoggedIn } from '@/lib/auth/auth-helpers';
 import AppLayout from '@/routes/layout/AppLayout';
 import { createBrowserRouter } from 'react-router-dom';
 
+// import AuthPage from './pages/auth/Auth';
 import Root from './Root';
 import TrashPage from './pages/TrashPage';
-// import AuthPage from './pages/auth/Auth';
 import { Onboarding } from './pages/auth/Onboarding';
 import EntryPage from './pages/entry/EntryPage';
 import SettingsPage from './pages/settings/Settings';

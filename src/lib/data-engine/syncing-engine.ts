@@ -9,7 +9,9 @@ type Data = {
   content: any;
 };
 
-type DirFunction = (dateString: string, basePath: string) => [string, string];
+type DirFunction = (dateString: string, basePath: string) => [string, string, string?];
+
+const file_exist = async (path: string) => await invoke('path_exists', { path });
 
 /**
  * this is the main sync service to save files changes on device and in the future in the cloud
@@ -30,8 +32,8 @@ class Meili {
   async writeFileContentToDisk(dateString: string, content: any, dirFn: DirFunction) {
     const [dirPath, filename] = dirFn?.(dateString, this.basePath);
 
-    // Check if the directory already exists on disk.
-    const directoryExist = await exists(dirPath);
+    // // Check if the directory already exists on disk.
+    const directoryExist = await file_exist(dirPath);
 
     // If the directory doesn't exist, create it (including any missing parent directories).
     if (!directoryExist) {
@@ -39,7 +41,10 @@ class Meili {
     }
 
     // Write the JSON content to a file in the specified directory.
-    await writeTextFile(`${dirPath}/${filename}`, JSON.stringify(content));
+    await invoke('write_to_file', {
+      path: `${dirPath}/${filename}`,
+      content: JSON.stringify(content),
+    });
   }
 
   /**
@@ -56,11 +61,9 @@ class Meili {
 
   async readDirectoryContent(url = this.basePath) {
     try {
-      // TODO: ignore all hidden files. safe guide for git files
-      const data = await invoke('get_all_files', {
+      const data = await invoke<{ files: any }>('get_all_files', {
         path: url,
       });
-      // @ts-ignore
       return data?.files;
     } catch (error) {
       console.log('error ->', error);
@@ -69,9 +72,22 @@ class Meili {
 
   async readFileContent(url: string) {
     try {
-      const content = await readTextFile(url);
+      const content = await invoke<string>('read_file_content', {
+        path: url,
+      });
+
       return JSON.parse(content);
-    } catch (error) {}
+    } catch (error) {
+      console.error('unable to read file content =>', error);
+    }
+  }
+
+  async deletefile(path: string) {
+    try {
+      await invoke('delete_file', { path });
+    } catch (error) {
+      console.log('deleting-file ->', error);
+    }
   }
 }
 
