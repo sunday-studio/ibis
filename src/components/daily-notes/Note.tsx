@@ -45,7 +45,7 @@ const DailyPage = observer(() => {
           </div>
 
           <div className="note-editor-container">
-            {dailyEntry.noteContent && (
+            {dailyEntry && (
               <DailyNoteEditor
                 onChange={(state) => dailyEntryState.saveNoteContent(state)}
                 content={JSON.parse(dailyEntry.noteContent as string)}
