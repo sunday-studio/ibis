@@ -3,7 +3,6 @@ import { deleteFile, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 import { makeAutoObservable, observable, runInAction } from 'mobx';
 import { nanoid } from 'nanoid';
 
-import { CONTENT_KEY, TRASH_KEY } from '../lib/constants';
 import { mobxDebounce } from '../lib/mobx-debounce';
 import { formatDuplicatedTitle } from '../lib/utils.ts';
 
@@ -122,7 +121,7 @@ class Entries {
       content: null,
       createdAt: new Date().toISOString(),
       title: 'Untitled',
-      id: nanoid(),
+      id: `${new Date().toTimeString()}-${nanoid()}`,
       // TODO: always set the first tag to private
       tags: [''],
     };

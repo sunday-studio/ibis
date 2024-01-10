@@ -92,12 +92,15 @@ const getFileType = (url: string, baseURL: string) => {
 export const loadDirectoryContent = async (safeURL: string) => {
   const flatEntries = await meili.readDirectoryContent(safeURL);
 
-  const promises = flatEntries.map(async (file: string) => {
-    return {
-      type: getFileType(file, safeURL),
-      content: await meili.readFileContent(file),
-    };
-  });
+  const promises = flatEntries
+    // .filter((s) => s.includes('2024-01-10'))
+    .map(async (file: string) => {
+      return {
+        type: getFileType(file, safeURL),
+        url: file,
+        content: await meili.readFileContent(file),
+      };
+    });
 
   const content = await Promise.all(promises);
 
@@ -105,11 +108,11 @@ export const loadDirectoryContent = async (safeURL: string) => {
     if (!acc[obj.type]) {
       acc[obj.type] = [];
     }
-
     acc[obj.type].push(obj);
     return acc;
-  });
+  }, {});
 
+  // console.log('content =>', { content, groupedData });
   // load data into localStores
   try {
     entriesStore.loadLocalData({

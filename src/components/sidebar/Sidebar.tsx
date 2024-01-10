@@ -1,6 +1,5 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
-import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
 import clsx from 'clsx';
 import { BadgePlus, DoorOpen, Search, Sparkles, Trash2Icon } from 'lucide-react';

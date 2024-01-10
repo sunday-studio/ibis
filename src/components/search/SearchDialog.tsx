@@ -41,14 +41,6 @@ export const SearchDialog = observer(() => {
   const { showSearchModal } = searchStore;
   const navigate = useNavigate();
 
-  // const syncToDevice = useCallback(async () => {
-  //   // TODO: optimize to only sync items that have changed since last sync
-  //   await syncAllTodaysToDisk();
-  //   await syncAllEntriesToDisk();
-
-  //   toast.success('All entries synced');
-  // }, [entriesStore]);
-
   const defaultActions: ActionProps[] = [
     {
       name: 'New Entry',

@@ -4,10 +4,10 @@ import { addDays, format, subDays } from 'date-fns';
 import { makeAutoObservable } from 'mobx';
 import { nanoid } from 'nanoid';
 
-import { DAILY_NOTES_KEY } from '../lib/constants';
+import { DAILY_NOTES_KEY, DATE_PATTERN } from '../lib/constants';
 import { getData, setData } from '../lib/storage';
 
-export function getDateInStringFormat(date: Date, pattern = 'y-MM-dd') {
+export function getDateInStringFormat(date: Date, pattern = DATE_PATTERN) {
   return format(date, pattern);
 }
 
@@ -41,7 +41,7 @@ class DailyStore {
       if (!acc[obj.content?.date]) {
         acc[obj.content?.date] = {};
       }
-      acc[obj.content?.date] = JSON.parse(obj.content?.noteContent);
+      acc[obj.content?.date] = obj.content;
       return acc;
     }, {});
 
@@ -52,25 +52,6 @@ class DailyStore {
       entryForToday = {
         id: nanoid(),
         noteContent: null,
-        date: today,
-      };
-    }
-
-    this.dailyEntry = entryForToday;
-    this.dailyEntries = allEntries;
-  }
-
-  load() {
-    const allEntries = getData(DAILY_NOTES_KEY) ?? {};
-    const today = getDateInStringFormat(new Date());
-
-    let entryForToday: DailyEntry = allEntries[today];
-
-    if (!entryForToday) {
-      entryForToday = {
-        id: nanoid(),
-        noteContent: null,
-        todos: [],
         date: today,
       };
     }
@@ -109,6 +90,7 @@ class DailyStore {
   goToDate(date: Date) {
     const dateString = getDateInStringFormat(date);
     let entryForToday: DailyEntry = this.dailyEntries[dateString];
+
     if (!entryForToday) {
       entryForToday = {
         id: nanoid(),

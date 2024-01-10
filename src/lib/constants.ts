@@ -10,3 +10,4 @@ export const SUPABASE_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1eGplbWJtcGZjY3Vnam15am90Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTcxNDQ2NTYsImV4cCI6MjAxMjcyMDY1Nn0.XzXPv5XmwY3NCXiWimm8WqgHPfJQ4QnJ0DFgRHLJxpk';
 export const USER_DATA = 'opps-user-data';
 export const SAFE_LOCATION_KEY = 'opps-safe-location';
+export const DATE_PATTERN = 'y-MM-dd';

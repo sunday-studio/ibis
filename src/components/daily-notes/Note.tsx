@@ -8,7 +8,6 @@ import { DatePicker } from '../date-picker/DatePicker';
 import { DailyNoteEditor } from './DailyNoteEditor';
 
 function getTitle(d: string) {
-  console.log('d=>', d);
   if (!d) return '';
 
   const date = new Date(d);
@@ -45,7 +44,7 @@ const DailyPage = observer(() => {
           </div>
 
           <div className="note-editor-container">
-            {dailyEntry && (
+            {dailyEntry && dailyEntry.noteContent && (
               <DailyNoteEditor
                 onChange={(state) => dailyEntryState.saveNoteContent(state)}
                 content={JSON.parse(dailyEntry.noteContent as string)}

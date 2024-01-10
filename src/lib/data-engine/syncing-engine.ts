@@ -30,6 +30,11 @@ class Meili {
    * and writes the content to a JSON file on disk, organizing the file based on the date.
    */
   async writeFileContentToDisk(dateString: string, content: any, dirFn: DirFunction) {
+    if (!this.basePath) {
+      const url = getData(SAFE_LOCATION_KEY);
+      this.basePath = url;
+    }
+
     const [dirPath, filename] = dirFn?.(dateString, this.basePath);
 
     // // Check if the directory already exists on disk.
