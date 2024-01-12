@@ -103,6 +103,23 @@ class DailyStore {
     this.dailyEntries[dateString] = entryForToday;
     setData(DAILY_NOTES_KEY, Object.assign({}, this.dailyEntries));
   }
+
+  goToToday() {
+    const currentDate = getDateInStringFormat(new Date());
+
+    let todayEntry = this.dailyEntries[currentDate];
+
+    if (!todayEntry) {
+      todayEntry = {
+        id: nanoid(),
+        noteContent: null,
+        todos: [],
+        date: currentDate,
+      };
+    }
+
+    this.dailyEntry = todayEntry;
+  }
 }
 
 export const dailyEntryState = new DailyStore();

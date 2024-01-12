@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { dailyEntryState } from '@/store/daily-state';
 import { searchStore } from '@/store/search';
 import clsx from 'clsx';
 import { BadgePlus, DoorOpen, Search, Sparkles, Trash2Icon } from 'lucide-react';
@@ -59,6 +60,7 @@ export const Sidebar = observer(() => {
               title="Today"
               icon={DoorOpen}
               onClick={() => {
+                dailyEntryState.goToToday();
                 goToPage('/today');
               }}
             />
