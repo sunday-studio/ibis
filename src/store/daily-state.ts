@@ -5,7 +5,7 @@ import { makeAutoObservable } from 'mobx';
 import { nanoid } from 'nanoid';
 
 import { DAILY_NOTES_KEY, DATE_PATTERN } from '../lib/constants';
-import { getData, setData } from '../lib/storage';
+import { setData } from '../lib/storage';
 
 export function getDateInStringFormat(date: Date, pattern = DATE_PATTERN) {
   return format(date, pattern);

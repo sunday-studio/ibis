@@ -34,7 +34,20 @@ type IndexType = {
 
 type SaveFileToDiskProps = EntryType | DailyEntryType | TagsType | IndexType;
 
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+export const months = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 
 export const syncAllTodaysToDisk = async () => {
   const dailyEntries = Object.entries(dailyEntryState.dailyEntries);

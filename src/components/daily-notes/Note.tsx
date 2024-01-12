@@ -21,8 +21,6 @@ const DailyPage = observer(() => {
 
   const title = getTitle(dailyEntry?.date);
 
-  console.log({ dailyEntry });
-
   return (
     <Popover.Root>
       <div className="daily-note">

@@ -1,5 +1,5 @@
 import { invoke } from '@tauri-apps/api';
-import { createDir, exists, readTextFile, writeTextFile } from '@tauri-apps/api/fs';
+import { createDir } from '@tauri-apps/api/fs';
 
 import { SAFE_LOCATION_KEY } from '../constants';
 import { getData } from '../storage';
@@ -92,6 +92,17 @@ class Meili {
       await invoke('delete_file', { path });
     } catch (error) {
       console.log('deleting-file ->', error);
+    }
+  }
+
+  async renameFile(oldPath: string, newPath: string) {
+    try {
+      await invoke('rename_file', {
+        oldPath,
+        newPath,
+      });
+    } catch (error) {
+      console.error('trying to rename =>', error);
     }
   }
 }

@@ -1,8 +1,7 @@
-import { useCallback } from 'react';
-
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { clearData, getData } from '@/lib/storage';
+import { runMigration } from '@/migrations/file-date-pattern.migrate';
 import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
 import { Command } from 'cmdk';
@@ -12,6 +11,7 @@ import {
   LucideIcon,
   MonitorDown,
   Palette,
+  Play,
   RefreshCcwDot,
   Search,
   Settings,
@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 
 type ActionProps = {
   name: string;
@@ -42,6 +41,13 @@ export const SearchDialog = observer(() => {
   const navigate = useNavigate();
 
   const defaultActions: ActionProps[] = [
+    {
+      name: 'Run Migrations',
+      onClick: () => {
+        runMigration();
+      },
+      icon: Play,
+    },
     {
       name: 'New Entry',
       onClick: () => {
