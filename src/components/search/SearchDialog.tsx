@@ -41,13 +41,13 @@ export const SearchDialog = observer(() => {
   const navigate = useNavigate();
 
   const defaultActions: ActionProps[] = [
-    {
-      name: 'Run Migrations',
-      onClick: () => {
-        runMigration();
-      },
-      icon: Play,
-    },
+    // {
+    //   name: 'Run Migrations',
+    //   onClick: () => {
+    //     runMigration();
+    //   },
+    //   icon: Play,
+    // },
     {
       name: 'New Entry',
       onClick: () => {
