@@ -22,6 +22,46 @@ import {
 
 export type SerializedPageBreakNode = SerializedLexicalNode;
 
+const createScissorSvg = () => {
+  // Create the main SVG element
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  svg.setAttribute('width', '24');
+  svg.setAttribute('height', '24');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('fill', 'none');
+  svg.setAttribute('stroke', 'currentColor');
+  svg.setAttribute('stroke-width', '1.5');
+  svg.setAttribute('stroke-linecap', 'round');
+  svg.setAttribute('stroke-linejoin', 'round');
+  svg.setAttribute('class', 'page-break-svg');
+
+  // Create and append the elements
+  function createAndAppendElement(tag, attributes) {
+    const element = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (const key in attributes) {
+      element.setAttribute(key, attributes[key]);
+    }
+    svg.appendChild(element);
+  }
+
+  // Create path elements
+  createAndAppendElement('path', { d: 'M5.42 9.42 8 12' });
+  createAndAppendElement('path', { d: 'm14 6-8.58 8.58' });
+  createAndAppendElement('path', { d: 'M10.8 14.8 14 18' });
+  createAndAppendElement('path', { d: 'M16 12h-2' });
+  createAndAppendElement('path', { d: 'M22 12h-2' });
+
+  // Create circle elements
+  createAndAppendElement('circle', { cx: '4', cy: '8', r: '2' });
+  createAndAppendElement('circle', { cx: '4', cy: '16', r: '2' });
+
+  // Append the SVG to the body or another element in your document
+  // document.body.appendChild(svg);
+
+  return svg;
+};
+
 function PageBreakComponent({ nodeKey }: { nodeKey: NodeKey }) {
   const [editor] = useLexicalComposerContext();
   const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
@@ -112,8 +152,12 @@ export class PageBreakNode extends DecoratorNode<JSX.Element> {
 
   createDOM(): HTMLElement {
     const element = document.createElement('figure');
+    const svg = createScissorSvg();
+
     element.style.pageBreakAfter = 'always';
     element.setAttribute('type', this.getType());
+
+    element.appendChild(svg);
     return element;
   }
 

@@ -18,19 +18,15 @@
   background-color: var(--main-background);
 }
 
-[type='page-break']::before {
-  content: '';
-
-  position: absolute;
-  top: 50%;
-  left: calc(var(--editor-input-padding, 28px) + 12px);
-  transform: translateY(-50%);
-  opacity: 0.5;
-
-  background-size: cover;
-  background-image: url(../../../assets/scissors.svg);
-  width: 16px;
-  height: 16px;
+[type='page-break'] {
+  .page-break-svg {
+    position: absolute;
+    top: 50%;
+    left: calc(var(--editor-input-padding, 28px) + 12px);
+    transform: translateY(-50%);
+    opacity: 0.7;
+    color: var(--text-primary);
+  }
 }
 
 [type='page-break']::after {
