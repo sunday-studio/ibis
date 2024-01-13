@@ -15,10 +15,12 @@ const RouteLink = ({
   onClick,
   title,
   icon: Icon,
+  isActive,
 }: {
   onClick: () => void;
   title: string;
   icon: any;
+  isActive?: boolean;
 }) => {
   return (
     <div className="route" onClick={onClick}>

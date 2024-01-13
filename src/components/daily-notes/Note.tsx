@@ -1,7 +1,7 @@
 import { dailyEntryState } from '@/store/daily-state';
 import * as Popover from '@radix-ui/react-popover';
 import { format, isToday } from 'date-fns';
-import { Calendar, ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 
 import { DatePicker } from '../date-picker/DatePicker';
@@ -44,7 +44,7 @@ const DailyPage = observer(() => {
           </div>
 
           <div className="note-editor-container">
-            {dailyEntry && dailyEntry.noteContent && (
+            {dailyEntry && (
               <DailyNoteEditor
                 onChange={(state) => dailyEntryState.saveNoteContent(state)}
                 content={JSON.parse(dailyEntry.noteContent as string)}

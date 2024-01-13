@@ -182,7 +182,6 @@ class Entries {
   }
 
   deleteEntry(entryId: string) {
-    console.log('hello world =>', entryId);
     if (entryId === this.activeEntry?.id) {
       this.activeEntry = null;
     }
