@@ -70,13 +70,6 @@ export const SearchDialog = observer(() => {
       },
       icon: Library,
     },
-    {
-      name: 'Open Settings',
-      onClick: () => {
-        navigate('/settings');
-      },
-      icon: Settings,
-    },
 
     {
       name: `Toggle ${appState.theme === 'night' ? 'light' : 'night'} mode`,

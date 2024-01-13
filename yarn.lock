@@ -711,6 +711,13 @@
   dependencies:
     "@lexical/utils" "0.11.3"
 
+"@lexical/list@0.12.6":
+  version "0.12.6"
+  resolved "https://registry.yarnpkg.com/@lexical/list/-/list-0.12.6.tgz#125748c3f86f34728755d10be390fc5b6c5a10c2"
+  integrity sha512-9DFe8vpSxZ8NQZ/67ZFNiRptB3XPa7mUl0Rmd5WpbJHJHmiORyngYkYgKOW56T/TCtYcLfkTbctMhsIt8OeIqQ==
+  dependencies:
+    "@lexical/utils" "0.12.6"
+
 "@lexical/mark@0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/mark/-/mark-0.11.3.tgz#7f87a264d44762e275ba7b3d85e18307bbabd9e3"
@@ -779,12 +786,24 @@
   resolved "https://registry.yarnpkg.com/@lexical/selection/-/selection-0.11.3.tgz#f7250fae305a84c6e264a413f5feab056aeabfa3"
   integrity sha512-15lQpcKT/vd7XZ5pnF1nb+kpKb72e9Yi1dVqieSxTeXkzt1cAZFKP3NB4RlhOKCv1N+glSBnjSxRwgsFfbD+NQ==
 
+"@lexical/selection@0.12.6":
+  version "0.12.6"
+  resolved "https://registry.yarnpkg.com/@lexical/selection/-/selection-0.12.6.tgz#27283adf3138dca95a3a092295b9b8cb6e1180d4"
+  integrity sha512-HJBEazVwOe6duyHV6+vB/MS4kUBlCV05Cfcigdx8HlLLFQRWPqHrTpaxKz4jfb9ar0SlI2W1BUNbySAxMkC/HQ==
+
 "@lexical/table@0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/table/-/table-0.11.3.tgz#9b1980d828d7a588aaffa4cb8c6bb61401729034"
   integrity sha512-EyRnN39CSPsMceADBR7Kf+sBHNpNQlPEkn/52epeDSnakR6s80woyrA3kIzKo6mLB4afvoqdYc7RfR96M9JLIA==
   dependencies:
     "@lexical/utils" "0.11.3"
+
+"@lexical/table@0.12.6":
+  version "0.12.6"
+  resolved "https://registry.yarnpkg.com/@lexical/table/-/table-0.12.6.tgz#7aca63497f3e8610bc71443abc9d3cbddafa036c"
+  integrity sha512-rUh9/fN831T6UpNiPuzx0x6HNi/eQ7W5AQrVBwwzEwkbwAqnE0n28DP924AUbX72UsQNHtywgmDApMoEV7W2iQ==
+  dependencies:
+    "@lexical/utils" "0.12.6"
 
 "@lexical/text@0.11.3":
   version "0.11.3"
@@ -799,6 +818,15 @@
     "@lexical/list" "0.11.3"
     "@lexical/selection" "0.11.3"
     "@lexical/table" "0.11.3"
+
+"@lexical/utils@0.12.6", "@lexical/utils@^0.12.6":
+  version "0.12.6"
+  resolved "https://registry.yarnpkg.com/@lexical/utils/-/utils-0.12.6.tgz#11e8242c6de1ad75e76211d6678e0562bdfa5e96"
+  integrity sha512-hK5r/TD2nH5TfWSiCxy7/lh0s11qJcI1wo++PBQOR9o937pQ+/Zr/1tMOc8MnrTpl89mtmYtPfWW3f++HH1Yog==
+  dependencies:
+    "@lexical/list" "0.12.6"
+    "@lexical/selection" "0.12.6"
+    "@lexical/table" "0.12.6"
 
 "@lexical/yjs@0.11.3":
   version "0.11.3"
