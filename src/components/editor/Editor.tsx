@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { tagsState } from '@/store/tags-state';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
@@ -24,6 +23,10 @@ import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useDebouncedCallback } from 'use-debounce';
 import { useOnClickOutside } from 'usehooks-ts';
+
+import PageBreakPlugin from '@/plugins/PageBreakPlugin/PageBreakPlugin';
+import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
+import { tagsState } from '@/store/tags-state';
 
 import AutoLinkPlugin, { validateUrl } from '../../plugins/AutolinkPlugin';
 import ClickableLinkPlugin from '../../plugins/ClickableLinkPlugin';
@@ -148,6 +151,7 @@ export const Editor = ({ id, content }) => {
       TableRowNode,
       AutoLinkNode,
       LinkNode,
+      PageBreakNode,
     ],
   };
 
@@ -187,6 +191,7 @@ export const Editor = ({ id, content }) => {
       <TabIndentationPlugin />
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
       <CodeHighlightPlugin />
+      <PageBreakPlugin />
     </LexicalComposer>
   );
 };

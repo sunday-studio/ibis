@@ -19,6 +19,11 @@ function getTitle(d: string) {
 const DailyPage = observer(() => {
   const { dailyEntry } = dailyEntryState;
 
+  console.log({ dailyEntry });
+
+  // TODO: fix later
+  return null;
+
   const title = getTitle(dailyEntry?.date);
 
   return (

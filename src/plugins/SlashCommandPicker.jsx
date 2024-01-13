@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 import * as React from 'react';
+
 import * as ReactDOM from 'react-dom';
+
 import { $createCodeNode } from '@lexical/code';
 import {
   INSERT_CHECK_LIST_COMMAND,
@@ -10,24 +12,26 @@ import {
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
   LexicalTypeaheadMenuPlugin,
-  useBasicTypeaheadTriggerMatch,
   MenuOption,
+  useBasicTypeaheadTriggerMatch,
 } from '@lexical/react/LexicalTypeaheadMenuPlugin';
 import { $createHeadingNode, $createQuoteNode } from '@lexical/rich-text';
 import { $setBlocksType } from '@lexical/selection';
 import { $createParagraphNode, $getSelection, $isRangeSelection } from 'lexical';
-
 import {
-  Pilcrow,
+  CheckSquare,
+  Code,
   Heading1,
   Heading2,
   Heading3,
   List,
   ListOrdered,
-  CheckSquare,
-  Code,
+  Pilcrow,
   Quote,
+  ScissorsIcon,
 } from 'lucide-react';
+
+import { INSERT_PAGE_BREAK } from '@/plugins/PageBreakPlugin/PageBreakPlugin';
 
 const headingIconMap = {
   h1: <Heading1 size={18} />,
@@ -149,16 +153,21 @@ export default function SlashCommandPickerPlugin() {
             }
           }),
       }),
+
+      new ComponentPickerOption('Page Break', {
+        icon: <ScissorsIcon size={18} />,
+        keyworks: ['page break', 'divider'],
+        onSelect: () => {
+          editor.dispatchCommand(INSERT_PAGE_BREAK, undefined);
+        },
+      }),
     ];
 
     return queryString
       ? [
           ...baseOptions.filter((option) => {
-            return new RegExp(queryString, 'gi').exec(option.title) ||
-              option.keywords != null
-              ? option.keywords.some((keyword) =>
-                  new RegExp(queryString, 'gi').exec(keyword),
-                )
+            return new RegExp(queryString, 'gi').exec(option.title) || option.keywords != null
+              ? option.keywords.some((keyword) => new RegExp(queryString, 'gi').exec(keyword))
               : false;
           }),
         ]
