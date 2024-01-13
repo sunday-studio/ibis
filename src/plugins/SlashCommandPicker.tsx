@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from 'react';
-import * as React from 'react';
 
 import * as ReactDOM from 'react-dom';
 
@@ -33,14 +32,44 @@ import {
 
 import { INSERT_PAGE_BREAK } from '@/plugins/PageBreakPlugin/PageBreakPlugin';
 
-const headingIconMap = {
+const headingIconMap: Record<'h1' | 'h2' | 'h3', JSX.Element> & {
+  [index: string]: JSX.Element;
+} = {
   h1: <Heading1 size={18} />,
   h2: <Heading2 size={18} />,
   h3: <Heading3 size={18} />,
 };
 
+type ComponentPickerOptionParams = {
+  keywords?: string[];
+  icon?: JSX.Element | string;
+  keyboardShortcut?: string;
+  onSelect: (v1: any, v2?: any) => void;
+};
+
+type Option = ComponentPickerOptionParams & {
+  title: string;
+  keywords: string[];
+  key: string;
+  setRefElement?: React.RefObject<HTMLLIElement>;
+};
+
+type SlashCommandMenuItem = {
+  index: number;
+  isSelected: boolean;
+  onClick: () => void;
+  onMouseEnter: React.MouseEventHandler<HTMLLIElement>;
+  option: Option;
+};
+
 class ComponentPickerOption extends MenuOption {
-  constructor(title, options) {
+  title: any;
+  icon: any;
+  keywords: any;
+  keyboardShortcut: any;
+  onSelect: any;
+
+  constructor(title: string, options: ComponentPickerOptionParams) {
     super(title);
     this.title = title;
     this.keywords = options.keywords || [];
@@ -50,7 +79,13 @@ class ComponentPickerOption extends MenuOption {
   }
 }
 
-function SlashCommandMenuItem({ index, isSelected, onClick, onMouseEnter, option }) {
+function SlashCommandMenuItem({
+  index,
+  isSelected,
+  onClick,
+  onMouseEnter,
+  option,
+}: SlashCommandMenuItem) {
   return (
     <li
       key={option.key}
@@ -90,7 +125,7 @@ export default function SlashCommandPickerPlugin() {
           }),
       }),
       ...Array.from({ length: 3 }, (_, i) => i + 1).map(
-        (n) =>
+        (n: number) =>
           new ComponentPickerOption(`Heading ${n}`, {
             icon: headingIconMap[`h${n}`],
             keywords: ['heading', 'header', `h${n}`],
@@ -156,7 +191,7 @@ export default function SlashCommandPickerPlugin() {
 
       new ComponentPickerOption('Page Break', {
         icon: <ScissorsIcon size={18} />,
-        keyworks: ['page break', 'divider'],
+        keywords: ['page break', 'divider'],
         onSelect: () => {
           editor.dispatchCommand(INSERT_PAGE_BREAK, undefined);
         },
@@ -165,7 +200,7 @@ export default function SlashCommandPickerPlugin() {
 
     return queryString
       ? [
-          ...baseOptions.filter((option) => {
+          ...baseOptions.filter((option: Omit<Option, 'setRefElement'>) => {
             return new RegExp(queryString, 'gi').exec(option.title) || option.keywords != null
               ? option.keywords.some((keyword) => new RegExp(queryString, 'gi').exec(keyword))
               : false;
@@ -175,7 +210,12 @@ export default function SlashCommandPickerPlugin() {
   }, [editor, queryString]);
 
   const onSelectOption = useCallback(
-    (selectedOption, nodeToRemove, closeMenu, matchingString) => {
+    (
+      selectedOption: Option,
+      nodeToRemove: { remove: () => void },
+      closeMenu: () => void,
+      matchingString: any,
+    ) => {
       editor.update(() => {
         if (nodeToRemove) {
           nodeToRemove.remove();
@@ -190,7 +230,9 @@ export default function SlashCommandPickerPlugin() {
   return (
     <>
       <LexicalTypeaheadMenuPlugin
+        // @ts-ignore
         onQueryChange={setQueryString}
+        // @ts-ignore
         onSelectOption={onSelectOption}
         triggerFn={checkForTriggerMatch}
         options={options}
@@ -202,12 +244,13 @@ export default function SlashCommandPickerPlugin() {
             ? ReactDOM.createPortal(
                 <div className="typeahead-popover component-picker-menu">
                   <ul>
-                    {options.map((option, i) => (
+                    {options.map((option: Omit<Option, 'setRefElement'>, i) => (
                       <SlashCommandMenuItem
                         index={i}
                         isSelected={selectedIndex === i}
                         onClick={() => {
                           setHighlightedIndex(i);
+                          // @ts-ignore
                           selectOptionAndCleanUp(option);
                         }}
                         onMouseEnter={() => {

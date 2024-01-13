@@ -48,7 +48,11 @@
 }
 
 .selected[type='page-break'] {
-  border-color: var(--primary-color, #4766cb);
+  .page-break-svg {
+    opacity: 1;
+    color: var(--primary-color);
+  }
+  border-color: var(--primary-color);
 }
 
 .selected[type='page-break']::before {

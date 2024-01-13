@@ -37,7 +37,7 @@ const createScissorSvg = () => {
   svg.setAttribute('class', 'page-break-svg');
 
   // Create and append the elements
-  function createAndAppendElement(tag, attributes) {
+  function createAndAppendElement(tag: string, attributes: any) {
     const element = document.createElementNS('http://www.w3.org/2000/svg', tag);
     for (const key in attributes) {
       element.setAttribute(key, attributes[key]);
