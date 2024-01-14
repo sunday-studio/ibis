@@ -1,5 +1,6 @@
-import { APP_STATE, USER_DATA } from '@/lib/constants';
 import { makeAutoObservable } from 'mobx';
+
+import { APP_STATE, USER_DATA } from '@/lib/constants';
 
 import { getData, setData } from '../lib/storage';
 
@@ -43,7 +44,7 @@ class AppState {
 
     css.appendChild(
       document.createTextNode(
-        `* {
+        `*, *::before, *::after {
         -webkit-transition: none !important;
        -moz-transition: none !important;
        -o-transition: none !important;

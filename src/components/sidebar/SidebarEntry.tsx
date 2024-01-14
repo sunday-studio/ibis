@@ -2,7 +2,6 @@
 import { Fragment, useState } from 'react';
 import { useMemo } from 'react';
 
-import { truncate } from '@/lib/utils.Ts';
 import * as ContextMenu from '@radix-ui/react-context-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
@@ -20,6 +19,8 @@ import {
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { toast } from 'sonner';
+
+import { truncate } from '@/lib/utils.Ts';
 
 import { Entry, entriesStore } from '../../store/entries';
 
@@ -117,6 +118,11 @@ const MoreOptions = observer(({ entry }: { entry: Entry; onDelete: () => void })
           }),
         icon: isPinned ? <PinOff size={16} /> : <Pin size={16} />,
       },
+
+      // {
+      //   title:"Move to",
+      //   action:() =>
+      // },
 
       {
         title: 'Open in split view',

@@ -15,6 +15,8 @@ import {
 } from 'lexical';
 
 function findMatchingDOM(startNode, predicate) {
+  if (!predicate) return null;
+
   let node = startNode;
   while (node != null) {
     if (predicate(node)) {

@@ -1,11 +1,12 @@
 import { useMemo } from 'react';
 
-import { dailyEntryState } from '@/store/daily-state';
-import { searchStore } from '@/store/search';
 import clsx from 'clsx';
 import { BadgePlus, DoorOpen, Search, Sparkles, Trash2Icon } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
+
+import { dailyEntryState } from '@/store/daily-state';
+import { searchStore } from '@/store/search';
 
 import { Entry, entriesStore } from '../../store/entries';
 import { SidebarEntry } from './SidebarEntry';
@@ -15,12 +16,10 @@ const RouteLink = ({
   onClick,
   title,
   icon: Icon,
-  isActive,
 }: {
   onClick: () => void;
   title: string;
   icon: any;
-  isActive?: boolean;
 }) => {
   return (
     <div className="route" onClick={onClick}>
