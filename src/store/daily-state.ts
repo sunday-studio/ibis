@@ -1,8 +1,9 @@
 // @ts-nocheck
-import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 import { addDays, format, subDays } from 'date-fns';
 import { makeAutoObservable } from 'mobx';
 import { nanoid } from 'nanoid';
+
+import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
 import { DAILY_NOTES_KEY, DATE_PATTERN } from '../lib/constants';
 import { setData } from '../lib/storage';
@@ -37,6 +38,8 @@ class DailyStore {
   }
 
   localLocalData(data) {
+    console.log('I am called');
+
     const allEntries = data.reduce((acc, obj) => {
       if (!acc[obj.content?.date]) {
         acc[obj.content?.date] = {};

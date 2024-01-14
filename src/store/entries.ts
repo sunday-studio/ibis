@@ -1,7 +1,8 @@
 // @ts-nocheck
-import { deleteFile, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 import { makeAutoObservable, observable, runInAction } from 'mobx';
 import { nanoid } from 'nanoid';
+
+import { deleteFile, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
 import { mobxDebounce } from '../lib/mobx-debounce';
 import { formatDuplicatedTitle } from '../lib/utils.ts';
@@ -37,7 +38,7 @@ class Entries {
 
   get pinnedEntries() {
     return this.entries.filter((entry: Entry) => {
-      return this.pinnedEntriesId.includes(entry.id);
+      return this.pinnedEntriesId.includes(entry.id) && !this.deletedEntriesId.includes(entry.id);
     });
   }
 

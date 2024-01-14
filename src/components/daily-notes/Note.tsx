@@ -17,18 +17,15 @@ function getTitle(d: string) {
   return isDateToday ? 'Today' : format(date, 'do LLL, yyy');
 }
 
+// TODO: fix later
+// app breaks if on today page and reload happens, probably has to do with how the localdata is loaded to the store
+
 const DailyPage = observer(() => {
   const { dailyEntry } = dailyEntryState;
 
-  console.log({ dailyEntry: dailyEntry.noteContent });
+  // console.log({ dailyEntry });
 
-  // if (!dailyEntry) {
-  //   goToToday();
-  // }
-
-  // TODO: fix later
-  // app breaks if on today page and reload happens, probably has to do with how the localdata is loaded to the store
-  return null;
+  // return null;
 
   const title = getTitle(dailyEntry?.date);
 
@@ -58,7 +55,9 @@ const DailyPage = observer(() => {
             {dailyEntry && (
               <DailyNoteEditor
                 onChange={(state) => dailyEntryState.saveNoteContent(state)}
-                content={JSON.parse(dailyEntry.noteContent as string)}
+                content={
+                  dailyEntry.noteContent ? JSON.parse(dailyEntry.noteContent as string) : null
+                }
                 id={dailyEntry.id}
               />
             )}

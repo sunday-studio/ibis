@@ -1,10 +1,5 @@
 import { useEffect } from 'react';
 
-import { SearchDialog } from '@/components';
-import { SAFE_LOCATION_KEY } from '@/lib/constants';
-import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
-import { getData } from '@/lib/storage';
-import { searchStore } from '@/store/search';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -14,6 +9,13 @@ import { Key } from 'ts-key-enum';
 
 import { PageTitleBar } from '@/components/page-titlebar/PageTitleBar';
 import { Sidebar } from '@/components/sidebar/Sidebar';
+
+import { SearchDialog } from '@/components';
+import { SAFE_LOCATION_KEY } from '@/lib/constants';
+import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
+import { getData } from '@/lib/storage';
+import { dailyEntryState } from '@/store/daily-state';
+import { searchStore } from '@/store/search';
 
 import { appState } from '../../store/app-state';
 
@@ -29,6 +31,7 @@ const AppLayout = observer(() => {
   useEffect(() => {
     const SAFEURL = getData(SAFE_LOCATION_KEY);
     loadDirectoryContent(SAFEURL);
+    console.log('hellow orld');
     appState.load();
   }, []);
 

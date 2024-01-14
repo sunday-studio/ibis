@@ -81,7 +81,8 @@
         "height": 800,
         "titleBarStyle": "Overlay",
         "hiddenTitle": true,
-        "decorations": false
+        "decorations": false,
+        "transparent": true
       }
     ]
   }

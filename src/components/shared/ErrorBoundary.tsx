@@ -1,8 +1,9 @@
-import { entriesStore } from '@/store/entries';
 import { error } from 'console';
 import { observer } from 'mobx-react-lite';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
+
+import { entriesStore } from '@/store/entries';
 
 const AppErrorPage = observer(() => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const AppErrorPage = observer(() => {
   };
 
   return (
-    <div className="error-page">
+    <div data-tauri-drag-region className="error-page">
       <div className="error-message">
         <p>Some error happened. Don't worry, it's not you, it's me. We will get right to it.</p>
         <button onClick={() => reload()} className="satoshi-font">
