@@ -22,6 +22,7 @@ import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '@/plugins/AutolinkPlugin';
 import FloatingMenuPlugin from '@/plugins/FloatingMenuPlugin';
+import PageBreakPlugin from '@/plugins/PageBreakPlugin/PageBreakPlugin';
 import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
 import SlashCommandPickerPlugin from '@/plugins/SlashCommandPicker';
 import { theme } from '@/plugins/theme';
@@ -113,6 +114,7 @@ export const DailyNoteEditor: FunctionComponent<DailyNoteEditorProps> = ({
       <CheckListPlugin />
       <FloatingMenuPlugin />
       <HistoryPlugin />
+      <PageBreakPlugin />
     </LexicalComposer>
   );
 };
