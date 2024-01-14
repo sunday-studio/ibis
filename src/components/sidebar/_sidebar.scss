@@ -211,6 +211,7 @@
           visibility: hidden;
           border-radius: 4px;
           padding: 2px;
+          white-space: nowrap;
 
           &[data-state='open'] {
             background-color: #f4f4f5;
@@ -220,7 +221,13 @@
         }
 
         p {
-          font-size: 13px;
+          flex: 1;
+
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          font-size: 14px;
           font-weight: 500;
           color: var(--base-text-color);
         }
