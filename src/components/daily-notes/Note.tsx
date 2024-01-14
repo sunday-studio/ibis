@@ -17,15 +17,8 @@ function getTitle(d: string) {
   return isDateToday ? 'Today' : format(date, 'do LLL, yyy');
 }
 
-// TODO: fix later
-// app breaks if on today page and reload happens, probably has to do with how the localdata is loaded to the store
-
 const DailyPage = observer(() => {
   const { dailyEntry } = dailyEntryState;
-
-  // console.log({ dailyEntry });
-
-  // return null;
 
   const title = getTitle(dailyEntry?.date);
 
