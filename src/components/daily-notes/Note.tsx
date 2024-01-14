@@ -1,8 +1,9 @@
-import { dailyEntryState } from '@/store/daily-state';
 import * as Popover from '@radix-ui/react-popover';
 import { format, isToday } from 'date-fns';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
+
+import { dailyEntryState } from '@/store/daily-state';
 
 import { DatePicker } from '../date-picker/DatePicker';
 import { DailyNoteEditor } from './DailyNoteEditor';
@@ -19,9 +20,14 @@ function getTitle(d: string) {
 const DailyPage = observer(() => {
   const { dailyEntry } = dailyEntryState;
 
-  console.log({ dailyEntry });
+  console.log({ dailyEntry: dailyEntry.noteContent });
+
+  // if (!dailyEntry) {
+  //   goToToday();
+  // }
 
   // TODO: fix later
+  // app breaks if on today page and reload happens, probably has to do with how the localdata is loaded to the store
   return null;
 
   const title = getTitle(dailyEntry?.date);
