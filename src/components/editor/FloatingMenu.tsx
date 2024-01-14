@@ -3,7 +3,7 @@ import { forwardRef, useEffect, useState } from 'react';
 import { useCallback } from 'react';
 
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND } from 'lexical';
+import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND, LexicalEditor } from 'lexical';
 import {
   Bold,
   CheckCheck,
@@ -41,7 +41,10 @@ const LinkInput = ({ value, onChange, onBackClick, onSave }) => {
   );
 };
 
-export const FloatingMenu = forwardRef(function FloatingMenu(props, ref) {
+export const FloatingMenu = forwardRef(function FloatingMenu(
+  props: { editor: LexicalEditor },
+  ref,
+) {
   const { editor } = props;
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [linkValue, setLinkValue] = useState('');

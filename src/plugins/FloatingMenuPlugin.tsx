@@ -99,7 +99,7 @@ function FloatingMenuPlugin() {
         opacity: show ? 1 : 0,
       }}
     >
-      <FloatingMenu />
+      <FloatingMenu editor={editor} />
     </div>,
     DEFAULT_DOM_ELEMENT,
   );

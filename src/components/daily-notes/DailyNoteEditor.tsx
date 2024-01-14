@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { FunctionComponent, useEffect, useRef } from 'react';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
@@ -21,10 +20,10 @@ import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 import { useDebouncedCallback } from 'use-debounce';
 
-import AutoLinkPlugin, { validateUrl } from '../../plugins/AutolinkPlugin';
-import FloatingMenuPlugin from '../../plugins/FloatingMenuPlugin';
-import SlashCommandPickerPlugin from '../../plugins/SlashCommandPicker';
-import { theme } from '../../plugins/theme';
+import AutoLinkPlugin, { validateUrl } from '@/plugins/AutolinkPlugin';
+import FloatingMenuPlugin from '@/plugins/FloatingMenuPlugin';
+import SlashCommandPickerPlugin from '@/plugins/SlashCommandPicker';
+import { theme } from '@/plugins/theme';
 
 function placeholder() {
   return <div className="daily-note-placeholder">Start your day right, start by writing....</div>;
