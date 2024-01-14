@@ -1,6 +1,7 @@
-import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 import { makeAutoObservable, observable } from 'mobx';
 import { nanoid } from 'nanoid';
+
+import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
 type Tag = {
   label: string;
@@ -9,7 +10,7 @@ type Tag = {
 
 export type TagsMap = Record<string, Tag>;
 
-const DEFAULT_MAP_TAGS = {
+export const DEFAULT_MAP_TAGS = {
   private_5SggNEXrXhrhh6bA_9veW: {
     value: 'private_5SggNEXrXhrhh6bA_9veW',
     label: 'Private',

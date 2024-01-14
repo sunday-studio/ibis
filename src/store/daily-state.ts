@@ -38,8 +38,6 @@ class DailyStore {
   }
 
   localLocalData(data) {
-    console.log('I am called');
-
     const allEntries = data.reduce((acc, obj) => {
       if (!acc[obj.content?.date]) {
         acc[obj.content?.date] = {};

@@ -6,6 +6,7 @@ import { deleteFile, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
 import { mobxDebounce } from '../lib/mobx-debounce';
 import { formatDuplicatedTitle } from '../lib/utils.ts';
+import { DEFAULT_MAP_TAGS, Tag, tagsState } from './tags-state';
 
 export interface Entry {
   title: string;
@@ -123,8 +124,7 @@ class Entries {
       createdAt: new Date().toISOString(),
       title: 'Untitled',
       id: `${new Date().toTimeString()}-${nanoid()}`,
-      // TODO: always set the first tag to private
-      tags: [''],
+      tags: [tagsState.tags.filter((tag: Tag) => tag.label === 'Private')?.[0]?.value],
     };
 
     const updatedEntries = [DEFAULT_ENTRY, ...this.entries];
