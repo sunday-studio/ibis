@@ -22,6 +22,7 @@ import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '@/plugins/AutolinkPlugin';
 import FloatingMenuPlugin from '@/plugins/FloatingMenuPlugin';
+import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
 import SlashCommandPickerPlugin from '@/plugins/SlashCommandPicker';
 import { theme } from '@/plugins/theme';
 
@@ -39,7 +40,7 @@ const CustomAutoFocusPlugin = () => {
   return null;
 };
 
-function onError(error) {
+function onError(error: any) {
   console.error(error);
 }
 
@@ -58,7 +59,10 @@ export const DailyNoteEditor: FunctionComponent<DailyNoteEditorProps> = ({
 
   const initialConfig = {
     namespace: 'DailyNoteEditor',
-    theme,
+    theme: {
+      ...theme,
+      placeholder: 'daily-note-placeholder',
+    },
     onError,
     editorState: content ? JSON.stringify(content) : null,
 
@@ -74,6 +78,7 @@ export const DailyNoteEditor: FunctionComponent<DailyNoteEditorProps> = ({
       TableRowNode,
       AutoLinkNode,
       LinkNode,
+      PageBreakNode,
     ],
   };
 

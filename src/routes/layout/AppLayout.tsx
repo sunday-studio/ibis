@@ -31,7 +31,6 @@ const AppLayout = observer(() => {
   useEffect(() => {
     const SAFEURL = getData(SAFE_LOCATION_KEY);
     loadDirectoryContent(SAFEURL);
-    console.log('hellow orld');
     appState.load();
   }, []);
 

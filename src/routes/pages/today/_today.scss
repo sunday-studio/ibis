@@ -6,12 +6,10 @@
   margin: 0 auto;
   transition: $ease-out-200;
 
-
   .notes {
     grid-column: span 2;
     background-color: var(--background-primary);
     transition: $ease-out-200;
-
   }
 
   .sider {
@@ -44,7 +42,7 @@
       position: relative;
 
       .title {
-        padding: 15px 10px;
+        padding: 15px 0;
 
         h3 {
           font-size: 27px;
@@ -56,17 +54,16 @@
     }
 
     .daily-note-placeholder {
-      padding: 0 10px;
       color: var(--subtitle-text-color);
       overflow: hidden;
       position: absolute;
+      left: 0px;
       text-overflow: ellipsis;
-      top: 10px;
-      font-size: 15px;
+      top: 0px;
       user-select: none;
       display: inline-block;
       pointer-events: none;
-      font-style: italic;
+      font-size: 15px;
     }
 
     .editor-container {
@@ -104,7 +101,6 @@
         background-color: var(--background-secondary);
 
         &-icon {
-
         }
 
         &.action {
