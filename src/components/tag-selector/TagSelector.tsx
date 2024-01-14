@@ -1,14 +1,15 @@
-import { RefObject, forwardRef } from 'react';
+import { RefObject } from 'react';
+
+import { observer } from 'mobx-react-lite';
+import { MultiValue } from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 
 import { tagsState } from '@/store/tags-state';
-import { observer } from 'mobx-react-lite';
-import Select, { MultiValue } from 'react-select';
-import CreatableSelect from 'react-select/creatable';
 
 type TagSelectorProps = {
   isCreatable?: boolean;
   tags: any[];
-  onTagSelect: (tag: MultiValue<string>) => void;
+  onTagSelect: (tag: MultiValue<string> | string[]) => void;
   containerRef?: RefObject<HTMLDivElement>;
 };
 

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { createPortal } from 'react-dom';
+
 import { computePosition, flip, offset, shift } from '@floating-ui/dom';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
@@ -8,7 +10,6 @@ import {
   COMMAND_PRIORITY_NORMAL as NORMAL_PRIORITY,
   SELECTION_CHANGE_COMMAND as ON_SELECTION_CHANGE,
 } from 'lexical';
-import { createPortal } from 'react-dom';
 
 import { FloatingMenu } from '../components/editor/FloatingMenu';
 import { usePointerInteractions } from '../hooks/usePointerInteractions';
@@ -17,7 +18,7 @@ const DEFAULT_DOM_ELEMENT = document.body;
 
 function FloatingMenuPlugin() {
   const ref = useRef(null);
-  const [coords, setCoords] = useState(undefined);
+  const [coords, setCoords] = useState<{ x: number; y: number } | undefined>(undefined);
   const show = coords !== undefined;
 
   const [editor] = useLexicalComposerContext();
@@ -40,7 +41,7 @@ function FloatingMenuPlugin() {
       ],
     })
       .then((pos) => {
-        setCoords({ x: pos.x, y: pos.y - 10 });
+        setCoords({ y: pos.y - 10, x: pos.x });
       })
       .catch(() => {
         setCoords(undefined);
@@ -98,7 +99,7 @@ function FloatingMenuPlugin() {
         opacity: show ? 1 : 0,
       }}
     >
-      <FloatingMenu shouldShow={show} editor={editor} />
+      <FloatingMenu />
     </div>,
     DEFAULT_DOM_ELEMENT,
   );

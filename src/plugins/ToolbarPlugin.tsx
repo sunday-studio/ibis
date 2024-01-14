@@ -1,50 +1,45 @@
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+// @ts-nocheck
+// TODO: add types
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  CAN_REDO_COMMAND,
-  CAN_UNDO_COMMAND,
-  REDO_COMMAND,
-  UNDO_COMMAND,
-  SELECTION_CHANGE_COMMAND,
-  FORMAT_TEXT_COMMAND,
-  FORMAT_ELEMENT_COMMAND,
-  $getSelection,
-  $isRangeSelection,
-  $createParagraphNode,
-  $getNodeByKey,
-} from 'lexical';
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 
-import { $isParentElementRTL, $wrapNodes, $isAtNodeEnd } from '@lexical/selection';
-import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
-import {
-  INSERT_CHECK_LIST_COMMAND,
-  INSERT_ORDERED_LIST_COMMAND,
-  INSERT_UNORDERED_LIST_COMMAND,
-  REMOVE_LIST_COMMAND,
-  $isListNode,
-  ListNode,
-} from '@lexical/list';
 import { createPortal } from 'react-dom';
-import { $createHeadingNode, $createQuoteNode, $isHeadingNode } from '@lexical/rich-text';
+
 import {
   $createCodeNode,
   $isCodeNode,
-  getDefaultCodeLanguage,
   getCodeLanguages,
+  getDefaultCodeLanguage,
 } from '@lexical/code';
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
+import {
+  $isListNode,
+  INSERT_CHECK_LIST_COMMAND,
+  INSERT_ORDERED_LIST_COMMAND,
+  INSERT_UNORDERED_LIST_COMMAND,
+  ListNode,
+  REMOVE_LIST_COMMAND,
+} from '@lexical/list';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $createHeadingNode, $createQuoteNode, $isHeadingNode } from '@lexical/rich-text';
+import { $isAtNodeEnd, $isParentElementRTL, $wrapNodes } from '@lexical/selection';
+import { $getNearestNodeOfType, mergeRegister } from '@lexical/utils';
+import {
+  $createParagraphNode,
+  $getNodeByKey,
+  $getSelection,
+  $isRangeSelection,
+  CAN_REDO_COMMAND,
+  CAN_UNDO_COMMAND,
+  FORMAT_ELEMENT_COMMAND,
+  FORMAT_TEXT_COMMAND,
+  REDO_COMMAND,
+  SELECTION_CHANGE_COMMAND,
+  UNDO_COMMAND,
+} from 'lexical';
 
 const LowPriority = 1;
 
-const supportedBlockTypes = new Set([
-  'paragraph',
-  'quote',
-  'code',
-  'h1',
-  'h2',
-  'ul',
-  'ol',
-]);
+const supportedBlockTypes = new Set(['paragraph', 'quote', 'code', 'h1', 'h2', 'ul', 'ol']);
 
 const blockTypeToBlockName = {
   code: 'Code Block',
@@ -247,12 +242,7 @@ export function getSelectedNode(selection) {
   }
 }
 
-function BlockOptionsDropdownList({
-  editor,
-  blockType,
-  toolbarRef,
-  setShowBlockOptionsDropDown,
-}) {
+function BlockOptionsDropdownList({ editor, blockType, toolbarRef, setShowBlockOptionsDropDown }) {
   const dropDownRef = useRef(null);
 
   useEffect(() => {
@@ -444,9 +434,7 @@ export default function ToolbarPlugin() {
     if ($isRangeSelection(selection)) {
       const anchorNode = selection.anchor.getNode();
       const element =
-        anchorNode.getKey() === 'root'
-          ? anchorNode
-          : anchorNode.getTopLevelElementOrThrow();
+        anchorNode.getKey() === 'root' ? anchorNode : anchorNode.getTopLevelElementOrThrow();
       const elementKey = element.getKey();
       const elementDOM = editor.getElementByKey(elementKey);
       if (elementDOM !== null) {

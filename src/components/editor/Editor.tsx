@@ -1,5 +1,4 @@
-// @ts-nocheck
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
@@ -11,7 +10,6 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
@@ -20,24 +18,22 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useDebouncedCallback } from 'use-debounce';
-import { useOnClickOutside } from 'usehooks-ts';
 
+import AutoLinkPlugin, { validateUrl } from '@/plugins/AutolinkPlugin';
+import ClickableLinkPlugin from '@/plugins/ClickableLinkPlugin';
+import CodeHighlightPlugin from '@/plugins/CodeHighlightPlugin';
+import FloatingMenuPlugin from '@/plugins/FloatingMenuPlugin';
 import PageBreakPlugin from '@/plugins/PageBreakPlugin/PageBreakPlugin';
 import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
-import { tagsState } from '@/store/tags-state';
+import SlashCommandPickerPlugin from '@/plugins/SlashCommandPicker';
+import TabFocusPlugin from '@/plugins/TabFocusPlugin';
+import { theme } from '@/plugins/theme';
+import { entriesStore } from '@/store/entries';
 
-import AutoLinkPlugin, { validateUrl } from '../../plugins/AutolinkPlugin';
-import ClickableLinkPlugin from '../../plugins/ClickableLinkPlugin';
-import CodeHighlightPlugin from '../../plugins/CodeHighlightPlugin';
-import FloatingMenuPlugin from '../../plugins/FloatingMenuPlugin';
-import SlashCommandPickerPlugin from '../../plugins/SlashCommandPicker';
-import TabFocusPlugin from '../../plugins/TabFocusPlugin';
-import { theme } from '../../plugins/theme';
-import { entriesStore } from '../../store/entries';
-import { TagSelector } from '../tag-selector/TagSelector';
+import { EntryTitle } from './Editor.EntryTitle';
+import { TagEditor } from './Editor.TagEditor';
 
 function Placeholder() {
   return <div className="editor-placeholder">Enter some rich text...</div>;
@@ -54,71 +50,9 @@ function MyCustomAutoFocusPlugin() {
   return null;
 }
 
-function onError(error) {
+function onError(error: any) {
   console.error(error);
 }
-
-const EntryTitle = observer(() => {
-  const entryStore = entriesStore;
-  const { activeEntry } = entryStore;
-
-  const [inputValue, setInputValue] = useState(activeEntry.title);
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setInputValue(value);
-    entryStore.updateActiveEntireTitle(value);
-  };
-
-  return (
-    <div className="entry-input">
-      <input type="text" onChange={handleInputChange} value={inputValue} />
-    </div>
-  );
-});
-
-const TagEditor = observer(() => {
-  const entryStore = entriesStore;
-  const { activeEntry } = entryStore;
-  const [showTags, setShowTags] = useState(true);
-  const tagsRef = useRef(null);
-
-  const tags = useMemo(() => {
-    return activeEntry?.tags.map((t) => toJS(tagsState.tagsMap[t])).filter(Boolean);
-  }, [activeEntry?.tags, tagsState.tagsMap]);
-
-  const onTagSelectorBlur = () => {
-    setShowTags(true);
-  };
-
-  const hasTags = tags.length > 0 && showTags;
-
-  useOnClickOutside(tagsRef, onTagSelectorBlur);
-
-  return (
-    <div className="tags">
-      {hasTags ? (
-        <div onClick={() => setShowTags(false)} className="tags-container">
-          {tags?.map((tag: any) => {
-            return (
-              <div key={tag.value} className="tag">
-                <p>{tag.label}</p>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <TagSelector
-          onTagSelect={(selectedTags: string[]) => {
-            entriesStore.updateActiveEntryTags(selectedTags);
-          }}
-          tags={tags}
-          containerRef={tagsRef}
-        />
-      )}
-    </div>
-  );
-});
 
 const EntryHeader = observer(() => {
   return (
@@ -131,7 +65,7 @@ const EntryHeader = observer(() => {
   );
 });
 
-export const Editor = ({ id, content }) => {
+export const Editor = ({ id, content }: { id: string; content: string }) => {
   const editorState = useRef();
 
   const initialConfig = {

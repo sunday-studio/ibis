@@ -1,7 +1,11 @@
-import { open } from '@tauri-apps/api/shell';
+// @ts-nocheck
+// TODO: add types
+import { useEffect } from 'react';
+
 import { $isLinkNode } from '@lexical/link';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $findMatchingParent, isHTMLAnchorElement } from '@lexical/utils';
+import { open } from '@tauri-apps/api/shell';
 import {
   $getNearestNodeFromDOMNode,
   $getSelection,
@@ -9,7 +13,6 @@ import {
   $isRangeSelection,
   getNearestEditorFromDOMNode,
 } from 'lexical';
-import { useEffect } from 'react';
 
 function findMatchingDOM(startNode, predicate) {
   let node = startNode;
