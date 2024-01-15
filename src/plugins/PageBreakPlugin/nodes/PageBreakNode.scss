@@ -5,7 +5,6 @@
 [type='page-break'] {
   position: relative;
   display: block;
-  width: calc(100% + var(--editor-input-padding, 28px) * 2);
   overflow: unset;
   margin-left: calc(var(--editor-input-padding, 28px) * -1);
   margin-top: var(--editor-input-padding, 28px);
