@@ -84,6 +84,7 @@ export const DailyNoteEditor: FunctionComponent<DailyNoteEditorProps> = ({
   };
 
   const debouncedUpdates = useDebouncedCallback(async () => {
+    // @ts-ignore
     onChange(editorState.current.toJSON());
   }, 750);
 
@@ -100,6 +101,7 @@ export const DailyNoteEditor: FunctionComponent<DailyNoteEditorProps> = ({
       />
       <OnChangePlugin
         onChange={(state) => {
+          // @ts-ignore
           editorState.current = state;
           debouncedUpdates();
         }}

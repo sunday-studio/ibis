@@ -91,6 +91,7 @@ export const Editor = ({ id, content }: { id: string; content: string }) => {
   };
 
   const debouncedUpdates = useDebouncedCallback(async () => {
+    // @ts-ignore
     entriesStore.saveContent(editorState.current.toJSON());
   }, 750);
 
@@ -108,11 +109,12 @@ export const Editor = ({ id, content }: { id: string; content: string }) => {
       />
       <OnChangePlugin
         onChange={(state) => {
+          // @ts-ignore
           editorState.current = state;
           debouncedUpdates();
         }}
       />
-
+      {/* @ts-ignore */}
       <ClickableLinkPlugin newTap />
       <FloatingMenuPlugin />
       <SlashCommandPickerPlugin />
