@@ -42,6 +42,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-top: 30px;
     }
 
     .note-date {
@@ -52,13 +53,19 @@
 
       h1 {
         font-size: 5em;
-        display: inline-block;
-        padding: 5px;
-        background: linear-gradient(to bottom, var(--text-primary) 90%, var(--primary-color) 0%);
-        background-clip: text;
-        color: transparent;
-        line-height: 100px;
-        outline: 1px dotted red;
+        font-variant-numeric: lining-nums;
+        line-height: 0.75;
+
+        &.is-today {
+          display: inline-block;
+          background: linear-gradient(
+            to bottom,
+            var(--text-primary) var(--percentage-completed),
+            var(--primary-color) 0%
+          );
+          background-clip: text;
+          color: transparent;
+        }
       }
 
       .date-data {
@@ -129,11 +136,7 @@
         border: 0;
         border-radius: 100%;
         transition: $ease-out-200;
-        // border: 1.5px solid var(--main-border);
         background-color: var(--background-secondary);
-
-        &-icon {
-        }
 
         &.action {
           width: auto;

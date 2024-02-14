@@ -4,6 +4,7 @@ import { makeAutoObservable } from 'mobx';
 import { nanoid } from 'nanoid';
 
 import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
+import { getDayPercentageCompleted } from '@/lib/utils';
 
 import { DAILY_NOTES_KEY, DATE_PATTERN } from '../lib/constants';
 import { setData } from '../lib/storage';
@@ -32,6 +33,9 @@ type DailyNotes = Record<string, DailyEntry>;
 class DailyStore {
   dailyEntry: DailyEntry = {};
   dailyEntries: DailyNotes | {} = {};
+  intervalId = null;
+
+  //
 
   constructor() {
     makeAutoObservable(this);
@@ -109,6 +113,8 @@ class DailyStore {
     const currentDate = getDateInStringFormat(new Date());
 
     let todayEntry = this.dailyEntries[currentDate];
+
+    this.startPercentageCompletedCheck();
 
     if (!todayEntry) {
       todayEntry = {

@@ -2,6 +2,9 @@
 $ease-out-200: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
 :root {
+  // things
+  --percentage-completed: 0%;
+
   // colors
   --main-background: #f4f4f5;
   --panel-background: white;

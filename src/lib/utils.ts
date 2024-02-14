@@ -32,7 +32,7 @@ export function formatDateString(date: Date, pattern = 'y-MM-dd') {
 
 // const completedPercentage = (elapsedSeconds / totalSeconds) * 100;
 
-export const getPercentageOfDayLeft = () => {
+export const getDayPercentageCompleted = () => {
   const now: Date = new Date();
   const start: Date = startOfToday();
   const end: Date = endOfToday();
