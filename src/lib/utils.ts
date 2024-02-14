@@ -1,4 +1,11 @@
-import { format } from 'date-fns';
+import {
+  differenceInMinutes,
+  endOfToday,
+  format,
+  getMinutes,
+  getTime,
+  startOfToday,
+} from 'date-fns';
 
 export const formatDuplicatedTitle = (title: string, isDuplicate = false) => {
   const isAlreadyDuplicate = Boolean(title.match(/[()]/));
@@ -22,3 +29,18 @@ export const truncate = (value: string) =>
 export function formatDateString(date: Date, pattern = 'y-MM-dd') {
   return format(date, pattern);
 }
+
+// const completedPercentage = (elapsedSeconds / totalSeconds) * 100;
+
+export const getPercentageOfDayLeft = () => {
+  const now: Date = new Date();
+  const start: Date = startOfToday();
+  const end: Date = endOfToday();
+
+  const totalMinutes = differenceInMinutes(end, start);
+  const elapsedMinutes = differenceInMinutes(now, start);
+
+  const remainingPercentage: number = (elapsedMinutes / totalMinutes) * 100;
+
+  return Number(remainingPercentage.toFixed(2));
+};

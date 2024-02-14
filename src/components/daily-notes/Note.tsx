@@ -3,6 +3,7 @@ import { format, isToday } from 'date-fns';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 
+import { getDayPercentageCompleted } from '@/lib/utils';
 import { dailyEntryState } from '@/store/daily-state';
 
 import { DatePicker } from '../date-picker/DatePicker';
@@ -25,14 +26,22 @@ function getDateValues(d: string) {
 const DailyPage = observer(() => {
   const { dailyEntry } = dailyEntryState;
 
+  const dayCompleted = getDayPercentageCompleted();
+
   const dateValues = getDateValues(dailyEntry?.date);
+
+  const h1Style = {
+    '--percentage': `${dayCompleted}%`,
+  };
+
+  console.log({ dayCompleted });
 
   return (
     <Popover.Root>
       <div className="daily-note">
         <div className="daily-note__header">
           <div className="note-date">
-            <h1>{dateValues.dateNumber}</h1>
+            <h1 style={h1Style}>{dateValues.dateNumber}</h1>
             <div className="date-data">
               <p className="day">{dateValues?.day}</p>
               <p className="month">{dateValues?.month}</p>

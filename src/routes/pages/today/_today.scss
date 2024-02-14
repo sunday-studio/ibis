@@ -48,14 +48,22 @@
       display: flex;
       align-items: center;
       gap: 15px;
+      height: 100%;
 
       h1 {
         font-size: 5em;
+        display: inline-block;
+        padding: 5px;
+        background: linear-gradient(to bottom, var(--text-primary) 90%, var(--primary-color) 0%);
+        background-clip: text;
+        color: transparent;
+        line-height: 100px;
+        outline: 1px dotted red;
       }
 
       .date-data {
         p {
-          font-size: 14px;
+          font-size: 15px;
           font-weight: 600;
           color: var(--text-secondary);
         }
