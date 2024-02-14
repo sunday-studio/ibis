@@ -1,11 +1,4 @@
-import {
-  differenceInMinutes,
-  endOfToday,
-  format,
-  getMinutes,
-  getTime,
-  startOfToday,
-} from 'date-fns';
+import { differenceInMinutes, endOfToday, format, startOfToday } from 'date-fns';
 
 export const formatDuplicatedTitle = (title: string, isDuplicate = false) => {
   const isAlreadyDuplicate = Boolean(title.match(/[()]/));
