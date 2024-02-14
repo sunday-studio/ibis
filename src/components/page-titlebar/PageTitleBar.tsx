@@ -1,31 +1,32 @@
-import { appState } from '@/store/app-state';
-import { entriesStore } from '@/store/entries';
 import clsx from 'clsx';
 import { CheckCheck, PanelLeft, RotateCw, X } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 
-type ActiveTabProps = {
-  title: string;
-  onClose: () => void;
-  onClick: () => void;
-  isActive?: boolean;
-};
+import { appState } from '@/store/app-state';
+import { entriesStore } from '@/store/entries';
 
-const ActiveTab = ({ title, onClose, onClick, isActive }: ActiveTabProps) => {
-  return (
-    <div
-      className={clsx('tab', {
-        'tab-active': isActive,
-      })}
-      onClick={onClick}
-    >
-      <p className="tab-title satoshi-font">{title}</p>
-      <div className="close-button" onClick={onClose}>
-        <X size={14} strokeWidth={3} />
-      </div>
-    </div>
-  );
-};
+// type ActiveTabProps = {
+//   title: string;
+//   onClose: () => void;
+//   onClick: () => void;
+//   isActive?: boolean;
+// };
+
+// const ActiveTab = ({ title, onClose, onClick, isActive }: ActiveTabProps) => {
+//   return (
+//     <div
+//       className={clsx('tab', {
+//         'tab-active': isActive,
+//       })}
+//       onClick={onClick}
+//     >
+//       <p className="tab-title satoshi-font">{title}</p>
+//       <div className="close-button" onClick={onClose}>
+//         <X size={14} strokeWidth={3} />
+//       </div>
+//     </div>
+//   );
+// };
 
 export const PageTitleBar = observer(() => {
   const currentEntryTitle = entriesStore.activeEntry?.title;

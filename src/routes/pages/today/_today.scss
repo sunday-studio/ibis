@@ -38,6 +38,30 @@
   .daily-note {
     padding: 10px;
 
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .note-date {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      h1 {
+        font-size: 5em;
+      }
+
+      .date-data {
+        p {
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--text-secondary);
+        }
+      }
+    }
+
     .note {
       position: relative;
 

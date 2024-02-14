@@ -8,41 +8,57 @@ import { dailyEntryState } from '@/store/daily-state';
 import { DatePicker } from '../date-picker/DatePicker';
 import { DailyNoteEditor } from './DailyNoteEditor';
 
-function getTitle(d: string) {
-  if (!d) return '';
+function getDateValues(d: string) {
+  if (!d) return {};
 
   const date = new Date(d);
 
-  const isDateToday = isToday(date);
-  return isDateToday ? 'Today' : format(date, 'do LLL, yyy');
+  return {
+    dateNumber: format(date, 'dd'),
+    day: format(date, 'EEEE'),
+    month: format(date, 'MMMM'),
+    year: format(date, 'uuuu'),
+    isToday: isToday(date),
+  };
 }
 
 const DailyPage = observer(() => {
   const { dailyEntry } = dailyEntryState;
 
-  const title = getTitle(dailyEntry?.date);
+  const dateValues = getDateValues(dailyEntry?.date);
 
   return (
     <Popover.Root>
       <div className="daily-note">
-        <div className="section-header">
-          <Popover.Trigger asChild>
-            <button className="icon" onClick={(e) => e.stopPropagation()}>
-              <Calendar className="icon-inner" size={14} strokeWidth={2.3} />
+        <div className="daily-note__header">
+          <div className="note-date">
+            <h1>{dateValues.dateNumber}</h1>
+            <div className="date-data">
+              <p className="day">{dateValues?.day}</p>
+              <p className="month">{dateValues?.month}</p>
+              <p className="year">{dateValues?.year}</p>
+            </div>
+          </div>
+
+          <div className="section-header">
+            <Popover.Trigger asChild>
+              <button className="icon" onClick={(e) => e.stopPropagation()}>
+                <Calendar className="icon-inner" size={14} strokeWidth={2.3} />
+              </button>
+            </Popover.Trigger>
+            <button className="icon" onClick={() => dailyEntryState.goToPreviousDay()}>
+              <ChevronLeft className="icon-inner" size={16} strokeWidth={2.5} />
             </button>
-          </Popover.Trigger>
-          <button className="icon" onClick={() => dailyEntryState.goToPreviousDay()}>
-            <ChevronLeft className="icon-inner" size={16} strokeWidth={2.5} />
-          </button>
-          <button className="icon" onClick={() => dailyEntryState.goToNextDay()}>
-            <ChevronRight className="icon-inner" size={16} strokeWidth={2.5} />
-          </button>
+            <button className="icon" onClick={() => dailyEntryState.goToNextDay()}>
+              <ChevronRight className="icon-inner" size={16} strokeWidth={2.5} />
+            </button>
+          </div>
         </div>
 
         <div className="note">
-          <div className="title">
+          {/* <div className="title">
             <h3 className="active-date favorit-font">{title}</h3>
-          </div>
+          </div> */}
 
           <div className="note-editor-container">
             {dailyEntry && (
