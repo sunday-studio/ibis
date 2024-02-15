@@ -114,8 +114,6 @@ class DailyStore {
 
     let todayEntry = this.dailyEntries[currentDate];
 
-    this.startPercentageCompletedCheck();
-
     if (!todayEntry) {
       todayEntry = {
         id: nanoid(),

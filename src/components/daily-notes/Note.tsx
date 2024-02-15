@@ -33,6 +33,8 @@ const DailyPage = observer(() => {
 
   const updatePercentageCompleted = () => {
     const dayCompleted = getDayPercentageCompleted();
+
+    console.log({ dayCompleted });
     let root = document.documentElement;
     root.style.setProperty('--percentage-completed', `${dayCompleted}%`);
   };
