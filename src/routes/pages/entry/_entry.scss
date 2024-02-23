@@ -1,2 +1,8 @@
 .entry-page {
+  .editor-wrapper {
+    overflow-y: scroll;
+    position: relative;
+    padding: 40px 80px;
+    height: calc(100vh - var(--page-title-height));
+  }
 }

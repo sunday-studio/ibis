@@ -52,93 +52,87 @@ export const Sidebar = observer(() => {
   }, [entriesStore?.privateEntries]);
 
   return (
-    <>
-      <div className="sidebar">
-        <SidebarHeader />
-        <div className="sidebar-content">
-          <div className="section header-section">
-            <RouteLink
-              title="Today"
-              icon={DoorOpen}
-              onClick={() => {
-                dailyEntryState.goToToday();
-                goToPage('/today');
-              }}
-            />
-            <RouteLink title="Highlights" icon={Sparkles} onClick={() => {}} />
-            <RouteLink
-              title="Search"
-              icon={Search}
-              onClick={() => searchStore.toggleSearchModal()}
-            />
-            <RouteLink title="Trash" icon={Trash2Icon} onClick={() => goToPage('/trash')} />
-            <RouteLink
-              title="New Entry"
-              icon={BadgePlus}
-              onClick={() => {
-                const entryId = entriesStore.addNewEntry();
-                navigate(`/entry/${entryId}`);
-              }}
-            />
-          </div>
-        </div>
-
-        <div className={clsx('sidebar-entries', {})}>
-          {Boolean(pinnedEntries?.length) && (
-            <div className="section">
-              <div className="header">
-                <p className="title cabinet-font">Pinned</p>
-              </div>
-
-              <div className="entries">
-                {pinnedEntries?.map((entry) => {
-                  return (
-                    <SidebarEntry
-                      selectEntry={(entry) => {
-                        navigate(`/entry/${entry.id}`);
-                        entriesStore.selectEntry(entry);
-                      }}
-                      entry={entry}
-                      activeEntry={entriesStore.activeEntry}
-                      key={entry.id}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {privateEntries.length > 0 && (
-            <div className="section">
-              <div className="header">
-                <p className="title satoshi-font">Private</p>
-                <div
-                  className="icon"
-                  onClick={() => {
-                    const id = entriesStore.addNewEntry();
-                    navigate(`/entry/${id}`);
-                  }}
-                ></div>
-              </div>
-              <div className="entries">
-                {privateEntries?.map((entry) => {
-                  return (
-                    <SidebarEntry
-                      selectEntry={(entry) => {
-                        navigate(`/entry/${entry.id}`);
-                        entriesStore.selectEntry(entry);
-                      }}
-                      entry={entry}
-                      activeEntry={entriesStore.activeEntry}
-                      key={entry.id}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          )}
+    <div className="sidebar">
+      <SidebarHeader />
+      <div className="sidebar-content">
+        <div className="section header-section">
+          <RouteLink
+            title="Today"
+            icon={DoorOpen}
+            onClick={() => {
+              dailyEntryState.goToToday();
+              goToPage('/today');
+            }}
+          />
+          <RouteLink title="Highlights" icon={Sparkles} onClick={() => {}} />
+          <RouteLink title="Search" icon={Search} onClick={() => searchStore.toggleSearchModal()} />
+          <RouteLink title="Trash" icon={Trash2Icon} onClick={() => goToPage('/trash')} />
+          <RouteLink
+            title="New Entry"
+            icon={BadgePlus}
+            onClick={() => {
+              const entryId = entriesStore.addNewEntry();
+              navigate(`/entry/${entryId}`);
+            }}
+          />
         </div>
       </div>
-    </>
+
+      <div className={clsx('sidebar-entries', {})}>
+        {Boolean(pinnedEntries?.length) && (
+          <div className="section">
+            <div className="header">
+              <p className="title cabinet-font">Pinned</p>
+            </div>
+
+            <div className="entries">
+              {pinnedEntries?.map((entry) => {
+                return (
+                  <SidebarEntry
+                    selectEntry={(entry) => {
+                      navigate(`/entry/${entry.id}`);
+                      entriesStore.selectEntry(entry);
+                    }}
+                    entry={entry}
+                    activeEntry={entriesStore.activeEntry}
+                    key={entry.id}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {privateEntries.length > 0 && (
+          <div className="section">
+            <div className="header">
+              <p className="title satoshi-font">Private</p>
+              <div
+                className="icon"
+                onClick={() => {
+                  const id = entriesStore.addNewEntry();
+                  navigate(`/entry/${id}`);
+                }}
+              ></div>
+            </div>
+            <div className="entries">
+              {privateEntries?.map((entry) => {
+                return (
+                  <SidebarEntry
+                    selectEntry={(entry) => {
+                      navigate(`/entry/${entry.id}`);
+                      entriesStore.selectEntry(entry);
+                    }}
+                    entry={entry}
+                    activeEntry={entriesStore.activeEntry}
+                    key={entry.id}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 });

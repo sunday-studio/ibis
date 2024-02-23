@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import * as Popover from '@radix-ui/react-popover';
 import clsx from 'clsx';
@@ -33,8 +33,6 @@ const DailyPage = observer(() => {
 
   const updatePercentageCompleted = () => {
     const dayCompleted = getDayPercentageCompleted();
-
-    console.log({ dayCompleted });
     let root = document.documentElement;
     root.style.setProperty('--percentage-completed', `${dayCompleted}%`);
   };
@@ -45,7 +43,7 @@ const DailyPage = observer(() => {
       updatePercentageCompleted();
     }, 45 * 60 * 1000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [dateValues.day]);
 
   return (
     <Popover.Root>
@@ -81,11 +79,15 @@ const DailyPage = observer(() => {
           </div>
         </div>
 
-        <div className="note">
-          {/* <div className="title">
-            <h3 className="active-date favorit-font">{title}</h3>
-          </div> */}
+        {/* {dailyEntry && (
+        <DailyNoteEditor
+          onChange={(state) => dailyEntryState.saveNoteContent(state)}
+          content={dailyEntry.noteContent ? JSON.parse(dailyEntry.noteContent as string) : null}
+          id={dailyEntry.id}
+        />
+      )} */}
 
+        <div className="note">
           <div className="note-editor-container">
             {dailyEntry && (
               <DailyNoteEditor

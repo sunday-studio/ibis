@@ -30,6 +30,7 @@ import { entriesStore } from '@/store/entries';
 
 export const PageTitleBar = observer(() => {
   const currentEntryTitle = entriesStore.activeEntry?.title;
+
   return (
     <div className={clsx('page-titlebar', 'multi-page')} data-tauri-drag-region>
       {!appState.sidebarIsOpen && (

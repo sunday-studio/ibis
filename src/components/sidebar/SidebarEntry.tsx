@@ -11,6 +11,7 @@ import {
   BadgeInfo,
   Columns,
   Copy,
+  CornerUpRight,
   MoreHorizontal,
   Package,
   Pin,
@@ -119,22 +120,23 @@ const MoreOptions = observer(({ entry }: { entry: Entry; onDelete: () => void })
         icon: isPinned ? <PinOff size={16} /> : <Pin size={16} />,
       },
 
-      // {
-      //   title:"Move to",
-      //   action:() =>
-      // },
-
       {
-        title: 'Open in split view',
+        title: 'Move to',
         action: () => {},
-        icon: <Columns size={16} />,
-        disabled: true,
+        icon: <CornerUpRight size={16} />,
       },
 
       {
         title: 'Archive',
         action: () => toast('Note removed'),
         icon: <Package size={16} />,
+        disabled: true,
+      },
+
+      {
+        title: 'Open in split view',
+        action: () => {},
+        icon: <Columns size={16} />,
         disabled: true,
       },
 

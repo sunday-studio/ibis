@@ -1,42 +1,14 @@
 .today-page {
   display: grid;
   background-color: var(--background-primary);
-  overflow: hidden;
-  width: 60%;
   margin: 0 auto;
-  transition: $ease-out-200;
-
-  .notes {
-    grid-column: span 2;
-    background-color: var(--background-primary);
-    transition: $ease-out-200;
-  }
-
-  .sider {
-    grid-column: span 1;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--main-background);
-
-    .todos,
-    .calendar {
-      padding: 10px;
-      flex: 1;
-      background-color: var(--panel-background);
-    }
-
-    .todos {
-      padding-top: 40px;
-      border-bottom: 1.5px solid var(--main-border);
-    }
-
-    .calendar {
-      flex: 1;
-    }
-  }
+  padding: 0 80px;
+  height: 100vh;
 
   .daily-note {
     padding: 10px;
+    overflow-y: scroll;
+    padding-top: 40px;
 
     &__header {
       display: flex;
@@ -78,7 +50,7 @@
     }
 
     .note {
-      position: relative;
+      // position: relative;
 
       .title {
         padding: 15px 0;
@@ -111,8 +83,8 @@
 
     .note-editor-container {
       position: relative;
-      overflow-y: scroll;
-      height: calc(100vh - 200px);
+      // overflow-y: scroll;
+      // height: calc(100vh - 200px);
     }
 
     .section-header {
