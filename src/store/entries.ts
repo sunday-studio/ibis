@@ -21,7 +21,7 @@ export interface Entry {
 export type Folder = {
   id: string;
   name: string;
-  entries: string[];
+  entries: Set<string>;
 };
 
 type Folders = Record<String, Folder>;
@@ -174,24 +174,16 @@ class Entries {
     this.entries = updatedEntries;
   }
 
-  private saveIndexFileToDisk({}: // key,
-  // value,
-  {
-    // key: 'deletedEntries' | 'pinnedEntries' | 'folders';
-  }) {
-    // const currentData = {
-    //   deletedEntries: this.deletedEntriesId,
-    //   pinnedEntries: this.pinnedEntriesId,
-    //   folders: this.folders,
-    // };
-    // // const updatedData = {
-    // //   ...currentData,
-    // //   // [key]: value,
-    // // };
-    // saveFileToDisk({
-    //   type: 'index',
-    //   data: currentData,
-    // });
+  saveIndexFileToDisk() {
+    const currentData = {
+      deletedEntries: this.deletedEntriesId,
+      pinnedEntries: this.pinnedEntriesId,
+      folders: this.folders,
+    };
+    saveFileToDisk({
+      type: 'index',
+      data: currentData,
+    });
   }
 
   updateActiveEntryTags(tags: string[]) {
@@ -308,13 +300,6 @@ class Entries {
     if (!this.folders[folder.id]) {
       this.folders[folder.id] = folder;
       this.saveIndexFileToDisk();
-
-      // saveFileToDisk({
-      //   type: 'index',
-      //   data: {
-      //     folders: this.folders,
-      //   },
-      // });
     }
   }
 
@@ -323,18 +308,10 @@ class Entries {
       const folder: Folder = this.folders[folderId];
       const updatedFolder: Folder = {
         ...folder,
-        entries: [...folder.entries, entryId],
+        entries: folder.entries.add(entryId),
       };
       this.folders[folderId] = updatedFolder;
-
       this.saveIndexFileToDisk();
-
-      // saveIndexFileToDisk({
-      //   key: ,
-      //   data: {
-      //     folders: this.folders,
-      //   },
-      // });
     }
   }
 
@@ -343,16 +320,10 @@ class Entries {
       const folder: Folder = this.folders[folderId];
       const updatedFolder: Folder = {
         ...folder,
-        entries: folder.entries.filter((entry) => entry !== entryId),
+        entries: folder.entries.delete(entryId),
       };
       this.folders[folderId] = updatedFolder;
       this.saveIndexFileToDisk();
-      // saveFileToDisk({
-      //   type: 'index',
-      //   data: {
-      //     folders: this.folders,
-      //   },
-      // });
     }
   }
 }

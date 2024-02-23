@@ -17,7 +17,7 @@ export const SidebarFolder = observer<SidebarFolder>(({ folderId }) => {
   const navigate = useNavigate();
 
   const folder: Folder = entriesStore.folders[folderId];
-  const entries = folder.entries.map((entryId) =>
+  const entries = [...folder.entries].map((entryId) =>
     entriesStore.entries.find((entry) => entry.id === entryId),
   );
 

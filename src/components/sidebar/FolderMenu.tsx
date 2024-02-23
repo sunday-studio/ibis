@@ -62,7 +62,7 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
               entriesStore.addFolder({
                 id: nanoid(),
                 name: inputValue,
-                entries: [entryId],
+                entries: new Set([entryId]),
               });
 
               onFolderSelect();
