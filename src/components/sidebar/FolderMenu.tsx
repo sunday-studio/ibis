@@ -35,7 +35,14 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
         {filteredFolders?.length > 0 ? (
           <>
             {filteredFolders.map((folder: Folder) => {
-              return <li key={folder.id}>{folder.name}</li>;
+              return (
+                <li
+                  onClick={() => entriesStore.addEntryToFolder(folder.id, entryId)}
+                  key={folder.id}
+                >
+                  {folder.name}
+                </li>
+              );
             })}
           </>
         ) : (

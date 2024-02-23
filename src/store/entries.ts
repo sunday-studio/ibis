@@ -289,7 +289,7 @@ class Entries {
     }
   }
 
-  addEntryToFolder(folderId: Pick<Folder, 'id'>, entryId: string) {
+  addEntryToFolder(folderId: string, entryId: string) {
     if (this.folders[folderId]) {
       const folder: Folder = this.folders[folderId];
       const updatedFolder: Folder = {
@@ -300,7 +300,7 @@ class Entries {
     }
   }
 
-  removeEntryFromFolder(folderId: Pick<Folder, 'id'>, entryId: string) {
+  removeEntryFromFolder(folderId: string, entryId: string) {
     if (this.folders[folderId]) {
       const folder: Folder = this.folders[folderId];
       const updatedFolder: Folder = {
