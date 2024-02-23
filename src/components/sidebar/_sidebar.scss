@@ -118,7 +118,7 @@
 
       ul {
         list-style: none;
-        padding-inline-start: 20px;
+        padding-inline-start: 0px;
       }
     }
   }
@@ -316,7 +316,6 @@
 
 .PopoverContent {
   border-radius: 8px;
-  padding: 6px;
   min-width: 250px;
   background-color: var(--panel-background);
   animation-duration: 400ms;
@@ -450,19 +449,20 @@
 .folder-menu {
   width: 300px;
   height: 350px;
-  padding: 4px 6px;
 
-  input {
-    border: 0;
-    width: 100%;
-    font-size: 14px;
-    background-color: var(--sidebar-background);
-    padding: 4px 4px;
-    border-radius: 4px;
-    line-height: 1;
-    border: 1px solid var(--main-border);
+  .search-input {
+    padding: 8px;
+    input {
+      border: 0;
+      width: 100%;
+      font-size: 14px;
+      background-color: var(--sidebar-background);
+      border: 1px solid var(--main-border);
+      padding: 5px 4px;
+      border-radius: 4px;
+      line-height: 1;
+    }
   }
-
   ul {
     list-style-type: none;
     padding-top: 10px;
@@ -483,6 +483,26 @@
     li {
       margin-top: 4px;
       font-size: 15px;
+      border: 1px solid transparent;
+      border-left: 0;
+      border-right: 0;
+      padding: 4px 10px;
+
+      &:hover {
+        background-color: var(--sidebar-background);
+        border-color: var(--main-border);
+      }
+
+      &.folder-empty {
+        margin: 20px 0;
+        color: var(--text-secondary);
+        text-align: center;
+
+        &:hover {
+          background-color: transparent;
+          border-color: transparent;
+        }
+      }
     }
   }
 }

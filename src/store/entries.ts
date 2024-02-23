@@ -43,6 +43,7 @@ class Entries {
     this.entries = observable(entryData);
     this.deletedEntriesId = observable(index?.content?.deletedEntries ?? []);
     this.pinnedEntriesId = observable(index?.content?.pinnedEntries ?? []);
+    this.folders = observable(index?.content?.folders ?? {});
   }
 
   get pinnedEntries() {
@@ -173,6 +174,26 @@ class Entries {
     this.entries = updatedEntries;
   }
 
+  private saveIndexFileToDisk({}: // key,
+  // value,
+  {
+    // key: 'deletedEntries' | 'pinnedEntries' | 'folders';
+  }) {
+    // const currentData = {
+    //   deletedEntries: this.deletedEntriesId,
+    //   pinnedEntries: this.pinnedEntriesId,
+    //   folders: this.folders,
+    // };
+    // // const updatedData = {
+    // //   ...currentData,
+    // //   // [key]: value,
+    // // };
+    // saveFileToDisk({
+    //   type: 'index',
+    //   data: currentData,
+    // });
+  }
+
   updateActiveEntryTags(tags: string[]) {
     const updateEntry = {
       ...this.activeEntry,
@@ -286,6 +307,14 @@ class Entries {
   addFolder(folder: Folder) {
     if (!this.folders[folder.id]) {
       this.folders[folder.id] = folder;
+      this.saveIndexFileToDisk();
+
+      // saveFileToDisk({
+      //   type: 'index',
+      //   data: {
+      //     folders: this.folders,
+      //   },
+      // });
     }
   }
 
@@ -297,6 +326,15 @@ class Entries {
         entries: [...folder.entries, entryId],
       };
       this.folders[folderId] = updatedFolder;
+
+      this.saveIndexFileToDisk();
+
+      // saveIndexFileToDisk({
+      //   key: ,
+      //   data: {
+      //     folders: this.folders,
+      //   },
+      // });
     }
   }
 
@@ -308,6 +346,13 @@ class Entries {
         entries: folder.entries.filter((entry) => entry !== entryId),
       };
       this.folders[folderId] = updatedFolder;
+      this.saveIndexFileToDisk();
+      // saveFileToDisk({
+      //   type: 'index',
+      //   data: {
+      //     folders: this.folders,
+      //   },
+      // });
     }
   }
 }

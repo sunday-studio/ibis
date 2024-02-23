@@ -161,31 +161,37 @@ const EntryActionOptions = observer(({ entry }: { entry: Entry; onDelete: () => 
 
   return (
     <Fragment>
-      {options.map((option, index) => {
-        return (
-          <div
-            className={clsx('option', {
-              option__disabled: option.disabled,
-              option__active: option.active,
-            })}
-            onClick={(e) => {
-              option.action();
-              e.stopPropagation();
-            }}
-            key={index}
-          >
-            <div className="option-icon">{option.icon}</div>
-            <p>{option.title}</p>
-          </div>
-        );
-      })}
+      <div
+        style={{
+          padding: 6,
+        }}
+      >
+        {options.map((option, index) => {
+          return (
+            <div
+              className={clsx('option', {
+                option__disabled: option.disabled,
+                option__active: option.active,
+              })}
+              onClick={(e) => {
+                option.action();
+                e.stopPropagation();
+              }}
+              key={index}
+            >
+              <div className="option-icon">{option.icon}</div>
+              <p>{option.title}</p>
+            </div>
+          );
+        })}
 
-      <div className="hr-divider" />
-      <div className="entry-details">
-        <p>Created on: {format(new Date(entry.createdAt), 'dd, MMMM yyy')}</p>
-        {entry.updatedAt && (
-          <p>Last edited on: {format(new Date(entry.createdAt), 'dd, MMM yy, h:m a')} </p>
-        )}
+        <div className="hr-divider" />
+        <div className="entry-details">
+          <p>Created on: {format(new Date(entry.createdAt), 'dd, MMMM yyy')}</p>
+          {entry.updatedAt && (
+            <p>Last edited on: {format(new Date(entry.createdAt), 'dd, MMM yy, h:m a')} </p>
+          )}
+        </div>
       </div>
     </Fragment>
   );

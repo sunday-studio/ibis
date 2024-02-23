@@ -82,7 +82,7 @@ export const Sidebar = observer(() => {
 
       <div className="sidebar-folders">
         {folders.map((folder) => {
-          return <SidebarFolder folderId={folder.id} />;
+          return <SidebarFolder key={folder.id} folderId={folder.id} />;
         })}
       </div>
 
@@ -98,8 +98,8 @@ export const Sidebar = observer(() => {
                 return (
                   <SidebarEntry
                     selectEntry={(entry) => {
-                      navigate(`/entry/${entry.id}`);
                       entriesStore.selectEntry(entry);
+                      navigate(`/entry/${entry.id}`);
                     }}
                     entry={entry}
                     activeEntry={entriesStore.activeEntry}

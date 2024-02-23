@@ -28,11 +28,20 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
     setInputValue(value);
   };
 
+  const hasNoFolders = folders.length <= 0 && !Boolean(inputValue.length);
+  const showCreateButton = filteredFolders.length >= 0 && inputValue.length > 0;
+
   return (
     <div className="folder-menu">
-      <input placeholder="Search for folders" value={inputValue} onChange={handleInputChange} />
+      <div className="search-input">
+        <input placeholder="Search for folders" value={inputValue} onChange={handleInputChange} />
+      </div>
       <ul>
-        {filteredFolders?.length > 0 ? (
+        {hasNoFolders && (
+          <li className="folder-empty">No folders yet. Search to create your first one.</li>
+        )}
+
+        {filteredFolders?.length > 0 && (
           <>
             {filteredFolders.map((folder: Folder) => {
               return (
@@ -45,7 +54,9 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
               );
             })}
           </>
-        ) : (
+        )}
+
+        {showCreateButton && (
           <button
             onClick={() => {
               entriesStore.addFolder({

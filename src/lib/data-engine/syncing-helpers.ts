@@ -1,8 +1,9 @@
+import { format } from 'date-fns';
+import { toast } from 'sonner';
+
 import { DailyEntry, dailyEntryState } from '@/store/daily-state';
 import { Entry, entriesStore } from '@/store/entries';
 import { tagsState } from '@/store/tags-state';
-import { format } from 'date-fns';
-import { toast } from 'sonner';
 
 import { meili } from './syncing-engine';
 
@@ -105,15 +106,13 @@ const getFileType = (url: string, baseURL: string) => {
 export const loadDirectoryContent = async (safeURL: string) => {
   const flatEntries = await meili.readDirectoryContent(safeURL);
 
-  const promises = flatEntries
-    // .filter((s) => s.includes('2024-01-10'))
-    .map(async (file: string) => {
-      return {
-        type: getFileType(file, safeURL),
-        url: file,
-        content: await meili.readFileContent(file),
-      };
-    });
+  const promises = flatEntries.map(async (file: string) => {
+    return {
+      type: getFileType(file, safeURL),
+      url: file,
+      content: await meili.readFileContent(file),
+    };
+  });
 
   const content = await Promise.all(promises);
 
@@ -125,7 +124,6 @@ export const loadDirectoryContent = async (safeURL: string) => {
     return acc;
   }, {});
 
-  // console.log('content =>', { content, groupedData });
   // load data into localStores
   try {
     entriesStore.loadLocalData({
