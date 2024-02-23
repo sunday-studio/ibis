@@ -54,7 +54,11 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
           <motion.div
             {...animations}
             className={`entry ${isActive ? 'active-entry' : ''}`}
-            onClick={() => selectEntry(entry)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              selectEntry(entry);
+            }}
           >
             <p className="entry-title">{truncate(entry.title) || 'Untitled'}</p>
             <Popover.Trigger asChild>

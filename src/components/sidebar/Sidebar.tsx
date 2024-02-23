@@ -80,13 +80,13 @@ export const Sidebar = observer(() => {
         </div>
       </div>
 
-      <div className="folders">
+      <div className="sidebar-folders">
         {folders.map((folder) => {
           return <SidebarFolder folderId={folder.id} />;
         })}
       </div>
 
-      <div className={clsx('sidebar-entries', {})}>
+      <div className={clsx('sidebar-entries')}>
         {Boolean(pinnedEntries?.length) && (
           <div className="section">
             <div className="header">
@@ -121,7 +121,7 @@ export const Sidebar = observer(() => {
                   const id = entriesStore.addNewEntry();
                   navigate(`/entry/${id}`);
                 }}
-              ></div>
+              />
             </div>
             <div className="entries">
               {privateEntries?.map((entry) => {
