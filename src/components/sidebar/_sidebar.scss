@@ -363,7 +363,7 @@
 .PopoverContent {
   border-radius: 8px;
   padding: 6px;
-  width: 250px;
+  min-width: 250px;
   background-color: var(--panel-background);
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
@@ -490,5 +490,52 @@
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
+  }
+}
+
+.folder-menu {
+  // outline: 1px dotted red;
+  width: 300px;
+  height: 350px;
+  padding: 4px 6px;
+
+  input {
+    border: 0;
+    width: 100%;
+    font-size: 14px;
+    background-color: var(--sidebar-background);
+    padding: 4px 4px;
+    border-radius: 4px;
+    line-height: 1;
+    border: 1px solid var(--main-border);
+  }
+
+  ul {
+    list-style-type: none;
+    padding-top: 10px;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 0;
+
+    outline: 1px dotted red;
+
+    * {
+      outline: 1px dotted red;
+    }
+
+    button {
+      border: 0;
+      background-color: transparent;
+      cursor: pointer;
+      font-size: 15px;
+      width: 100%;
+      text-align: center;
+      padding: 4px 0;
+    }
+
+    li {
+      margin-top: 4px;
+      font-size: 15px;
+    }
   }
 }

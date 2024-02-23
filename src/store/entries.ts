@@ -5,8 +5,8 @@ import { nanoid } from 'nanoid';
 import { deleteFile, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
 import { mobxDebounce } from '../lib/mobx-debounce';
-import { formatDuplicatedTitle } from '../lib/utils.ts';
-import { DEFAULT_MAP_TAGS, Tag, tagsState } from './tags-state';
+import { formatDuplicatedTitle } from '../lib/utils';
+import { type Tag, tagsState } from './tags-state';
 
 export interface Entry {
   title: string;
@@ -18,12 +18,21 @@ export interface Entry {
   tags?: string[];
 }
 
+export type Folder = {
+  id: string;
+  name: string;
+  entries: string[];
+};
+
+type Folders = Record<String, Folder>;
+
 class Entries {
   entries: Entry[] | [] = [];
   deletedEntriesId: string[] | [] = [];
   pinnedEntriesId: string[] | [] = [];
   activeEntry?: Entry | null = null;
   activeEntryTitle?: string | null = this.activeEntry?.title;
+  folders: Folders = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -31,7 +40,6 @@ class Entries {
 
   loadLocalData({ entries, index }) {
     const entryData = entries.filter((e) => e.content).map((e) => e.content);
-
     this.entries = observable(entryData);
     this.deletedEntriesId = observable(index?.content?.deletedEntries ?? []);
     this.pinnedEntriesId = observable(index?.content?.pinnedEntries ?? []);
@@ -272,6 +280,35 @@ class Entries {
   updateActiveEntireTitle(title: string) {
     this.activeEntryTitle = title;
     this.saveTitle();
+  }
+
+  // Folders crud
+  addFolder(folder: Folder) {
+    if (!this.folders[folder.id]) {
+      this.folders[folder.id] = folder;
+    }
+  }
+
+  addEntryToFolder(folderId: Pick<Folder, 'id'>, entryId: string) {
+    if (this.folders[folderId]) {
+      const folder: Folder = this.folders[folderId];
+      const updatedFolder: Folder = {
+        ...folder,
+        entries: [...folder.entries, entryId],
+      };
+      this.folders[folderId] = updatedFolder;
+    }
+  }
+
+  removeEntryFromFolder(folderId: Pick<Folder, 'id'>, entryId: string) {
+    if (this.folders[folderId]) {
+      const folder: Folder = this.folders[folderId];
+      const updatedFolder: Folder = {
+        ...folder,
+        entries: folder.entries.filter((entry) => entry !== entryId),
+      };
+      this.folders[folderId] = updatedFolder;
+    }
   }
 }
 

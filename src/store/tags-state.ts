@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 
 import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
-type Tag = {
+export type Tag = {
   label: string;
   value: string;
 };

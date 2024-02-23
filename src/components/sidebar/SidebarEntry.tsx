@@ -12,6 +12,7 @@ import {
   Columns,
   Copy,
   CornerUpRight,
+  Folder,
   MoreHorizontal,
   Package,
   Pin,
@@ -21,9 +22,10 @@ import {
 import { observer } from 'mobx-react-lite';
 import { toast } from 'sonner';
 
-import { truncate } from '@/lib/utils.Ts';
+import { truncate } from '@/lib/utils';
 
 import { Entry, entriesStore } from '../../store/entries';
+import { FolderMenu } from './FolderMenu';
 
 type SidebarEntry = {
   selectEntry: (entry: Entry) => void;
@@ -72,14 +74,14 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
 
             <Popover.Portal>
               <Popover.Content className="PopoverContent" sideOffset={5}>
-                <MoreOptions entry={entry} />
+                <EntryActionOptions entry={entry} />
               </Popover.Content>
             </Popover.Portal>
           </motion.div>
         </ContextMenu.Trigger>
         <ContextMenu.Portal>
           <ContextMenu.Content className="PopoverContent" sideOffset={5} align="end">
-            <MoreOptions entry={entry} />
+            <EntryActionOptions entry={entry} />
           </ContextMenu.Content>
         </ContextMenu.Portal>
       </ContextMenu.Root>
@@ -87,11 +89,11 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
   );
 });
 
-const MoreOptions = observer(({ entry }: { entry: Entry; onDelete: () => void }) => {
+const EntryActionOptions = observer(({ entry }: { entry: Entry; onDelete: () => void }) => {
   const { pinnedEntriesId } = entriesStore;
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
-
   const isPinned = pinnedEntriesId.includes(entry.id!);
+  const [showFolderMenu, setShowFolderMenu] = useState(false);
 
   const options = useMemo(() => {
     return [
@@ -122,7 +124,7 @@ const MoreOptions = observer(({ entry }: { entry: Entry; onDelete: () => void })
 
       {
         title: 'Move to',
-        action: () => {},
+        action: () => setShowFolderMenu(true),
         icon: <CornerUpRight size={16} />,
       },
 
@@ -148,6 +150,10 @@ const MoreOptions = observer(({ entry }: { entry: Entry; onDelete: () => void })
       },
     ];
   }, [pinnedEntriesId, isDoubleClicked]);
+
+  if (showFolderMenu) {
+    return <FolderMenu entryId={entry.id} onFolderSelect={() => setShowFolderMenu(false)} />;
+  }
 
   return (
     <Fragment>
