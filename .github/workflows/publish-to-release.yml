@@ -35,13 +35,17 @@ jobs:
       - name: install frontend dependencies
         run: yarn install
 
+      - name: Extract version
+        id: extract_version
+        uses: Saionaro/extract-package-version@v1.2.1
+
       - name: build the app
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: 'App v__VERSION__'
+          tagName: ${{ steps.extract_version.output.version }}
+          releaseName: 'Ibis ${{ steps.extract_version.output.version }}'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: false
           prerelease: false
