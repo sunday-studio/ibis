@@ -50,8 +50,10 @@ jobs:
           # APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           # APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         with:
-          tagName: ${{ steps.extract_version.output.version }}
-          releaseName: 'Ibis ${{ steps.extract_version.output.version }}'
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: 'Ibis v__VERSION__'
+          # tagName: ${{ steps.extract_version.output.version }}
+          # releaseName: 'Ibis ${{ steps.extract_version.output.version }}'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: false
           prerelease: false
