@@ -41,6 +41,7 @@ jobs:
 
       - name: build the app
         uses: tauri-apps/tauri-action@v0
+        run: yarn tauri build 2>&1 | tee tauri_build_log.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
