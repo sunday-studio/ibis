@@ -79,14 +79,6 @@ const DailyPage = observer(() => {
           </div>
         </div>
 
-        {/* {dailyEntry && (
-        <DailyNoteEditor
-          onChange={(state) => dailyEntryState.saveNoteContent(state)}
-          content={dailyEntry.noteContent ? JSON.parse(dailyEntry.noteContent as string) : null}
-          id={dailyEntry.id}
-        />
-      )} */}
-
         <div className="note">
           <div className="note-editor-container">
             {dailyEntry && (
@@ -103,7 +95,7 @@ const DailyPage = observer(() => {
       </div>
 
       <Popover.Portal>
-        <Popover.Content sideOffset={10}>
+        <Popover.Content sideOffset={10} data-align="bottom">
           <DatePicker
             onChange={(date: Date) => dailyEntryState.goToDate(date)}
             selectedDate={new Date(dailyEntry?.date)}

@@ -80,11 +80,11 @@ export const Sidebar = observer(() => {
         </div>
       </div>
 
-      <div className="sidebar-folders">
+      {/* <div className="sidebar-folders">
         {folders.map((folder) => {
           return <SidebarFolder key={folder.id} folderId={folder.id} />;
         })}
-      </div>
+      </div> */}
 
       <div className={clsx('sidebar-entries')}>
         {Boolean(pinnedEntries?.length) && (

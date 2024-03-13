@@ -1,29 +1,20 @@
-.datepicker-container {
-  padding: 10px;
+.datepicker {
+  padding: 20px 15px;
   overflow: hidden;
   background-color: var(--panel-background);
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  animation-duration: 400ms;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
-  border: 1px solid var(--main-border);
+  border-radius: 8px;
+  box-shadow: var(--main-box-shadow);
 
-  .calendar {
-    border-radius: 10px;
-    background-color: var(--panel-background);
-    border: 1.5px solid #e5e7eb;
-  }
+  &-header {
+    display: flex;
+    // justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    gap: 5px;
 
-  &__header {
-    .date-details {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .datestamp {
+    h2 {
+      margin-right: auto;
+      font-weight: 550;
       font-size: 1.1rem;
     }
 
@@ -35,82 +26,82 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: var(--panel-background);
-      border-radius: 99999;
+      background-color: var(--background-secondary);
+      border-radius: 99999px;
+      border: 1px solid var(--background-secondary);
+
+      &:hover {
+        background-color: var(--hover-background);
+        border-color: var(--main-border);
+      }
     }
+  }
 
-    .days {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 5px 10px;
+  }
 
-      .day {
+  thead {
+    th {
+      height: 44px;
+      font-weight: 400;
+      font-family: var(--geist-font);
+      color: var(--subtitle-text-color);
+    }
+  }
+
+  tbody {
+    td {
+      height: 54px;
+      width: 44px;
+
+      .cell {
+        width: 100%;
+        height: 100%;
         display: flex;
-        justify-content: center;
         align-items: center;
-        width: 50px;
-        height: 40px;
-      }
-    }
-  }
+        justify-content: center;
+        flex-direction: column;
 
-  .week-container {
-    display: flex;
-    overflow: hidden;
-    border-bottom: 1.5px solid #e5e7eb;
+        &[hidden] {
+          display: none;
+        }
 
-    &.is-last-week {
-      border-width: 0;
-    }
-  }
+        &.today {
+          .date {
+            // border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+          }
+        }
+        &.selected {
+          .date {
+            background-color: var(--primary-color);
+            color: white;
+          }
+        }
 
-  .day-container {
-    width: 50px;
-    height: 40px;
+        .date {
+          width: 32px;
+          height: 32px;
+          border-radius: 9999px;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: auto;
+          font-family: var(--geist-font);
+        }
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    border-left: 1.5px solid #e5e7eb;
-
-    &.is-first-day {
-      border-left-width: 0;
-    }
-
-    &.is-today {
-      p {
-        font-weight: 600;
-        color: #fc521f;
-      }
-    }
-
-    &.out-of-month {
-      color: hsl(0, 0%, 62.8%);
-    }
-
-    &.is-selected-day {
-      p {
-        font-weight: 600;
-        background-color: #fee2e2;
-
-        &:hover {
-          background-color: #fca5a5;
+        .dot-indicator {
+          width: 5px;
+          height: 5px;
+          background-color: var(--main-border);
+          margin-top: auto;
+          border-radius: 99999px;
         }
       }
-    }
-
-    p {
-      width: 25px;
-      height: 25px;
-      font-size: 13px;
-      border-radius: 9999px;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
   }
 }

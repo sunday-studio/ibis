@@ -53,21 +53,26 @@
         cursor: pointer;
         transition: background-color 0.3s ease-out;
         color: black;
+        border: 1px solid;
 
         &:first-child {
-          background-color: #e5484d;
+          background-color: #f87171;
+          border-color: #ef4444;
         }
 
         &:nth-child(2) {
           background-color: #ffca16;
+          border-color: #f59e0b;
         }
 
         &:nth-child(3) {
           background-color: #3dd68c;
+          border-color: #22c55e;
         }
 
         &:last-child {
-          background-color: #0891b2;
+          background-color: #60a5fa;
+          border-color: #3b82f6;
         }
       }
     }

@@ -1,10 +1,14 @@
-import { FunctionComponent, useState } from 'react';
-
-import clsx from 'clsx';
-import { addMonths, format } from 'date-fns';
+import { createCalendar } from '@internationalized/date';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { PressEvent, useCalendar, useLocale } from 'react-aria';
+import { useCalendarState } from 'react-stately';
 
-import { InCurrentMonth, getHeaderDays, getWeeksInMonth, isSameDate } from './date-utils';
+import { DatePickerGrid } from './DatePicker.Grid';
+
+const Button = ({ onPress, ...rest }: { onPress?: (e: PressEvent) => void }) => {
+  //@ts-ignore
+  return <button {...rest} onClick={onPress} />;
+};
 
 type DatePickerProps = {
   size?: 'small' | 'default';
@@ -12,82 +16,29 @@ type DatePickerProps = {
   onChange: (date: Date) => void;
 };
 
-export const DatePicker: FunctionComponent<DatePickerProps> = ({
-  selectedDate = new Date(),
-  onChange,
-}) => {
-  const [currentDate, setCurrentDate] = useState(new Date(selectedDate));
-  const [weeksToRender, setWeeksToRender] = useState(new Date(selectedDate));
+export const DatePicker = () => {
+  let { locale } = useLocale();
 
-  const weeksInMonth = getWeeksInMonth(weeksToRender);
-  const headerValues = getHeaderDays();
+  let state = useCalendarState({
+    locale,
+    createCalendar,
+  });
 
-  const handleOnClick = (day: Date) => {
-    onChange(day);
-  };
+  let { calendarProps, prevButtonProps, nextButtonProps, title } = useCalendar({}, state);
 
   return (
-    <div className="datepicker-container">
-      <div className="datepicker-container__header">
-        <div className="date-details">
-          <button onClick={() => setWeeksToRender(addMonths(currentDate, -1))}>
-            <ChevronLeft fontSize={20} width={20} height={20} fontWeight={100} />
-          </button>
-
-          <p className="datestamp">{format(weeksToRender, 'MMMM, y')}</p>
-          <button onClick={() => setWeeksToRender(addMonths(currentDate, 1))}>
-            <ChevronRight />
-          </button>
-        </div>
-        <div className="days">
-          {headerValues.map((day, index: number) => {
-            return (
-              <div key={index} className="day">
-                {day}
-              </div>
-            );
-          })}
-        </div>
+    <div {...calendarProps} className="datepicker">
+      <div className="datepicker-header">
+        <h2>{title}</h2>
+        <Button {...prevButtonProps}>
+          <ChevronLeft />
+        </Button>
+        <Button {...nextButtonProps}>
+          <ChevronRight />
+        </Button>
       </div>
 
-      <div className="calendar">
-        {weeksInMonth?.map((week: any[], index: number) => {
-          return (
-            <div
-              className={clsx('week-container', {
-                'is-last-week': weeksInMonth?.length - 1 === index,
-              })}
-              key={index}
-            >
-              {week.map((day: Date, index: number) => {
-                const isInMonth = InCurrentMonth({ date: day, monthDate: weeksToRender });
-                const isToday = isSameDate(new Date(), day);
-                const isSelectedDay = isSameDate(currentDate, day);
-
-                return (
-                  <div
-                    className={clsx('day-container', {
-                      'is-selected-day': isSelectedDay,
-                      'is-first-day': index === 0,
-                      'is-today': isToday,
-                      'out-of-month': !isInMonth,
-                    })}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCurrentDate(day);
-                      handleOnClick(day);
-                    }}
-                    tabIndex={1}
-                    key={index}
-                  >
-                    <p>{format(new Date(day), 'dd')}</p>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
+      <DatePickerGrid state={state} />
     </div>
   );
 };
