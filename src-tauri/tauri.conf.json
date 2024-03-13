@@ -24,10 +24,10 @@
         "close": true,
         "hide": true,
         "show": true,
-        "maximize": true,
-        "minimize": true,
-        "unmaximize": true,
-        "unminimize": true,
+        "maximize": false,
+        "minimize": false,
+        "unmaximize": false,
+        "unminimize": false,
         "startDragging": true,
         "setDecorations": false
       },
@@ -81,7 +81,7 @@
         "height": 800,
         "titleBarStyle": "Overlay",
         "hiddenTitle": true,
-        "decorations": false,
+        "decorations": true,
         "transparent": true
       }
     ]

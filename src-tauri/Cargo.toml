@@ -20,14 +20,10 @@ tauri = {version = "1.4", features = [
   "global-shortcut-all",
   "fs-all",
   "dialog-all",
-  "window-minimize",
   "window-start-dragging",
   "window-close",
   "window-show",
-  "window-unminimize",
   "window-hide",
-  "window-maximize",
-  "window-unmaximize",
   "shell-open",
 ] }
 walkdir = "2"

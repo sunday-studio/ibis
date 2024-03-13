@@ -66,7 +66,7 @@ export const Sidebar = observer(() => {
               goToPage('/today');
             }}
           />
-          <RouteLink title="Highlights" icon={Sparkles} onClick={() => {}} />
+          {/* <RouteLink title="Highlights" icon={Sparkles} onClick={() => {}} /> */}
           <RouteLink title="Search" icon={Search} onClick={() => searchStore.toggleSearchModal()} />
           <RouteLink title="Trash" icon={Trash2Icon} onClick={() => goToPage('/trash')} />
           <RouteLink

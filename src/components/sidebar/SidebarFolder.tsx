@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight, FolderIcon, FolderOpen } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,7 +25,7 @@ export const SidebarFolder = observer<SidebarFolder>(({ folderId }) => {
     <div className="sidebar-folder" onClick={() => toggleOpen(!open)}>
       <div className="folder">
         <div className="folder-icon">
-          {open ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+          {open ? <FolderOpen size={16} /> : <FolderIcon size={16} />}
         </div>
         <p>{folder.name}</p>
       </div>
