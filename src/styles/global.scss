@@ -1,4 +1,4 @@
-// SCSS global variables
+// // SCSS global variables
 $ease-out-200: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
 :root {
@@ -371,4 +371,13 @@ ol[data-sonner-toaster='true'] {
       font-weight: 500;
     }
   }
+}
+
+html,
+body {
+  background: transparent;
+}
+
+#root {
+  border-radius: 8px;
 }

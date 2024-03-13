@@ -21,9 +21,9 @@
       },
       "window": {
         "all": false,
-        "close": true,
-        "hide": true,
-        "show": true,
+        "close": false,
+        "hide": false,
+        "show": false,
         "maximize": false,
         "minimize": false,
         "unmaximize": false,
@@ -72,6 +72,7 @@
     "security": {
       "csp": null
     },
+    "macOSPrivateApi": true,
     "windows": [
       {
         "fullscreen": false,
@@ -79,9 +80,7 @@
         "title": "Ibis",
         "width": 1200,
         "height": 800,
-        "titleBarStyle": "Overlay",
-        "hiddenTitle": true,
-        "decorations": true,
+        "decorations": false,
         "transparent": true
       }
     ]
