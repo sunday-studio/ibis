@@ -27,7 +27,7 @@ function getDateValues(d: string) {
 }
 
 const DailyPage = observer(() => {
-  const { dailyEntry } = dailyEntryState;
+  const { dailyEntry, dailyEntries } = dailyEntryState;
 
   const dateValues = getDateValues(dailyEntry?.date);
 
@@ -44,6 +44,8 @@ const DailyPage = observer(() => {
     }, 45 * 60 * 1000);
     return () => clearInterval(intervalId);
   }, [dateValues.day]);
+
+  // console.log({ dailyEntries });
 
   return (
     <Popover.Root>
@@ -99,6 +101,7 @@ const DailyPage = observer(() => {
           <DatePicker
             onChange={(date: Date) => dailyEntryState.goToDate(date)}
             selectedDate={new Date(dailyEntry?.date)}
+            showDotIndicator={(date: Date) => dailyEntryState.showDotIndicator(date)}
           />
         </Popover.Content>
       </Popover.Portal>

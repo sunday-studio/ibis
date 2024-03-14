@@ -3,7 +3,7 @@ import { useCalendarGrid, useLocale } from 'react-aria';
 
 import { DatePickerDay } from './DatePicker.Day';
 
-export function DatePickerGrid({ state, ...props }) {
+export function DatePickerGrid({ state, showDotIndicator, ...props }) {
   let { locale } = useLocale();
   let { gridProps, headerProps, weekDays } = useCalendarGrid(props, state);
 
@@ -25,7 +25,16 @@ export function DatePickerGrid({ state, ...props }) {
             {state
               .getDatesInWeek(weekIndex)
               .map((date, i) =>
-                date ? <DatePickerDay key={i} state={state} date={date} /> : <td key={i} />,
+                date ? (
+                  <DatePickerDay
+                    showDotIndicator={showDotIndicator}
+                    key={i}
+                    state={state}
+                    date={date}
+                  />
+                ) : (
+                  <td key={i} />
+                ),
               )}
           </tr>
         ))}

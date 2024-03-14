@@ -4,7 +4,6 @@ import { makeAutoObservable } from 'mobx';
 import { nanoid } from 'nanoid';
 
 import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
-import { getDayPercentageCompleted } from '@/lib/utils';
 
 import { DAILY_NOTES_KEY, DATE_PATTERN } from '../lib/constants';
 import { setData } from '../lib/storage';
@@ -124,6 +123,21 @@ class DailyStore {
     }
 
     this.dailyEntry = todayEntry;
+  }
+
+  showDotIndicator(date: Date) {
+    const dateString = getDateInStringFormat(date);
+
+    if (this.dailyEntries[dateString]) {
+      const note = this.dailyEntries[dateString] as DailyEntry;
+      return Boolean(note.noteContent);
+    }
+
+    // console.log({ dateString });
+
+    // console.log('date =>', date);
+
+    return false;
   }
 }
 

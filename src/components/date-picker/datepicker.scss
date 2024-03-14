@@ -71,7 +71,6 @@
 
         &.today {
           .date {
-            // border: 2px solid var(--primary-color);
             color: var(--primary-color);
           }
         }
@@ -97,7 +96,7 @@
         .dot-indicator {
           width: 5px;
           height: 5px;
-          background-color: var(--main-border);
+          background-color: var(--text-tertiary);
           margin-top: auto;
           border-radius: 99999px;
         }

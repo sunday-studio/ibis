@@ -14,9 +14,10 @@ type DatePickerProps = {
   size?: 'small' | 'default';
   selectedDate?: string | Date;
   onChange: (date: Date) => void;
+  showDotIndicator?: (date: Date) => boolean;
 };
 
-export const DatePicker = () => {
+export const DatePicker = (props: DatePickerProps) => {
   let { locale } = useLocale();
 
   let state = useCalendarState({
@@ -38,7 +39,7 @@ export const DatePicker = () => {
         </Button>
       </div>
 
-      <DatePickerGrid state={state} />
+      <DatePickerGrid state={state} showDotIndicator={props.showDotIndicator} />
     </div>
   );
 };
