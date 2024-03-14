@@ -100,7 +100,7 @@ const DailyPage = observer(() => {
       <Popover.Portal>
         <Popover.Content sideOffset={10} data-align="bottom">
           <DatePicker
-            onChange={(date: CalendarDate) => dailyEntryState.goToDate(new Date(date as Date))}
+            onChange={(date: Date) => dailyEntryState.goToDate(date)}
             value={dailyEntry?.date}
             showDotIndicator={(date: Date) => dailyEntryState.showDotIndicator(date)}
           />

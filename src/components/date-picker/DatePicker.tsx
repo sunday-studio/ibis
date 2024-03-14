@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { Calendar, CalendarDate, createCalendar, parseDate } from '@internationalized/date';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { PressEvent, useCalendar, useLocale } from 'react-aria';
@@ -5,6 +7,7 @@ import { useCalendarState } from 'react-stately';
 
 import { DatePickerGrid } from './DatePicker.Grid';
 
+//@ts-ignore
 const Button = ({ onPress, onFocusChange, ...rest }: { onPress?: (e: PressEvent) => void }) => {
   //@ts-ignore
   return <button {...rest} onClick={onPress} />;
@@ -12,7 +15,7 @@ const Button = ({ onPress, onFocusChange, ...rest }: { onPress?: (e: PressEvent)
 
 type DatePickerProps = {
   value?: string;
-  onChange: (date: CalendarDate) => void;
+  onChange: (date: Date) => void;
   showDotIndicator?: (date: Date) => boolean;
 };
 
@@ -20,8 +23,12 @@ export const DatePicker = (props: DatePickerProps) => {
   const { showDotIndicator, onChange, value } = props;
   let { locale } = useLocale();
 
+  const handleOnChange = useCallback((date: CalendarDate) => {
+    return onChange(new Date(date));
+  }, []);
+
   let state = useCalendarState({
-    onChange,
+    onChange: handleOnChange,
     value: parseDate(value) || null,
     locale,
     createCalendar,
@@ -29,7 +36,7 @@ export const DatePicker = (props: DatePickerProps) => {
 
   let { calendarProps, prevButtonProps, nextButtonProps, title } = useCalendar(
     {
-      onChange,
+      onChange: handleOnChange,
       value: parseDate(value) || null,
     },
     state,
