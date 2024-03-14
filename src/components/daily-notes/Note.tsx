@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { CalendarDate } from '@internationalized/date';
 import * as Popover from '@radix-ui/react-popover';
 import clsx from 'clsx';
 import { format, isToday } from 'date-fns';
@@ -99,8 +100,8 @@ const DailyPage = observer(() => {
       <Popover.Portal>
         <Popover.Content sideOffset={10} data-align="bottom">
           <DatePicker
-            onChange={(date: Date) => dailyEntryState.goToDate(date)}
-            selectedDate={new Date(dailyEntry?.date)}
+            onChange={(date: CalendarDate) => dailyEntryState.goToDate(new Date(date as Date))}
+            value={dailyEntry?.date}
             showDotIndicator={(date: Date) => dailyEntryState.showDotIndicator(date)}
           />
         </Popover.Content>

@@ -1,31 +1,39 @@
-import { createCalendar } from '@internationalized/date';
+import { Calendar, CalendarDate, createCalendar, parseDate } from '@internationalized/date';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { PressEvent, useCalendar, useLocale } from 'react-aria';
 import { useCalendarState } from 'react-stately';
 
 import { DatePickerGrid } from './DatePicker.Grid';
 
-const Button = ({ onPress, ...rest }: { onPress?: (e: PressEvent) => void }) => {
+const Button = ({ onPress, onFocusChange, ...rest }: { onPress?: (e: PressEvent) => void }) => {
   //@ts-ignore
   return <button {...rest} onClick={onPress} />;
 };
 
 type DatePickerProps = {
-  size?: 'small' | 'default';
-  selectedDate?: string | Date;
-  onChange: (date: Date) => void;
+  value?: string;
+  onChange: (date: CalendarDate) => void;
   showDotIndicator?: (date: Date) => boolean;
 };
 
 export const DatePicker = (props: DatePickerProps) => {
+  const { showDotIndicator, onChange, value } = props;
   let { locale } = useLocale();
 
   let state = useCalendarState({
+    onChange,
+    value: parseDate(value) || null,
     locale,
     createCalendar,
   });
 
-  let { calendarProps, prevButtonProps, nextButtonProps, title } = useCalendar({}, state);
+  let { calendarProps, prevButtonProps, nextButtonProps, title } = useCalendar(
+    {
+      onChange,
+      value: parseDate(value) || null,
+    },
+    state,
+  );
 
   return (
     <div {...calendarProps} className="datepicker">
@@ -39,7 +47,7 @@ export const DatePicker = (props: DatePickerProps) => {
         </Button>
       </div>
 
-      <DatePickerGrid state={state} showDotIndicator={props.showDotIndicator} />
+      <DatePickerGrid state={state} showDotIndicator={showDotIndicator} />
     </div>
   );
 };
