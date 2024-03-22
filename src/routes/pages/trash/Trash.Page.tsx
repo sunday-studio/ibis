@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 
-import { Entry, entriesStore } from '../../store/entries';
+import { Entry, entriesStore } from '@/store/entries';
 
 const TrashPage = observer(() => {
   const { deletedEntries: entries } = entriesStore;

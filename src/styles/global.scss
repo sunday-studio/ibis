@@ -1,13 +1,51 @@
 :root {
-  // things
+  // color tokens from radix-colors
+
+  --gray-1: #fcfcfc;
+  --gray-2: #f9f9f9;
+  --gray-3: #f0f0f0;
+  --gray-4: #e8e8e8;
+  --gray-5: #e0e0e0;
+  --gray-6: #d9d9d9;
+  --gray-7: #cecece;
+  --gray-8: #bbbbbb;
+  --gray-9: #8d8d8d;
+  --gray-10: #838383;
+  --gray-11: #646464;
+  --gray-12: #202020;
+
+  --gray-dark-1: #111111;
+  --gray-dark-2: #191919;
+  --gray-dark-3: #222222;
+  --gray-dark-4: #2a2a2a;
+  --gray-dark-5: #313131;
+  --gray-dark-6: #3a3a3a;
+  --gray-dark-7: #484848;
+  --gray-dark-8: #606060;
+  --gray-dark-9: #6e6e6e;
+  --gray-dark-10: #7b7b7b;
+  --gray-dark-11: #b4b4b4;
+  --gray-dark-12: #eeeeee;
+
+  // miscs
   --percentage-completed: 0%;
 
-  // colors
-  --main-background: #f4f4f5;
-  --panel-background: white;
-  --sidebar-background: #f5f5f4;
-  --main-border: #e7e5e4;
-  --darker-border: #6b7280;
+  // backgrounds
+  --main-background: var(--gray-2);
+  --panel-background: var(--gray-1);
+  --hover-state-background: var(--gray-3);
+  --active-state-backgorund: var(--gray-4);
+
+  // borders
+  --main-border: var(--gray-6);
+  --darker-border: var(--gray-7);
+
+  // text
+  --text-primary: var(--gray-12);
+  --text-secondary: var(--gray-11);
+  --text-tertiary: var(--gray-10);
+
+  // theme colors @deprecated
   --base-text-color: #292524;
   --subtitle-text-color: #4b5563;
   --hover-background: #e5e7eb;
@@ -15,7 +53,6 @@
   --primary-color: #fc521f;
   --hover-shadow: #d1d5db;
 
-  // theme colors
   --background-primary: #fbfbfc;
   --background-secondary: #e7e5e4;
   --background-tertiary: #ececea14;
@@ -124,6 +161,10 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+#root {
+  border-radius: 10px;
+}
+
 #root,
 body {
   position: relative;
@@ -132,151 +173,8 @@ body {
   margin: 0;
 }
 
-[contenteditable] {
-  outline: 0px solid transparent;
-}
-
 ol[data-sonner-toaster='true'] {
   --width: 100px;
-}
-
-.icon-inner {
-  color: var(--background-inverse-secondary);
-}
-
-// start layout styling
-.page {
-  width: 100%;
-  position: relative;
-}
-
-.page-container {
-  background-color: var(--main-background);
-  height: 100vh;
-
-  .layout-divider {
-    background-color: var(--background-secondary);
-    height: 100vh;
-    width: 1px;
-
-    &:hover {
-      padding: 0 2px;
-    }
-  }
-}
-
-.two-column-container {
-  display: flex;
-  margin-top: auto;
-  width: 100%;
-  height: 100%;
-
-  .page-wrapper {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    background-color: var(--background-primary);
-
-    &__withborder {
-      overflow-y: scroll;
-    }
-  }
-
-  .ruler {
-    width: 1px;
-    background-color: var(--main-border);
-    align-self: stretch;
-    cursor: move;
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      background-color: var(--primary-color);
-    }
-  }
-
-  .sidebar-container {
-    height: 100%;
-    flex-shrink: 0;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    background-color: var(--background-tertiary);
-    width: 270px;
-  }
-}
-
-// trash page layout styling
-// keeping here for now
-.trash-page {
-  display: flex;
-  flex-direction: column;
-  padding: 40px 20px;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  outline: 1px solid;
-
-  .entry {
-    display: flex;
-    flex: 1;
-    outline: 1px solid;
-    width: 100%;
-    align-items: center;
-    padding: 5px 0;
-    justify-content: space-between;
-    border-bottom: 1px solid #e5e7eb;
-
-    p {
-      margin-right: auto;
-    }
-
-    button {
-      margin-left: 5px;
-    }
-  }
-}
-
-// end of trash page layout styling
-
-// start of error boundary styling
-.error-page {
-  background-color: var(--main-background);
-  height: 100vh;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .error-message {
-    max-width: 500px;
-    text-align: center;
-    display: flex;
-    justify-items: center;
-    align-items: center;
-    flex-direction: column;
-
-    p {
-      font-size: 15px;
-    }
-
-    button {
-      all: unset;
-      font-family: var(--satoshi-font);
-      margin-top: 10px;
-      width: 50%;
-      font-size: 16px;
-      height: 38px;
-      border-radius: 8px;
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
-      color: white;
-      font-weight: 500;
-    }
-  }
-}
-
-#root {
-  border-radius: 10px;
 }
 
 // default-popover-container styling

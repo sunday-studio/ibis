@@ -462,7 +462,7 @@
       border: 0;
       width: 100%;
       font-size: 14px;
-      background-color: var(--sidebar-background);
+      // background-color: var(--sidebar-background);
       border: 1px solid var(--main-border);
       padding: 5px 4px;
       border-radius: 4px;
@@ -495,7 +495,7 @@
       padding: 4px 10px;
 
       &:hover {
-        background-color: var(--sidebar-background);
+        // background-color: var(--sidebar-background);
         border-color: var(--main-border);
       }
 
