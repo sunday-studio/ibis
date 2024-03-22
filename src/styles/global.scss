@@ -19,9 +19,9 @@ $ease-out-200: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --hover-shadow: #d1d5db;
 
   // theme colors
-  --background-primary: #f4f4f5;
+  --background-primary: #fbfbfc;
   --background-secondary: #e7e5e4;
-  --background-tertiary: #ececea;
+  --background-tertiary: #ececea14;
   --background-accent: #f5f5f4;
   --background-floating: #ffffff;
   --background-hover-floating: #dfdfe2;
@@ -180,7 +180,6 @@ ol[data-sonner-toaster='true'] {
     position: relative;
     overflow: hidden;
     background-color: var(--background-primary);
-    transition: $ease-out-200;
 
     &__withborder {
       overflow-y: scroll;
