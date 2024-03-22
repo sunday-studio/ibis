@@ -33,7 +33,9 @@ export function DatePickerDay({ state, date, showDotIndicator: showDotIndicatorF
           style={{
             visibility: showDotIndicator ? 'visible' : 'hidden',
           }}
-        />
+        >
+          ✦
+        </div>
       </div>
     </td>
   );

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { Calendar, CalendarDate, createCalendar, parseDate } from '@internationalized/date';
+import { CalendarDate, createCalendar, parseDate } from '@internationalized/date';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { PressEvent, useCalendar, useLocale } from 'react-aria';
 import { useCalendarState } from 'react-stately';

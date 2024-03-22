@@ -5,12 +5,19 @@
   border-radius: 8px;
   box-shadow: var(--main-box-shadow);
 
+  --cell-width: 30px;
+  --cell-height: 30px;
+
+  * {
+    // outline: 1px dotted red;
+  }
+
   &-header {
     display: flex;
     // justify-content: space-between;
     align-items: center;
     padding-bottom: 20px;
-    gap: 5px;
+    // gap: 5px;
 
     h2 {
       margin-right: auto;
@@ -40,12 +47,12 @@
   table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 5px 10px;
+    border-spacing: 5px 5px;
   }
 
   thead {
     th {
-      height: 44px;
+      height: var(--cell-height);
       font-weight: 400;
       font-family: var(--geist-font);
       color: var(--subtitle-text-color);
@@ -54,8 +61,9 @@
 
   tbody {
     td {
-      height: 54px;
-      width: 44px;
+      // height: 32px;
+      // width: 32px;
+      // outline: 1px solid;
 
       .cell {
         width: 100%;
@@ -64,6 +72,13 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+
+        &:hover {
+          .date {
+            // background-color: #fc531fb4;
+            box-shadow: 0 0 0 1.5px var(--primary-color);
+          }
+        }
 
         &[hidden] {
           display: none;
@@ -82,23 +97,27 @@
         }
 
         .date {
-          width: 32px;
-          height: 32px;
-          border-radius: 9999px;
+          width: 30px;
+          height: 30px;
+          border-radius: 4px;
           text-align: center;
           display: flex;
           align-items: center;
           justify-content: center;
           margin-top: auto;
           font-family: var(--geist-font);
+          // outline: 1px solid red;
         }
 
         .dot-indicator {
-          width: 5px;
-          height: 5px;
-          background-color: var(--text-tertiary);
-          margin-top: auto;
-          border-radius: 99999px;
+          color: var(--text-tertiary);
+          // outline: 1px solid red;
+          line-height: 1;
+          // display: none;
+          // width: 5px;
+          // height: 5px;
+          // margin-top: auto;
+          // border-radius: 99999px;
         }
       }
     }

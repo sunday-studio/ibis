@@ -1,6 +1,3 @@
-// // SCSS global variables
-$ease-out-200: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-
 :root {
   // things
   --percentage-completed: 0%;
@@ -161,7 +158,6 @@ ol[data-sonner-toaster='true'] {
     background-color: var(--background-secondary);
     height: 100vh;
     width: 1px;
-    transition: $ease-out-200;
 
     &:hover {
       padding: 0 2px;
@@ -206,98 +202,6 @@ ol[data-sonner-toaster='true'] {
     top: 0;
     background-color: var(--background-tertiary);
     width: 270px;
-    transition: $ease-out-200;
-  }
-}
-
-// end layout styling
-.PopoverContent {
-  box-shadow: var(--main-box-shadow);
-}
-
-.PopoverContent:focus {
-  outline: none;
-}
-.PopoverContent[data-state='open'][data-side='top'] {
-  animation-name: slideDownAndFade;
-}
-.PopoverContent[data-state='open'][data-side='right'] {
-  animation-name: slideLeftAndFade;
-}
-.PopoverContent[data-state='open'][data-side='bottom'] {
-  animation-name: slideUpAndFade;
-}
-.PopoverContent[data-state='open'][data-side='left'] {
-  animation-name: slideRightAndFade;
-}
-
-.PopoverArrow {
-  fill: var(--panel-background);
-}
-
-.PopoverClose {
-  font-family: inherit;
-  border-radius: 100%;
-  height: 25px;
-  width: 25px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--violet-11);
-  position: absolute;
-  top: 5px;
-  right: 5px;
-}
-.PopoverClose:hover {
-  background-color: var(--violet-4);
-}
-.PopoverClose:focus {
-  box-shadow: 0 0 0 2px var(--violet-7);
-}
-
-// Transitions
-
-@keyframes slideUpAndFade {
-  from {
-    opacity: 0;
-    transform: translateY(2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideRightAndFade {
-  from {
-    opacity: 0;
-    transform: translateX(-2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideDownAndFade {
-  from {
-    opacity: 0;
-    transform: translateY(-2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideLeftAndFade {
-  from {
-    opacity: 0;
-    transform: translateX(2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
   }
 }
 
@@ -335,7 +239,6 @@ ol[data-sonner-toaster='true'] {
 // end of trash page layout styling
 
 // start of error boundary styling
-
 .error-page {
   background-color: var(--main-background);
   height: 100vh;
@@ -372,11 +275,12 @@ ol[data-sonner-toaster='true'] {
   }
 }
 
-html,
-body {
-  background: transparent;
-}
-
 #root {
   border-radius: 10px;
+}
+
+// default-popover-container styling
+.popover-menu {
+  box-shadow: var(--main-box-shadow);
+  background: var(--background-floating);
 }

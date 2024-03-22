@@ -79,13 +79,11 @@ code > * {
   overflow-x: auto;
   position: relative;
   border-radius: 8px;
-  transition: $ease-out-200;
 }
 
 .editor-code:before {
   line-height: 1.53;
 
-  transition: $ease-out-200;
   content: attr(data-gutter);
   position: absolute;
   left: 0;
@@ -162,7 +160,6 @@ code > * {
   margin: 0;
   margin-bottom: 12px;
   padding: 0;
-  transition: $ease-out-200;
 }
 
 .editor-heading-h2 {
@@ -172,7 +169,6 @@ code > * {
   margin: 0;
   margin-top: 10px;
   padding: 0;
-  transition: $ease-out-200;
 }
 
 .editor-heading-h3 {
@@ -182,7 +178,6 @@ code > * {
   margin: 0;
   margin-top: 10px;
   padding: 0;
-  transition: $ease-out-200;
 }
 
 .editor-quote {
@@ -194,21 +189,18 @@ code > * {
   border-left-width: 4px;
   border-left-style: solid;
   padding-left: 16px;
-  transition: $ease-out-200;
 }
 
 .editor-list-ol {
   padding: 0;
   margin: 0;
   margin-left: 16px;
-  transition: $ease-out-200;
 }
 
 .editor-list-ul {
   padding: 0;
   margin: 0;
   margin-left: 0;
-  transition: $ease-out-200;
 }
 
 .editor-listitem {

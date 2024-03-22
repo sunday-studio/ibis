@@ -5,9 +5,11 @@ import { DatePickerDay } from './DatePicker.Day';
 
 export function DatePickerGrid({ state, showDotIndicator, ...props }) {
   let { locale } = useLocale();
-  let { gridProps, headerProps, weekDays } = useCalendarGrid(props, state);
+  let { gridProps, headerProps, weekDays } = useCalendarGrid(
+    { ...props, weekdayStyle: 'short' },
+    state,
+  );
 
-  // Get the number of weeks in the month so we can render the proper number of rows.
   let weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale);
 
   return (
@@ -24,7 +26,7 @@ export function DatePickerGrid({ state, showDotIndicator, ...props }) {
           <tr key={weekIndex}>
             {state
               .getDatesInWeek(weekIndex)
-              .map((date, i) =>
+              .map((date: Date, i: number) =>
                 date ? (
                   <DatePickerDay
                     showDotIndicator={showDotIndicator}

@@ -1,6 +1,6 @@
 .component-picker-menu {
   width: 240px;
-  padding: 4px;
+  padding: 6px;
   border-radius: 8px;
   box-shadow: var(--main-box-shadow);
   background: var(--background-floating);
@@ -56,8 +56,11 @@
 
 // Floating Menu
 .floating-menu {
-  background-color: var(--panel-background);
-  border: 1px solid var(--main-border);
+  box-shadow: var(--main-box-shadow);
+  background: var(--background-floating);
+
+  // background-color: var(--panel-background);
+  // border: 1px solid var(--main-border);
   padding: 4px;
   border-radius: 10px;
   display: flex;
