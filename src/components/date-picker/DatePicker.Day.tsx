@@ -19,7 +19,7 @@ export function DatePickerDay({ state, date, showDotIndicator: showDotIndicatorF
       <div
         {...buttonProps}
         ref={ref}
-        hidden={isOutsideVisibleRange}
+        // hidden={isOutsideVisibleRange}
         className={clsx('cell', {
           selected: isSelected,
           disabled: isDisabled,
@@ -34,7 +34,7 @@ export function DatePickerDay({ state, date, showDotIndicator: showDotIndicatorF
             visibility: showDotIndicator ? 'visible' : 'hidden',
           }}
         >
-          ✦
+          •
         </div>
       </div>
     </td>

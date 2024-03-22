@@ -1,9 +1,9 @@
 .datepicker {
-  padding: 20px 15px;
-  overflow: hidden;
-  background-color: var(--panel-background);
+  padding: 20px 10px;
   border-radius: 8px;
-  box-shadow: var(--main-box-shadow);
+
+  font-family: var(--geist-font);
+  font-weight: 450;
 
   --cell-width: 30px;
   --cell-height: 30px;
@@ -14,28 +14,26 @@
 
   &-header {
     display: flex;
-    // justify-content: space-between;
     align-items: center;
+    padding: 0px 10px;
     padding-bottom: 20px;
-    // gap: 5px;
-
+    gap: 10px;
     h2 {
-      margin-right: auto;
       font-weight: 550;
       font-size: 1.1rem;
+      margin-right: auto;
     }
 
     button {
       all: unset;
       cursor: pointer;
-      width: 30px;
-      height: 30px;
+      width: 26px;
+      height: 26px;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: var(--background-secondary);
       border-radius: 99999px;
-      border: 1px solid var(--background-secondary);
+      background-color: var(--main-background);
 
       &:hover {
         background-color: var(--hover-background);
@@ -47,23 +45,26 @@
   table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 5px 5px;
+    border-spacing: 20px 10px;
   }
 
   thead {
     th {
       height: var(--cell-height);
-      font-weight: 400;
-      font-family: var(--geist-font);
+      font-weight: inherit;
       color: var(--subtitle-text-color);
     }
   }
 
   tbody {
     td {
-      // height: 32px;
-      // width: 32px;
-      // outline: 1px solid;
+      &:last-child {
+        border-right: none;
+      }
+
+      &:first-child {
+        border-left: none;
+      }
 
       .cell {
         width: 100%;
@@ -73,10 +74,19 @@
         justify-content: center;
         flex-direction: column;
 
+        &:focus {
+          outline: none;
+
+          .date {
+            outline: 1.5px solid var(--primary-color);
+            outline-offset: 2px;
+          }
+        }
+
         &:hover {
           .date {
-            // background-color: #fc531fb4;
-            box-shadow: 0 0 0 1.5px var(--primary-color);
+            outline: 1.5px solid var(--primary-color);
+            outline-offset: 2px;
           }
         }
 
@@ -89,6 +99,7 @@
             color: var(--primary-color);
           }
         }
+
         &.selected {
           .date {
             background-color: var(--primary-color);
@@ -96,28 +107,29 @@
           }
         }
 
+        &.outsideVisibleRange {
+          pointer-events: none;
+
+          .date {
+            color: var(--text-tertiary);
+          }
+        }
+
         .date {
-          width: 30px;
-          height: 30px;
-          border-radius: 4px;
+          width: var(--cell-width);
+          height: var(--cell-height);
+          border-radius: 99999px;
           text-align: center;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-top: auto;
-          font-family: var(--geist-font);
-          // outline: 1px solid red;
+          font-variant-numeric: tabular-nums;
         }
 
         .dot-indicator {
           color: var(--text-tertiary);
-          // outline: 1px solid red;
           line-height: 1;
-          // display: none;
-          // width: 5px;
-          // height: 5px;
-          // margin-top: auto;
-          // border-radius: 99999px;
+          margin-top: 2px;
         }
       }
     }

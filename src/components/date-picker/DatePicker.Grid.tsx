@@ -5,10 +5,7 @@ import { DatePickerDay } from './DatePicker.Day';
 
 export function DatePickerGrid({ state, showDotIndicator, ...props }) {
   let { locale } = useLocale();
-  let { gridProps, headerProps, weekDays } = useCalendarGrid(
-    { ...props, weekdayStyle: 'short' },
-    state,
-  );
+  let { gridProps, headerProps, weekDays } = useCalendarGrid({ ...props }, state);
 
   let weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale);
 

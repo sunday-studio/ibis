@@ -24,7 +24,7 @@ export const DatePicker = (props: DatePickerProps) => {
   let { locale } = useLocale();
 
   const handleOnChange = useCallback((date: CalendarDate) => {
-    return onChange(new Date(date));
+    return onChange(new Date(date as unknown as Date));
   }, []);
 
   let state = useCalendarState({
@@ -43,7 +43,7 @@ export const DatePicker = (props: DatePickerProps) => {
   );
 
   return (
-    <div {...calendarProps} className="datepicker">
+    <div {...calendarProps} className="datepicker popover-container">
       <div className="datepicker-header">
         <h2>{title}</h2>
         <Button {...prevButtonProps}>
