@@ -36,7 +36,7 @@ import { EntryTitle } from './Editor.EntryTitle';
 import { TagEditor } from './Editor.TagEditor';
 
 function Placeholder() {
-  return <div className="editor-placeholder">Enter some rich text...</div>;
+  return <div className="editor-placeholder">Write or type '/' for slash commands....</div>;
 }
 
 function MyCustomAutoFocusPlugin() {
