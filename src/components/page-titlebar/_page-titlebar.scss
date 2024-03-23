@@ -2,94 +2,37 @@
   position: sticky;
   top: 0;
   width: 100%;
-  height: var(--page-title-height);
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--background-primary);
   z-index: 2;
   border-bottom: 1px solid var(--main-border);
+  color: var(--text-primary);
+  height: var(--page-title-height);
+
+  &.side-opened {
+    p {
+      margin-left: auto;
+    }
+  }
 
   .sidebar-toggle-container {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  &.multi-page {
-    justify-content: flex-start;
-
-    .sidebar-toggle-container {
-      height: 100%;
-      border-right: 1px solid var(--main-border);
-      padding: 0 12px;
-    }
-
-    .sidebar-toggle {
-      margin-right: unset;
-    }
+    border-right: 1px solid var(--main-border);
+    padding: 0 12px;
+    margin-right: auto;
+    height: 100%;
   }
 
   p {
     font-size: 15px;
-  }
-
-  .single-title {
-    margin: 0 auto;
+    margin-right: auto;
   }
 
   .sidebar-toggle {
     margin-right: auto;
-  }
-
-  .tabs {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .tab {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-    border-right: 1px solid var(--main-border);
-    padding: 0 8px;
-    cursor: pointer;
-
-    &-active {
-      background-color: white;
-    }
-
-    .close-button {
-      visibility: hidden;
-      opacity: 0;
-    }
-
-    &:hover {
-      .close-button {
-        opacity: 1;
-        visibility: visible;
-      }
-    }
-
-    p {
-      font-weight: 500;
-    }
-
-    .close-button {
-      padding: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 4px;
-
-      &:hover {
-        color: var(--primary-color);
-      }
-    }
   }
 }

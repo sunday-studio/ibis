@@ -27,7 +27,7 @@ const RouteLink = ({
       <div className="icon">
         {Icon && <Icon className="icon-inner" size={16} strokeWidth={2.5} />}
       </div>
-      <p className="route-text satoshi-font">{title}</p>
+      <p className="route-text">{title}</p>
     </div>
   );
 };

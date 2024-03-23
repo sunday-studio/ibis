@@ -14,19 +14,13 @@ import { SearchDialog } from '@/components';
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { getData } from '@/lib/storage';
-import { dailyEntryState } from '@/store/daily-state';
+import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
-
-import { appState } from '../../store/app-state';
-
-const SIDEBAR_WIDTH = 300;
 
 const AppLayout = observer(() => {
   useHotkeys(`${Key.Meta}+d`, () => appState.toggleSidebarOpenState());
   useHotkeys(`${Key.Control}+d`, () => appState.toggleSidebarOpenState());
   useHotkeys(`${Key.Meta}+k`, () => searchStore.toggleSearchModal());
-
-  const location = useLocation();
 
   useEffect(() => {
     const SAFEURL = getData(SAFE_LOCATION_KEY);
@@ -34,29 +28,20 @@ const AppLayout = observer(() => {
     appState.load();
   }, []);
 
-  const isEntryPageActive = location.pathname.includes('entry');
-
   return (
     <div className="page-container">
       <SearchDialog />
-      <div className="two-column-container">
-        <div
-          className="sidebar-container"
-          style={{
-            display: appState.sidebarIsOpen ? 'flex' : 'none',
-          }}
-        >
+      <div
+        className={clsx('two-column-container', {
+          'sidebar-closed': !appState.sidebarIsOpen,
+        })}
+      >
+        <div className="sidebar-container">
           <Sidebar />
         </div>
+
         <div className="layout-divider"></div>
-        <div
-          className={clsx('page-wrapper', {
-            'page-wrapper__withborder': isEntryPageActive,
-          })}
-          style={{
-            width: appState.sidebarIsOpen ? `calc(100% - ${SIDEBAR_WIDTH}` : '100%',
-          }}
-        >
+        <div className={clsx('page-wrapper')}>
           <PageTitleBar />
           <Outlet />
         </div>

@@ -2,8 +2,6 @@
   width: 240px;
   padding: 6px;
   border-radius: 8px;
-  box-shadow: var(--main-box-shadow);
-  background: var(--background-floating);
 
   // TODO: switch this to offset
   margin-top: 25px;
@@ -29,19 +27,13 @@
     justify-content: flex-start;
     padding: 4px;
     border-radius: 6px;
-    border: 1px solid transparent;
     gap: 8px;
     font-size: 15px;
-
-    &:hover {
-      background-color: var(--background-primary);
-      border-color: var(--main-border);
-    }
+    color: var(--text-primary);
 
     &[aria-selected='true'] {
-      background-color: var(--background-primary);
-      color: var(--background-inverse-primary);
-      border-color: var(--main-border);
+      background-color: var(--hover-background);
+      box-shadow: 0 0 0 1px var(--dark-border);
     }
 
     .icon {

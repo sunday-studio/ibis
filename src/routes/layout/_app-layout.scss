@@ -14,15 +14,21 @@
   width: 100%;
   height: 100%;
 
+  &.sidebar-closed {
+    .sidebar-container {
+      display: none;
+    }
+
+    .layout-divider {
+      display: none;
+    }
+  }
+
   .page-wrapper {
     flex: 1;
     position: relative;
     overflow: hidden;
     background-color: var(--panel-background);
-
-    &__withborder {
-      overflow-y: scroll;
-    }
   }
 
   .sidebar-container {

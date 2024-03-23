@@ -241,7 +241,7 @@ export default function SlashCommandPickerPlugin() {
         ) =>
           anchorElementRef.current && options.length
             ? ReactDOM.createPortal(
-                <div className="component-picker-menu">
+                <div className="component-picker-menu popover-container">
                   <ul>
                     {options.map((option: Omit<Option, 'setRefElement'>, i) => (
                       <SlashCommandMenuItem
