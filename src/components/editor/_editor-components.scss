@@ -48,11 +48,6 @@
 
 // Floating Menu
 .floating-menu {
-  box-shadow: var(--main-box-shadow);
-  background: var(--background-floating);
-
-  // background-color: var(--panel-background);
-  // border: 1px solid var(--main-border);
   padding: 4px;
   border-radius: 10px;
   display: flex;
@@ -66,13 +61,16 @@
     align-items: center;
     border-radius: 6px;
     cursor: pointer;
+    color: var(--text-primary);
 
     &.item-active {
-      background-color: var(--active-item-state);
+      background-color: var(--active-background);
+      box-shadow: 0 0 0 1px var(--darker-border);
     }
 
     &:hover {
       background-color: var(--hover-background);
+      box-shadow: 0 0 0 1px var(--main-border);
     }
 
     .icon {

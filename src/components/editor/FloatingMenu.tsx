@@ -153,7 +153,7 @@ export const FloatingMenu = forwardRef(function FloatingMenu(
   }, [editor]);
 
   return (
-    <div ref={ref} className="floating-menu">
+    <div ref={ref} className="floating-menu popover-container">
       {showLinkInput ? (
         <LinkInput
           onSave={() => {
