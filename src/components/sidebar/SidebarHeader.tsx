@@ -1,7 +1,8 @@
-import { appState } from '@/store/app-state';
 import { appWindow } from '@tauri-apps/api/window';
 import { Maximize2, Minus, PanelRight, RefreshCcw, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+
+import { appState } from '@/store/app-state';
 
 export const SidebarHeader = () => {
   const navigate = useNavigate();
@@ -24,13 +25,13 @@ export const SidebarHeader = () => {
         </div>
       </div>
 
-      <div
+      <button
         className="sidebar-toggle"
         role="button"
         onClick={() => appState.toggleSidebarOpenState()}
       >
         <PanelRight size={18} />
-      </div>
+      </button>
     </div>
   );
 };

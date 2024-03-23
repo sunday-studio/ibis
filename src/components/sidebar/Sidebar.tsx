@@ -10,7 +10,7 @@ import { searchStore } from '@/store/search';
 
 import { Entry, type Folder, entriesStore } from '../../store/entries';
 import { SidebarEntry } from './SidebarEntry';
-import { SidebarFolder } from './SidebarFolder';
+// import { SidebarFolder } from './SidebarFolder';
 import { SidebarHeader } from './SidebarHeader';
 
 const RouteLink = ({
@@ -34,7 +34,7 @@ const RouteLink = ({
 
 export const Sidebar = observer(() => {
   const navigate = useNavigate();
-  const folders = Object.values<Folder>(entriesStore.folders);
+  // const folders = Object.values<Folder>(entriesStore.folders);
 
   function goToPage(route: string) {
     entriesStore.removeActiveEntry();
@@ -90,7 +90,7 @@ export const Sidebar = observer(() => {
         {Boolean(pinnedEntries?.length) && (
           <div className="section">
             <div className="header">
-              <p className="title cabinet-font">Pinned</p>
+              <p className="title">Pinned</p>
             </div>
 
             <div className="entries">
@@ -114,7 +114,7 @@ export const Sidebar = observer(() => {
         {privateEntries.length > 0 && (
           <div className="section">
             <div className="header">
-              <p className="title satoshi-font">Private</p>
+              <p className="title">Private</p>
               <div
                 className="icon"
                 onClick={() => {

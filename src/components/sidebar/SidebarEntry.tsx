@@ -12,7 +12,6 @@ import {
   Columns,
   Copy,
   CornerUpRight,
-  Folder,
   MoreHorizontal,
   Package,
   Pin,
@@ -68,23 +67,23 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
                   e.stopPropagation();
                 }}
               >
-                <MoreHorizontal
-                  strokeWidth={2.5}
-                  size={18}
-                  color={isActive ? 'var(--primary-color)' : '#6b7280'}
-                />
+                <MoreHorizontal strokeWidth={2.5} size={18} color="var(--text-primary)" />
               </div>
             </Popover.Trigger>
 
             <Popover.Portal>
-              <Popover.Content className="PopoverContent" sideOffset={5}>
+              <Popover.Content className="popover-content popover-container" sideOffset={5}>
                 <EntryActionOptions entry={entry} />
               </Popover.Content>
             </Popover.Portal>
           </motion.div>
         </ContextMenu.Trigger>
         <ContextMenu.Portal>
-          <ContextMenu.Content className="PopoverContent" sideOffset={5} align="end">
+          <ContextMenu.Content
+            className="popover-content popover-container"
+            sideOffset={5}
+            align="end"
+          >
             <EntryActionOptions entry={entry} />
           </ContextMenu.Content>
         </ContextMenu.Portal>

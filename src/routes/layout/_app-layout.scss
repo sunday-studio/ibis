@@ -1,5 +1,4 @@
 .page-container {
-  background-color: var(--main-background);
   height: 100vh;
 
   .layout-divider {
@@ -19,7 +18,7 @@
     flex: 1;
     position: relative;
     overflow: hidden;
-    background-color: var(--background-primary);
+    background-color: var(--panel-background);
 
     &__withborder {
       overflow-y: scroll;
@@ -32,7 +31,7 @@
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    background-color: var(--background-tertiary);
+    background-color: var(--main-background);
     width: 270px;
   }
 }

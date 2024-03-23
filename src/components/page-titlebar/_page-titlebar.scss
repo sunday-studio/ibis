@@ -8,9 +8,7 @@
   align-items: center;
   background-color: var(--background-primary);
   z-index: 2;
-  border-bottom: 1px solid var(--background-secondary);
-
-  // padding: 0 12px;
+  border-bottom: 1px solid var(--main-border);
 
   .sidebar-toggle-container {
     display: flex;
