@@ -1,9 +1,3 @@
-import { SAFE_LOCATION_KEY } from '@/lib/constants';
-import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
-import { clearData, getData } from '@/lib/storage';
-import { runMigration } from '@/migrations/file-date-pattern.migrate';
-import { appState } from '@/store/app-state';
-import { searchStore } from '@/store/search';
 import { Command } from 'cmdk';
 import {
   BadgePlus,
@@ -11,14 +5,19 @@ import {
   LucideIcon,
   MonitorDown,
   Palette,
-  Play,
   RefreshCcwDot,
   Search,
-  Settings,
   Sparkles,
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
+
+import { SAFE_LOCATION_KEY } from '@/lib/constants';
+import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
+import { clearData, getData } from '@/lib/storage';
+import { runMigration } from '@/migrations/file-date-pattern.migrate';
+import { appState } from '@/store/app-state';
+import { searchStore } from '@/store/search';
 
 type ActionProps = {
   name: string;
@@ -107,7 +106,7 @@ export const SearchDialog = observer(() => {
         <div className="search-icon">
           <Search size={15} strokeWidth={3} />
         </div>
-        <Command.Input className="geist-mono-font" placeholder="Search through everyone on Opps" />
+        <Command.Input className="geist-mono-font" placeholder="Search through everyone on Ibis" />
       </div>
       <Command.List>
         <Command.Empty>No results found.</Command.Empty>
