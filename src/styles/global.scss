@@ -27,6 +27,19 @@
   --gray-dark-11: #b4b4b4;
   --gray-dark-12: #eeeeee;
 
+  --blue-1: #fbfdff;
+  --blue-2: #f4faff;
+  --blue-3: #e6f4fe;
+  --blue-4: #d5efff;
+  --blue-5: #c2e5ff;
+  --blue-6: #acd8fc;
+  --blue-7: #8ec8f6;
+  --blue-8: #5eb1ef;
+  --blue-9: #0090ff;
+  --blue-10: #0588f0;
+  --blue-11: #0d74ce;
+  --blue-12: #113264;
+
   --primary-color: #fc521f;
 
   // miscs
@@ -70,6 +83,7 @@
   --satoshi-font: 'Satoshi';
   --geist-mono-font: 'Geist-Mono';
   --code-font: var(--geist-mono-font), Menlo, Consolas, Monaco, monospace;
+  --italic-font: system-ui, -apple-system;
 }
 
 html[data-theme='night'] {
@@ -87,8 +101,8 @@ html[data-theme='night'] {
 
   // text
   --text-primary: var(--gray-dark-12);
-  --text-secondary: var(--gray-dark-11);
-  --text-tertiary: var(--gray-dark-10);
+  --text-secondary: var(--gray-dark-10);
+  --text-tertiary: var(--gray-dark-9);
 }
 
 * {

@@ -10,10 +10,6 @@
     padding: 0;
     list-style: none;
     margin: 0;
-    // max-height: 200px;
-    // overflow-y: scroll;
-    // scrollbar-width: none;
-    // -ms-overflow-style: none;
 
     &:-webkit-scrollbar {
       display: none;
@@ -114,78 +110,10 @@
   }
 }
 
-// // typehead STYLING
-// .typeahead-popover ul::-webkit-scrollbar {
-//   display: none;
-// }
-
-// .typeahead-popover ul li.selected {
-//   background: #eee;
-// }
-// .typeahead-popover {
-//   background: var(--background-floating);
-//   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
-//   border: none;
-//   border-radius: 12px;
-//   margin-top: 25px;
-
-//   ul {
-//     padding: 0;
-//     list-style: none;
-//     margin: 0;
-//     border-radius: 8px;
-//     max-height: 200px;
-//     overflow-y: scroll;
-
-//     -ms-overflow-style: none;
-//     scrollbar-width: none;
-
-//     li {
-//       margin: 4px 0;
-//       padding: 4px;
-//       color: var(--background-inverse-floating);
-//       cursor: pointer;
-//       line-height: 16px;
-//       font-size: 15px;
-//       display: flex;
-//       justify-content: flex-start;
-//       align-items: center;
-//       gap: 8px;
-//       flex-direction: row;
-//       flex-shrink: 0;
-//       background: var(--background-floating);
-//       border-radius: 8px;
-//       border: 1px solid transparent;
-
-//       &[aria-selected='true'] {
-//         background-color: var(--background-primary);
-//         color: var(--background-inverse-primary);
-//       }
-
-//       &:hover {
-//         background-color: var(--background-primary);
-//         color: var(--background-inverse-primary);
-//       }
-
-//       &::active {
-//         background-color: #c9c9cf;
-//       }
-
-//       .icon {
-//         width: 32px;
-//         height: 32px;
-//         display: flex;
-//         justify-content: center;
-//         align-items: center;
-//         border-radius: 4px;
-//       }
-//     }
-//   }
-// }
-
 // entry header styling
 .entry-header {
   margin-bottom: 20px;
+  color: var(--text-primary);
 
   .entry-input {
     margin-bottom: 20px;
