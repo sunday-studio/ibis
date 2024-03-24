@@ -46,6 +46,8 @@ const DailyPage = observer(() => {
     return () => clearInterval(intervalId);
   }, [dateValues.day]);
 
+  console.log({ dailyEntry });
+
   return (
     <Popover.Root>
       <div className="daily-note">

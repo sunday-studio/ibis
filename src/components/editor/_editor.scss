@@ -112,7 +112,7 @@
 }
 
 .editor-listitem {
-  margin: 16px 32px 8px 26px;
+  margin: 8px 32px 8px 26px;
 
   &::marker {
     color: var(--text-secondary);
@@ -131,6 +131,12 @@
   list-style-type: none;
   padding-left: 24px;
   outline: none;
+
+  &.editor-listitem {
+    outline: 1px dotted red;
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
 
   &::before {
     content: '';

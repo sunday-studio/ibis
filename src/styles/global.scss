@@ -2,7 +2,8 @@
   // color tokens from radix-colors
 
   --gray-1: #fcfcfc;
-  --gray-2: #f9f9f9f7;
+  --gray-2: #f9f9f9;
+  --gray-2-alpha: #f9f9f9f7;
   --gray-3: #f0f0f0;
   --gray-4: #e8e8e8;
   --gray-5: #e0e0e0;
@@ -47,6 +48,7 @@
 
   // backgrounds
   --main-background: var(--gray-2);
+  --alpha-main-background: var(--gray-2-alpha);
   --panel-background: var(--gray-1);
   --hover-background: var(--gray-3);
   --active-background: var(--gray-4);

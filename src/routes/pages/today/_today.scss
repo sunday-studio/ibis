@@ -1,9 +1,9 @@
 .today-page {
   display: grid;
-  background-color: var(--background-primary);
   margin: 0 auto;
   padding: 0 80px;
   height: 100vh;
+  color: var(--text-primary);
 
   .daily-note {
     padding: 10px;
@@ -63,7 +63,7 @@
     }
 
     .daily-note-placeholder {
-      color: var(--subtitle-text-color);
+      color: var(--text-secondary);
       overflow: hidden;
       position: absolute;
       left: 0px;
@@ -81,8 +81,6 @@
 
     .note-editor-container {
       position: relative;
-      // overflow-y: scroll;
-      // height: calc(100vh - 200px);
     }
 
     .section-header {
@@ -105,8 +103,8 @@
         align-items: center;
         border: 0;
         border-radius: 100%;
-
-        background-color: var(--background-secondary);
+        box-shadow: 0 0 0 1px var(--main-border);
+        background-color: transparent;
 
         &.action {
           width: auto;
@@ -114,12 +112,11 @@
           border-radius: 4px;
           font-size: 14px;
           font-weight: 500;
-          font-family: var(--favorit-font);
         }
 
         &:hover {
           background-color: var(--hover-background);
-          border-color: var(--darker-border);
+          box-shadow: 0 0 0 1px var(--darker-border);
         }
       }
     }
