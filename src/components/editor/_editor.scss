@@ -88,14 +88,15 @@
 
 .editor-heading-h1 {
   margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .editor-heading-h2 {
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
 .editor-heading-h3 {
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
 .editor-quote {
@@ -112,7 +113,8 @@
 }
 
 .editor-listitem {
-  margin: 8px 32px 8px 26px;
+  margin: 12px 32px 12px 26px;
+  // outline: 1px solid red;
 
   &::marker {
     color: var(--text-secondary);
@@ -133,9 +135,8 @@
   outline: none;
 
   &.editor-listitem {
-    outline: 1px dotted red;
-    margin-top: 12px;
-    margin-bottom: 12px;
+    margin-top: 14px;
+    margin-bottom: 14px;
   }
 
   &::before {
