@@ -5,11 +5,11 @@ import AppLayout from '@/routes/layout/AppLayout';
 
 // import AuthPage from './pages/auth/Auth';
 import Root from './Root';
-import { Onboarding } from './pages/auth/Onboarding.Page';
-import EntryPage from './pages/entry/Entry.Page';
-import SettingsPage from './pages/settings/Settings.Page';
-import Today from './pages/today/Today.Page';
-import TrashPage from './pages/trash/Trash.Page';
+import { Onboarding } from './pages/auth/Onboarding.page';
+import EntryPage from './pages/entry/Entry.page';
+import SettingsPage from './pages/settings/Settings.page';
+import Today from './pages/today/Today.page';
+import TrashPage from './pages/trash/Trash.page';
 
 export const router = createBrowserRouter([
   {
