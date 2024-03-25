@@ -10,8 +10,6 @@ export default function SearchDialogPlugin(): JSX.Element | null {
 
   useLayoutEffect(() => {
     const onkeyDown = (e: KeyboardEvent) => {
-      e.preventDefault();
-
       if (e.metaKey && e.key == 'k') {
         // TODO: figure out a way to return the focus back to page when this is closed
         searchStore.toggleSearchModal();

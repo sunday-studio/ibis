@@ -22,6 +22,7 @@ export const TagSelector = observer((props: TagSelectorProps) => {
     <div className="tag-selector" ref={containerRef}>
       <CreatableSelect
         value={tags}
+        classNamePrefix="ibis-select"
         onCreateOption={(newValue: string) => {
           const id = tagsState.createNewTag(newValue);
           onTagSelect([...currentTagsId, id]);

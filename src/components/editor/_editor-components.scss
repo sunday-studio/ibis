@@ -133,17 +133,24 @@
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      gap: 3px;
+      flex-wrap: wrap;
+      gap: 5px;
+      min-height: 39px;
 
       .tag {
+        border-radius: var(--sm-radii);
+        box-shadow: 0 0 0 1.5px var(--main-border);
+
+        &:hover {
+          background-color: var(--hover-background);
+        }
+
         p {
           font-weight: 500;
           text-transform: lowercase;
           padding: 2px 8px;
           font-size: 14px;
-          background-color: var(--background-tertiary);
-          border-radius: 8px;
-          border: 1.5px solid var(--background-secondary);
+          // font-family: var(--geist-font);
         }
       }
     }

@@ -163,3 +163,56 @@ ol[data-sonner-toaster='true'] {
   box-shadow: 0 0.25rem 0.375rem -0.125rem #0003, 0 0 0 1px var(--popover-border);
   background: var(--popover-background);
 }
+
+// select changes
+
+.ibis-select {
+  &__control {
+    border-color: var(--main-border) !important;
+    border-width: 1.5px !important;
+    background-color: var(--main-background) !important;
+    border-radius: var(--md-radii) !important;
+  }
+
+  &__multi-value {
+    background-color: var(--panel-background) !important;
+    box-shadow: 0 0 0 1.5px var(--main-border);
+    border-radius: var(--sm-radii) !important;
+    font-weight: 500;
+
+    &__label {
+      color: var(--text-primary) !important;
+    }
+  }
+
+  &__value-container {
+    padding-left: 3px !important;
+  }
+
+  &__menu {
+    background-color: var(--popover-background) !important;
+    overflow: hidden !important;
+  }
+
+  &__menu-list {
+    background-color: var(--popover-background) !important;
+  }
+
+  &__input-container {
+    color: var(--text-primary);
+    font-family: var(--geist-font);
+    font-size: 15px;
+  }
+
+  &__option {
+    background-color: var(--popover-background) !important;
+    border: 1px solid transparent;
+    border-left: 0px;
+    border-right: 0px;
+
+    &:hover {
+      background-color: var(--hover-background) !important;
+      border-color: var(--main-border);
+    }
+  }
+}
