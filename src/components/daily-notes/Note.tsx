@@ -6,7 +6,7 @@ import { format, isToday } from 'date-fns';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 
-import { getDayPercentageCompleted } from '@/lib/utils';
+import { entryHasValidContent, getDayPercentageCompleted } from '@/lib/utils';
 import { dailyEntryState } from '@/store/daily-state';
 
 import { DatePicker } from '../date-picker/DatePicker';
@@ -87,7 +87,9 @@ const DailyPage = observer(() => {
                 placeholderClassName="daily-note-placeholder"
                 onChange={(state) => dailyEntryState.saveNoteContent(state)}
                 content={
-                  dailyEntry.noteContent ? JSON.parse(dailyEntry.noteContent as string) : null
+                  entryHasValidContent(dailyEntry.noteContent)
+                    ? JSON.parse(dailyEntry.noteContent as string)
+                    : null
                 }
                 id={dailyEntry.id}
               />

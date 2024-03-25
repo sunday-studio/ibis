@@ -18,7 +18,6 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { observer } from 'mobx-react-lite';
 import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '@/plugins/AutolinkPlugin';
@@ -27,12 +26,12 @@ import CodeHighlightPlugin from '@/plugins/CodeHighlightPlugin';
 import FloatingMenuPlugin from '@/plugins/FloatingMenuPlugin';
 import PageBreakPlugin from '@/plugins/PageBreakPlugin/PageBreakPlugin';
 import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
+import SearchDialogPlugin from '@/plugins/SearchDialogPlugin';
 import SlashCommandPickerPlugin from '@/plugins/SlashCommandPicker';
 import TabFocusPlugin from '@/plugins/TabFocusPlugin';
 import { theme } from '@/plugins/theme';
 
-import { EntryTitle } from './Editor.EntryTitle';
-import { TagEditor } from './Editor.TagEditor';
+import { EntryHeader } from './Editor.EntryHeader';
 
 function Placeholder({ className }) {
   return <div className={className}>Write or type '/' for slash commands....</div>;
@@ -52,17 +51,6 @@ function MyCustomAutoFocusPlugin() {
 function onError(error: any) {
   console.error(error);
 }
-
-export const EntryHeader = observer(() => {
-  return (
-    <div className="entry-header">
-      <EntryTitle />
-      <div className="tags">
-        <TagEditor />
-      </div>
-    </div>
-  );
-});
 
 export const EDITOR_PAGES = {
   ENTRY: 'ENTRY',
@@ -152,6 +140,7 @@ export const Editor = ({
       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
       <CodeHighlightPlugin />
       <PageBreakPlugin />
+      <SearchDialogPlugin />
     </LexicalComposer>
   );
 };

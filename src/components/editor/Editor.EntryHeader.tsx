@@ -4,6 +4,8 @@ import { observer } from 'mobx-react-lite';
 
 import { entriesStore } from '@/store/entries';
 
+import { TagEditor } from './Editor.TagEditor';
+
 export const EntryTitle = observer(() => {
   const entryStore = entriesStore;
   const { activeEntry } = entryStore;
@@ -19,6 +21,17 @@ export const EntryTitle = observer(() => {
   return (
     <div className="entry-input">
       <input type="text" onChange={handleInputChange} value={inputValue} />
+    </div>
+  );
+});
+
+export const EntryHeader = observer(() => {
+  return (
+    <div className="entry-header">
+      <EntryTitle />
+      <div className="tags">
+        <TagEditor />
+      </div>
     </div>
   );
 });

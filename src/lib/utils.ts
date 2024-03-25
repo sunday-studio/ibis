@@ -23,8 +23,6 @@ export function formatDateString(date: Date, pattern = 'y-MM-dd') {
   return format(date, pattern);
 }
 
-// const completedPercentage = (elapsedSeconds / totalSeconds) * 100;
-
 export const getDayPercentageCompleted = () => {
   const now: Date = new Date();
   const start: Date = startOfToday();
@@ -36,4 +34,14 @@ export const getDayPercentageCompleted = () => {
   const remainingPercentage: number = (elapsedMinutes / totalMinutes) * 100;
 
   return Number(remainingPercentage.toFixed(2));
+};
+
+export const entryHasValidContent = (entry: string) => {
+  if (!entry) return false;
+
+  // TODO: refactor later when files are switched to markdown
+  const parsedEntry = JSON.parse(entry);
+  if (parsedEntry?.root?.children.length === 0) return false;
+
+  return true;
 };
