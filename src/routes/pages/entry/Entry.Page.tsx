@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 
-import { EDITOR_PAGES, Editor } from '../../../components/editor/Editor';
+import { EDITOR_PAGES, Editor, EntryHeader } from '../../../components/editor/Editor';
 import { entriesStore } from '../../../store/entries';
 
 const EntryPage = observer(() => {

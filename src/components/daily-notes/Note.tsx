@@ -84,6 +84,7 @@ const DailyPage = observer(() => {
             {dailyEntry && (
               <Editor
                 page={EDITOR_PAGES.JOURNAL}
+                placeholderClassName="daily-note-placeholder"
                 onChange={(state) => dailyEntryState.saveNoteContent(state)}
                 content={
                   dailyEntry.noteContent ? JSON.parse(dailyEntry.noteContent as string) : null

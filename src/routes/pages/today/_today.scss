@@ -62,19 +62,6 @@
       }
     }
 
-    .daily-note-placeholder {
-      color: var(--text-secondary);
-      overflow: hidden;
-      position: absolute;
-      left: 0px;
-      text-overflow: ellipsis;
-      top: 0px;
-      user-select: none;
-      display: inline-block;
-      pointer-events: none;
-      font-size: 15px;
-    }
-
     .editor-container {
       position: relative;
     }

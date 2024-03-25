@@ -34,8 +34,8 @@ import { theme } from '@/plugins/theme';
 import { EntryTitle } from './Editor.EntryTitle';
 import { TagEditor } from './Editor.TagEditor';
 
-function Placeholder() {
-  return <div className="editor-placeholder">Write or type '/' for slash commands....</div>;
+function Placeholder({ className }) {
+  return <div className={className}>Write or type '/' for slash commands....</div>;
 }
 
 function MyCustomAutoFocusPlugin() {
@@ -53,7 +53,7 @@ function onError(error: any) {
   console.error(error);
 }
 
-const EntryHeader = observer(() => {
+export const EntryHeader = observer(() => {
   return (
     <div className="entry-header">
       <EntryTitle />
@@ -74,14 +74,26 @@ interface EditorType {
   content: string | null;
   onChange: (state: any) => void;
   page: keyof typeof EDITOR_PAGES;
+  extendTheme?: {};
+  placeholderClassName?: string;
 }
 
-export const Editor = ({ id, content, onChange, page }: EditorType) => {
+export const Editor = ({
+  id,
+  content,
+  onChange,
+  page,
+  extendTheme,
+  placeholderClassName = 'editor-placeholder',
+}: EditorType) => {
   const editorState = useRef();
 
-  const initialConfig = {
+  const editorConfig = {
     namespace: 'ContentEditor',
-    theme,
+    theme: {
+      ...theme,
+      ...extendTheme,
+    },
     onError,
     editorState: content ? JSON.stringify(content) : null,
 
@@ -107,7 +119,7 @@ export const Editor = ({ id, content, onChange, page }: EditorType) => {
   }, 750);
 
   return (
-    <LexicalComposer initialConfig={initialConfig} key={id}>
+    <LexicalComposer initialConfig={editorConfig} key={id}>
       <RichTextPlugin
         contentEditable={
           <div className="editor-wrapper">
@@ -115,7 +127,7 @@ export const Editor = ({ id, content, onChange, page }: EditorType) => {
             <ContentEditable className="editor-input" />
           </div>
         }
-        placeholder={Placeholder}
+        placeholder={<Placeholder className={placeholderClassName} />}
         ErrorBoundary={LexicalErrorBoundary}
       />
       <OnChangePlugin

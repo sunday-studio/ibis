@@ -1,14 +1,11 @@
 .editor-input {
   color: var(--text-primary);
+  font-size: 16px;
   font-family: var(--geist-font);
   line-height: 1;
 }
 
 .editor-code {
-  * {
-    outline: 1px dotted red;
-  }
-
   background-color: var(--hover-background);
   box-shadow: 0 0 0 1px var(--main-border);
   display: block;
@@ -175,4 +172,22 @@
 .editor-nested-listitem:before,
 .editor-nested-listitem:after {
   display: none;
+}
+
+.editor-placeholder,
+.daily-note-placeholder {
+  color: var(--text-secondary);
+  overflow: hidden;
+  position: absolute;
+  text-overflow: ellipsis;
+  left: 0;
+  top: 0;
+  font-size: 16px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.editor-placeholder {
+  top: 183px;
+  left: 80px;
 }

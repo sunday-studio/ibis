@@ -149,14 +149,3 @@
     }
   }
 }
-
-.editor-placeholder {
-  position: absolute;
-  text-overflow: ellipsis;
-  top: 187px;
-  left: 80px;
-  user-select: none;
-  display: inline-block;
-  pointer-events: none;
-  color: var(--text-tertiary);
-}
