@@ -1,6 +1,6 @@
 .editor-input {
   color: var(--text-primary);
-  font-size: 16px;
+  // font-size: 16px;
   font-family: var(--geist-font);
   line-height: 1;
 }
@@ -9,8 +9,8 @@
   background-color: var(--hover-background);
   box-shadow: 0 0 0 1px var(--main-border);
   display: block;
-  padding: 10px 8px 10px 52px;
-  line-height: 1.53;
+  padding: 10px 16px;
+  line-height: 1.2;
   margin: 0;
   margin-top: 8px;
   margin-bottom: 8px;
@@ -19,22 +19,6 @@
   overflow-x: auto;
   position: relative;
   border-radius: var(--lg-radii);
-}
-
-.editor-code:before {
-  line-height: 1.53;
-  content: attr(data-gutter);
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding: 10px 8px;
-  font-size: var(--code-font);
-  font-variant-numeric: tabular-nums;
-  white-space: pre-wrap;
-  text-align: center;
-  min-width: 25px;
-  background-color: var(--active-background);
-  border-right: 1px solid var(--dark-border);
 }
 
 // start inline formatting

@@ -1,7 +1,6 @@
 import { useLayoutEffect } from 'react';
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { Key } from 'ts-key-enum';
 
 import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
@@ -26,12 +25,10 @@ export default function SearchDialogPlugin(): JSX.Element | null {
     return editor.registerRootListener((rootElement, prevRootElement) => {
       if (prevRootElement !== null) {
         prevRootElement.removeEventListener('keydown', onkeyDown);
-        console.log('called one', prevRootElement);
       }
 
       if (rootElement !== null) {
         rootElement.addEventListener('keydown', onkeyDown);
-        console.log('called two', rootElement);
       }
     });
   }, [editor]);

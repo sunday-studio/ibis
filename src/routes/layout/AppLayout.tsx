@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import { Key } from 'ts-key-enum';
 
