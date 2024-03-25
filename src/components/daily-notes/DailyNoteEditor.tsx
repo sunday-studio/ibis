@@ -92,8 +92,11 @@ export const DailyNoteEditor: FunctionComponent<DailyNoteEditorProps> = ({
     <LexicalComposer initialConfig={initialConfig} key={id}>
       <RichTextPlugin
         contentEditable={
-          <div className="daily-editor-wrapper">
-            <ContentEditable className="daily-editor-input" />
+          <div
+            className="editor-wrapper"
+            // className="daily-editor-wrapper"
+          >
+            <ContentEditable className="editor-input" />
           </div>
         }
         ErrorBoundary={LexicalErrorBoundary}

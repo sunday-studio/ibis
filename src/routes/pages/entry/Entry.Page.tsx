@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 
-import { Editor } from '../../../components/editor/Editor';
+import { EDITOR_PAGES, Editor } from '../../../components/editor/Editor';
 import { entriesStore } from '../../../store/entries';
 
 const EntryPage = observer(() => {
@@ -13,7 +13,14 @@ const EntryPage = observer(() => {
 
   return (
     <div className="entry-page">
-      {activeEntry && <Editor id={activeEntry.id} content={content} />}
+      {activeEntry && (
+        <Editor
+          page={EDITOR_PAGES.ENTRY}
+          onChange={(state) => entriesStore.saveContent(state)}
+          id={activeEntry.id}
+          content={content}
+        />
+      )}
     </div>
   );
 });

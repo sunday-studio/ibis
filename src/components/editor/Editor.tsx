@@ -30,7 +30,6 @@ import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
 import SlashCommandPickerPlugin from '@/plugins/SlashCommandPicker';
 import TabFocusPlugin from '@/plugins/TabFocusPlugin';
 import { theme } from '@/plugins/theme';
-import { entriesStore } from '@/store/entries';
 
 import { EntryTitle } from './Editor.EntryTitle';
 import { TagEditor } from './Editor.TagEditor';
@@ -65,7 +64,19 @@ const EntryHeader = observer(() => {
   );
 });
 
-export const Editor = ({ id, content }: { id: string; content: string }) => {
+export const EDITOR_PAGES = {
+  ENTRY: 'ENTRY',
+  JOURNAL: 'JOURNAL',
+} as const;
+
+interface EditorType {
+  id: string;
+  content: string | null;
+  onChange: (state: any) => void;
+  page: keyof typeof EDITOR_PAGES;
+}
+
+export const Editor = ({ id, content, onChange, page }: EditorType) => {
   const editorState = useRef();
 
   const initialConfig = {
@@ -92,7 +103,7 @@ export const Editor = ({ id, content }: { id: string; content: string }) => {
 
   const debouncedUpdates = useDebouncedCallback(async () => {
     // @ts-ignore
-    entriesStore.saveContent(editorState.current.toJSON());
+    onChange(editorState?.current?.toJSON?.());
   }, 750);
 
   return (
@@ -100,7 +111,7 @@ export const Editor = ({ id, content }: { id: string; content: string }) => {
       <RichTextPlugin
         contentEditable={
           <div className="editor-wrapper">
-            <EntryHeader />
+            {page === EDITOR_PAGES.ENTRY && <EntryHeader />}
             <ContentEditable className="editor-input" />
           </div>
         }

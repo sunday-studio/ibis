@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { CalendarDate } from '@internationalized/date';
 import * as Popover from '@radix-ui/react-popover';
 import clsx from 'clsx';
 import { format, isToday } from 'date-fns';
@@ -11,7 +10,7 @@ import { getDayPercentageCompleted } from '@/lib/utils';
 import { dailyEntryState } from '@/store/daily-state';
 
 import { DatePicker } from '../date-picker/DatePicker';
-import { DailyNoteEditor } from './DailyNoteEditor';
+import { EDITOR_PAGES, Editor } from '../editor/Editor';
 
 function getDateValues(d: string) {
   if (!d) return {};
@@ -45,8 +44,6 @@ const DailyPage = observer(() => {
     }, 45 * 60 * 1000);
     return () => clearInterval(intervalId);
   }, [dateValues.day]);
-
-  console.log({ dailyEntry });
 
   return (
     <Popover.Root>
@@ -85,7 +82,8 @@ const DailyPage = observer(() => {
         <div className="note">
           <div className="note-editor-container">
             {dailyEntry && (
-              <DailyNoteEditor
+              <Editor
+                page={EDITOR_PAGES.JOURNAL}
                 onChange={(state) => dailyEntryState.saveNoteContent(state)}
                 content={
                   dailyEntry.noteContent ? JSON.parse(dailyEntry.noteContent as string) : null
