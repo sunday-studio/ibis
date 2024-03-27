@@ -2,7 +2,7 @@
   color: var(--text-primary);
   // font-size: 16px;
   font-family: var(--geist-font);
-  line-height: 1;
+  // line-height: 1;
 }
 
 .editor-code {
@@ -94,8 +94,7 @@
 }
 
 .editor-listitem {
-  margin: 12px 32px 12px 26px;
-  // outline: 1px solid red;
+  margin: 8px 32px 8px 26px;
 
   &::marker {
     color: var(--text-secondary);
@@ -115,6 +114,10 @@
   padding-left: 24px;
   outline: none;
 
+  span {
+    line-height: 1;
+  }
+
   &.editor-listitem {
     margin-top: 14px;
     margin-bottom: 14px;
@@ -127,7 +130,7 @@
     left: 0;
     cursor: pointer;
     position: absolute;
-    top: 1px;
+    top: 4px;
     border-radius: var(--xs-radii);
   }
 }

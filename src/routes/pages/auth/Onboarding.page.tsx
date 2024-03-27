@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
+import { open } from '@tauri-apps/api/dialog';
+import { useNavigate } from 'react-router-dom';
+
 import { generateNewDirectory } from '@/lib/auth/auth-helpers';
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { setData } from '@/lib/storage';
-import { open } from '@tauri-apps/api/dialog';
-import { useNavigate } from 'react-router-dom';
 
 export const Onboarding = () => {
   const [location, setLocation] = useState<null | string>(null);

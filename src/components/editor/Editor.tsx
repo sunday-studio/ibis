@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
-import { TRANSFORMERS } from '@lexical/markdown';
+import { $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -18,6 +18,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+import { EditorState } from 'lexical';
 import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '@/plugins/AutolinkPlugin';
@@ -74,7 +75,9 @@ export const Editor = ({
   extendTheme,
   placeholderClassName = 'editor-placeholder',
 }: EditorType) => {
-  const editorState = useRef();
+  const editorState = useRef<EditorState>();
+  // const markd
+  const markdownRef = useRef<string>();
 
   const editorConfig = {
     namespace: 'ContentEditor',
@@ -106,11 +109,23 @@ export const Editor = ({
     onChange(editorState?.current?.toJSON?.());
   }, 750);
 
+  // useEffect(() => {
+
+  // })
+
   return (
     <LexicalComposer initialConfig={editorConfig} key={id}>
       <RichTextPlugin
         contentEditable={
           <div className="editor-wrapper">
+            {/* <button
+              onClick={() => {
+                // console.log('editor =>', editor);
+                console.log('markdown =>', markdownRef.current);
+              }}
+            >
+              convert to markdown
+            </button> */}
             {page === EDITOR_PAGES.ENTRY && <EntryHeader />}
             <ContentEditable className="editor-input" />
           </div>
@@ -120,8 +135,11 @@ export const Editor = ({
       />
       <OnChangePlugin
         onChange={(state) => {
-          // @ts-ignore
           editorState.current = state;
+          // console.log('state =>', state);
+          state.read(() => {
+            markdownRef.current = $convertToMarkdownString(TRANSFORMERS);
+          });
           debouncedUpdates();
         }}
       />
