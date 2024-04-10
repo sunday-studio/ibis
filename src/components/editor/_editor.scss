@@ -1,8 +1,6 @@
 .editor-input {
   color: var(--text-primary);
-  // font-size: 16px;
   font-family: var(--geist-font);
-  // line-height: 1;
 }
 
 .editor-code {
@@ -116,11 +114,6 @@
 
   span {
     line-height: 1;
-  }
-
-  &.editor-listitem {
-    margin-top: 14px;
-    margin-bottom: 14px;
   }
 
   &::before {

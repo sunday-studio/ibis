@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
+import { migrateFileSystem } from '@/migrations';
 import { DailyEntry, dailyEntryState } from '@/store/daily-state';
 import { Entry, entriesStore } from '@/store/entries';
 import { tagsState } from '@/store/tags-state';
@@ -115,6 +116,11 @@ export const loadDirectoryContent = async (safeURL: string) => {
   });
 
   const content = await Promise.all(promises);
+
+  const indexFile = content.find((file) => file.type === 'index.json');
+
+  // run migrations
+  migrateFileSystem(indexFile?.version, content);
 
   const groupedData = content.reduce((acc, obj) => {
     if (!acc[obj.type]) {
