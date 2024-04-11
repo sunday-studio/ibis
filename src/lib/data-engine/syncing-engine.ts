@@ -37,7 +37,7 @@ class Meili {
 
     const [dirPath, filename] = dirFn?.(dateString, this.basePath);
 
-    // // Check if the directory already exists on disk.
+    // Check if the directory already exists on disk.
     const directoryExist = await file_exist(dirPath);
 
     // If the directory doesn't exist, create it (including any missing parent directories).

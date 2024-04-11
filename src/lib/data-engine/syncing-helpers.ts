@@ -120,7 +120,7 @@ export const loadDirectoryContent = async (safeURL: string) => {
   const indexFile = content.find((file) => file.type === 'index.json');
 
   // run migrations
-  migrateFileSystem(indexFile?.version, content);
+  migrateFileSystem(indexFile?.content?.version, content);
 
   const groupedData = content.reduce((acc, obj) => {
     if (!acc[obj.type]) {

@@ -7,7 +7,7 @@ const FILE_VERSION_MIGRATORS = {
 };
 
 export const migrateFileSystem = (version: keyof typeof FILE_VERSION_MIGRATORS, data: any) => {
-  console.log('version => ', { version, data });
+  // console.log('data =>', version);
 
   if (!version) {
     FILE_VERSION_MIGRATORS[0.0]?.({ data });
