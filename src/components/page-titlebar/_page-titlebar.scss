@@ -27,12 +27,22 @@
     height: 100%;
   }
 
-  p {
+  .single-title {
     font-size: 15px;
-    margin-right: auto;
+    margin-left: auto;
   }
 
   .sidebar-toggle {
     margin-right: auto;
+  }
+
+  .safe-name {
+    padding: 3px 6px;
+    margin-left: auto;
+    border-radius: var(--md-radii);
+    background: var(--panel-background);
+    font-size: 14px;
+    margin-right: 12px;
+    box-shadow: 0 0 0 1px var(--main-border);
   }
 }
