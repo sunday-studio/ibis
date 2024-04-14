@@ -76,7 +76,6 @@ export const Editor = ({
   placeholderClassName = 'editor-placeholder',
 }: EditorType) => {
   const editorState = useRef<EditorState>();
-  // const markd
   const markdownRef = useRef<string>();
 
   const editorConfig = {

@@ -117,10 +117,8 @@ export const loadDirectoryContent = async (safeURL: string) => {
 
   const content = await Promise.all(promises);
 
-  const indexFile = content.find((file) => file.type === 'index.json');
-
   // run migrations
-  migrateFileSystem(indexFile?.content?.version, content);
+  migrateFileSystem(content);
 
   const groupedData = content.reduce((acc, obj) => {
     if (!acc[obj.type]) {

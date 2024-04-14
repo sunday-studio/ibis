@@ -9,7 +9,6 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "prettier": "prettier",
-    "run:migration": "node src/migrations/file-date-pattern.migrate.js",
     "knip": "knip"
   },
   "dependencies": {
@@ -17,6 +16,7 @@
     "@floating-ui/dom": "^1.4.3",
     "@floating-ui/react": "^0.24.8",
     "@internationalized/date": "^3.5.2",
+    "@lexical/headless": "^0.14.3",
     "@lexical/list": "^0.11.1",
     "@lexical/markdown": "^0.11.1",
     "@lexical/react": "^0.11.1",
@@ -34,6 +34,7 @@
     "date-fns": "^2.30.0",
     "framer-motion": "^10.12.18",
     "global": "^4.4.0",
+    "gray-matter": "^4.0.3",
     "lexical": "^0.11.1",
     "lexical-floating-menu": "^0.1.0",
     "localforage": "^1.10.0",

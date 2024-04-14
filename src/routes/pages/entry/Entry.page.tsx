@@ -6,6 +6,8 @@ import { entriesStore } from '../../../store/entries';
 const EntryPage = observer(() => {
   const { activeEntry } = entriesStore;
 
+  return null;
+
   const content =
     activeEntry && JSON.parse(activeEntry?.content)?.root?.children.length > 0
       ? JSON.parse(activeEntry?.content)
