@@ -34,8 +34,6 @@ class DailyStore {
   dailyEntries: DailyNotes | {} = {};
   intervalId = null;
 
-  //
-
   constructor() {
     makeAutoObservable(this);
   }

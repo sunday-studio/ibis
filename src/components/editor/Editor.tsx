@@ -78,6 +78,8 @@ export const Editor = ({
   const editorState = useRef<EditorState>();
   const markdownRef = useRef<string>();
 
+  // console.log('editor =>', JSON.stringify(content));
+
   const editorConfig = {
     namespace: 'ContentEditor',
     theme: {
@@ -108,10 +110,6 @@ export const Editor = ({
     onChange(editorState?.current?.toJSON?.());
   }, 750);
 
-  // useEffect(() => {
-
-  // })
-
   return (
     <LexicalComposer initialConfig={editorConfig} key={id}>
       <RichTextPlugin
@@ -136,9 +134,9 @@ export const Editor = ({
         onChange={(state) => {
           editorState.current = state;
           // console.log('state =>', state);
-          state.read(() => {
-            markdownRef.current = $convertToMarkdownString(TRANSFORMERS);
-          });
+          // state.read(() => {
+          //   markdownRef.current = $convertToMarkdownString(TRANSFORMERS);
+          // });
           debouncedUpdates();
         }}
       />

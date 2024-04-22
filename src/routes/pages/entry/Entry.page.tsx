@@ -1,12 +1,10 @@
 import { observer } from 'mobx-react-lite';
 
-import { EDITOR_PAGES, Editor, EntryHeader } from '../../../components/editor/Editor';
+import { EDITOR_PAGES, Editor } from '../../../components/editor/Editor';
 import { entriesStore } from '../../../store/entries';
 
 const EntryPage = observer(() => {
   const { activeEntry } = entriesStore;
-
-  return null;
 
   const content =
     activeEntry && JSON.parse(activeEntry?.content)?.root?.children.length > 0

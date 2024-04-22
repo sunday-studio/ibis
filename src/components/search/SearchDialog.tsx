@@ -71,7 +71,7 @@ export const SearchDialog = observer(() => {
     },
 
     {
-      name: `Toggle ${appState.theme === 'night' ? 'light' : 'night'} mode`,
+      name: `Toggle ${appState.theme === 'night' ? 'light' : 'dark'} mode`,
       onClick: () => {
         appState.toggleTheme(appState.theme === 'night' ? 'light' : 'night');
       },
