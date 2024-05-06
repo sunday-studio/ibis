@@ -1,6 +1,7 @@
 import { Command } from 'cmdk';
 import {
   BadgePlus,
+  Construction,
   Library,
   LucideIcon,
   MonitorDown,
@@ -15,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { clearData, getData } from '@/lib/storage';
-import { runMigration } from '@/migrations/file-date-pattern.migrate';
+// import { runMigration } from '@/migrations/file-date-pattern.migrate';
 import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
 
@@ -93,6 +94,14 @@ export const SearchDialog = observer(() => {
         navigate(0);
       },
       icon: MonitorDown,
+    },
+
+    {
+      name: 'Toggle zen mode',
+      onClick: () => {
+        appState.toggleZenMode();
+      },
+      icon: Construction,
     },
   ];
 

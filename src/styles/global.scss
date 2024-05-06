@@ -216,3 +216,42 @@ ol[data-sonner-toaster='true'] {
     }
   }
 }
+
+// zen mode styling
+html[zen-mode='on'] {
+  .entry-page {
+    display: flex;
+    justify-content: center;
+
+    .editor-wrapper {
+      padding: 0;
+      padding: 40px;
+      width: 60%;
+    }
+
+    @media (max-width: 850px) {
+      .editor-wrapper {
+        width: 100%;
+      }
+    }
+  }
+
+  .today-page {
+    justify-content: center;
+    padding: 0;
+
+    .daily-note {
+      width: 60%;
+      padding: 40px 0px;
+    }
+
+    @media (max-width: 850px) {
+      width: 100%;
+      padding: 0 20px;
+
+      .daily-note {
+        width: 100%;
+      }
+    }
+  }
+}

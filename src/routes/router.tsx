@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import { checkIfLoggedIn } from '@/lib/auth/auth-helpers';
-import AppLayout from '@/routes/layout/AppLayout';
 
 // import AuthPage from './pages/auth/Auth';
 import Root from './Root';
+import AppLayout from './layout/AppLayout';
 import { Onboarding } from './pages/auth/Onboarding.page';
 import EntryPage from './pages/entry/Entry.page';
 import SettingsPage from './pages/settings/Settings.page';

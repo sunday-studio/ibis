@@ -118,7 +118,8 @@ export const loadDirectoryContent = async (safeURL: string) => {
   const content = await Promise.all(promises);
 
   // run migrations
-  migrateFileSystem(content);
+  // TODO: come back to this later
+  // migrateFileSystem(content);
 
   const groupedData = content.reduce((acc, obj) => {
     if (!acc[obj.type]) {
