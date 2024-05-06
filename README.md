@@ -4,7 +4,7 @@ Ibis is a desktop app for writing and journaling in markdown. It allows you to o
 
 ![Ibis app screenshot](./public/cover-photo.png)
 
-## Gettings
+## Getting started
 
 1. Download the latest version of Ibis on the [release page](https://github.com/sunday-studio/ibis/releases)
 2. Open the `.zip` or `.dmg` file and drag the application into the `Applications/` folder.
