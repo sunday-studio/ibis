@@ -46,7 +46,7 @@ class Entries {
 
     let temFolders = {};
 
-    Object.keys(index?.content?.folders).forEach((folderKey) => {
+    Object.keys(index?.content?.folders ?? {}).forEach((folderKey) => {
       const currentFolder = index.content.folders[folderKey];
       temFolders[folderKey] = {
         ...currentFolder,

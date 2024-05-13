@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown, ChevronLeft, ChevronRight, FolderIcon, FolderOpen } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
@@ -35,23 +36,32 @@ export const SidebarFolder = observer<SidebarFolder>(({ folderId }) => {
         <p>{folder.name}</p>
       </div>
 
-      {open && (
-        <ul>
-          {entries.map((entry) => {
-            return (
-              <SidebarEntry
-                entry={entry}
-                activeEntry={entriesStore.activeEntry}
-                key={entry.id}
-                selectEntry={(entry) => {
-                  entriesStore.selectEntry(entry);
-                  navigate(`/entry/${entry.id}`);
-                }}
-              />
-            );
-          })}
-        </ul>
-      )}
+      <AnimatePresence initial={false}>
+        {open && (
+          <ul>
+            {entries.map((entry) => {
+              return (
+                <motion.div
+                  initial={{ height: 0 }}
+                  key={entry.id}
+                  animate={{ height: 'auto' }}
+                  exit={{ height: 0 }}
+                  transition={{ type: 'spring', duration: 0.4, bounce: 0.2 }}
+                >
+                  <SidebarEntry
+                    entry={entry}
+                    activeEntry={entriesStore.activeEntry}
+                    selectEntry={(entry) => {
+                      entriesStore.selectEntry(entry);
+                      navigate(`/entry/${entry.id}`);
+                    }}
+                  />
+                </motion.div>
+              );
+            })}
+          </ul>
+        )}
+      </AnimatePresence>
     </div>
   );
 });

@@ -88,7 +88,7 @@ export const Sidebar = observer(() => {
         })}
       </div>
 
-      <div className={clsx('sidebar-entries')}>
+      {/* <div className={clsx('sidebar-entries')}>
         {Boolean(pinnedEntries?.length) && (
           <div className="section">
             <div className="header">
@@ -142,7 +142,7 @@ export const Sidebar = observer(() => {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 });
