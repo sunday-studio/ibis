@@ -56,12 +56,6 @@ export const Sidebar = observer(() => {
     return entriesStore.foldersWithEntries;
   }, [entriesStore.foldersWithEntries]);
 
-  // const qer = useCallback(() => {
-  //   console.log('I am called', entriesStore.privateEntries.length);
-  // }, [entriesStore.privateEntries]);
-
-  // qer();
-
   return (
     <div className="sidebar">
       <SidebarHeader />
@@ -93,7 +87,7 @@ export const Sidebar = observer(() => {
         <div className="sidebar-folders">
           <SidebarFolder open folder={{ name: 'Pinned' }} entries={pinnedEntries} />
           {folders?.map((folder) => {
-            return <SidebarFolder open folder={folder.folder} entries={folder.entries} />;
+            return <SidebarFolder folder={folder.folder} entries={folder.entries} />;
           })}
         </div>
 

@@ -17,7 +17,6 @@ export interface Entry {
   updatedAt?: string;
   isDuplicate?: boolean;
   tags?: string[];
-  folderIds?: string[];
 }
 
 export type Folder = {
@@ -153,7 +152,6 @@ class Entries {
       updatedAt: new Date().toISOString(),
       content: JSON.stringify(editorState),
       title: this.activeEntryTitle!,
-      folderIds: [],
     } as Entry;
 
     saveFileToDisk({
@@ -173,7 +171,6 @@ class Entries {
       title: 'Untitled',
       id: `${new Date().toTimeString()}-${nanoid()}`,
       tags: [tagsState.tags.filter((tag: Tag) => tag.label === 'Private')?.[0]?.value],
-      folderIds: [],
     };
 
     const updatedEntries = [DEFAULT_ENTRY, ...this.entries];

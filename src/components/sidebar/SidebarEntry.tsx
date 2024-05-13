@@ -55,7 +55,6 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
       <ContextMenu.Root>
         <ContextMenu.Trigger asChild>
           <div
-            // {...animations}
             className={`entry ${isActive ? 'active-entry' : ''}`}
             style={{
               outline: isIn ? '1px solid red' : '',
