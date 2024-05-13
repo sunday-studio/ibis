@@ -34,7 +34,7 @@ const RouteLink = ({
 
 export const Sidebar = observer(() => {
   const navigate = useNavigate();
-  const folders = Object.values<Folder>(entriesStore.folders);
+  // const folders = Object.values<Folder>(entriesStore.folders);
 
   function goToPage(route: string) {
     entriesStore.removeActiveEntry();
@@ -53,13 +53,25 @@ export const Sidebar = observer(() => {
     });
   }, [entriesStore?.privateEntries]);
 
-  // console.log('folders =>', folders);
+  const folders = useMemo(() => {
+    const fold = Object.values<Folder>(entriesStore.folders);
+    return fold.map((folder: Folder) => {
+      const entries = [...folder.entries]?.map((entryId) => {
+        return entriesStore.entries.find((entry: Entry) => entry.id === entryId);
+      });
+
+      return {
+        folder,
+        entries,
+      };
+    });
+  }, [entriesStore.entries, entriesStore.folders]);
 
   return (
     <div className="sidebar">
       <SidebarHeader />
       <div className="sidebar-content">
-        <div className="section header-section">
+        <div className="sidebar-routes">
           <RouteLink
             title="Today"
             icon={DoorOpen}
@@ -82,36 +94,13 @@ export const Sidebar = observer(() => {
         </div>
       </div>
 
-      <div className="sidebar-folders">
-        {folders.map((folder) => {
-          return <SidebarFolder key={folder.id} folderId={folder.id} />;
-        })}
-      </div>
-
-      {/* <div className={clsx('sidebar-entries')}>
-        {Boolean(pinnedEntries?.length) && (
-          <div className="section">
-            <div className="header">
-              <p className="title">Pinned</p>
-            </div>
-
-            <div className="entries">
-              {pinnedEntries?.map((entry) => {
-                return (
-                  <SidebarEntry
-                    selectEntry={(entry) => {
-                      entriesStore.selectEntry(entry);
-                      navigate(`/entry/${entry.id}`);
-                    }}
-                    entry={entry}
-                    activeEntry={entriesStore.activeEntry}
-                    key={entry.id}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        )}
+      <div className={clsx('sidebar-entries')}>
+        <div className="sidebar-folders">
+          <SidebarFolder open folder={{ name: 'Pinned' }} entries={pinnedEntries} />
+          {folders?.map((folder) => {
+            return <SidebarFolder folder={folder.folder} entries={folder.entries} />;
+          })}
+        </div>
 
         {privateEntries.length > 0 && (
           <div className="section">
@@ -142,7 +131,7 @@ export const Sidebar = observer(() => {
             </div>
           </div>
         )}
-      </div> */}
+      </div>
     </div>
   );
 });
