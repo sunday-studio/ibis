@@ -44,7 +44,7 @@ export const SidebarFolder = observer<SidebarFolder>(
                     key={entry.id}
                     animate={{ height: 'auto' }}
                     exit={{ height: 0 }}
-                    transition={{ type: 'spring', duration: 0.4, bounce: 0.2 }}
+                    transition={{ type: 'spring', duration: 0.2, bounce: 0 }}
                   >
                     <SidebarEntry
                       entry={entry}

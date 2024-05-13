@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import clsx from 'clsx';
 import { BadgePlus, DoorOpen, Search, Trash2Icon } from 'lucide-react';
@@ -34,7 +34,6 @@ const RouteLink = ({
 
 export const Sidebar = observer(() => {
   const navigate = useNavigate();
-  // const folders = Object.values<Folder>(entriesStore.folders);
 
   function goToPage(route: string) {
     entriesStore.removeActiveEntry();
@@ -51,21 +50,17 @@ export const Sidebar = observer(() => {
     return entriesStore?.privateEntries.sort((a: Entry, b: Entry) => {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
-  }, [entriesStore?.privateEntries]);
+  }, [entriesStore.privateEntries]);
 
   const folders = useMemo(() => {
-    const fold = Object.values<Folder>(entriesStore.folders);
-    return fold.map((folder: Folder) => {
-      const entries = [...folder.entries]?.map((entryId) => {
-        return entriesStore.entries.find((entry: Entry) => entry.id === entryId);
-      });
+    return entriesStore.foldersWithEntries;
+  }, [entriesStore.foldersWithEntries]);
 
-      return {
-        folder,
-        entries,
-      };
-    });
-  }, [entriesStore.entries, entriesStore.folders]);
+  // const qer = useCallback(() => {
+  //   console.log('I am called', entriesStore.privateEntries.length);
+  // }, [entriesStore.privateEntries]);
+
+  // qer();
 
   return (
     <div className="sidebar">
@@ -98,7 +93,7 @@ export const Sidebar = observer(() => {
         <div className="sidebar-folders">
           <SidebarFolder open folder={{ name: 'Pinned' }} entries={pinnedEntries} />
           {folders?.map((folder) => {
-            return <SidebarFolder folder={folder.folder} entries={folder.entries} />;
+            return <SidebarFolder open folder={folder.folder} entries={folder.entries} />;
           })}
         </div>
 

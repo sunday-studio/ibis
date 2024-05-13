@@ -46,6 +46,10 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
   //   transition: { type: 'linear', duration: 0.1 },
   // };
 
+  //
+
+  const isIn = entry?.folderIds?.length > 0;
+
   return (
     <Popover.Root key={entry.id}>
       <ContextMenu.Root>
@@ -53,6 +57,9 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
           <div
             // {...animations}
             className={`entry ${isActive ? 'active-entry' : ''}`}
+            style={{
+              outline: isIn ? '1px solid red' : '',
+            }}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();

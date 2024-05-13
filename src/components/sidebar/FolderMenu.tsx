@@ -18,7 +18,6 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-
     setFilteredFolders(
       folders.filter((folder) =>
         folder.name.toLocaleLowerCase().includes(value.toLocaleLowerCase()),
@@ -59,11 +58,14 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
         {showCreateButton && (
           <button
             onClick={() => {
-              entriesStore.addFolder({
-                id: nanoid(),
-                name: inputValue,
-                entries: new Set([entryId]),
-              });
+              entriesStore.addFolder(
+                {
+                  id: nanoid(),
+                  name: inputValue,
+                  entries: new Set([entryId]),
+                },
+                entryId,
+              );
 
               onFolderSelect();
             }}

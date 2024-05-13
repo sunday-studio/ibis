@@ -7,10 +7,6 @@
   bottom: 0;
   width: 100%;
 
-  * {
-    // outline: 1px dotted red;
-  }
-
   &-content {
     padding: 0 12px;
     width: 100%;
@@ -113,6 +109,7 @@
     overflow: scroll;
     border-top: 1.5px solid transparent;
     padding-bottom: 40px;
+    mask-image: linear-gradient(to top, black calc(100% - 40px), transparent 100%);
   }
 
   &-folders {
@@ -416,7 +413,6 @@
   gap: 6px;
 
   &[data-state='open'] {
-    box-shadow: 0 0 0 1px var(--main-border);
     background-color: var(--hover-background);
   }
 
@@ -428,13 +424,6 @@
   // }
 
   &.active-entry {
-    // background-color: var(--active-background);
-    // box-shadow: 0 0 0 1px var(--dark-border);
-
-    // &:hover {
-    //   background-color: var(--hover-background);
-    // }
-
     p {
       color: var(--primary-color);
     }

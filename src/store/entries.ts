@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { te } from 'date-fns/locale';
 import { makeAutoObservable, observable, runInAction } from 'mobx';
 import { nanoid } from 'nanoid';
 
@@ -16,6 +17,7 @@ export interface Entry {
   updatedAt?: string;
   isDuplicate?: boolean;
   tags?: string[];
+  folderIds?: string[];
 }
 
 export type Folder = {
@@ -33,6 +35,7 @@ class Entries {
   activeEntry?: Entry | null = null;
   activeEntryTitle?: string | null = this.activeEntry?.title;
   folders: Folders = {};
+  entriesInFolders: Set[] = new Set([]);
 
   constructor() {
     makeAutoObservable(this);
@@ -45,16 +48,20 @@ class Entries {
     this.pinnedEntriesId = observable(index?.content?.pinnedEntries ?? []);
 
     let temFolders = {};
+    let temEntriesInFolders = [];
 
     Object.keys(index?.content?.folders ?? {}).forEach((folderKey) => {
       const currentFolder = index.content.folders[folderKey];
+
       temFolders[folderKey] = {
         ...currentFolder,
         entries: new Set(currentFolder?.entries ?? []),
       };
+      temEntriesInFolders = temEntriesInFolders.concat(currentFolder?.entries ?? []);
     });
 
     this.folders = observable(temFolders);
+    this.entriesInFolders = observable(new Set(temEntriesInFolders));
   }
 
   get pinnedEntries() {
@@ -65,14 +72,33 @@ class Entries {
 
   get privateEntries() {
     return this.entries.filter((entry: Entry) => {
+      const entryIsInFolder = this.entriesInFolders.has(entry.id);
+
       return (
-        !this?.pinnedEntriesId?.includes(entry?.id) && !this.deletedEntriesId.includes(entry.id)
+        !this?.pinnedEntriesId?.includes(entry?.id) &&
+        !this.deletedEntriesId.includes(entry.id) &&
+        !entryIsInFolder
       );
     });
   }
 
   get deletedEntries() {
     return this.deletedEntriesId.map((id) => this.entries.find((entry) => entry.id === id));
+  }
+
+  get foldersWithEntries() {
+    const folders = Object.values<Folder>(this.folders);
+
+    return folders.map((folder: Folder) => {
+      const entries = [...folder.entries]?.map((entryId) => {
+        return this.entries.find((entry: Entry) => entry.id === entryId);
+      });
+
+      return {
+        folder,
+        entries,
+      };
+    });
   }
 
   updatePinned({ id, type }) {
@@ -88,6 +114,7 @@ class Entries {
         },
       });
     }
+
     if (type === 'REMOVE') {
       const updatedList = [...this.pinnedEntriesId].filter((i) => i != id);
       this.pinnedEntriesId = updatedList;
@@ -126,6 +153,7 @@ class Entries {
       updatedAt: new Date().toISOString(),
       content: JSON.stringify(editorState),
       title: this.activeEntryTitle!,
+      folderIds: [],
     } as Entry;
 
     saveFileToDisk({
@@ -145,6 +173,7 @@ class Entries {
       title: 'Untitled',
       id: `${new Date().toTimeString()}-${nanoid()}`,
       tags: [tagsState.tags.filter((tag: Tag) => tag.label === 'Private')?.[0]?.value],
+      folderIds: [],
     };
 
     const updatedEntries = [DEFAULT_ENTRY, ...this.entries];
@@ -220,30 +249,15 @@ class Entries {
     }
 
     const updatedDeletedIds = [entryId, ...this.deletedEntriesId];
-
     this.deletedEntriesId = updatedDeletedIds;
-
-    saveFileToDisk({
-      type: 'index',
-      data: {
-        deletedEntries: updatedDeletedIds,
-        pinnedEntries: this.pinnedEntriesId,
-      },
-    });
+    this.saveIndexFileToDisk();
   }
 
   restoreEntry(entryId: string) {
     const updatedDeletedEntries = this.deletedEntriesId.filter((id) => id !== entryId);
 
     this.deletedEntriesId = updatedDeletedEntries;
-
-    saveFileToDisk({
-      type: 'index',
-      data: {
-        deletedEntries: updatedDeletedEntries,
-        pinnedEntries: this.pinnedEntriesId,
-      },
-    });
+    this.saveIndexFileToDisk();
   }
 
   permanentDelete(entryId: string) {
@@ -253,15 +267,7 @@ class Entries {
 
     this.deletedEntriesId = updatedDeletedEntries;
     this.entries = updatedEntries;
-
-    saveFileToDisk({
-      type: 'index',
-      data: {
-        deletedEntries: updatedDeletedEntries,
-        pinnedEntries: this.pinnedEntriesId,
-      },
-    });
-
+    this.saveIndexFileToDisk();
     deleteFile(entry?.[0]);
   }
 
@@ -307,25 +313,23 @@ class Entries {
   }
 
   // Folders crud
-  addFolder(folder: Folder) {
+  addFolder(folder: Folder, entryId: string) {
     if (!this.folders[folder.id]) {
       this.folders[folder.id] = folder;
+      this.tagEntryWithFolder(entryId, 'ADD');
       this.saveIndexFileToDisk();
     }
   }
 
   addEntryToFolder(folderId: string, entryId: string) {
-    console.log({ folderId, folders: this.folders });
-
-    // return;
-
     if (this.folders[folderId]) {
       const folder: Folder = this.folders[folderId];
-      // console.log('folder ->', folder);
       const updatedFolder: Folder = {
         ...folder,
         entries: folder.entries.add(entryId),
       };
+
+      this.tagEntryWithFolder(entryId, 'ADD');
       this.folders[folderId] = updatedFolder;
       this.saveIndexFileToDisk();
     }
@@ -338,8 +342,20 @@ class Entries {
         ...folder,
         entries: folder.entries.delete(entryId),
       };
+
+      runInAction(() => {
+        this.tagEntryWithFolder(entryId, 'REMOVE');
+      });
       this.folders[folderId] = updatedFolder;
       this.saveIndexFileToDisk();
+    }
+  }
+
+  tagEntryWithFolder(entryId: string, actionType: 'ADD' | 'REMOVE') {
+    if (actionType === 'ADD') {
+      this.entriesInFolders.add(entryId);
+    } else {
+      this.entriesInFolders.delete(entryId);
     }
   }
 }

@@ -41,8 +41,8 @@ const AppLayout = observer(() => {
 
         <div className="layout-divider"></div>
         <div className={clsx('page-wrapper')}>
-          <PageTitleBar />
-          <Outlet />
+          {/* <PageTitleBar /> */}
+          {/* <Outlet /> */}
         </div>
       </div>
     </div>
