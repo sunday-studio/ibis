@@ -43,7 +43,18 @@ class Entries {
     this.entries = observable(entryData);
     this.deletedEntriesId = observable(index?.content?.deletedEntries ?? []);
     this.pinnedEntriesId = observable(index?.content?.pinnedEntries ?? []);
-    this.folders = observable(index?.content?.folders ?? {});
+
+    let temFolders = {};
+
+    Object.keys(index?.content?.folders).forEach((folderKey) => {
+      const currentFolder = index.content.folders[folderKey];
+      temFolders[folderKey] = {
+        ...currentFolder,
+        entries: new Set(currentFolder?.entries ?? []),
+      };
+    });
+
+    this.folders = observable(temFolders);
   }
 
   get pinnedEntries() {
@@ -304,8 +315,13 @@ class Entries {
   }
 
   addEntryToFolder(folderId: string, entryId: string) {
+    console.log({ folderId, folders: this.folders });
+
+    // return;
+
     if (this.folders[folderId]) {
       const folder: Folder = this.folders[folderId];
+      // console.log('folder ->', folder);
       const updatedFolder: Folder = {
         ...folder,
         entries: folder.entries.add(entryId),

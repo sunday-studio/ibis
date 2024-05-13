@@ -6,7 +6,7 @@ import * as ContextMenu from '@radix-ui/react-context-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
 import format from 'date-fns/format';
-import { motion, useIsPresent } from 'framer-motion';
+// import { motion, useIsPresent } from 'framer-motion';
 import {
   BadgeInfo,
   Columns,
@@ -34,24 +34,24 @@ type SidebarEntry = {
 
 export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: SidebarEntry) => {
   const isActive = entry?.id === activeEntry?.id;
-  const isPresent = useIsPresent();
+  // const isPresent = useIsPresent();
 
-  const animations = {
-    style: {
-      position: isPresent ? 'static' : 'absolute',
-    },
-    initial: { opacity: 0, y: 10 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 10 },
-    transition: { type: 'linear', duration: 0.1 },
-  };
+  // const animations = {
+  //   style: {
+  //     position: isPresent ? 'static' : 'absolute',
+  //   },
+  //   initial: { opacity: 0, y: 10 },
+  //   animate: { opacity: 1, y: 0 },
+  //   exit: { opacity: 0, y: 10 },
+  //   transition: { type: 'linear', duration: 0.1 },
+  // };
 
   return (
     <Popover.Root key={entry.id}>
       <ContextMenu.Root>
         <ContextMenu.Trigger asChild>
-          <motion.div
-            {...animations}
+          <div
+            // {...animations}
             className={`entry ${isActive ? 'active-entry' : ''}`}
             onClick={(e) => {
               e.preventDefault();
@@ -76,7 +76,7 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
                 <EntryActionOptions entry={entry} />
               </Popover.Content>
             </Popover.Portal>
-          </motion.div>
+          </div>
         </ContextMenu.Trigger>
         <ContextMenu.Portal>
           <ContextMenu.Content

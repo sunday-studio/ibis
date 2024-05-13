@@ -7,6 +7,10 @@
   bottom: 0;
   width: 100%;
 
+  * {
+    // outline: 1px dotted red;
+  }
+
   &-content {
     padding: 0 12px;
     width: 100%;
@@ -88,6 +92,7 @@
     display: flex;
     gap: 2px;
     flex-direction: column;
+    margin-top: 20px;
 
     .sidebar-folder {
       width: 100%;
@@ -96,8 +101,8 @@
         display: flex;
         padding: 6px;
         border-radius: 6px;
-        cursor: pointer;
         align-items: center;
+        cursor: pointer;
 
         &:hover {
           background-color: var(--hover-background);
@@ -109,17 +114,38 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          color: var(--text-primary);
+          transition: all 0.3s ease;
+
+          &_open {
+            transform: rotate(90deg);
+          }
         }
 
         p {
-          font-size: 15px;
-          font-weight: 500;
+          font-weight: 600;
+          font-size: 14px;
+          color: var(--text-primary);
+
+          // font-size: 14px;
+          // font-weight: 500;
+          // color: var(--text-primary);
+          // outline: 1px solid red;
         }
       }
 
       ul {
         list-style: none;
-        padding-inline-start: 20px;
+        padding-inline-start: 18px;
+        position: relative;
+
+        &::before {
+          position: absolute;
+          width: 1.5px;
+          height: 100%;
+          background-color: var(--main-border);
+          content: '';
+        }
       }
     }
   }
@@ -299,7 +325,6 @@
   }
 }
 
-// v0.1 of folder styling, TODO: take this out
 .folder-menu {
   width: 300px;
   height: 350px;
@@ -368,27 +393,31 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  border-radius: var(--md-radii);
+  // border-radius: var(--md-radii);
 
-  &[data-state='open'] {
-    box-shadow: 0 0 0 1px var(--main-border);
-  }
+  // &[data-state='open'] {
+  //   box-shadow: 0 0 0 1px var(--main-border);
+  // }
 
-  &:hover {
-    background-color: var(--hover-background);
-    box-shadow: 0 0 0 1px var(--main-border);
+  // &:hover {
+  //   background-color: var(--hover-background);
+  //   box-shadow: 0 0 0 1px var(--main-border);
 
-    .more-options {
-      visibility: visible;
-    }
-  }
+  //   .more-options {
+  //     visibility: visible;
+  //   }
+  // }
 
   &.active-entry {
-    background-color: var(--active-background);
-    box-shadow: 0 0 0 1px var(--dark-border);
+    // background-color: var(--active-background);
+    // box-shadow: 0 0 0 1px var(--dark-border);
 
-    &:hover {
-      background-color: var(--hover-background);
+    // &:hover {
+    //   background-color: var(--hover-background);
+    // }
+
+    p {
+      color: var(--primary-color);
     }
   }
 

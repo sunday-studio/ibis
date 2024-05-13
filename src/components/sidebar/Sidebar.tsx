@@ -8,8 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { dailyEntryState } from '@/store/daily-state';
 import { searchStore } from '@/store/search';
 
-import { Entry, entriesStore } from '../../store/entries';
+import { type Entry, type Folder, entriesStore } from '../../store/entries';
 import { SidebarEntry } from './SidebarEntry';
+import { SidebarFolder } from './SidebarFolder';
 import { SidebarHeader } from './SidebarHeader';
 
 const RouteLink = ({
@@ -33,7 +34,7 @@ const RouteLink = ({
 
 export const Sidebar = observer(() => {
   const navigate = useNavigate();
-  // const folders = Object.values<Folder>(entriesStore.folders);
+  const folders = Object.values<Folder>(entriesStore.folders);
 
   function goToPage(route: string) {
     entriesStore.removeActiveEntry();
@@ -51,6 +52,8 @@ export const Sidebar = observer(() => {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
   }, [entriesStore?.privateEntries]);
+
+  // console.log('folders =>', folders);
 
   return (
     <div className="sidebar">
@@ -79,11 +82,11 @@ export const Sidebar = observer(() => {
         </div>
       </div>
 
-      {/* <div className="sidebar-folders">
+      <div className="sidebar-folders">
         {folders.map((folder) => {
           return <SidebarFolder key={folder.id} folderId={folder.id} />;
         })}
-      </div> */}
+      </div>
 
       <div className={clsx('sidebar-entries')}>
         {Boolean(pinnedEntries?.length) && (
