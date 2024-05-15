@@ -14,14 +14,38 @@
 
   &-routes {
     padding-top: 20px;
+
     .route {
       display: flex;
       align-items: center;
       cursor: pointer;
       transition: all 0.3s ease-in;
-      padding: 4px 8px;
+      padding: 0px 8px;
       border-radius: 8px;
       gap: 12px;
+      height: 30px;
+
+      &:hover {
+        .route-shortcut {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+
+      &-shortcut {
+        margin-left: auto;
+        font-size: 13px;
+        padding: 2px 4px;
+        border-radius: var(--sm-radii);
+        background-color: var(--hover-background);
+        font-weight: 600;
+        box-shadow: 0 0 0 1px var(--main-border);
+        display: flex;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s, opacity 0.2s eas;
+        text-transform: uppercase;
+      }
 
       .icon {
         display: flex;

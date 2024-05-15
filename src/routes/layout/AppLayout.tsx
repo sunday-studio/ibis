@@ -10,6 +10,7 @@ import { PageTitleBar } from '@/components/page-titlebar/PageTitleBar';
 import { Sidebar } from '@/components/sidebar/Sidebar';
 
 import { SearchDialog } from '@/components';
+import { useRegisterAllShortcuts } from '@/hooks/useRegisterAllShortcuts';
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { getData } from '@/lib/storage';
@@ -17,9 +18,10 @@ import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
 
 const AppLayout = observer(() => {
-  useHotkeys(`${Key.Meta}+d`, () => appState.toggleSidebarOpenState());
-  useHotkeys(`${Key.Control}+d`, () => appState.toggleSidebarOpenState());
-  useHotkeys(`${Key.Meta}+k`, () => searchStore.toggleSearchModal());
+  useRegisterAllShortcuts();
+  // useHotkeys(`${Key.Meta}+d`, () => appState.toggleSidebarOpenState());
+  // useHotkeys(`${Key.Control}+d`, () => appState.toggleSidebarOpenState());
+  // useHotkeys(`${Key.Meta}+k`, () => searchStore.toggleSearchModal());
 
   useEffect(() => {
     const SAFEURL = getData(SAFE_LOCATION_KEY);

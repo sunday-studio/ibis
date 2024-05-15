@@ -38,6 +38,11 @@ export const router = createBrowserRouter([
             path: '/trash',
             element: <TrashPage />,
           },
+
+          {
+            path: '/templates',
+            element: () => <p>Templates here</p>,
+          },
         ],
       },
 

@@ -1,14 +1,14 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import clsx from 'clsx';
-import { BadgePlus, DoorOpen, Search, Trash2Icon } from 'lucide-react';
+import { BadgePlus, DoorOpen, Layers, Search, Trash2Icon } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
 import { dailyEntryState } from '@/store/daily-state';
 import { searchStore } from '@/store/search';
 
-import { type Entry, type Folder, entriesStore } from '../../store/entries';
+import { type Entry, entriesStore } from '../../store/entries';
 import { SidebarEntry } from './SidebarEntry';
 import { SidebarFolder } from './SidebarFolder';
 import { SidebarHeader } from './SidebarHeader';
@@ -17,10 +17,12 @@ const RouteLink = ({
   onClick,
   title,
   icon: Icon,
+  shortcutKey,
 }: {
   onClick: () => void;
   title: string;
-  icon: any;
+  icon?: any;
+  shortcutKey?: string;
 }) => {
   return (
     <div className="route" onClick={onClick}>
@@ -28,6 +30,8 @@ const RouteLink = ({
         {Icon && <Icon className="icon-inner" size={16} strokeWidth={2.5} />}
       </div>
       <p className="route-text">{title}</p>
+
+      {shortcutKey && <div className="route-shortcut">{shortcutKey}</div>}
     </div>
   );
 };
@@ -62,18 +66,36 @@ export const Sidebar = observer(() => {
       <div className="sidebar-content">
         <div className="sidebar-routes">
           <RouteLink
-            title="Today"
+            title="Journal"
             icon={DoorOpen}
+            shortcutKey="⌘ J"
             onClick={() => {
               dailyEntryState.goToToday();
               goToPage('/today');
             }}
           />
           {/* <RouteLink title="Highlights" icon={Sparkles} onClick={() => {}} /> */}
-          <RouteLink title="Search" icon={Search} onClick={() => searchStore.toggleSearchModal()} />
-          <RouteLink title="Trash" icon={Trash2Icon} onClick={() => goToPage('/trash')} />
+          <RouteLink
+            shortcutKey="⌘ K"
+            title="Search"
+            icon={Search}
+            onClick={() => searchStore.toggleSearchModal()}
+          />
+          <RouteLink
+            shortcutKey="⌘ b"
+            title="Bin"
+            icon={Trash2Icon}
+            onClick={() => goToPage('/trash')}
+          />
+          <RouteLink
+            icon={Layers}
+            title="Templates"
+            onClick={() => goToPage('/templates')}
+            shortcutKey="⌘ t"
+          />
           <RouteLink
             title="New Entry"
+            shortcutKey="⌘ n"
             icon={BadgePlus}
             onClick={() => {
               const entryId = entriesStore.addNewEntry();
