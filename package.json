@@ -4,13 +4,13 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "yarn package-sidecar && vite",
-    "build": "yarn package-sidecar && tsc && vite build",
+    "dev": "bunx --bun vite",
+    "build": "bun package-sidecar && tsc && bunx --bun vite build",
     "preview": "vite preview",
     "tauri": "tauri",
     "prettier": "prettier",
     "knip": "knip",
-    "package-sidecar": "pkg ./src/sidecar/ibis-server.js --output src-tauri/binaries/ibis-server && node .scripts/move-binary.js"
+    "package-sidecar": "cd server && bun run build &&  cd .. && node .scripts/move-binaries.js"
   },
   "pkg": {
     "assets": [

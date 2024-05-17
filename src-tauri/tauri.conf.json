@@ -13,6 +13,11 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": ["http://localhost/*", "http://localhost:3323/json"]
+      },
       "path": {
         "all": true
       },
@@ -36,8 +41,7 @@
         "scope": [
           {
             "name": "binaries/ibis-server",
-            "sidecar": true,
-            "args": ["jsonData"]
+            "sidecar": true
           }
         ],
         "all": false,
@@ -87,7 +91,7 @@
         "fullscreen": false,
         "resizable": true,
         "title": "Ibis",
-        "width": 1000,
+        "width": 1200,
         "height": 800,
         "decorations": false,
         "transparent": true

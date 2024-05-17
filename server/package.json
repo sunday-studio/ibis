@@ -1,0 +1,22 @@
+{
+  "name": "ibis-server",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "build": "bun build ./index.ts --compile --outfile  ../src-tauri/binaries/ibis-server"
+  },
+  "dependencies": {
+    "@lexical/code": "^0.15.0",
+    "@lexical/headless": "^0.15.0",
+    "@lexical/link": "^0.15.0",
+    "@lexical/list": "^0.15.0",
+    "@lexical/markdown": "^0.15.0",
+    "@lexical/rich-text": "^0.15.0"
+  }
+}

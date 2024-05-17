@@ -7,10 +7,7 @@ use std::fs::File;
 use std::io::Read;
 use std::io::Write;
 use std::path::Path;
-use tauri::{
-    api::process::{Command, CommandEvent},
-    Manager,
-};
+use tauri::Manager;
 use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial};
 
 use tauri::command;
@@ -117,30 +114,6 @@ fn main() {
             #[cfg(target_os = "macos")]
             apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, None, Some(10.0))
                 .expect("Unsupported platform! 'apply_vibrancy' is only supported on macOS");
-
-            // setup sidecar command to run node server
-            tauri::async_runtime::spawn(async move {
-                // let (mut rx, mut child) = Command::new_sidecar()
-                let (mut rx, mut child) = Command::new_sidecar("ibis-server")
-                    .expect("failed to setup `ibis server` sidecar")
-                    .spawn()
-                    .expect("failed to spawn packaged node");
-
-                let mut i = 0;
-
-                while let Some(event) = rx.recv().await {
-                    if let CommandEvent::Stdout(line) = event {
-                        window
-                            .emit("message", Some(format!("'{}'", line)))
-                            .expect("failed to emit event");
-                        i += 1;
-                        if i == 4 {
-                            child.write("message from Rust\n".as_bytes()).unwrap();
-                            i = 0;
-                        }
-                    }
-                }
-            });
 
             Ok(())
         })

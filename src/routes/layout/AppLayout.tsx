@@ -26,6 +26,7 @@ const AppLayout = observer(() => {
   return (
     <div className="page-container">
       <SearchDialog />
+
       <div
         className={clsx('two-column-container', {
           'sidebar-closed': !appState.sidebarIsOpen,

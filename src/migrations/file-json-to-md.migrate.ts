@@ -5,6 +5,7 @@ import { ListItemNode, ListNode } from '@lexical/list';
 import { $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+import { TauriEvent, listen } from '@tauri-apps/api/event';
 import { Command } from '@tauri-apps/api/shell';
 
 import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
@@ -36,19 +37,34 @@ const createFrontMatterData = (type: 'dailyNotes' | 'entries', content: any) => 
   }
 };
 
-async function convertLexicalJSONToMarkdown(content: string, item) {
-  const command = Command.sidecar('binaries/ibis-server', [test2]);
+async function convertLexicalJSONToMarkdown() {
+  // content: string, item
 
   try {
-    const se = await command.execute();
+    const se = await fetch('http://localhost:3000/json', {
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    //  await command.spawn();
     console.log('se =>', se);
-  } catch (error) {}
+  } catch (error) {
+    console.log('error =>', error);
+  }
 
   // console.log('command =>', await command.execute());
 }
 
 export const migrateJSONTOMarkdown = ({ updatedVersion, data, indexFile }) => {
-  convertLexicalJSONToMarkdown(JSON.parse(test2));
+  const command = Command.sidecar('binaries/ibis-server');
+  command.spawn().then((child) => {
+    listen(TauriEvent.WINDOW_DESTROYED, function () {
+      child.kill();
+    });
+  });
+
+  // convertLexicalJSONToMarkdown();
   // const updatedData = data?.filter((file) => file.type === 'entries' || file.type === 'dailyNotes');
   // const getContent = (item) => {
   //   if (item.type === 'entries') {
@@ -66,3 +82,18 @@ export const migrateJSONTOMarkdown = ({ updatedVersion, data, indexFile }) => {
   //   const content = convertLexicalJSONToMarkdown(contentString, item);
   // }
 };
+
+// import { ResponseType, fetch } from '@tauri-apps/api/http';
+
+// const asy = async () => {
+//     try {
+//       const response = await fetch('http://localhost:3323/json', {
+//         method: 'GET',
+//         timeout: 30, //seconds
+//         responseType: ResponseType.JSON,
+//       });
+//       console.log(response);
+//     } catch (error) {
+//       console.log('error =>', error);
+//     }
+//   };
