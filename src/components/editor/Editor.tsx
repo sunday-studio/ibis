@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
-import { TRANSFORMERS } from '@lexical/markdown';
+import { $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -26,7 +26,10 @@ import ClickableLinkPlugin from '@/plugins/ClickableLinkPlugin';
 import CodeHighlightPlugin from '@/plugins/CodeHighlightPlugin';
 import FloatingMenuPlugin from '@/plugins/FloatingMenuPlugin';
 import PageBreakPlugin from '@/plugins/PageBreakPlugin/PageBreakPlugin';
-import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
+import {
+  PAGE_BREAK_NODE_TRANSFORMER,
+  PageBreakNode,
+} from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
 import SearchDialogPlugin from '@/plugins/SearchDialogPlugin';
 import SlashCommandPickerPlugin from '@/plugins/SlashCommandPicker';
 import TabFocusPlugin from '@/plugins/TabFocusPlugin';
@@ -108,7 +111,7 @@ export const Editor = ({
   const debouncedUpdates = useDebouncedCallback(async () => {
     // @ts-ignore
 
-    console.log('hello world =>', JSON.stringify(editorState?.current?.toJSON?.()));
+    console.log('test =>', JSON.stringify(editorState?.current?.toJSON?.()));
     onChange(editorState?.current?.toJSON?.());
   }, 750);
 
@@ -117,14 +120,13 @@ export const Editor = ({
       <RichTextPlugin
         contentEditable={
           <div className="editor-wrapper">
-            {/* <button
+            <button
               onClick={() => {
-                // console.log('editor =>', editor);
                 console.log('markdown =>', markdownRef.current);
               }}
             >
               convert to markdown
-            </button> */}
+            </button>
             {page === EDITOR_PAGES.ENTRY && <EntryHeader />}
             <ContentEditable className="editor-input" />
           </div>
@@ -135,10 +137,12 @@ export const Editor = ({
       <OnChangePlugin
         onChange={(state) => {
           editorState.current = state;
-          // console.log('state =>', state);
-          // state.read(() => {
-          //   markdownRef.current = $convertToMarkdownString(TRANSFORMERS);
-          // });
+          state.read(() => {
+            markdownRef.current = $convertToMarkdownString([
+              ...TRANSFORMERS,
+              PAGE_BREAK_NODE_TRANSFORMER,
+            ]);
+          });
           debouncedUpdates();
         }}
       />
@@ -154,7 +158,7 @@ export const Editor = ({
       <MyCustomAutoFocusPlugin />
       <CheckListPlugin />
       <TabIndentationPlugin />
-      <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+      <MarkdownShortcutPlugin transformers={[...TRANSFORMERS, PAGE_BREAK_NODE_TRANSFORMER]} />
       <CodeHighlightPlugin />
       <PageBreakPlugin />
       <SearchDialogPlugin />

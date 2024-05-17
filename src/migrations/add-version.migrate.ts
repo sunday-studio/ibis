@@ -7,7 +7,7 @@ export const addVersionToFileSystem = async ({ updatedVersion = 0.0, indexFile }
   console.log(`migration: add ${updatedVersion} version to index.json`);
 
   const {
-    content: { deletedEntries = [], pinnedEntries = [] },
+    content: { deletedEntries = [], pinnedEntries = [], ...rest },
     url,
   } = indexFile;
 
@@ -15,6 +15,7 @@ export const addVersionToFileSystem = async ({ updatedVersion = 0.0, indexFile }
     schemaVersion: updatedVersion,
     deletedEntries,
     pinnedEntries,
+    ...rest,
   };
 
   try {

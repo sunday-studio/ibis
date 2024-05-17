@@ -1,9 +1,12 @@
 import { useCallback, useEffect } from 'react';
 
+import { Transformer } from '@lexical/markdown';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
 import { mergeRegister } from '@lexical/utils';
 import {
+  $createParagraphNode,
+  $createTextNode,
   $getNodeByKey,
   $getSelection,
   $isNodeSelection,
@@ -191,3 +194,23 @@ export function $createPageBreakNode(): PageBreakNode {
 export function $isPageBreakNode(node: LexicalNode | null | undefined): node is PageBreakNode {
   return node instanceof PageBreakNode;
 }
+
+export const PAGE_BREAK_NODE_TRANSFORMER: Transformer = {
+  export: (node) => {
+    if (node.getType() === 'page-break') {
+      return '---\n';
+    }
+    return null;
+  },
+  regExp: /---\n/,
+  replace: (parentNode, _, match) => {
+    const [allMatch] = match;
+    const paragraphNode = $createParagraphNode();
+    const textNode = $createTextNode(allMatch);
+    paragraphNode.append(textNode);
+    // @ts-ignore
+    parentNode.replace([paragraphNode]);
+  },
+  type: 'element',
+  dependencies: [],
+};
