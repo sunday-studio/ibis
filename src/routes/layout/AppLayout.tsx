@@ -2,9 +2,7 @@ import { useEffect } from 'react';
 
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
-import { useHotkeys } from 'react-hotkeys-hook';
 import { Outlet } from 'react-router-dom';
-import { Key } from 'ts-key-enum';
 
 import { PageTitleBar } from '@/components/page-titlebar/PageTitleBar';
 import { Sidebar } from '@/components/sidebar/Sidebar';
@@ -15,13 +13,9 @@ import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { getData } from '@/lib/storage';
 import { appState } from '@/store/app-state';
-import { searchStore } from '@/store/search';
 
 const AppLayout = observer(() => {
   useRegisterAllShortcuts();
-  // useHotkeys(`${Key.Meta}+d`, () => appState.toggleSidebarOpenState());
-  // useHotkeys(`${Key.Control}+d`, () => appState.toggleSidebarOpenState());
-  // useHotkeys(`${Key.Meta}+k`, () => searchStore.toggleSearchModal());
 
   useEffect(() => {
     const SAFEURL = getData(SAFE_LOCATION_KEY);

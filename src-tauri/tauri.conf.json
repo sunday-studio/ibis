@@ -32,6 +32,14 @@
         "setDecorations": false
       },
       "shell": {
+        "sidecar": true,
+        "scope": [
+          {
+            "name": "binaries/ibis-server",
+            "sidecar": true,
+            "args": ["jsonData"]
+          }
+        ],
         "all": false,
         "open": true
       },
@@ -61,6 +69,7 @@
       "active": true,
       "targets": "all",
       "identifier": "com.opps.dev",
+      "externalBin": ["binaries/ibis-server"],
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",

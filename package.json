@@ -4,12 +4,18 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "yarn package-sidecar && vite",
+    "build": "yarn package-sidecar && tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
     "prettier": "prettier",
-    "knip": "knip"
+    "knip": "knip",
+    "package-sidecar": "pkg ./src/sidecar/ibis-server.js --output src-tauri/binaries/ibis-server && node .scripts/move-binary.js"
+  },
+  "pkg": {
+    "assets": [
+      "src/sidecar/*"
+    ]
   },
   "dependencies": {
     "@adobe/react-spectrum": "^3.34.1",
@@ -43,7 +49,6 @@
     "mobx": "^6.9.1",
     "mobx-react-lite": "^4.0.3",
     "nanoid": "^4.0.2",
-    "prettier": "^2.8.8",
     "react": "^18.2.0",
     "react-aria": "^3.32.1",
     "react-aria-components": "^1.1.1",
@@ -72,7 +77,10 @@
     "knip": "^5.2.2",
     "sass": "^1.63.6",
     "vite": "^4.2.1",
-    "vitest": "^0.34.6"
+    "vitest": "^0.34.6",
+    "pkg": "^5.8.1",
+    "prettier": "^2.8.8",
+    "execa": "^9.1.0"
   },
   "packageManager": "yarn@1.22.1"
 }

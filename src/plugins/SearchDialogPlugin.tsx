@@ -5,6 +5,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
 
+// TODO: convert this into a shortcut plugin
 export default function SearchDialogPlugin(): JSX.Element | null {
   const [editor] = useLexicalComposerContext();
 

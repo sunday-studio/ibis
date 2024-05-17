@@ -107,6 +107,8 @@ export const Editor = ({
 
   const debouncedUpdates = useDebouncedCallback(async () => {
     // @ts-ignore
+
+    console.log('hello world =>', JSON.stringify(editorState?.current?.toJSON?.()));
     onChange(editorState?.current?.toJSON?.());
   }, 750);
 

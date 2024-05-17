@@ -15,6 +15,8 @@ export const migrateFileSystem = (data: any) => {
 
   let currentVersion = indexFile?.content?.schemaVersion;
 
+  console.log('hello world => ', { currentVersion });
+
   // only run this when once when there's no version
   if (currentVersion === null || currentVersion === undefined) {
     FILE_VERSION_MIGRATORS[0.0]?.({ data, indexFile });

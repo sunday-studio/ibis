@@ -14,6 +14,7 @@ export const useRegisterAllShortcuts = () => {
     const entryId = entriesStore.addNewEntry();
     navigate(`/entry/${entryId}`);
   });
+
   useHotkeys(`${Key.Meta}+j`, () => {
     dailyEntryState.goToToday();
     navigate('/today');
