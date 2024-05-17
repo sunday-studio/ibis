@@ -17,6 +17,7 @@
     "@lexical/link": "^0.15.0",
     "@lexical/list": "^0.15.0",
     "@lexical/markdown": "^0.15.0",
-    "@lexical/rich-text": "^0.15.0"
+    "@lexical/rich-text": "^0.15.0",
+    "hono": "^4.3.7"
   }
 }
