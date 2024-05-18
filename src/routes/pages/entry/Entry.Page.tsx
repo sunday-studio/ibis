@@ -6,10 +6,7 @@ import { entriesStore } from '../../../store/entries';
 const EntryPage = observer(() => {
   const { activeEntry } = entriesStore;
 
-  const content =
-    activeEntry && JSON.parse(activeEntry?.content)?.root?.children.length > 0
-      ? JSON.parse(activeEntry?.content)
-      : null;
+  const content = activeEntry?.content || '';
 
   return (
     <div className="entry-page">

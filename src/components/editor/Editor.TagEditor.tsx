@@ -19,6 +19,8 @@ export const TagEditor = observer(() => {
     return activeEntry?.tags!.map((t) => toJS(tagsState.tagsMap[t])).filter(Boolean) ?? [];
   }, [activeEntry?.tags, tagsState.tagsMap]);
 
+  console.log({ tags });
+
   const onTagSelectorBlur = () => {
     setShowTags(true);
   };

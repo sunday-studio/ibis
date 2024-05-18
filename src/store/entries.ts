@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { te } from 'date-fns/locale';
-import { makeAutoObservable, observable, runInAction } from 'mobx';
+import { makeAutoObservable, observable, runInAction, toJS } from 'mobx';
 import { nanoid } from 'nanoid';
 
 import { deleteFile, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
@@ -41,16 +41,25 @@ class Entries {
   }
 
   loadLocalData({ entries, index }) {
-    const entryData = entries.filter((e) => e.content).map((e) => e.content);
+    const entryData = entries
+      .filter((e) => e.fileContent)
+      .map((e) => {
+        return {
+          ...e.fileContent?.data,
+          content: e.fileContent?.markdown,
+          tags: e.fileContent?.data?.tags?.split(','),
+        };
+      });
+
     this.entries = observable(entryData);
-    this.deletedEntriesId = observable(index?.content?.deletedEntries ?? []);
-    this.pinnedEntriesId = observable(index?.content?.pinnedEntries ?? []);
+    this.deletedEntriesId = observable(index?.fileContent?.deletedEntries ?? []);
+    this.pinnedEntriesId = observable(index?.fileContent?.pinnedEntries ?? []);
 
     let temFolders = {};
     let temEntriesInFolders = [];
 
-    Object.keys(index?.content?.folders ?? {}).forEach((folderKey) => {
-      const currentFolder = index.content.folders[folderKey];
+    Object.keys(index?.fileContent?.folders ?? {}).forEach((folderKey) => {
+      const currentFolder = index.fileContent.folders[folderKey];
 
       temFolders[folderKey] = {
         ...currentFolder,
@@ -72,7 +81,6 @@ class Entries {
   get privateEntries() {
     return this.entries.filter((entry: Entry) => {
       const entryIsInFolder = this.entriesInFolders.has(entry.id);
-
       return (
         !this?.pinnedEntriesId?.includes(entry?.id) &&
         !this.deletedEntriesId.includes(entry.id) &&
@@ -87,12 +95,10 @@ class Entries {
 
   get foldersWithEntries() {
     const folders = Object.values<Folder>(this.folders);
-
     return folders.map((folder: Folder) => {
       const entries = [...folder.entries]?.map((entryId) => {
         return this.entries.find((entry: Entry) => entry.id === entryId);
       });
-
       return {
         folder,
         entries,
