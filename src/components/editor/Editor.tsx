@@ -2,11 +2,13 @@ import { useEffect, useRef } from 'react';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
-import { ListItemNode, ListNode } from '@lexical/list';
+import { $createListItemNode, $isListItemNode, ListItemNode, ListNode } from '@lexical/list';
 import {
   $convertFromMarkdownString,
   $convertToMarkdownString,
+  ElementTransformer,
   TRANSFORMERS,
+  type Transformer,
 } from '@lexical/markdown';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
@@ -22,7 +24,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { $getRoot } from 'lexical';
+import { $createTextNode, $getRoot } from 'lexical';
 import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '@/plugins/AutolinkPlugin';
@@ -44,8 +46,40 @@ import { EntryHeader } from './Editor.EntryHeader';
 function Placeholder({ className }) {
   return <div className={className}>Write or type '/' for slash commands....</div>;
 }
+const CHECKLIST_TRANSFORMER: ElementTransformer = {
+  export: (node) => {
+    if ($isListItemNode(node)) {
+      console.log('called =>>>>>');
+      const listItemNode = node;
+      if (listItemNode.checked) {
+        return '- [x] ' + listItemNode.getTextContent() + '\n';
+      } else {
+        return '- [ ] ' + listItemNode.getTextContent() + '\n';
+      }
+    }
+    return null;
+  },
+  regExp: /^(\s*)(?:-\s)?\s?(\[(\s|x)?\])\s/i,
+  replace: (parentNode, _, match) => {
+    console.log({ parentNode, match });
 
-function MyCustomAutoFocusPlugin() {
+    // const [allMatch, text] = match;
+    // const checked = allMatch.includes('[x]');
+    // const listItemNode = $createListItemNode(checked);
+    // const textNode = $createTextNode(text);
+    // listItemNode.__listType = 'check';
+    // console.log('listItemNode =>', listItemNode);
+    // listItemNode.append(textNode);
+    // // @ts-ignore
+    // parentNode.replace([listItemNode]);
+  },
+  type: 'element',
+  dependencies: [ListItemNode, ListNode],
+};
+
+const CUSTOM_TRANSFORMERS = [...TRANSFORMERS, PAGE_BREAK_NODE_TRANSFORMER, CHECKLIST_TRANSFORMER];
+
+function AutoFocusPlugin() {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
@@ -64,7 +98,7 @@ function MarkdownContentPlugin({ markdown }) {
       editor.update(() => {
         const root = $getRoot();
         root.clear();
-        $convertFromMarkdownString(markdown, [...TRANSFORMERS, PAGE_BREAK_NODE_TRANSFORMER]);
+        $convertFromMarkdownString(markdown, CUSTOM_TRANSFORMERS);
       });
     }
   }, [editor, markdown]);
@@ -98,7 +132,6 @@ export const Editor = ({
   extendTheme,
   placeholderClassName = 'editor-placeholder',
 }: EditorType) => {
-  // const editorState = useRef<EditorState>();
   const markdownRef = useRef<string>();
 
   const editorConfig = {
@@ -108,8 +141,6 @@ export const Editor = ({
       ...extendTheme,
     },
     onError,
-    // editorState: content ? content : null,
-
     nodes: [
       HeadingNode,
       ListNode,
@@ -123,6 +154,9 @@ export const Editor = ({
       AutoLinkNode,
       LinkNode,
       PageBreakNode,
+
+      // ChecklistNode,
+      // Checklist,
     ],
   };
 
@@ -148,13 +182,13 @@ export const Editor = ({
       />
       <OnChangePlugin
         onChange={(state) => {
-          // editorState.current = state;
+          let se;
           state.read(() => {
-            markdownRef.current = $convertToMarkdownString([
-              ...TRANSFORMERS,
-              PAGE_BREAK_NODE_TRANSFORMER,
-            ]);
+            se = state;
+            markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS);
           });
+
+          // console.log(se.toJSON());
           debouncedUpdates();
         }}
       />
@@ -167,10 +201,10 @@ export const Editor = ({
       <LinkPlugin validateUrl={validateUrl} />
       <HistoryPlugin />
       <AutoLinkPlugin />
-      <MyCustomAutoFocusPlugin />
+      <AutoFocusPlugin />
       <CheckListPlugin />
       <TabIndentationPlugin />
-      <MarkdownShortcutPlugin transformers={[...TRANSFORMERS, PAGE_BREAK_NODE_TRANSFORMER]} />
+      <MarkdownShortcutPlugin transformers={CUSTOM_TRANSFORMERS} />
       <CodeHighlightPlugin />
       <PageBreakPlugin />
       <SearchDialogPlugin />

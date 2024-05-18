@@ -15,17 +15,8 @@ export function getDateInStringFormat(date: Date, pattern = DATE_PATTERN) {
 export type DailyEntry = {
   id: string;
   content: string | null;
-  // todos: Todo[] | [];
   date: string;
 };
-
-// type Todo = {
-//   id: string;
-//   content: string;
-//   createdAt: string;
-//   updatedAt?: string;
-//   checked?: boolean;
-// };
 
 type DailyNotes = Record<string, DailyEntry>;
 
@@ -53,7 +44,7 @@ class DailyStore {
       return acc;
     }, {});
 
-    console.log({ allEntries });
+    // console.log({ allEntries });
 
     const today = getDateInStringFormat(new Date());
     let entryForToday: DailyEntry = allEntries[today];
@@ -94,8 +85,6 @@ class DailyStore {
 
   goToPreviousDay() {
     const prevDate = subDays(new Date(this.dailyEntry.date), 1);
-
-    // console.log()
 
     this.goToDate(prevDate);
   }
@@ -140,10 +129,6 @@ class DailyStore {
       const note = this.dailyEntries[dateString] as DailyEntry;
       return Boolean(note.noteContent);
     }
-
-    // console.log({ dateString });
-
-    // console.log('date =>', date);
 
     return false;
   }

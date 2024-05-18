@@ -30,8 +30,6 @@ function getDateValues(d: string) {
 const DailyPage = observer(() => {
   const { dailyEntry } = dailyEntryState;
 
-  console.log('hello world =>', toJS(dailyEntry));
-
   const dateValues = getDateValues(dailyEntry?.date);
 
   const updatePercentageCompleted = () => {
@@ -89,12 +87,7 @@ const DailyPage = observer(() => {
                 page={EDITOR_PAGES.JOURNAL}
                 placeholderClassName="daily-note-placeholder"
                 onChange={(state) => dailyEntryState.saveNoteContent(state)}
-                content={
-                  dailyEntry.content
-                  // entryHasValidContent(dailyEntry.content)
-                  //   ? JSON.parse(dailyEntry.content as string)
-                  //   : null
-                }
+                content={dailyEntry.content}
                 id={dailyEntry.id}
               />
             )}
