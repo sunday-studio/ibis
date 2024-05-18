@@ -8,7 +8,6 @@ import {
   $convertToMarkdownString,
   ElementTransformer,
   TRANSFORMERS,
-  type Transformer,
 } from '@lexical/markdown';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
@@ -24,7 +23,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { $createTextNode, $getRoot } from 'lexical';
+import { $createParagraphNode, $createTextNode, $getRoot, ParagraphNode } from 'lexical';
 import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '@/plugins/AutolinkPlugin';
@@ -46,10 +45,11 @@ import { EntryHeader } from './Editor.EntryHeader';
 function Placeholder({ className }) {
   return <div className={className}>Write or type '/' for slash commands....</div>;
 }
+
+// TODO: figure out later
 const CHECKLIST_TRANSFORMER: ElementTransformer = {
   export: (node) => {
     if ($isListItemNode(node)) {
-      console.log('called =>>>>>');
       const listItemNode = node;
       if (listItemNode.checked) {
         return '- [x] ' + listItemNode.getTextContent() + '\n';
@@ -61,23 +61,41 @@ const CHECKLIST_TRANSFORMER: ElementTransformer = {
   },
   regExp: /^(\s*)(?:-\s)?\s?(\[(\s|x)?\])\s/i,
   replace: (parentNode, _, match) => {
-    console.log({ parentNode, match });
-
-    // const [allMatch, text] = match;
-    // const checked = allMatch.includes('[x]');
-    // const listItemNode = $createListItemNode(checked);
-    // const textNode = $createTextNode(text);
-    // listItemNode.__listType = 'check';
-    // console.log('listItemNode =>', listItemNode);
-    // listItemNode.append(textNode);
-    // // @ts-ignore
-    // parentNode.replace([listItemNode]);
+    const [allMatch, text] = match;
+    const checked = allMatch.includes('[x]');
+    const listItemNode = $createListItemNode(checked);
+    const textNode = $createTextNode(text);
+    listItemNode.__listType = 'check';
+    console.log('listItemNode =>', listItemNode);
+    listItemNode.append(textNode);
+    // @ts-ignore
+    parentNode.replace([listItemNode]);
   },
   type: 'element',
   dependencies: [ListItemNode, ListNode],
 };
 
-const CUSTOM_TRANSFORMERS = [...TRANSFORMERS, PAGE_BREAK_NODE_TRANSFORMER, CHECKLIST_TRANSFORMER];
+export const LINE_BREAK_FIX: ElementTransformer = {
+  dependencies: [ParagraphNode],
+  export: (node) => {
+    return null;
+  },
+  regExp: /^$/,
+  replace: (textNode, nodes, _, isImport) => {
+    if (isImport && nodes.length === 1) {
+      // console.log(textNode);
+      nodes[0].replace($createParagraphNode());
+    }
+  },
+  type: 'element',
+};
+
+const CUSTOM_TRANSFORMERS = [
+  ...TRANSFORMERS,
+  PAGE_BREAK_NODE_TRANSFORMER,
+  CHECKLIST_TRANSFORMER,
+  LINE_BREAK_FIX,
+];
 
 function AutoFocusPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -127,7 +145,7 @@ interface EditorType {
 export const Editor = ({
   id,
   content,
-  // onChange,
+  onChange,
   page,
   extendTheme,
   placeholderClassName = 'editor-placeholder',
@@ -154,18 +172,12 @@ export const Editor = ({
       AutoLinkNode,
       LinkNode,
       PageBreakNode,
-
-      // ChecklistNode,
-      // Checklist,
     ],
   };
 
   const debouncedUpdates = useDebouncedCallback(async () => {
-    console.log('markdown => ', markdownRef.current);
-
     // @ts-ignore
-    // console.log('test =>', JSON.stringify(editorState?.current?.toJSON?.()));
-    // onChange(editorState?.current?.toJSON?.());
+    onChange(markdownRef.current);
   }, 750);
 
   return (
@@ -182,13 +194,13 @@ export const Editor = ({
       />
       <OnChangePlugin
         onChange={(state) => {
-          let se;
           state.read(() => {
-            se = state;
-            markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS);
+            markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS).replaceAll(
+              /\n{2}/gm,
+              '\n',
+            );
           });
 
-          // console.log(se.toJSON());
           debouncedUpdates();
         }}
       />

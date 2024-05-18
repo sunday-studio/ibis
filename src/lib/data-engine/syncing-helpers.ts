@@ -117,9 +117,8 @@ export const loadDirectoryContent = async (safeURL: string) => {
 
   const content = await Promise.all(promises);
 
-  // run migrations
+  // always run migrations
   // when there's no migration done, the same data as content is returned
-
   const migratedData = await migrateFileSystem(content);
 
   const groupedData = migratedData.reduce((acc, obj) => {
@@ -169,7 +168,7 @@ const generateTodayPath = (dateString: string, basePath: string): [string, strin
   // Extract the year and month from the date.
   const year = date.getFullYear().toString();
 
-  const filename = `${format(date, DATE_PATTERN)}.json`;
+  const filename = `${format(date, DATE_PATTERN)}.md`;
 
   // Construct the directory path where the file will be saved.
   const dirPath = `${basePath}/${year}/Today`;
@@ -199,7 +198,7 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
       break;
 
     case 'today':
-      await meili.writeFileContentToDisk(data?.date, data, generateTodayPath);
+      await meili.writeFileContentToDisk(data?.date, data.content, generateTodayPath);
       break;
 
     case 'tags':

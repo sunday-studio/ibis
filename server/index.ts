@@ -131,7 +131,10 @@ app.post('/json', async (c) => {
   editor.setEditorState(state);
 
   editor.update(() => {
-    markdown = $convertToMarkdownString([...TRANSFORMERS, PAGE_BREAK_NODE_TRANSFORMER]);
+    markdown = $convertToMarkdownString([...TRANSFORMERS, PAGE_BREAK_NODE_TRANSFORMER]).replaceAll(
+      /\n{2}/gm,
+      '\n',
+    );
   });
 
   return c.json({ success: true, content: markdown });

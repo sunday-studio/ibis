@@ -8,7 +8,10 @@ import { router } from './routes/router';
 import './styles/index.scss';
 
 Sentry.init({
-  dsn: 'https://0b362d94f01e0a41d9fba0854d04f657@o4506903320068096.ingest.us.sentry.io/4506903329243136',
+  dsn:
+    process.env.NODE_ENV === 'production'
+      ? 'https://0b362d94f01e0a41d9fba0854d04f657@o4506903320068096.ingest.us.sentry.io/4506903329243136'
+      : undefined,
   integrations: [
     Sentry.breadcrumbsIntegration({ console: false }),
     Sentry.browserTracingIntegration(),

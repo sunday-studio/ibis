@@ -49,7 +49,7 @@ class Meili {
     // Write the JSON content to a file in the specified directory.
     await invoke('write_to_file', {
       path: `${dirPath}/${filename}`,
-      content: JSON.stringify(content),
+      content: content,
     });
   }
 

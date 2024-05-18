@@ -86,7 +86,7 @@ const DailyPage = observer(() => {
               <Editor
                 page={EDITOR_PAGES.JOURNAL}
                 placeholderClassName="daily-note-placeholder"
-                onChange={(state) => dailyEntryState.saveNoteContent(state)}
+                onChange={(state) => dailyEntryState.saveContent(state)}
                 content={dailyEntry.content}
                 id={dailyEntry.id}
               />
@@ -97,6 +97,8 @@ const DailyPage = observer(() => {
 
       <Popover.Portal>
         <Popover.Content sideOffset={10} data-align="left" alignOffset={10} align="start">
+          {/* TODO: not sure why this is breaking but fix it later. something to do with the `parseDate` function;
+          too tired to worry about this */}
           <DatePicker
             onChange={(date: Date) => dailyEntryState.goToDate(date)}
             value={dailyEntry?.date}

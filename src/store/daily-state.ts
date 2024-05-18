@@ -44,8 +44,6 @@ class DailyStore {
       return acc;
     }, {});
 
-    // console.log({ allEntries });
-
     const today = getDateInStringFormat(new Date());
     let entryForToday: DailyEntry = allEntries[today];
 
@@ -61,21 +59,27 @@ class DailyStore {
     this.dailyEntries = allEntries;
   }
 
-  saveNoteContent(editorState) {
+  saveContent(editorState: string) {
     const updatedEntry: DailyEntry = {
       ...(this.dailyEntry as DailyEntry),
-      content: JSON.stringify(editorState),
+      content: editorState,
     };
 
     saveFileToDisk({
       type: 'today',
-      data: updatedEntry,
+      data: {
+        date: updatedEntry.date,
+        content: `---
+id: ${updatedEntry.id}
+date: ${updatedEntry.date}
+---
+${updatedEntry.content}
+        `,
+      },
     });
 
     this.dailyEntry = updatedEntry;
     this.dailyEntries[updatedEntry.date] = updatedEntry;
-
-    setData(DAILY_NOTES_KEY, Object.assign({}, this.dailyEntries));
   }
 
   goToNextDay() {
@@ -127,7 +131,8 @@ class DailyStore {
 
     if (this.dailyEntries[dateString]) {
       const note = this.dailyEntries[dateString] as DailyEntry;
-      return Boolean(note.noteContent);
+      console.log('note =>', note);
+      // return Boolean(note.content);
     }
 
     return false;
