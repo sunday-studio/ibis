@@ -90,7 +90,7 @@ class Meili {
       const markdown = gm(content);
 
       return {
-        content: markdown?.content,
+        markdown: markdown?.content,
         data: markdown?.data,
       };
     } catch (error) {

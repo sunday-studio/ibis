@@ -111,16 +111,16 @@ export const loadDirectoryContent = async (safeURL: string) => {
     return {
       type: getFileType(file, safeURL),
       url: file,
-      content: await meili.readFileContent(file),
+      fileContent: await meili.readFileContent(file),
     };
   });
 
   const content = await Promise.all(promises);
 
-  console.log('content =>', content);
+  // console.log('content =>', content);
 
   // run migrations
-  // TODO: come back to this later
+  // TODO: needs to return a new content based on the new file system
   migrateFileSystem(content);
 
   // console.log('data => ', content);

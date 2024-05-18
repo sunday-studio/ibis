@@ -10,15 +10,13 @@ const FILE_VERSION_MIGRATORS: Record<number, Function> = {
   0.1: migrateJSONTOMarkdown,
 };
 
-export const migrateFileSystem = (data: any) => {
+export const migrateFileSystem = async (data: any) => {
   const indexFile = data?.find((file: any) => file.type === 'index.json');
 
-  let currentVersion = indexFile?.content?.schemaVersion;
+  let currentVersion = indexFile?.fileContent?.schemaVersion;
   const maxVersion = Math.max(...Object.keys(FILE_VERSION_MIGRATORS).map((i) => Number(i)));
 
-  // console.log('data =>', data);
-
-  // only run this when once when there's no version
+  // only run this once when when there's no version
   if (currentVersion === null || currentVersion === undefined) {
     FILE_VERSION_MIGRATORS[0.0]?.({ data, indexFile });
     currentVersion = 0;

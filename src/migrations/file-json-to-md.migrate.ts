@@ -1,6 +1,7 @@
 // import { TauriEvent, listen } from '@tauri-apps/api/event';
 import { Body, ResponseType, fetch } from '@tauri-apps/api/http';
 import { invoke } from '@tauri-apps/api/tauri';
+import * as gm from 'gray-matter';
 
 // import { Command } from '@tauri-apps/api/shell';
 import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
@@ -44,7 +45,7 @@ title: ${content?.title || 'Untitled'}
 
 async function convertLexicalJSONToMarkdown(content: string) {
   try {
-    const response = await fetch('http://localhost:3323/json', {
+    const response = await fetch<{ content: any }>('http://localhost:3323/json', {
       method: 'POST',
       timeout: 30,
       body: Body.text(content),
@@ -57,30 +58,34 @@ async function convertLexicalJSONToMarkdown(content: string) {
 
     return response?.data?.content;
   } catch (error) {
-    // console.log('convertLexicalJSONToMarkdown =>', error);
+    console.log('convertLexicalJSONToMarkdown =>', error);
   }
 }
 
-export const migrateJSONTOMarkdown = async ({ updatedVersion, data, indexFile }) => {
-  const updatedData = data?.filter((file) => file.type === 'entries' || file.type === 'dailyNotes');
+export const migrateJSONTOMarkdown = async ({ data }) => {
+  console.log('about to run this => migrateJSONTOMarkdown');
 
   const getContent = (item) => {
     if (item.type === 'entries') {
-      return item?.content?.content;
+      return item?.fileContent?.content;
     }
     if (item.type === 'dailyNotes') {
-      return item?.content?.noteContent;
+      return item?.fileContent?.noteContent;
     }
   };
 
-  for (let i = 0; i < updatedData.length; i++) {
-    const item = updatedData[i];
+  const updatedData = data.map(async (item) => {
+    if (item.type === 'index.json' || item.type === 'tags.json') {
+      return item;
+    }
+
     const contentString = getContent(item);
-    const frontmatter = createFrontMatterData(item.type, item.content);
+    const frontmatter = createFrontMatterData(item.type, item.fileContent);
+
     const content =
       contentString?.length === 0 || contentString === null
         ? ''
-        : (await convertLexicalJSONToMarkdown(contentString, item)) ?? '';
+        : (await convertLexicalJSONToMarkdown(contentString)) ?? '';
 
     const url = item.url.replace('json', 'md');
 
@@ -97,12 +102,23 @@ ${content}
       console.error('error >', error);
     }
 
-    try {
-      await invoke('delete_file', { path: item.url });
-    } catch (error) {
-      console.log('trying to delete the file =>', error);
-    }
-  }
+    await invoke('delete_file', { path: item.url });
+
+    const markdown = gm(data);
+
+    return {
+      type: item.type,
+      url,
+      fileContent: {
+        markdown: markdown?.content,
+        data: markdown?.data,
+      },
+    };
+  });
+
+  await Promise.all(updatedData);
+
+  // console.log('updatedData =>', await Promise.all(updatedData));
 };
 
 // const command = Command.sidecar('binaries/ibis-server');
