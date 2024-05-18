@@ -1,5 +1,6 @@
 import { invoke } from '@tauri-apps/api';
 import { createDir } from '@tauri-apps/api/fs';
+import * as gm from 'gray-matter';
 
 import { SAFE_LOCATION_KEY } from '../constants';
 import { getData } from '../storage';
@@ -71,7 +72,7 @@ class Meili {
       });
       return data?.files;
     } catch (error) {
-      console.log('error ->', error);
+      // console.log('error ->', error);
     }
   }
 
@@ -81,9 +82,19 @@ class Meili {
         path: url,
       });
 
-      return JSON.parse(content);
+      // edge case for when user has .json files
+      if (url.includes('.json')) {
+        return JSON.parse(content);
+      }
+
+      const markdown = gm(content);
+
+      return {
+        content: markdown?.content,
+        data: markdown?.data,
+      };
     } catch (error) {
-      console.error('unable to read file content =>', error);
+      console.log('readFileContent =>', { error, message: error.message, url });
     }
   }
 

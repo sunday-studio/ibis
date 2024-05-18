@@ -14,6 +14,9 @@ export const migrateFileSystem = (data: any) => {
   const indexFile = data?.find((file: any) => file.type === 'index.json');
 
   let currentVersion = indexFile?.content?.schemaVersion;
+  const maxVersion = Math.max(...Object.keys(FILE_VERSION_MIGRATORS).map((i) => Number(i)));
+
+  // console.log('data =>', data);
 
   // only run this when once when there's no version
   if (currentVersion === null || currentVersion === undefined) {
@@ -21,12 +24,13 @@ export const migrateFileSystem = (data: any) => {
     currentVersion = 0;
   }
 
-  const maxVersion = Math.max(...Object.keys(FILE_VERSION_MIGRATORS).map((i) => Number(i)));
-
-  while (currentVersion <= maxVersion) {
-    currentVersion = Number(Number(currentVersion + VERSION_INCREMENT).toFixed(2));
+  while (currentVersion < maxVersion) {
+    currentVersion = Number((currentVersion + VERSION_INCREMENT).toFixed(2));
     FILE_VERSION_MIGRATORS[currentVersion]?.({ data, updatedVersion: currentVersion, indexFile });
   }
 
-  // TODO: set the current version to store only once
+  addVersionToFileSystem({
+    updatedVersion: maxVersion,
+    indexFile,
+  });
 };

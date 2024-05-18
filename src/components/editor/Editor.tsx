@@ -81,8 +81,6 @@ export const Editor = ({
   const editorState = useRef<EditorState>();
   const markdownRef = useRef<string>();
 
-  // console.log('editor =>', JSON.stringify(content));
-
   const editorConfig = {
     namespace: 'ContentEditor',
     theme: {
@@ -110,8 +108,7 @@ export const Editor = ({
 
   const debouncedUpdates = useDebouncedCallback(async () => {
     // @ts-ignore
-
-    console.log('test =>', JSON.stringify(editorState?.current?.toJSON?.()));
+    // console.log('test =>', JSON.stringify(editorState?.current?.toJSON?.()));
     onChange(editorState?.current?.toJSON?.());
   }, 750);
 

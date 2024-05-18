@@ -1,9 +1,11 @@
-import { TauriEvent, listen } from '@tauri-apps/api/event';
+// import { TauriEvent, listen } from '@tauri-apps/api/event';
 import { Body, ResponseType, fetch } from '@tauri-apps/api/http';
-// import { Command } from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri';
 
+// import { Command } from '@tauri-apps/api/shell';
 import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
+
+import { addVersionToFileSystem } from './add-version.migrate';
 
 // const cmd = Command.sidecar('binaries/ibis-server');
 
@@ -31,16 +33,16 @@ date: ${content?.date}
   if (type === 'entries') {
     return `---
 id: ${content?.id}
-createdAt:${content?.createdAt}
-updatedAt: ${content?.updatedAt ?? ''}
-tags: ${content?.tags}
+createdAt: ${content?.createdAt}
+updatedAt: ${content?.updatedAt ?? content?.createdAt ?? ''}
+tags: ${content?.tags || []}
 title: ${content?.title || 'Untitled'}
 ---
   `;
   }
 };
 
-async function convertLexicalJSONToMarkdown(content: string, item) {
+async function convertLexicalJSONToMarkdown(content: string) {
   try {
     const response = await fetch('http://localhost:3323/json', {
       method: 'POST',
@@ -55,18 +57,11 @@ async function convertLexicalJSONToMarkdown(content: string, item) {
 
     return response?.data?.content;
   } catch (error) {
-    console.log('error =>', error);
+    // console.log('convertLexicalJSONToMarkdown =>', error);
   }
 }
 
 export const migrateJSONTOMarkdown = async ({ updatedVersion, data, indexFile }) => {
-  // const command = Command.sidecar('binaries/ibis-server');
-  // command.spawn().then((child) => {
-  //   listen(TauriEvent.WINDOW_DESTROYED, function () {
-  //     child.kill();
-  //   });
-  // });
-
   const updatedData = data?.filter((file) => file.type === 'entries' || file.type === 'dailyNotes');
 
   const getContent = (item) => {
@@ -101,5 +96,18 @@ ${content}
     } catch (error) {
       console.error('error >', error);
     }
+
+    try {
+      await invoke('delete_file', { path: item.url });
+    } catch (error) {
+      console.log('trying to delete the file =>', error);
+    }
   }
 };
+
+// const command = Command.sidecar('binaries/ibis-server');
+// command.spawn().then((child) => {
+//   listen(TauriEvent.WINDOW_DESTROYED, function () {
+//     child.kill();
+//   });
+// });

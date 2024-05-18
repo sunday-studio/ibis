@@ -18,7 +18,6 @@ const {
 } = require('lexical');
 const Prism = require('prismjs');
 
-// Define global.window and attach Prism
 global.window = {};
 global.window.Prism = Prism;
 

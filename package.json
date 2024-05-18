@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@adobe/react-spectrum": "^3.34.1",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@floating-ui/dom": "^1.4.3",
     "@floating-ui/react": "^0.24.8",
     "@internationalized/date": "^3.5.2",

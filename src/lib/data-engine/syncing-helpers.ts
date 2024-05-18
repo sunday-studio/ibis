@@ -117,31 +117,33 @@ export const loadDirectoryContent = async (safeURL: string) => {
 
   const content = await Promise.all(promises);
 
-  // console.log('I am called');
+  console.log('content =>', content);
 
   // run migrations
   // TODO: come back to this later
   migrateFileSystem(content);
 
-  const groupedData = content.reduce((acc, obj) => {
-    if (!acc[obj.type]) {
-      acc[obj.type] = [];
-    }
-    acc[obj.type].push(obj);
-    return acc;
-  }, {});
+  // console.log('data => ', content);
 
-  // load data into localStores
-  try {
-    entriesStore.loadLocalData({
-      entries: groupedData.entries,
-      index: groupedData['index.json']?.[0],
-    });
-    dailyEntryState.localLocalData(groupedData.dailyNotes);
-    tagsState.loadLocalData(groupedData['tags.json']?.[0]);
-  } catch (error) {
-    console.log('error =>', error);
-  }
+  // const groupedData = content.reduce((acc, obj) => {
+  //   if (!acc[obj.type]) {
+  //     acc[obj.type] = [];
+  //   }
+  //   acc[obj.type].push(obj);
+  //   return acc;
+  // }, {});
+
+  // // load data into localStores
+  // try {
+  //   entriesStore.loadLocalData({
+  //     entries: groupedData.entries,
+  //     index: groupedData['index.json']?.[0],
+  //   });
+  //   dailyEntryState.localLocalData(groupedData.dailyNotes);
+  //   tagsState.loadLocalData(groupedData['tags.json']?.[0]);
+  // } catch (error) {
+  //   console.log('error =>', error);
+  // }
 };
 
 const generateEntryPath = (dateString: string, basePath: string): [string, string, string] => {
