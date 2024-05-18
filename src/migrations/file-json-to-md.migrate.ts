@@ -116,9 +116,7 @@ ${content}
     };
   });
 
-  await Promise.all(updatedData);
-
-  // console.log('updatedData =>', await Promise.all(updatedData));
+  return await Promise.all(updatedData);
 };
 
 // const command = Command.sidecar('binaries/ibis-server');

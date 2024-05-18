@@ -14,18 +14,18 @@ export function getDateInStringFormat(date: Date, pattern = DATE_PATTERN) {
 
 export type DailyEntry = {
   id: string;
-  noteContent?: string | null;
-  todos: Todo[] | [];
+  content: string | null;
+  // todos: Todo[] | [];
   date: string;
 };
 
-type Todo = {
-  id: string;
-  content: string;
-  createdAt: string;
-  updatedAt?: string;
-  checked?: boolean;
-};
+// type Todo = {
+//   id: string;
+//   content: string;
+//   createdAt: string;
+//   updatedAt?: string;
+//   checked?: boolean;
+// };
 
 type DailyNotes = Record<string, DailyEntry>;
 
@@ -38,14 +38,22 @@ class DailyStore {
     makeAutoObservable(this);
   }
 
-  localLocalData(data) {
+  localLocalData(data: any[]) {
     const allEntries = data.reduce((acc, obj) => {
-      if (!acc[obj.content?.date]) {
-        acc[obj.content?.date] = {};
+      const dateString = getDateInStringFormat(new Date(obj.fileContent?.data?.date));
+
+      if (!acc[dateString]) {
+        acc[dateString] = {};
       }
-      acc[obj.content?.date] = obj.content;
+      acc[dateString] = {
+        content: obj.fileContent?.markdown,
+        id: obj.fileContent.data?.id,
+        date: obj.fileContent.data?.date,
+      };
       return acc;
     }, {});
+
+    console.log({ allEntries });
 
     const today = getDateInStringFormat(new Date());
     let entryForToday: DailyEntry = allEntries[today];
@@ -53,7 +61,7 @@ class DailyStore {
     if (!entryForToday) {
       entryForToday = {
         id: nanoid(),
-        noteContent: null,
+        content: null,
         date: today,
       };
     }
@@ -65,7 +73,7 @@ class DailyStore {
   saveNoteContent(editorState) {
     const updatedEntry: DailyEntry = {
       ...(this.dailyEntry as DailyEntry),
-      noteContent: JSON.stringify(editorState),
+      content: JSON.stringify(editorState),
     };
 
     saveFileToDisk({
@@ -86,6 +94,9 @@ class DailyStore {
 
   goToPreviousDay() {
     const prevDate = subDays(new Date(this.dailyEntry.date), 1);
+
+    // console.log()
+
     this.goToDate(prevDate);
   }
 
@@ -114,8 +125,7 @@ class DailyStore {
     if (!todayEntry) {
       todayEntry = {
         id: nanoid(),
-        noteContent: null,
-        todos: [],
+        note: null,
         date: currentDate,
       };
     }

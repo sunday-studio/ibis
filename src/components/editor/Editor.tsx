@@ -3,7 +3,11 @@ import { useEffect, useRef } from 'react';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
-import { $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
+import {
+  $convertFromMarkdownString,
+  $convertToMarkdownString,
+  TRANSFORMERS,
+} from '@lexical/markdown';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -18,7 +22,7 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { EditorState } from 'lexical';
+import { $getRoot } from 'lexical';
 import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '@/plugins/AutolinkPlugin';
@@ -52,6 +56,22 @@ function MyCustomAutoFocusPlugin() {
   return null;
 }
 
+function MarkdownContentPlugin({ markdown }) {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    if (markdown) {
+      editor.update(() => {
+        const root = $getRoot();
+        root.clear();
+        $convertFromMarkdownString(markdown, [...TRANSFORMERS, PAGE_BREAK_NODE_TRANSFORMER]);
+      });
+    }
+  }, [editor, markdown]);
+
+  return null;
+}
+
 function onError(error: any) {
   console.error(error);
 }
@@ -73,12 +93,12 @@ interface EditorType {
 export const Editor = ({
   id,
   content,
-  onChange,
+  // onChange,
   page,
   extendTheme,
   placeholderClassName = 'editor-placeholder',
 }: EditorType) => {
-  const editorState = useRef<EditorState>();
+  // const editorState = useRef<EditorState>();
   const markdownRef = useRef<string>();
 
   const editorConfig = {
@@ -88,7 +108,7 @@ export const Editor = ({
       ...extendTheme,
     },
     onError,
-    editorState: content ? JSON.stringify(content) : null,
+    // editorState: content ? content : null,
 
     nodes: [
       HeadingNode,
@@ -107,9 +127,11 @@ export const Editor = ({
   };
 
   const debouncedUpdates = useDebouncedCallback(async () => {
+    console.log('markdown => ', markdownRef.current);
+
     // @ts-ignore
     // console.log('test =>', JSON.stringify(editorState?.current?.toJSON?.()));
-    onChange(editorState?.current?.toJSON?.());
+    // onChange(editorState?.current?.toJSON?.());
   }, 750);
 
   return (
@@ -117,13 +139,6 @@ export const Editor = ({
       <RichTextPlugin
         contentEditable={
           <div className="editor-wrapper">
-            <button
-              onClick={() => {
-                console.log('markdown =>', markdownRef.current);
-              }}
-            >
-              convert to markdown
-            </button>
             {page === EDITOR_PAGES.ENTRY && <EntryHeader />}
             <ContentEditable className="editor-input" />
           </div>
@@ -133,7 +148,7 @@ export const Editor = ({
       />
       <OnChangePlugin
         onChange={(state) => {
-          editorState.current = state;
+          // editorState.current = state;
           state.read(() => {
             markdownRef.current = $convertToMarkdownString([
               ...TRANSFORMERS,
@@ -159,6 +174,7 @@ export const Editor = ({
       <CodeHighlightPlugin />
       <PageBreakPlugin />
       <SearchDialogPlugin />
+      <MarkdownContentPlugin markdown={content} />
     </LexicalComposer>
   );
 };

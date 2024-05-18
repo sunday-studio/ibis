@@ -117,33 +117,30 @@ export const loadDirectoryContent = async (safeURL: string) => {
 
   const content = await Promise.all(promises);
 
-  // console.log('content =>', content);
-
   // run migrations
-  // TODO: needs to return a new content based on the new file system
-  migrateFileSystem(content);
+  // when there's no migration done, the same data as content is returned
 
-  // console.log('data => ', content);
+  const migratedData = await migrateFileSystem(content);
 
-  // const groupedData = content.reduce((acc, obj) => {
-  //   if (!acc[obj.type]) {
-  //     acc[obj.type] = [];
-  //   }
-  //   acc[obj.type].push(obj);
-  //   return acc;
-  // }, {});
+  const groupedData = migratedData.reduce((acc, obj) => {
+    if (!acc[obj.type]) {
+      acc[obj.type] = [];
+    }
+    acc[obj.type].push(obj);
+    return acc;
+  }, {});
 
-  // // load data into localStores
-  // try {
-  //   entriesStore.loadLocalData({
-  //     entries: groupedData.entries,
-  //     index: groupedData['index.json']?.[0],
-  //   });
-  //   dailyEntryState.localLocalData(groupedData.dailyNotes);
-  //   tagsState.loadLocalData(groupedData['tags.json']?.[0]);
-  // } catch (error) {
-  //   console.log('error =>', error);
-  // }
+  // load data into localStores
+  try {
+    entriesStore.loadLocalData({
+      entries: groupedData.entries,
+      index: groupedData['index.json']?.[0],
+    });
+    dailyEntryState.localLocalData(groupedData.dailyNotes);
+    tagsState.loadLocalData(groupedData['tags.json']?.[0]);
+  } catch (error) {
+    console.log('error =>', error);
+  }
 };
 
 const generateEntryPath = (dateString: string, basePath: string): [string, string, string] => {

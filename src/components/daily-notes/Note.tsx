@@ -4,6 +4,7 @@ import * as Popover from '@radix-ui/react-popover';
 import clsx from 'clsx';
 import { format, isToday } from 'date-fns';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
 import { entryHasValidContent, getDayPercentageCompleted } from '@/lib/utils';
@@ -28,6 +29,8 @@ function getDateValues(d: string) {
 
 const DailyPage = observer(() => {
   const { dailyEntry } = dailyEntryState;
+
+  console.log('hello world =>', toJS(dailyEntry));
 
   const dateValues = getDateValues(dailyEntry?.date);
 
@@ -87,9 +90,10 @@ const DailyPage = observer(() => {
                 placeholderClassName="daily-note-placeholder"
                 onChange={(state) => dailyEntryState.saveNoteContent(state)}
                 content={
-                  entryHasValidContent(dailyEntry.noteContent)
-                    ? JSON.parse(dailyEntry.noteContent as string)
-                    : null
+                  dailyEntry.content
+                  // entryHasValidContent(dailyEntry.content)
+                  //   ? JSON.parse(dailyEntry.content as string)
+                  //   : null
                 }
                 id={dailyEntry.id}
               />
