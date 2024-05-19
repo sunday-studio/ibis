@@ -10,6 +10,7 @@ export type Tag = {
 
 export type TagsMap = Record<string, Tag>;
 
+// TODO: create these at the initial folder creation stage
 export const DEFAULT_MAP_TAGS = {
   private_5SggNEXrXhrhh6bA_9veW: {
     value: 'private_5SggNEXrXhrhh6bA_9veW',
@@ -32,6 +33,11 @@ class Tags {
     makeAutoObservable(this);
   }
 
+  loadLocalData(tags: any) {
+    const localTags = tags?.fileContent || {};
+    Object.assign(this.tagsMap, localTags);
+  }
+
   get tags() {
     return Object.values(this.tagsMap);
   }
@@ -52,11 +58,6 @@ class Tags {
     });
 
     return value;
-  }
-
-  loadLocalData(tags: any) {
-    const localTags = tags?.content || {};
-    Object.assign(this.tagsMap, localTags);
   }
 }
 

@@ -152,29 +152,15 @@ class Entries {
     this.activeEntryTitle = null;
   }
 
-  saveEditedContent(editorState) {
-    const entry: Entry = {
-      ...this.activeEntry,
-      updatedAt: new Date().toISOString(),
-      content: JSON.stringify(editorState),
-      title: this.activeEntryTitle!,
-    } as Entry;
-
-    saveFileToDisk({
-      type: 'entry',
-      data: entry,
-    });
-
-    const updatedEntries = this.findAndReplaceEntry(entry);
-
-    this.entries = updatedEntries;
-  }
-
   addNewEntry() {
     const DEFAULT_ENTRY: Entry = {
       content: null,
       createdAt: new Date().toISOString(),
       title: 'Untitled',
+
+      // TODO: before moving this to toISOString string. implement migrator to move all the existing data to new format
+      // TOOD: standardize this date formatting stuff also
+
       id: `${new Date().toTimeString()}-${nanoid()}`,
       tags: [tagsState.tags.filter((tag: Tag) => tag.label === 'Private')?.[0]?.value],
     };
@@ -190,9 +176,40 @@ class Entries {
     return DEFAULT_ENTRY.id;
   }
 
-  saveContent(editorState) {
+  saveEditedContent(editorState: string) {
+    const entry: Entry = {
+      ...this.activeEntry,
+      updatedAt: new Date().toISOString(),
+      content: editorState,
+      title: this.activeEntryTitle!,
+    } as Entry;
+
+    saveFileToDisk({
+      type: 'entry',
+      data: {
+        createdAt: entry.createdAt,
+        content: `---
+id: ${entry?.id}
+createdAt: ${entry?.createdAt}
+updatedAt: ${entry?.updatedAt ?? content?.createdAt ?? ''}
+tags: ${entry?.tags || []}
+title: ${entry?.title || 'Untitled'}        
+---
+
+${editorState}
+        `,
+      },
+    });
+
+    const updatedEntries = this.findAndReplaceEntry(entry);
+
+    this.entries = updatedEntries;
+  }
+
+  // TODO: merge with saveEditedContent
+  saveContent(editorState: string) {
     const activeEntryIndex = this.entries.findIndex(
-      (entry: Entry) => entry.id === this?.activeEntry?.id!,
+      (entry: Entry) => entry.id === this?.activeEntry?.id,
     );
 
     if (activeEntryIndex !== -1) {
@@ -200,11 +217,15 @@ class Entries {
       return;
     }
 
+    console.log('I am called', activeEntryIndex);
+
+    return;
+
     const entry = {
       id: nanoid(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      content: JSON.stringify(editorState),
+      content: editorState,
       title: this.activeEntryTitle!,
     };
 

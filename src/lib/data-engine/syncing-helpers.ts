@@ -144,6 +144,7 @@ export const loadDirectoryContent = async (safeURL: string) => {
 
 const generateEntryPath = (dateString: string, basePath: string): [string, string, string] => {
   // Convert the provided dateString to a JavaScript Date object.
+
   const date = new Date(dateString);
 
   // Extract the year and month from the date.
@@ -151,7 +152,7 @@ const generateEntryPath = (dateString: string, basePath: string): [string, strin
   const month = format(date, 'LLL');
 
   // Generate a unique filename based on the date and time.
-  const filename = `${format(date, DATE_PATTERN)}.${format(date, 't')}.json`;
+  const filename = `${format(date, DATE_PATTERN)}.${format(date, 't')}.md`;
 
   // Construct the directory path where the file will be saved.
   const dirPath = `${basePath}/${year}/${month}`;
@@ -187,10 +188,14 @@ const generateIndexPath = (_: any, basePath: string): [string, string] => {
 export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
   const { type, data } = props;
 
+  console.log('data =>', data);
+
+  // return;
+
   switch (type) {
     case 'entry':
       try {
-        await meili.writeFileContentToDisk(data?.createdAt, data, generateEntryPath);
+        await meili.writeFileContentToDisk(data?.createdAt, data?.content, generateEntryPath);
       } catch (error) {
         // TODO: fix instances of this.basePath being null
         console.log('error =>', error);
