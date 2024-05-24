@@ -69,7 +69,7 @@ export function $createPageBreakNode(): PageBreakNode {
 }
 
 const PAGE_BREAK_NODE_TRANSFORMER: Transformer = {
-  export: (node, exportChildren, state) => {
+  export: (node) => {
     if ($isPageBreakNode(node)) {
       return '---\n';
     }
@@ -129,8 +129,11 @@ app.post('/json', async (c) => {
   editor.setEditorState(state);
 
   editor.update(() => {
-    markdown = $convertToMarkdownString([...TRANSFORMERS, PAGE_BREAK_NODE_TRANSFORMER, CHECK_LIST]);
-    // .replaceAll(/\n{2}/gm, '\n');
+    markdown = $convertToMarkdownString([
+      ...TRANSFORMERS,
+      PAGE_BREAK_NODE_TRANSFORMER,
+      CHECK_LIST,
+    ]).replaceAll(/\n{2}/gm, '\n');
   });
 
   return c.json({ success: true, content: markdown });

@@ -5,8 +5,7 @@ import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { $createListItemNode, $isListItemNode, ListItemNode, ListNode } from '@lexical/list';
 import {
   $convertFromMarkdownString,
-  $convertToMarkdownString,
-  CHECK_LIST,
+  $convertToMarkdownString, // CHECK_LIST,
   ElementTransformer,
   TRANSFORMERS,
 } from '@lexical/markdown';
@@ -18,24 +17,21 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { $createParagraphNode, $createTextNode, $getRoot, ParagraphNode } from 'lexical';
+import { $getRoot } from 'lexical';
 import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '@/plugins/AutolinkPlugin';
 import ClickableLinkPlugin from '@/plugins/ClickableLinkPlugin';
 import CodeHighlightPlugin from '@/plugins/CodeHighlightPlugin';
 import FloatingMenuPlugin from '@/plugins/FloatingMenuPlugin';
+import { CUSTOM_TRANSFORMERS, MarkdownShortcutPlugin } from '@/plugins/MarkdownShortcut';
 import PageBreakPlugin from '@/plugins/PageBreakPlugin/PageBreakPlugin';
-import {
-  PAGE_BREAK_NODE_TRANSFORMER,
-  PageBreakNode,
-} from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
+import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
 import SearchDialogPlugin from '@/plugins/SearchDialogPlugin';
 import SlashCommandPickerPlugin from '@/plugins/SlashCommandPicker';
 import TabFocusPlugin from '@/plugins/TabFocusPlugin';
@@ -46,27 +42,6 @@ import { EntryHeader } from './Editor.EntryHeader';
 function Placeholder({ className }) {
   return <div className={className}>Write or type '/' for slash commands....</div>;
 }
-
-export const LINE_BREAK_FIX: ElementTransformer = {
-  dependencies: [ParagraphNode],
-  export: (node) => {
-    return null;
-  },
-  regExp: /^$/,
-  replace: (textNode, nodes, _, isImport) => {
-    if (isImport && nodes.length === 1) {
-      nodes[0].replace($createParagraphNode());
-    }
-  },
-  type: 'element',
-};
-
-export const CUSTOM_TRANSFORMERS = [
-  ...TRANSFORMERS,
-  PAGE_BREAK_NODE_TRANSFORMER,
-  CHECK_LIST,
-  // LINE_BREAK_FIX,
-];
 
 function AutoFocusPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -166,11 +141,10 @@ export const Editor = ({
       <OnChangePlugin
         onChange={(state) => {
           state.read(() => {
-            markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS);
-            // .replaceAll(
-            //   /\n{2}/gm,
-            //   '\n',
-            // );
+            markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS).replaceAll(
+              /\n{2}/gm,
+              '\n',
+            );
           });
 
           debouncedUpdates();
@@ -188,7 +162,7 @@ export const Editor = ({
       <AutoFocusPlugin />
       <CheckListPlugin />
       <TabIndentationPlugin />
-      <MarkdownShortcutPlugin transformers={CUSTOM_TRANSFORMERS} />
+      <MarkdownShortcutPlugin />
       <CodeHighlightPlugin />
       <PageBreakPlugin />
       <SearchDialogPlugin />
