@@ -202,14 +202,13 @@ export const PAGE_BREAK_NODE_TRANSFORMER: Transformer = {
     }
     return null;
   },
-  regExp: /---\n/,
+  regExp: /^---\s*$/,
   replace: (parentNode, _, match) => {
     const [allMatch] = match;
     const paragraphNode = $createParagraphNode();
     const textNode = $createTextNode(allMatch);
     paragraphNode.append(textNode);
-    // @ts-ignore
-    parentNode.replace([paragraphNode]);
+    parentNode.replace($createPageBreakNode());
   },
   type: 'element',
   dependencies: [],

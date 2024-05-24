@@ -3,7 +3,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 
 const { createHeadlessEditor } = require('@lexical/headless');
-const { $convertToMarkdownString, TRANSFORMERS } = require('@lexical/markdown');
+const { $convertToMarkdownString, TRANSFORMERS, CHECK_LIST } = require('@lexical/markdown');
 const { CodeHighlightNode, CodeNode } = require('@lexical/code');
 const { AutoLinkNode, LinkNode } = require('@lexical/link');
 const { ListItemNode, ListNode } = require('@lexical/list');
@@ -13,7 +13,7 @@ const {
   $applyNodeReplacement,
   $createParagraphNode,
   $createTextNode,
-  LexicalNode,
+  // LexicalNode,
   ElementNode,
 } = require('lexical');
 const Prism = require('prismjs');
@@ -27,6 +27,9 @@ type SerializedPageBreakNode = {
 };
 
 class PageBreakNode extends ElementNode {
+  static getType(): string {
+    return 'page-break';
+  }
   constructor() {
     super();
     this.type = 'page-break';
@@ -39,10 +42,6 @@ class PageBreakNode extends ElementNode {
 
   static clone(node: PageBreakNode): PageBreakNode {
     return new PageBreakNode(node.__key);
-  }
-
-  static getType(): string {
-    return 'page-break';
   }
 
   static importJSON(_serializedNode: SerializedPageBreakNode): LexicalNode {
@@ -75,14 +74,13 @@ const PAGE_BREAK_NODE_TRANSFORMER: Transformer = {
       return '---\n';
     }
   },
-  regExp: /---\n/,
+  regExp: /^---\s*$/,
   replace: (parentNode, _, match) => {
     const [allMatch] = match;
     const paragraphNode = $createParagraphNode();
     const textNode = $createTextNode(allMatch);
     paragraphNode.append(textNode);
-    // @ts-ignore
-    parentNode.replace([paragraphNode]);
+    parentNode.replace($createPageBreakNode());
   },
   type: 'element',
   dependencies: [],
@@ -131,10 +129,8 @@ app.post('/json', async (c) => {
   editor.setEditorState(state);
 
   editor.update(() => {
-    markdown = $convertToMarkdownString([...TRANSFORMERS, PAGE_BREAK_NODE_TRANSFORMER]).replaceAll(
-      /\n{2}/gm,
-      '\n',
-    );
+    markdown = $convertToMarkdownString([...TRANSFORMERS, PAGE_BREAK_NODE_TRANSFORMER, CHECK_LIST]);
+    // .replaceAll(/\n{2}/gm, '\n');
   });
 
   return c.json({ success: true, content: markdown });

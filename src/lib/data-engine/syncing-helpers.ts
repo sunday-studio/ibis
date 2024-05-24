@@ -188,7 +188,7 @@ const generateIndexPath = (_: any, basePath: string): [string, string] => {
 export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
   const { type, data } = props;
 
-  console.log('data =>', data);
+  // console.log('data =>', data);
 
   // return;
 

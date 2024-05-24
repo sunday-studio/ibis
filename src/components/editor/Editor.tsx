@@ -6,6 +6,7 @@ import { $createListItemNode, $isListItemNode, ListItemNode, ListNode } from '@l
 import {
   $convertFromMarkdownString,
   $convertToMarkdownString,
+  CHECK_LIST,
   ElementTransformer,
   TRANSFORMERS,
 } from '@lexical/markdown';
@@ -46,35 +47,6 @@ function Placeholder({ className }) {
   return <div className={className}>Write or type '/' for slash commands....</div>;
 }
 
-// TODO: figure out later
-const CHECKLIST_TRANSFORMER: ElementTransformer = {
-  export: (node) => {
-    if ($isListItemNode(node)) {
-      const listItemNode = node;
-      if (listItemNode.checked) {
-        return '- [x] ' + listItemNode.getTextContent() + '\n';
-      } else {
-        return '- [ ] ' + listItemNode.getTextContent() + '\n';
-      }
-    }
-    return null;
-  },
-  regExp: /^(\s*)(?:-\s)?\s?(\[(\s|x)?\])\s/i,
-  replace: (parentNode, _, match) => {
-    const [allMatch, text] = match;
-    const checked = allMatch.includes('[x]');
-    const listItemNode = $createListItemNode(checked);
-    const textNode = $createTextNode(text);
-    listItemNode.__listType = 'check';
-    console.log('listItemNode =>', listItemNode);
-    listItemNode.append(textNode);
-    // @ts-ignore
-    parentNode.replace([listItemNode]);
-  },
-  type: 'element',
-  dependencies: [ListItemNode, ListNode],
-};
-
 export const LINE_BREAK_FIX: ElementTransformer = {
   dependencies: [ParagraphNode],
   export: (node) => {
@@ -83,18 +55,17 @@ export const LINE_BREAK_FIX: ElementTransformer = {
   regExp: /^$/,
   replace: (textNode, nodes, _, isImport) => {
     if (isImport && nodes.length === 1) {
-      // console.log(textNode);
       nodes[0].replace($createParagraphNode());
     }
   },
   type: 'element',
 };
 
-const CUSTOM_TRANSFORMERS = [
+export const CUSTOM_TRANSFORMERS = [
   ...TRANSFORMERS,
   PAGE_BREAK_NODE_TRANSFORMER,
-  CHECKLIST_TRANSFORMER,
-  LINE_BREAK_FIX,
+  CHECK_LIST,
+  // LINE_BREAK_FIX,
 ];
 
 function AutoFocusPlugin() {
@@ -195,10 +166,11 @@ export const Editor = ({
       <OnChangePlugin
         onChange={(state) => {
           state.read(() => {
-            markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS).replaceAll(
-              /\n{2}/gm,
-              '\n',
-            );
+            markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS);
+            // .replaceAll(
+            //   /\n{2}/gm,
+            //   '\n',
+            // );
           });
 
           debouncedUpdates();

@@ -1,9 +1,9 @@
-// import { TauriEvent, listen } from '@tauri-apps/api/event';
+import { TauriEvent, listen } from '@tauri-apps/api/event';
 import { Body, ResponseType, fetch } from '@tauri-apps/api/http';
+import { Command } from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri';
 import * as gm from 'gray-matter';
 
-// import { Command } from '@tauri-apps/api/shell';
 import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
 
 import { addVersionToFileSystem } from './add-version.migrate';
@@ -65,6 +65,13 @@ async function convertLexicalJSONToMarkdown(content: string) {
 export const migrateJSONTOMarkdown = async ({ data }) => {
   console.log('about to run this => migrateJSONTOMarkdown');
 
+  // const command = Command.sidecar('binaries/ibis-server');
+  // command.spawn().then((child) => {
+  //   listen(TauriEvent.WINDOW_DESTROYED, function () {
+  //     child.kill();
+  //   });
+  // });
+
   const getContent = (item) => {
     if (item.type === 'entries') {
       return item?.fileContent?.content;
@@ -118,10 +125,3 @@ ${content}
 
   return await Promise.all(updatedData);
 };
-
-// const command = Command.sidecar('binaries/ibis-server');
-// command.spawn().then((child) => {
-//   listen(TauriEvent.WINDOW_DESTROYED, function () {
-//     child.kill();
-//   });
-// });
