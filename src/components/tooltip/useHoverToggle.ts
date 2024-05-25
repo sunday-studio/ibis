@@ -12,7 +12,7 @@ export function useHoverToggle({
   ref,
   hoverDuration = 300,
   onHoverCallback,
-  leaveDuration = 50,
+  leaveDuration = 100,
   onLeaveCallback,
 }: UseHoverToggleProps) {
   const hoverTimeoutRef = useRef(null);

@@ -9,6 +9,7 @@ import { dailyEntryState } from '@/store/daily-state';
 import { searchStore } from '@/store/search';
 
 import { type Entry, entriesStore } from '../../store/entries';
+import { Tooltip } from '../tooltip/Tooltip';
 import { SidebarEntry } from './SidebarEntry';
 import { SidebarFolder } from './SidebarFolder';
 import { SidebarHeader } from './SidebarHeader';
@@ -128,14 +129,18 @@ export const Sidebar = observer(() => {
             <div className="entries">
               {privateEntries?.map((entry) => {
                 return (
-                  <SidebarEntry
-                    selectEntry={(entry) => {
-                      navigate(`/entry/${entry.id}`);
-                      entriesStore.selectEntry(entry);
-                    }}
-                    entry={entry}
-                    activeEntry={entriesStore.activeEntry}
-                    key={entry.id}
+                  <Tooltip
+                    trigger={
+                      <SidebarEntry
+                        selectEntry={(entry) => {
+                          navigate(`/entry/${entry.id}`);
+                          entriesStore.selectEntry(entry);
+                        }}
+                        entry={entry}
+                        activeEntry={entriesStore.activeEntry}
+                        key={entry.id}
+                      />
+                    }
                   />
                 );
               })}

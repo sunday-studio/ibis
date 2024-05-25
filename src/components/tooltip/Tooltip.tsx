@@ -40,10 +40,6 @@ export const Popover = (props: TooltipContentProps) => {
   );
 };
 
-// allow and check for string content
-// add prop for shortcut keys and style them
-// shortcu
-
 interface TooltipProps {
   trigger: any;
   shortcuts?: string[];
@@ -66,15 +62,8 @@ export const Tooltip = ({ trigger, content, shortcuts, ...rest }: TooltipProps) 
   useHoverToggle({
     ref,
     onHoverCallback: () => state.setOpen(true),
-    onLeaveCallback: () => state.toggle(),
+    onLeaveCallback: () => state.setOpen(false),
   });
-
-  useEffect(() => {
-    if (!trigger || !content) {
-      console.log('ref =>', ref);
-      state.close();
-    }
-  }, [trigger, content]);
 
   const contentElemenet = () => {
     if (typeof content === 'string') {

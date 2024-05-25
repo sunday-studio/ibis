@@ -22,15 +22,19 @@ export const SidebarHeader = () => {
           <Maximize2 size={8} strokeWidth={3} />
         </div>
 
-        <div className="window-action" onClick={() => navigate(0)}>
-          <RefreshCcw size={8} strokeWidth={3} />
-        </div>
+        <Tooltip
+          content="You are currently on the new version"
+          trigger={
+            <div className="window-action" onClick={() => navigate(0)}>
+              <RefreshCcw size={8} strokeWidth={3} />
+            </div>
+          }
+        />
       </div>
 
       <Tooltip
         content="Close sidebar"
-        shortcuts={['⌘', 'J']}
-        // content={`${appState.sidebarIsOpen ? 'Close' : 'Open'} sidebar`}
+        shortcuts={['⌘', 'D']}
         trigger={
           <button
             className="sidebar-toggle"

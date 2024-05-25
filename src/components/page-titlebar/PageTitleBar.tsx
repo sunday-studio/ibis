@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { PanelLeft } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 
+import { Tooltip } from '@/components';
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { getData } from '@/lib/storage';
 import { appState } from '@/store/app-state';
@@ -21,15 +22,28 @@ export const PageTitleBar = observer(() => {
     >
       {!appState.sidebarIsOpen && (
         <div className="sidebar-toggle-container">
-          <div className="sidebar-toggle" onClick={() => appState.toggleSidebarOpenState()}>
-            <PanelLeft size={18} />
-          </div>
+          <Tooltip
+            content="Open sidebar"
+            shortcuts={['⌘', 'D']}
+            trigger={
+              <div className="sidebar-toggle" onClick={() => appState.toggleSidebarOpenState()}>
+                <PanelLeft size={18} />
+              </div>
+            }
+          />
         </div>
       )}
 
       <p className="single-title">{currentEntryTitle}</p>
 
-      {SAFE_NAME && <p className="safe-name">{SAFE_NAME}</p>}
+      {SAFE_NAME && (
+        <div className="current-safe">
+          <Tooltip
+            content="Your current safe."
+            trigger={<p className="safe-name">{SAFE_NAME}</p>}
+          />
+        </div>
+      )}
     </div>
   );
 });

@@ -40,14 +40,17 @@
     margin-right: auto;
   }
 
-  .safe-name {
-    padding: 3px 6px;
+  .current-safe {
     margin-left: auto;
-    border-radius: var(--md-radii);
-    background: var(--panel-background);
-    font-size: 12px;
-    font-weight: 500;
-    margin-right: 12px;
-    box-shadow: 0 0 0 1px var(--main-border);
+
+    .safe-name {
+      padding: 3px 6px;
+      border-radius: var(--md-radii);
+      background: var(--panel-background);
+      font-size: 12px;
+      font-weight: 500;
+      margin-right: 12px;
+      box-shadow: 0 0 0 1px var(--main-border);
+    }
   }
 }
