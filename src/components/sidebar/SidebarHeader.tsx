@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { appState } from '@/store/app-state';
 
+import { Tooltip } from '../tooltip/Tooltip';
+
 export const SidebarHeader = () => {
   const navigate = useNavigate();
 
@@ -25,13 +27,20 @@ export const SidebarHeader = () => {
         </div>
       </div>
 
-      <button
-        className="sidebar-toggle"
-        role="button"
-        onClick={() => appState.toggleSidebarOpenState()}
-      >
-        <PanelRight size={18} />
-      </button>
+      <Tooltip
+        content="Close sidebar"
+        shortcuts={['⌘', 'J']}
+        // content={`${appState.sidebarIsOpen ? 'Close' : 'Open'} sidebar`}
+        trigger={
+          <button
+            className="sidebar-toggle"
+            role="button"
+            onClick={() => appState.toggleSidebarOpenState()}
+          >
+            <PanelRight size={18} />
+          </button>
+        }
+      />
     </div>
   );
 };

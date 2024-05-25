@@ -35,7 +35,7 @@ const AppLayout = observer(() => {
           'sidebar-closed': !appState.sidebarIsOpen,
         })}
       >
-        <div className="sidebar-container">
+        <div className="sidebar-container" data-tauri-drag-region>
           <Sidebar />
         </div>
 

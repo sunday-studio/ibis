@@ -2,13 +2,8 @@ import { useEffect, useRef } from 'react';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
-import { $createListItemNode, $isListItemNode, ListItemNode, ListNode } from '@lexical/list';
-import {
-  $convertFromMarkdownString,
-  $convertToMarkdownString, // CHECK_LIST,
-  ElementTransformer,
-  TRANSFORMERS,
-} from '@lexical/markdown';
+import { ListItemNode, ListNode } from '@lexical/list';
+import { $convertFromMarkdownString, $convertToMarkdownString } from '@lexical/markdown';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -150,8 +145,7 @@ export const Editor = ({
           debouncedUpdates();
         }}
       />
-      {/* @ts-ignore */}
-      <ClickableLinkPlugin newTap />
+      <ClickableLinkPlugin />
       <FloatingMenuPlugin />
       <SlashCommandPickerPlugin />
       <TabFocusPlugin />
