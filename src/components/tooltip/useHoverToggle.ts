@@ -2,9 +2,9 @@ import { RefObject, useEffect, useRef, useState } from 'react';
 
 interface UseHoverToggleProps {
   ref: RefObject<HTMLElement>;
+  leaveDuration?: number;
   hoverDuration?: number;
   onHoverCallback: () => void;
-  leaveDuration?: number;
   onLeaveCallback: () => void;
 }
 

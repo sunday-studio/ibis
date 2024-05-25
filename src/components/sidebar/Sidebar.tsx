@@ -108,7 +108,7 @@ export const Sidebar = observer(() => {
 
       <div className={clsx('sidebar-entries')}>
         <div className="sidebar-folders">
-          <SidebarFolder open folder={{ name: 'Pinned' }} entries={pinnedEntries} />
+          <SidebarFolder open folder={{ name: 'Pinned', id: null }} entries={pinnedEntries} />
           {folders?.map((folder) => {
             return <SidebarFolder folder={folder.folder} entries={folder.entries} />;
           })}
@@ -127,23 +127,17 @@ export const Sidebar = observer(() => {
               />
             </div>
             <div className="entries">
-              {privateEntries?.map((entry) => {
-                return (
-                  <Tooltip
-                    trigger={
-                      <SidebarEntry
-                        selectEntry={(entry) => {
-                          navigate(`/entry/${entry.id}`);
-                          entriesStore.selectEntry(entry);
-                        }}
-                        entry={entry}
-                        activeEntry={entriesStore.activeEntry}
-                        key={entry.id}
-                      />
-                    }
-                  />
-                );
-              })}
+              {privateEntries?.map((entry) => (
+                <SidebarEntry
+                  selectEntry={(entry) => {
+                    navigate(`/entry/${entry.id}`);
+                    entriesStore.selectEntry(entry);
+                  }}
+                  entry={entry}
+                  activeEntry={entriesStore.activeEntry}
+                  key={entry.id}
+                />
+              ))}
             </div>
           </div>
         )}

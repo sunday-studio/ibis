@@ -155,9 +155,40 @@
         border-radius: 6px;
         align-items: center;
         cursor: pointer;
+        user-select: none;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
 
         &:hover {
           background-color: var(--hover-background);
+
+          .folder-action {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+
+        .folder-name-input {
+          box-shadow: 0 0 0 1.5px var(--primary-color);
+          width: 100%;
+          border: 0;
+          border-radius: var(--md-radii);
+
+          font-weight: 600;
+          padding: 3px 2px;
+          font-size: 14px;
+          color: var(--text-primary);
+          height: 100%;
+          background-color: var(--main-background);
+
+          &:focus {
+            background-color: red;
+          }
         }
 
         &-icon {
@@ -178,6 +209,27 @@
           font-weight: 600;
           font-size: 14px;
           color: var(--text-primary);
+        }
+
+        &-action {
+          all: unset;
+          margin-left: auto;
+          width: 18px;
+          height: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: var(--md-radii);
+          color: var(--text-primary);
+          visibility: hidden;
+          opacity: 0;
+          transition: visibility 0s, opacity 0.2s ease;
+          transform: translateY(-1px);
+
+          &:hover {
+            background-color: var(--active-background);
+            box-shadow: 0 0 0 1.5px var(--darker-border);
+          }
         }
       }
 
@@ -440,13 +492,6 @@
   &[data-state='open'] {
     background-color: var(--hover-background);
   }
-
-  // &:hover {
-  //   box-shadow: 0 0 0 1px var(--main-border);
-  //   .more-options {
-  //     visibility: visible;
-  //   }
-  // }
 
   &.active-entry {
     p {

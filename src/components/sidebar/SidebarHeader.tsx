@@ -24,6 +24,7 @@ export const SidebarHeader = () => {
 
         <Tooltip
           content="You are currently on the new version"
+          hoverDuration={400}
           trigger={
             <div className="window-action" onClick={() => navigate(0)}>
               <RefreshCcw size={8} strokeWidth={3} />

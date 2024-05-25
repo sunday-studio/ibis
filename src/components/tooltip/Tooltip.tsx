@@ -46,10 +46,12 @@ interface TooltipProps {
   content: string | React.ReactElement;
   shouldFlip?: boolean;
   placement?: Placement;
+  leaveDuration?: number;
+  hoverDuration?: number;
 }
 
 export const Tooltip = ({ trigger, content, shortcuts, ...rest }: TooltipProps) => {
-  const { shouldFlip = false, placement = 'bottom', ...props } = rest;
+  const { shouldFlip = false, placement = 'bottom', leaveDuration, hoverDuration, ...props } = rest;
   let ref = useRef(null);
   let state = useOverlayTriggerState({
     ...props,
@@ -61,6 +63,8 @@ export const Tooltip = ({ trigger, content, shortcuts, ...rest }: TooltipProps) 
 
   useHoverToggle({
     ref,
+    leaveDuration,
+    hoverDuration,
     onHoverCallback: () => state.setOpen(true),
     onLeaveCallback: () => state.setOpen(false),
   });

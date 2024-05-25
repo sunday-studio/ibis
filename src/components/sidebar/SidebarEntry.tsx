@@ -6,7 +6,6 @@ import * as ContextMenu from '@radix-ui/react-context-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
 import format from 'date-fns/format';
-// import { motion, useIsPresent } from 'framer-motion';
 import {
   BadgeInfo,
   Columns,
@@ -34,21 +33,6 @@ type SidebarEntry = {
 
 export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: SidebarEntry) => {
   const isActive = entry?.id === activeEntry?.id;
-  // const isPresent = useIsPresent();
-
-  // const animations = {
-  //   style: {
-  //     position: isPresent ? 'static' : 'absolute',
-  //   },
-  //   initial: { opacity: 0, y: 10 },
-  //   animate: { opacity: 1, y: 0 },
-  //   exit: { opacity: 0, y: 10 },
-  //   transition: { type: 'linear', duration: 0.1 },
-  // };
-
-  //
-
-  const isIn = entry?.folderIds?.length > 0;
 
   return (
     <Popover.Root key={entry.id}>
@@ -56,9 +40,6 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
         <ContextMenu.Trigger asChild>
           <div
             className={`entry ${isActive ? 'active-entry' : ''}`}
-            style={{
-              outline: isIn ? '1px solid red' : '',
-            }}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -173,8 +154,8 @@ const EntryActionOptions = observer(({ entry }: { entry: Entry; onDelete: () => 
       >
         {options.map((option, index) => {
           return (
-            <div
-              className={clsx('option', {
+            <button
+              className={clsx('option unstyled', {
                 option__disabled: option.disabled,
                 option__active: option.active,
               })}
@@ -186,7 +167,7 @@ const EntryActionOptions = observer(({ entry }: { entry: Entry; onDelete: () => 
             >
               <div className="option-icon">{option.icon}</div>
               <p>{option.title}</p>
-            </div>
+            </button>
           );
         })}
 

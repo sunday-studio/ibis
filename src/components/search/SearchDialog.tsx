@@ -56,13 +56,13 @@ export const SearchDialog = observer(() => {
       icon: BadgePlus,
     },
 
-    {
-      name: 'New Highlight',
-      onClick: () => {
-        navigate('/highlight');
-      },
-      icon: Sparkles,
-    },
+    // {
+    //   name: 'New Highlight',
+    //   onClick: () => {
+    //     navigate('/highlight');
+    //   },
+    //   icon: Sparkles,
+    // },
     {
       name: 'New Journal log',
       onClick: () => {

@@ -256,3 +256,9 @@ html[zen-mode='on'] {
     }
   }
 }
+
+button.unstyled {
+  all: unset;
+  width: 100%;
+  box-sizing: border-box;
+}

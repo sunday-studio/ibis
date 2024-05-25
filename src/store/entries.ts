@@ -106,7 +106,7 @@ class Entries {
     });
   }
 
-  updatePinned({ id, type }) {
+  updatePinned({ id, type }: { id: string; type: 'ADD' | 'REMOVE' }) {
     if (type === 'ADD') {
       const updatedList = [...this.pinnedEntriesId, id];
       this.pinnedEntriesId = updatedList;
