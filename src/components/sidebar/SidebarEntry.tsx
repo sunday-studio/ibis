@@ -39,7 +39,7 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
       <ContextMenu.Root>
         <ContextMenu.Trigger asChild>
           <div
-            className={`entry ${isActive ? 'active-entry' : ''}`}
+            className={`entry disabled-selection ${isActive ? 'active-entry' : ''}`}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -133,7 +133,7 @@ const EntryActionOptions = observer(({ entry }: { entry: Entry; onDelete: () => 
       },
 
       {
-        title: 'Info',
+        title: 'Share',
         action: () => {},
         icon: <BadgeInfo size={16} />,
         disabled: true,
@@ -160,8 +160,8 @@ const EntryActionOptions = observer(({ entry }: { entry: Entry; onDelete: () => 
                 option__active: option.active,
               })}
               onClick={(e) => {
-                option.action();
                 e.stopPropagation();
+                option.action();
               }}
               key={index}
             >

@@ -74,6 +74,13 @@ export default function Modal({
   closeOnClickOutside = false,
   className,
   isDialog,
+}: {
+  onClose: () => void;
+  children: any;
+  title?: string;
+  closeOnClickOutside?: boolean;
+  className?: string;
+  isDialog?: boolean;
 }) {
   return createPortal(
     <PortalImpl

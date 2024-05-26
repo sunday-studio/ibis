@@ -108,14 +108,19 @@ export const Sidebar = observer(() => {
 
       <div className={clsx('sidebar-entries')}>
         <div className="sidebar-folders">
-          <SidebarFolder open folder={{ name: 'Pinned', id: null }} entries={pinnedEntries} />
+          <SidebarFolder
+            open
+            isSystemFolder
+            folder={{ name: 'Pinned', id: null }}
+            entries={pinnedEntries}
+          />
           {folders?.map((folder) => {
             return <SidebarFolder folder={folder.folder} entries={folder.entries} />;
           })}
         </div>
 
         {privateEntries.length > 0 && (
-          <div className="section">
+          <div className="section disabled-selection">
             <div className="header">
               <p className="title">Private</p>
               <div

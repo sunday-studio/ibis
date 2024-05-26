@@ -151,18 +151,20 @@
 
       .folder {
         display: flex;
-        padding: 6px;
+        padding: 0 6px;
+        height: 36px;
         border-radius: 6px;
         align-items: center;
         cursor: pointer;
-        user-select: none;
 
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+        &[data-editing='true'] {
+          box-shadow: 0 0 0 2px var(--dark-border);
+          background-color: var(--panel-background);
+
+          &:hover {
+            background-color: var(--panel-background);
+          }
+        }
 
         &:hover {
           background-color: var(--hover-background);
@@ -174,20 +176,16 @@
         }
 
         .folder-name-input {
-          box-shadow: 0 0 0 1.5px var(--primary-color);
-          width: 100%;
           border: 0;
-          border-radius: var(--md-radii);
-
-          font-weight: 600;
-          padding: 3px 2px;
+          height: 100%;
+          width: 100%;
+          font-weight: 500;
           font-size: 14px;
           color: var(--text-primary);
-          height: 100%;
-          background-color: var(--main-background);
 
           &:focus {
-            background-color: red;
+            outline: none;
+            // color: red;
           }
         }
 
@@ -355,6 +353,7 @@
     &:hover {
       background-color: var(--hover-background);
       box-shadow: 0 0 0 1px var(--main-border);
+      outline: none;
     }
 
     &__active {
@@ -365,7 +364,8 @@
       }
     }
 
-    &__disabled {
+    &__disabled,
+    &[data-disabled] {
       cursor: auto !important;
       pointer-events: none;
 
@@ -532,5 +532,49 @@
 
   p.date {
     font-size: 12px;
+  }
+}
+
+.folder-deletion-modal {
+  font-size: 14px;
+  color: var(--text-primary);
+
+  p {
+    margin: 6px 0;
+  }
+
+  --red: #b91c1c;
+
+  .actions {
+    display: flex;
+    margin-top: 30px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+
+    button {
+      text-align: center;
+      font-size: 13px;
+      height: 32px;
+      padding: 0 12px;
+      width: auto;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+
+      &.cancel {
+        box-shadow: 0 0 0 2px var(--main-border);
+      }
+
+      &.soft-delete {
+        box-shadow: 0 0 0 2px var(--primary-color);
+      }
+
+      &.delete {
+        box-shadow: 0 0 0 2px var(--red);
+        background-color: var(--red);
+        color: white;
+      }
+    }
   }
 }

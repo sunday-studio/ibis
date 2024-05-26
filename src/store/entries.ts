@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { te } from 'date-fns/locale';
 import { makeAutoObservable, observable, runInAction, toJS } from 'mobx';
 import { nanoid } from 'nanoid';
 
@@ -36,6 +35,8 @@ class Entries {
   folders: Folders = {};
   entriesInFolders: Set[] = new Set([]);
 
+  private schemaVersion: number;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -54,6 +55,7 @@ class Entries {
     this.entries = observable(entryData);
     this.deletedEntriesId = observable(index?.fileContent?.deletedEntries ?? []);
     this.pinnedEntriesId = observable(index?.fileContent?.pinnedEntries ?? []);
+    this.schemaVersion = index.fileContent.schemaVersion;
 
     let temFolders = {};
     let temEntriesInFolders = [];
@@ -243,10 +245,12 @@ ${editorState}
       deletedEntries: this.deletedEntriesId,
       pinnedEntries: this.pinnedEntriesId,
       folders: this.folders,
+      schemaVersion: this.schemaVersion,
     };
+
     saveFileToDisk({
       type: 'index',
-      data: currentData,
+      data: toJS(currentData),
     });
   }
 
@@ -375,7 +379,37 @@ ${editorState}
     }
   }
 
+  renamedFolder(folderId: string, newName: string) {
+    const updatedFolder: Folder = {
+      ...this.folders[folderId],
+      name: newName,
+    };
+
+    this.folders[folderId] = updatedFolder;
+    this.saveIndexFileToDisk();
+  }
+
+  deleteFolder(folderId: string, type: 'WITH-ENTRIES' | 'WITHOUT-ENTRIES') {
+    const folders = this.folders;
+    const folder: Folder = folders[folderId];
+    delete folders[folderId];
+
+    runInAction(() => {
+      folder.entries.forEach((entry) => {
+        if (type === 'WITHOUT-ENTRIES') {
+          this.tagEntryWithFolder(entry, 'REMOVE');
+        } else {
+          this.deleteEntry(entry);
+        }
+      });
+    });
+
+    this.folders = folders;
+    this.saveIndexFileToDisk();
+  }
+
   tagEntryWithFolder(entryId: string, actionType: 'ADD' | 'REMOVE') {
+    console.log('I am called');
     if (actionType === 'ADD') {
       this.entriesInFolders.add(entryId);
     } else {
