@@ -1,14 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { TauriEvent, listen } from '@tauri-apps/api/event';
-import { ResponseType, fetch } from '@tauri-apps/api/http';
-import { Command } from '@tauri-apps/api/shell';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { Outlet } from 'react-router-dom';
 
 import { PageTitleBar } from '@/components/page-titlebar/PageTitleBar';
 import { Sidebar } from '@/components/sidebar/Sidebar';
+import { SplashScreen } from '@/components/splash-screen/SplashScreen';
 
 import { SearchDialog } from '@/components';
 import { useRegisterAllShortcuts } from '@/hooks/useRegisterAllShortcuts';
@@ -18,16 +16,29 @@ import { getData } from '@/lib/storage';
 import { appState } from '@/store/app-state';
 
 const AppLayout = observer(() => {
+  const [showSplashScreen, setShowSplashScreen] = useState(true);
   useRegisterAllShortcuts();
 
   useEffect(() => {
     const SAFEURL = getData(SAFE_LOCATION_KEY);
     loadDirectoryContent(SAFEURL);
     appState.load();
+
+    const id = setTimeout(() => {
+      setShowSplashScreen(false);
+    }, 1000);
+
+    return () => clearTimeout(id);
   }, []);
+
+  // if (showSplashScreen) {
+  //   return;
+  // }
 
   return (
     <div className="page-container">
+      {showSplashScreen && <SplashScreen />}
+
       <SearchDialog />
 
       <div

@@ -4,24 +4,6 @@ import { Command } from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri';
 import * as gm from 'gray-matter';
 
-import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
-
-import { addVersionToFileSystem } from './add-version.migrate';
-
-// const cmd = Command.sidecar('binaries/ibis-server');
-
-// cmd.spawn().then((child) => {
-//   console.log('spawn =>', child);
-
-//   /**
-//    * Killing server process when window is closed. Probably won't
-//    * work for multi window application
-//    */
-//   listen(TauriEvent.WINDOW_DESTROYED, function () {
-//     child.kill();
-//   });
-// });
-
 const createFrontMatterData = (type: 'dailyNotes' | 'entries', content: any) => {
   if (type === 'dailyNotes') {
     return `---
@@ -65,12 +47,13 @@ async function convertLexicalJSONToMarkdown(content: string) {
 export const migrateJSONTOMarkdown = async ({ data }) => {
   console.log('about to run this => migrateJSONTOMarkdown');
 
-  // const command = Command.sidecar('binaries/ibis-server');
-  // command.spawn().then((child) => {
-  //   listen(TauriEvent.WINDOW_DESTROYED, function () {
-  //     child.kill();
-  //   });
-  // });
+  const command = Command.sidecar('binaries/ibis-server');
+  command.spawn().then((child) => {
+    listen(TauriEvent.WINDOW_DESTROYED, function () {
+      console.log('Killed window ');
+      // child.kill();
+    });
+  });
 
   const getContent = (item) => {
     if (item.type === 'entries') {

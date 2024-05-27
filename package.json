@@ -1,10 +1,10 @@
 {
   "name": "ibis",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "bun run  package-sidecar &&  bunx --bun vite",
+    "dev": "bun run package-sidecar &&  bunx --bun vite",
     "build": "bun run package-sidecar && tsc && bunx --bun vite build",
     "preview": "vite preview",
     "tauri": "tauri",
