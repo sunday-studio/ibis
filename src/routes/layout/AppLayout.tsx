@@ -16,7 +16,7 @@ import { getData } from '@/lib/storage';
 import { appState } from '@/store/app-state';
 
 const AppLayout = observer(() => {
-  const [showSplashScreen, setShowSplashScreen] = useState(true);
+  const [showSplashScreen, setShowSplashScreen] = useState(false);
   useRegisterAllShortcuts();
 
   useEffect(() => {
@@ -24,11 +24,11 @@ const AppLayout = observer(() => {
     loadDirectoryContent(SAFEURL);
     appState.load();
 
-    const id = setTimeout(() => {
-      setShowSplashScreen(false);
-    }, 1000);
+    // const id = setTimeout(() => {
+    //   setShowSplashScreen(false);
+    // }, 1000);
 
-    return () => clearTimeout(id);
+    // return () => clearTimeout(id);
   }, []);
 
   // if (showSplashScreen) {

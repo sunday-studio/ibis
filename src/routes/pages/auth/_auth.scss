@@ -79,7 +79,9 @@
         color: var(--base-text-color);
         padding: 10px;
         border-radius: 8px;
-        font-family: 'Geist';
+        font-size: 15px;
+        font-weight: 500;
+        font-family: var(--current-font);
 
         &::placeholder {
           font-size: 14px;

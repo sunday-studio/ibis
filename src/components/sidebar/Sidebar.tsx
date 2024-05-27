@@ -135,6 +135,7 @@ export const Sidebar = observer(() => {
               {privateEntries?.map((entry) => (
                 <SidebarEntry
                   selectEntry={(entry) => {
+                    // console.log('entryData', entry.id);
                     navigate(`/entry/${entry.id}`);
                     entriesStore.selectEntry(entry);
                   }}

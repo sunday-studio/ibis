@@ -8,6 +8,8 @@ const EntryPage = observer(() => {
 
   const content = activeEntry?.content || '';
 
+  // return <p>entry page</p>;
+
   return (
     <div className="entry-page">
       {activeEntry && (

@@ -6,13 +6,16 @@ import {
   LucideIcon,
   MonitorDown,
   Palette,
+  Play,
   RefreshCcwDot,
   Search,
   Sparkles,
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
+import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router-dom';
 
+import { generateNewDirectory } from '@/lib/auth/auth-helpers';
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { clearData, getData } from '@/lib/storage';
@@ -41,13 +44,14 @@ export const SearchDialog = observer(() => {
   const navigate = useNavigate();
 
   const defaultActions: ActionProps[] = [
-    // {
-    //   name: 'Run Migrations',
-    //   onClick: () => {
-    //     runMigration();
-    //   },
-    //   icon: Play,
-    // },
+    {
+      name: 'Run Migrations',
+      onClick: () => {
+        generateNewDirectory(`/Users/cas/Desktop/ibis-tests/${nanoid()}`);
+        // ""
+      },
+      icon: Play,
+    },
     {
       name: 'New Entry',
       onClick: () => {

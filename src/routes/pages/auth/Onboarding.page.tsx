@@ -46,7 +46,7 @@ export const Onboarding = () => {
       <div className="form-wrapper">
         <div className="form-wrapper-header">
           <h2 className="satoshi-font">IBIS</h2>
-          <p>Ditch all your productivity apps for me.</p>
+          <p>All your journal and notes, local first.</p>
         </div>
         <form action="">
           <div className="form-control">
@@ -55,7 +55,7 @@ export const Onboarding = () => {
               type="text"
               value={name}
               onChange={(event) => setName(event.target.value)}
-              placeholder="Apple-store"
+              placeholder="ibis safe"
               autoCapitalize="none"
             />
           </div>

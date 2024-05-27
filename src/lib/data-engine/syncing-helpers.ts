@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { nanoid } from 'nanoid';
 import { toast } from 'sonner';
 
 import { migrateFileSystem } from '@/migrations';
@@ -142,7 +143,10 @@ export const loadDirectoryContent = async (safeURL: string) => {
   }
 };
 
-const generateEntryPath = (dateString: string, basePath: string): [string, string, string] => {
+export const generateEntryPath = (
+  dateString: string,
+  basePath: string,
+): [string, string, string] => {
   // Convert the provided dateString to a JavaScript Date object.
 
   const date = new Date(dateString);
@@ -152,7 +156,7 @@ const generateEntryPath = (dateString: string, basePath: string): [string, strin
   const month = format(date, 'LLL');
 
   // Generate a unique filename based on the date and time.
-  const filename = `${format(date, DATE_PATTERN)}.${format(date, 't')}.md`;
+  const filename = `${format(date, DATE_PATTERN)}.${nanoid()}.md`;
 
   // Construct the directory path where the file will be saved.
   const dirPath = `${basePath}/${year}/${month}`;
@@ -162,7 +166,7 @@ const generateEntryPath = (dateString: string, basePath: string): [string, strin
   return [dirPath, filename, path];
 };
 
-const generateTodayPath = (dateString: string, basePath: string): [string, string] => {
+export const generateTodayPath = (dateString: string, basePath: string): [string, string] => {
   // Convert the provided dateString to a JavaScript Date object.
   const date = new Date(dateString);
 

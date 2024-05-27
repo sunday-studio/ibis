@@ -2,6 +2,8 @@ import { observer } from 'mobx-react-lite';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
 
+import { SAFE_LOCATION_KEY } from '@/lib/constants';
+import { clearData } from '@/lib/storage';
 import { entriesStore } from '@/store/entries';
 
 const AppErrorPage = observer(() => {
@@ -9,6 +11,10 @@ const AppErrorPage = observer(() => {
 
   const reload = () => {
     navigate('/today');
+
+    // TODO: figure out when to actually close the safe and reload
+    clearData(SAFE_LOCATION_KEY);
+
     entriesStore.removeActiveEntry();
 
     // doing this to cause a reload, not sure why going to /today doesn't cause the rerendering
