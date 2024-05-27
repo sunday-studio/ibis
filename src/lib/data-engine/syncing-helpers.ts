@@ -7,6 +7,7 @@ import { DailyEntry, dailyEntryState } from '@/store/daily-state';
 import { Entry, entriesStore } from '@/store/entries';
 import { tagsState } from '@/store/tags-state';
 
+import { searchEngine } from '../search/search-engine';
 import { meili } from './syncing-engine';
 
 // pattern year-month-day; 2023-01-12
@@ -138,6 +139,8 @@ export const loadDirectoryContent = async (safeURL: string) => {
     });
     dailyEntryState.localLocalData(groupedData.dailyNotes);
     tagsState.loadLocalData(groupedData['tags.json']?.[0]);
+
+    searchEngine.loadLocalData(groupedData.entries, groupedData.dailyNotes);
   } catch (error) {
     console.log('error =>', error);
   }

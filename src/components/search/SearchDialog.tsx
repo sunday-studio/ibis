@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Command } from 'cmdk';
 import {
   BadgePlus,
@@ -18,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { generateNewDirectory } from '@/lib/auth/auth-helpers';
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
+import { searchEngine } from '@/lib/search/search-engine';
 import { clearData, getData } from '@/lib/storage';
 // import { runMigration } from '@/migrations/file-date-pattern.migrate';
 import { appState } from '@/store/app-state';
@@ -42,16 +45,17 @@ const ActionItem = (props: ActionProps) => {
 export const SearchDialog = observer(() => {
   const { showSearchModal } = searchStore;
   const navigate = useNavigate();
+  const [results, setResults] = useState([]);
 
   const defaultActions: ActionProps[] = [
-    {
-      name: 'Run Migrations',
-      onClick: () => {
-        generateNewDirectory(`/Users/cas/Desktop/ibis-tests/${nanoid()}`);
-        // ""
-      },
-      icon: Play,
-    },
+    // {
+    //   name: 'Run Migrations',
+    //   onClick: () => {
+    //     generateNewDirectory(`/Users/cas/Desktop/ibis-tests/${nanoid()}`);
+    //     // ""
+    //   },
+    //   icon: Play,
+    // },
     {
       name: 'New Entry',
       onClick: () => {
@@ -109,6 +113,14 @@ export const SearchDialog = observer(() => {
     },
   ];
 
+  const handleSearch = (term: string) => {
+    const response = searchEngine.search(`${term}-1`);
+    console.log('response =>', response);
+    setResults(response);
+  };
+
+  const showSearchResults = results.length > 0;
+
   return (
     <Command.Dialog
       open={showSearchModal}
@@ -119,23 +131,36 @@ export const SearchDialog = observer(() => {
         <div className="search-icon">
           <Search size={15} strokeWidth={3} />
         </div>
-        <Command.Input className="geist-mono-font" placeholder="Search through everyone on Ibis" />
+        <Command.Input
+          onValueChange={handleSearch}
+          className="geist-mono-font"
+          placeholder="Search through everyone on Ibis"
+        />
       </div>
+
+      <div className="search">
+        {showSearchResults &&
+          results.map((result) => {
+            return <div className="search-results">{result.title}</div>;
+          })}
+      </div>
+
       <Command.List>
         <Command.Empty>No results found.</Command.Empty>
         <Command.Group heading="Actions">
-          {defaultActions.map((action: ActionProps, index) => {
-            return (
-              <ActionItem
-                {...action}
-                key={index}
-                onClick={() => {
-                  action.onClick();
-                  searchStore.toggleSearchModal();
-                }}
-              />
-            );
-          })}
+          {!showSearchResults &&
+            defaultActions.map((action: ActionProps, index) => {
+              return (
+                <ActionItem
+                  {...action}
+                  key={index}
+                  onClick={() => {
+                    action.onClick();
+                    searchStore.toggleSearchModal();
+                  }}
+                />
+              );
+            })}
         </Command.Group>
       </Command.List>
     </Command.Dialog>
