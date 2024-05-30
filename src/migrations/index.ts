@@ -1,5 +1,6 @@
 import { addVersionToFileSystem } from './add-version.migrate';
 import { migrateJSONTOMarkdown } from './file-json-to-md.migrate';
+import { removeDateStringsFromIndex } from './remove-datestring-from-ids.migrate';
 
 type Function = (args: any) => any | any[];
 const VERSION_INCREMENT = 0.1;
@@ -10,6 +11,7 @@ const VERSION_INCREMENT = 0.1;
 const FILE_VERSION_MIGRATORS: Record<number, Function> = {
   0: addVersionToFileSystem,
   0.1: migrateJSONTOMarkdown,
+  0.2: removeDateStringsFromIndex,
 };
 
 export const MAX_SCHEMA_VERSION: number = Math.max(

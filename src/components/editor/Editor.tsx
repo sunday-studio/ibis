@@ -126,7 +126,7 @@ export const Editor = ({
       <RichTextPlugin
         contentEditable={
           <div className="editor-wrapper">
-            {/* {page === EDITOR_PAGES.ENTRY && <EntryHeader />} */}
+            {page === EDITOR_PAGES.ENTRY && <EntryHeader />}
             <ContentEditable className="editor-input" />
           </div>
         }

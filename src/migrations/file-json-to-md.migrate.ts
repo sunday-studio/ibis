@@ -1,13 +1,25 @@
+// TODO: clean this file later; too much weird stuff goign on here
 import { TauriEvent, listen } from '@tauri-apps/api/event';
 import { Body, ResponseType, fetch } from '@tauri-apps/api/http';
 import { Command } from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri';
 import * as gm from 'gray-matter';
 
+// TODO: move this into a migration util file
+export function getNewId(oldId: string) {
+  const datePattern = /^[0-2]\d:[0-5]\d:[0-5]\d GMT[+-]\d{4} \(.+\)-/;
+
+  if (typeof oldId === 'string' && datePattern.test(oldId)) {
+    return oldId.replace(datePattern, '');
+  } else {
+    return oldId;
+  }
+}
+
 const createFrontMatterData = (type: 'dailyNotes' | 'entries', content: any) => {
   if (type === 'dailyNotes') {
     return `---
-id: ${content?.id}
+id: ${getNewId(content?.id)}
 date: ${content?.date}
 ---
     `;
@@ -77,7 +89,11 @@ export const migrateJSONTOMarkdown = async ({ data }) => {
         ? ''
         : (await convertLexicalJSONToMarkdown(contentString)) ?? '';
 
-    const url = item.url.replace('json', 'md');
+    const id = getNewId(item?.fileContent.id);
+
+    console.log({ id, oldId: item?.fileContent?.id });
+
+    const url = `${item.url.split('.')[0]}.${getNewId(item.fileContent.id)}.md`;
 
     const data = `${frontmatter}
 ${content}

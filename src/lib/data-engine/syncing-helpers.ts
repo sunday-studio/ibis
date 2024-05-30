@@ -197,8 +197,9 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
 
   switch (type) {
     case 'entry':
+      console.log({ data });
       try {
-        await meili.writeFileContentToDisk(data?.createdAt, data?.content, generateEntryPath);
+        await meili.writeFileContentToDisk(data?.createdAt, data?.content ?? '', generateEntryPath);
       } catch (error) {
         // TODO: fix instances of this.basePath being null
         console.log('error =>', error);

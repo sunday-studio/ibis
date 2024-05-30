@@ -1,10 +1,11 @@
 import { invoke } from '@tauri-apps/api/tauri';
 
-/*
-This function updates the version in the index.json file
-*/
+/**
+ * This function updates the version in the index.json file
+ * SCHEMA_VERSION: 0
+ */
+
 export const addVersionToFileSystem = async ({ updatedVersion = 0.0, indexFile }) => {
-  // console.log(`migration: add ${updatedVersion} version to index.json`);
   const {
     fileContent: { deletedEntries = [], pinnedEntries = [], ...rest },
     url,

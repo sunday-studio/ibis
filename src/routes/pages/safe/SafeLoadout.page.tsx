@@ -33,7 +33,7 @@ export const SafeLoadout = () => {
     try {
       setData(SAFE_LOCATION_KEY, directoryName);
       await generateNewDirectory(directoryName);
-      loadDirectoryContent(directoryName);
+      await loadDirectoryContent(directoryName);
       navigate('/today');
     } catch (error) {
     } finally {
