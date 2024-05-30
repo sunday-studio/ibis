@@ -7,8 +7,6 @@ class SearchIndex {
   index = null;
 
   loadLocalData(entries, journalEntries) {
-    console.log({ entries, journalEntries });
-
     try {
       this.index = lunr((builder) => {
         builder.ref('id');
@@ -24,8 +22,6 @@ class SearchIndex {
             content: removeMarkdown(entry.fileContent.markdown),
           };
 
-          // console.log({ doc });
-
           builder.add(doc);
         }
       });
@@ -37,7 +33,6 @@ class SearchIndex {
   search(term: string) {
     // return this.index.search(term);
     let results = [];
-    console.time('starting search');
 
     const matches = this.index.search(term);
 
@@ -46,8 +41,6 @@ class SearchIndex {
       // TODO: after migrating entries to dict, this should be an key find
       return entriesStore.entries.filter((entry: Entry) => entry.id === match.ref)?.[0];
     });
-
-    console.timeEnd('ending search');
 
     return results;
   }
