@@ -8,28 +8,28 @@ import { Entry, entriesStore } from '@/store/entries';
 import { tagsState } from '@/store/tags-state';
 
 import { searchEngine } from '../search/search-engine';
-import { meili } from './syncing-engine';
+import { DocumentType, meili } from './syncing-engine';
 
 // pattern year-month-day; 2023-01-12
 const DATE_PATTERN = 'y-MM-dd';
 
 type EntryType = {
-  type: 'entry';
+  type: DocumentType.Entry;
   data: Entry;
 };
 
 type DailyEntryType = {
-  type: 'today';
+  type: DocumentType.Journal;
   data: DailyEntry;
 };
 
 type TagsType = {
-  type: 'tags';
+  type: DocumentType.Tags;
   data: Record<string, { value: string; label: string }>;
 };
 
 type IndexType = {
-  type: 'index';
+  type: DocumentType.Index;
   data: {
     deletedEntries: string[];
     pinnedEntries: string[];
@@ -146,6 +146,9 @@ export const loadDirectoryContent = async (safeURL: string) => {
   }
 };
 
+/**
+ * @deprecated
+ */
 export const generateEntryPath = (
   dateString: string,
   basePath: string,
@@ -169,6 +172,9 @@ export const generateEntryPath = (
   return [dirPath, filename, path];
 };
 
+/**
+ * @deprecated
+ */
 export const generateTodayPath = (dateString: string, basePath: string): [string, string] => {
   // Convert the provided dateString to a JavaScript Date object.
   const date = new Date(dateString);
@@ -184,10 +190,16 @@ export const generateTodayPath = (dateString: string, basePath: string): [string
   return [dirPath, filename];
 };
 
+/**
+ * @deprecated
+ */
 const generateTagsPath = (_: any, basePath: string): [string, string] => {
   return [basePath, 'tags.json'];
 };
 
+/**
+ * @deprecated
+ */
 const generateIndexPath = (_: any, basePath: string): [string, string] => {
   return [basePath, 'index.json'];
 };
@@ -196,29 +208,38 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
   const { type, data } = props;
 
   switch (type) {
-    case 'entry':
-      console.log({ data });
-      try {
-        await meili.writeFileContentToDisk(data?.createdAt, data?.content ?? '', generateEntryPath);
-      } catch (error) {
-        // TODO: fix instances of this.basePath being null
-        console.log('error =>', error);
-      }
+    case DocumentType.Entry:
+      await meili.writeFileContentToDisk({
+        dateString: data?.createdAt,
+        type: DocumentType.Entry,
+        id: data?.id,
+        content: data?.content ?? '',
+      });
       break;
 
-    case 'today':
-      await meili.writeFileContentToDisk(data?.date, data.content, generateTodayPath);
+    case DocumentType.Journal:
+      await meili.writeFileContentToDisk({
+        dateString: data?.date,
+        content: data?.content,
+        type: DocumentType.Journal,
+      });
+
       break;
 
-    case 'tags':
-      await meili.writeFileContentToDisk('', data, generateTagsPath);
+    case DocumentType.Index:
+      await meili.writeFileContentToDisk({
+        dateString: '',
+        content: data,
+        type: DocumentType.Index,
+      });
       break;
 
-    case 'index':
-      await meili.writeFileContentToDisk('', data, generateIndexPath);
-
-    default:
-      break;
+    case DocumentType.Tags:
+      await meili.writeFileContentToDisk({
+        dateString: '',
+        content: data,
+        type: DocumentType.Tags,
+      });
   }
 };
 

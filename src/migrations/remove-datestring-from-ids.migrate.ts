@@ -1,5 +1,6 @@
 import { invoke } from '@tauri-apps/api/tauri';
 
+import { MigrationReturnType } from '.';
 import { getNewId } from './file-json-to-md.migrate';
 
 /**
@@ -7,8 +8,12 @@ import { getNewId } from './file-json-to-md.migrate';
  * SCHEMA_VERSION: 0.2
  */
 
-export const removeDateStringsFromIndex = async ({ data, updatedVersion, indexFile }) => {
-  const { fileContent, url } = indexFile;
+export const removeDateStringsFromIndex = async ({
+  data,
+  updatedVersion,
+  indexFile,
+}): Promise<MigrationReturnType> => {
+  const { fileContent, ...rest } = indexFile;
 
   const deletedEntries = fileContent.deletedEntries.map((entryId: string) => getNewId(entryId));
   const pinnedEntries = fileContent.pinnedEntries.map((entry) => {
@@ -34,19 +39,27 @@ export const removeDateStringsFromIndex = async ({ data, updatedVersion, indexFi
   const updatedIndexFileContent = {
     ...fileContent,
     schemaVersion: updatedVersion,
-    deletedEntries: deletedEntries,
+    deletedEntries,
     pinnedEntries,
     folders,
   };
 
-  try {
-    await invoke('write_to_file', {
-      path: url,
-      content: JSON.stringify(updatedIndexFileContent),
-    });
-  } catch (error) {
-    console.log('error ==>', error);
-  }
+  // console.log({ updatedIndexFileContent, data, deletedEntries, pinnedEntries, updatedFolders });
 
-  return data;
+  // try {
+  //   await invoke('write_to_file', {
+  //     path: url,
+  //     content: JSON.stringify(updatedIndexFileContent),
+  //   });
+  // } catch (error) {
+  //   console.log('error ==>', error);
+  // }
+
+  return {
+    indexFile: {
+      ...rest,
+      fileContent: updatedIndexFileContent,
+    },
+    data,
+  };
 };

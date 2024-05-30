@@ -1,8 +1,10 @@
 import { invoke } from '@tauri-apps/api';
 import { createDir } from '@tauri-apps/api/fs';
+import { format } from 'date-fns';
 import * as gm from 'gray-matter';
+import { nanoid } from 'nanoid';
 
-import { SAFE_LOCATION_KEY } from '../constants';
+import { DATE_PATTERN, SAFE_LOCATION_KEY } from '../constants';
 import { getData } from '../storage';
 
 type Data = {
@@ -23,46 +25,44 @@ class Meili {
   constructor() {
     const data = getData(SAFE_LOCATION_KEY);
     this.basePath = data;
-    // this.basePath = data?.user?.user_metadata?.safeDirectory;
   }
 
-  /**
-   * This async function takes a date string and some content as parameters
-   * and writes the content to a JSON file on disk, organizing the file based on the date.
-   */
-  async writeFileContentToDisk(dateString: string, content: any, dirFn: DirFunction) {
+  async writeFileContentToDisk({
+    dateString,
+    content,
+    type,
+    id,
+  }: {
+    dateString: string;
+    content: string | {};
+    type: DocumentType;
+    id?: string;
+  }) {
     if (!this.basePath) {
       const url = getData(SAFE_LOCATION_KEY);
       this.basePath = url;
     }
 
-    const [dirPath, filename] = dirFn?.(dateString, this.basePath);
+    const { path, directoryPath } = pathGenerator.generatePath({ dateString, type, id });
 
-    // Check if the directory already exists on disk.
-    const directoryExist = await file_exist(dirPath);
+    console.log({ path, directoryPath });
 
-    // If the directory doesn't exist, create it (including any missing parent directories).
+    const directoryExist = await file_exist(directoryPath);
+
     if (!directoryExist) {
-      await createDir(dirPath, { recursive: true });
+      await createDir(directoryPath, { recursive: true });
     }
 
-    // Write the JSON content to a file in the specified directory.
     await invoke('write_to_file', {
-      path: `${dirPath}/${filename}`,
+      path,
       content: content,
     });
   }
 
-  /**
-   * This async function takes an array of data objects and performs bulk saving of each data object
-   * by calling the writeFileContentToDisk function for each element in the array.
-   */
   async bulkSavingToFile(data: Array<Data>, dirFn: DirFunction) {
-    // Iterate through each element (Data object) in the data array.
-    data.forEach((element: Data) => {
-      // Call the writeFileContentToDisk function for each element, passing the date string and content.
-      this.writeFileContentToDisk(element.dateString, element.content, dirFn);
-    });
+    // data.forEach((element: Data) => {
+    //   this.writeFileContentToDisk(element.dateString, element.content, dirFn);
+    // });
   }
 
   async readDirectoryContent(url = this.basePath) {
@@ -118,4 +118,92 @@ class Meili {
   }
 }
 
+type PathReturn = {
+  directoryPath: string;
+  filename: string;
+  path: string;
+};
+
+export enum DocumentType {
+  Entry,
+  Journal,
+  Index,
+  Tags,
+}
+
+class PathGenerator {
+  basePath: string = '';
+
+  constructor() {
+    const data = getData(SAFE_LOCATION_KEY);
+    this.basePath = data;
+  }
+
+  private generateEntryPath(dateString: string, id?: string): PathReturn {
+    const date = new Date(dateString);
+    const entryId = id ?? nanoid();
+
+    const monthAndYear = format(date, 'yyyy/LLL');
+    const filename = `${format(date, DATE_PATTERN)}.${entryId}.md `;
+
+    const directoryPath = `${this.basePath}/${monthAndYear}`;
+
+    return {
+      directoryPath,
+      filename,
+      path: `${directoryPath}/${filename}`,
+    };
+  }
+
+  private generateJournalPath(dateString: string): PathReturn {
+    const date = new Date(dateString);
+    const year = format(date, 'yyyy');
+
+    const filename = `${format(date, DATE_PATTERN)}.md`;
+    const directoryPath = `${this.basePath}/${year}/today`;
+
+    return {
+      directoryPath,
+      filename,
+      path: `${directoryPath}/${filename}`,
+    };
+  }
+
+  generatePath({
+    dateString,
+    id,
+    type,
+  }: {
+    type: DocumentType;
+    dateString: string;
+    id?: string;
+  }): PathReturn {
+    switch (type) {
+      case DocumentType.Entry:
+        return this.generateEntryPath(dateString, id);
+
+      case DocumentType.Journal:
+        return this.generateJournalPath(dateString);
+
+      case DocumentType.Index:
+        return {
+          path: `${this.basePath}/index.json`,
+          filename: 'index.json',
+          directoryPath: this.basePath,
+        };
+
+      case DocumentType.Tags:
+        return {
+          path: `${this.basePath}/tags.json`,
+          filename: 'tags.json',
+          directoryPath: this.basePath,
+        };
+
+      default:
+        throw new Error(`Unable to find document type => ${type}`);
+    }
+  }
+}
+
 export const meili = new Meili();
+export const pathGenerator = new PathGenerator();

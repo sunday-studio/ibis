@@ -3,6 +3,7 @@ import { addDays, format, subDays } from 'date-fns';
 import { makeAutoObservable } from 'mobx';
 import { nanoid } from 'nanoid';
 
+import { DocumentType } from '@/lib/data-engine/syncing-engine';
 import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
 import { DAILY_NOTES_KEY, DATE_PATTERN } from '../lib/constants';
@@ -66,7 +67,7 @@ class DailyStore {
     };
 
     saveFileToDisk({
-      type: 'today',
+      type: DocumentType.Journal,
       data: {
         date: updatedEntry.date,
         content: `---

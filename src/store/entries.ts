@@ -2,6 +2,7 @@
 import { makeAutoObservable, observable, runInAction, toJS } from 'mobx';
 import { nanoid } from 'nanoid';
 
+import { DocumentType } from '@/lib/data-engine/syncing-engine';
 import { deleteFile, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
 import { mobxDebounce } from '../lib/mobx-debounce';
@@ -113,13 +114,7 @@ class Entries {
       const updatedList = [...this.pinnedEntriesId, id];
       this.pinnedEntriesId = updatedList;
 
-      saveFileToDisk({
-        type: 'index',
-        data: {
-          pinnedEntries: updatedList,
-          deletedEntries: this.deletedEntriesId,
-        },
-      });
+      this.saveIndexFileToDisk();
     }
 
     if (type === 'REMOVE') {
@@ -127,7 +122,7 @@ class Entries {
       this.pinnedEntriesId = updatedList;
 
       saveFileToDisk({
-        type: 'index',
+        type: DocumentType.Index,
         data: {
           pinnedEntries: updatedList,
           deletedEntries: this.deletedEntriesId,
@@ -187,7 +182,7 @@ class Entries {
     } as Entry;
 
     saveFileToDisk({
-      type: 'entry',
+      type: DocumentType.Entry,
       data: {
         createdAt: entry.createdAt,
         content: `---
@@ -232,7 +227,7 @@ ${editorState}
     };
 
     saveFileToDisk({
-      type: 'entry',
+      type: DocumentType.Entry,
       data: entry,
     });
 
@@ -249,7 +244,7 @@ ${editorState}
     };
 
     saveFileToDisk({
-      type: 'index',
+      type: DocumentType.Index,
       data: toJS(currentData),
     });
   }
@@ -263,7 +258,7 @@ ${editorState}
     const updatedEntries = this.findAndReplaceEntry(updateEntry);
 
     saveFileToDisk({
-      type: 'entry',
+      type: DocumentType.Entry,
       data: updateEntry,
     });
 
@@ -323,7 +318,7 @@ ${editorState}
     } as Entry;
 
     saveFileToDisk({
-      type: 'entry',
+      type: DocumentType.Entry,
       data: updatedEntry,
     });
 
