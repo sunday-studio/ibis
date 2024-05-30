@@ -99,7 +99,7 @@ export const SearchDialog = observer(() => {
       name: 'Load new safe',
       onClick: () => {
         clearData(SAFE_LOCATION_KEY);
-        navigate(0);
+        navigate('/safe');
       },
       icon: MonitorDown,
     },

@@ -1,22 +1,8 @@
 import { createDir, exists, writeTextFile } from '@tauri-apps/api/fs';
-import { redirect } from 'react-router-dom';
 
 import { seedDefaultEntries, seedPinnedEntry } from '@/migrations/seed/entries.seed';
 import { generateIndexSeed } from '@/migrations/seed/index.seed';
 import { seedDefaultJournal } from '@/migrations/seed/journal.seed';
-
-import { SAFE_LOCATION_KEY } from '../constants';
-import { getData } from '../storage';
-
-export const checkIfLoggedIn = async () => {
-  const safe = Boolean(await getData(SAFE_LOCATION_KEY));
-
-  if (safe) {
-    return null;
-  }
-
-  return redirect('/auth');
-};
 
 const createNewDirectory = async (path: string) => {
   const directoryExist = await exists(path);

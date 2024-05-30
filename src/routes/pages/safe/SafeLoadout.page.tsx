@@ -8,7 +8,7 @@ import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { setData } from '@/lib/storage';
 
-export const Onboarding = () => {
+export const SafeLoadout = () => {
   const [location, setLocation] = useState<null | string>(null);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
@@ -42,7 +42,7 @@ export const Onboarding = () => {
   };
 
   return (
-    <div className="page-container auth-page" data-tauri-drag-region>
+    <div className="page-container safe-loadout" data-tauri-drag-region>
       <div className="form-wrapper">
         <div className="form-wrapper-header">
           <h2 className="satoshi-font">IBIS</h2>
