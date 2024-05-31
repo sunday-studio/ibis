@@ -45,8 +45,6 @@ class Meili {
 
     const { path, directoryPath } = pathGenerator.generatePath({ dateString, type, id });
 
-    console.log({ path, directoryPath });
-
     const directoryExist = await file_exist(directoryPath);
 
     if (!directoryExist) {
@@ -59,6 +57,7 @@ class Meili {
     });
   }
 
+  // TODO: fix this
   async bulkSavingToFile(data: Array<Data>, dirFn: DirFunction) {
     // data.forEach((element: Data) => {
     //   this.writeFileContentToDisk(element.dateString, element.content, dirFn);
@@ -98,7 +97,21 @@ class Meili {
     }
   }
 
-  async deletefile(path: string) {
+  async deletefile({
+    dateString,
+    type,
+    id,
+  }: {
+    dateString: string;
+    id?: string;
+    type: DocumentType;
+  }) {
+    const { path } = pathGenerator.generatePath({
+      type,
+      dateString,
+      id,
+    });
+
     try {
       await invoke('delete_file', { path });
     } catch (error) {
@@ -139,14 +152,22 @@ class PathGenerator {
     this.basePath = data;
   }
 
-  private generateEntryPath(dateString: string, id?: string): PathReturn {
+  private generateEntryPath({
+    dateString,
+    basePath,
+    id,
+  }: {
+    dateString: string;
+    basePath: string;
+    id?: string;
+  }): PathReturn {
     const date = new Date(dateString);
     const entryId = id ?? nanoid();
 
     const monthAndYear = format(date, 'yyyy/LLL');
-    const filename = `${format(date, DATE_PATTERN)}.${entryId}.md `;
+    const filename = `${format(date, DATE_PATTERN)}.${entryId}.md`;
 
-    const directoryPath = `${this.basePath}/${monthAndYear}`;
+    const directoryPath = `${basePath}/${monthAndYear}`;
 
     return {
       directoryPath,
@@ -155,12 +176,18 @@ class PathGenerator {
     };
   }
 
-  private generateJournalPath(dateString: string): PathReturn {
+  private generateJournalPath({
+    dateString,
+    basePath,
+  }: {
+    dateString: string;
+    basePath?: string;
+  }): PathReturn {
     const date = new Date(dateString);
     const year = format(date, 'yyyy');
 
     const filename = `${format(date, DATE_PATTERN)}.md`;
-    const directoryPath = `${this.basePath}/${year}/today`;
+    const directoryPath = `${basePath}/${year}/today`;
 
     return {
       directoryPath,
@@ -173,28 +200,32 @@ class PathGenerator {
     dateString,
     id,
     type,
+    basePath,
   }: {
     type: DocumentType;
     dateString: string;
     id?: string;
+    basePath?: string;
   }): PathReturn {
+    const currentBasePath = basePath ?? this.basePath;
+
     switch (type) {
       case DocumentType.Entry:
-        return this.generateEntryPath(dateString, id);
+        return this.generateEntryPath({ dateString, id, basePath: currentBasePath });
 
       case DocumentType.Journal:
-        return this.generateJournalPath(dateString);
+        return this.generateJournalPath({ dateString, basePath: currentBasePath });
 
       case DocumentType.Index:
         return {
-          path: `${this.basePath}/index.json`,
+          path: `${currentBasePath}/index.json`,
           filename: 'index.json',
           directoryPath: this.basePath,
         };
 
       case DocumentType.Tags:
         return {
-          path: `${this.basePath}/tags.json`,
+          path: `${currentBasePath}/tags.json`,
           filename: 'tags.json',
           directoryPath: this.basePath,
         };

@@ -23,6 +23,10 @@ export const MAX_SCHEMA_VERSION: number = Math.max(
   ...Object.keys(FILE_VERSION_MIGRATORS).map((i) => Number(i)),
 );
 
+/**
+ * Ibis migration setup;
+ * when there's no migration needed, the same data as content is returned
+ */
 export const migrateFileSystem = async (data: any) => {
   let migratedData = data;
   const indexFile = migratedData?.find((file: any) => file.type === 'index.json');
@@ -54,5 +58,8 @@ export const migrateFileSystem = async (data: any) => {
     indexFile: migratedIndex,
   });
 
-  return migratedData;
+  return {
+    migratedData,
+    indexFile: migratedIndex,
+  };
 };

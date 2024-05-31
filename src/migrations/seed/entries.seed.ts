@@ -1,18 +1,22 @@
-// @ts-nocheck
 import { writeTextFile } from '@tauri-apps/api/fs';
 import { nanoid } from 'nanoid';
 
+import { DocumentType, pathGenerator } from '@/lib/data-engine/syncing-engine';
 import { generateEntryPath } from '@/lib/data-engine/syncing-helpers';
 
-export const seedDefaultEntries = async (name: string) => {
-  const welcomeTimestamp = new Date();
+export const seedDefaultEntries = async (basePath: string) => {
+  const timestamp = new Date().toISOString();
 
-  const [_, s, welcomeFilename] = generateEntryPath(welcomeTimestamp.toISOString(), name);
+  const { path } = pathGenerator.generatePath({
+    dateString: timestamp,
+    type: DocumentType.Entry,
+    basePath,
+  });
 
   const welcomeMarkdown = `---
 id: ${nanoid()}
-createdAt: ${welcomeTimestamp.toISOString()}
-updatedAt: ${welcomeTimestamp.toISOString()}
+createdAt: ${timestamp}
+updatedAt: ${timestamp}
 tags: ''
 title: 'Intro to Markdown'
 ---
@@ -62,19 +66,24 @@ Markdown is a lightweight markup language with plain-text formatting syntax. It 
 > This is a blockquote.
 `;
 
-  await writeTextFile(welcomeFilename, welcomeMarkdown);
+  await writeTextFile(path, welcomeMarkdown);
 };
 
-export const seedPinnedEntry = async (name: string) => {
-  const timestamp = new Date();
-
+export const seedPinnedEntry = async (basePath: string) => {
+  const timestamp = new Date().toISOString();
   const id = `${nanoid()}`;
-  const [_, s, filename] = generateEntryPath(timestamp.toISOString(), name);
+
+  const { path } = pathGenerator.generatePath({
+    dateString: timestamp,
+    type: DocumentType.Entry,
+    id,
+    basePath,
+  });
 
   const markdown = `---
 id: ${id}
-createdAt: ${timestamp.toISOString()}
-updatedAt: ${timestamp.toISOString()}
+createdAt: ${timestamp}
+updatedAt: ${timestamp}
 tags: ''
 title: 'What is Ibis'
 ---
@@ -84,11 +93,10 @@ title: 'What is Ibis'
 
 Ibis a local-first writing tool. All your data is in markdown stored on your machine. Nothing goes out to anywhere. Total privacy. 
 
-
   `;
 
   try {
-    await writeTextFile(filename, markdown);
+    await writeTextFile(path, markdown);
   } catch (error) {
     console.error('mmore error', error);
   }

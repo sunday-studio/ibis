@@ -61,10 +61,10 @@ export const Sidebar = observer(() => {
     return entriesStore.foldersWithEntries;
   }, [entriesStore.foldersWithEntries]);
 
-  // console.log(
-  //   'se =>',
-  //   privateEntries.map((s) => s.id),
-  // );
+  console.log(
+    'se =>',
+    privateEntries.map((s) => s.id),
+  );
 
   return (
     <div className="sidebar">

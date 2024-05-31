@@ -44,17 +44,6 @@ export const removeDateStringsFromIndex = async ({
     folders,
   };
 
-  // console.log({ updatedIndexFileContent, data, deletedEntries, pinnedEntries, updatedFolders });
-
-  // try {
-  //   await invoke('write_to_file', {
-  //     path: url,
-  //     content: JSON.stringify(updatedIndexFileContent),
-  //   });
-  // } catch (error) {
-  //   console.log('error ==>', error);
-  // }
-
   return {
     indexFile: {
       ...rest,

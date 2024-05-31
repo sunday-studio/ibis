@@ -488,8 +488,10 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  transition: all 0.3s ease-in-out;
 
-  &[data-state='open'] {
+  &[data-state='open'],
+  &:hover {
     background-color: var(--hover-background);
   }
 

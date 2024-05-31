@@ -8,7 +8,7 @@ import { Entry, entriesStore } from '@/store/entries';
 import { tagsState } from '@/store/tags-state';
 
 import { searchEngine } from '../search/search-engine';
-import { DocumentType, meili } from './syncing-engine';
+import { DocumentType, meili, pathGenerator } from './syncing-engine';
 
 // pattern year-month-day; 2023-01-12
 const DATE_PATTERN = 'y-MM-dd';
@@ -37,6 +37,11 @@ type IndexType = {
 };
 
 type SaveFileToDiskProps = EntryType | DailyEntryType | TagsType | IndexType;
+
+type DeleteFileFromDiskProps = {
+  type: DocumentType.Entry;
+  data: Entry;
+};
 
 export const months = [
   'Jan',
@@ -119,9 +124,7 @@ export const loadDirectoryContent = async (safeURL: string) => {
 
   const content = await Promise.all(promises);
 
-  // always run migrations
-  // when there's no migration done, the same data as content is returned
-  const migratedData = await migrateFileSystem(content);
+  const { migratedData, indexFile } = await migrateFileSystem(content);
 
   const groupedData = migratedData.reduce((acc, obj) => {
     if (!acc[obj.type]) {
@@ -135,11 +138,10 @@ export const loadDirectoryContent = async (safeURL: string) => {
   try {
     entriesStore.loadLocalData({
       entries: groupedData.entries,
-      index: groupedData['index.json']?.[0],
+      index: indexFile,
     });
     dailyEntryState.localLocalData(groupedData.dailyNotes);
     tagsState.loadLocalData(groupedData['tags.json']?.[0]);
-
     searchEngine.loadLocalData(groupedData.entries, groupedData.dailyNotes);
   } catch (error) {
     console.log('error =>', error);
@@ -227,6 +229,7 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
       break;
 
     case DocumentType.Index:
+      console.log('hellow orld =>', data);
       await meili.writeFileContentToDisk({
         dateString: '',
         content: data,
@@ -243,8 +246,10 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
   }
 };
 
-export const deleteFile = async (entry: Entry) => {
-  const [_, _s, path] = generateEntryPath(entry.createdAt, meili.basePath);
-
-  await meili.deletefile(path);
+export const deleteFileFromDisk = async (props: DeleteFileFromDiskProps) => {
+  await meili.deletefile({
+    type: DocumentType.Entry,
+    dateString: props.data.createdAt,
+    id: props.data.id,
+  });
 };

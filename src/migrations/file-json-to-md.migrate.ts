@@ -12,9 +12,9 @@ export function getNewId(oldId: string) {
   const datePattern = /^[0-2]\d:[0-5]\d:[0-5]\d GMT[+-]\d{4} \(.+\)-/;
 
   if (typeof oldId === 'string' && datePattern.test(oldId)) {
-    return oldId.replace(datePattern, '');
+    return oldId.replace(datePattern, '').trim();
   } else {
-    return oldId;
+    return oldId.trim();
   }
 }
 
@@ -59,15 +59,13 @@ async function convertLexicalJSONToMarkdown(content: string) {
 }
 
 export const migrateJSONTOMarkdown = async ({ data }): Promise<MigrationReturnType> => {
-  console.log('about to run this => migrateJSONTOMarkdown');
-
-  const command = Command.sidecar('binaries/ibis-server');
-  command.spawn().then((child) => {
-    listen(TauriEvent.WINDOW_DESTROYED, function () {
-      console.log('Killed window ');
-      // child.kill();
-    });
-  });
+  // const command = Command.sidecar('binaries/ibis-server');
+  // command.spawn().then((child) => {
+  //   listen(TauriEvent.WINDOW_DESTROYED, function () {
+  //     console.log('Killed window ');
+  //     // child.kill();
+  //   });
+  // });
 
   const getContent = (item) => {
     if (item.type === 'entries') {

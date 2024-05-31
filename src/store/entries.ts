@@ -3,7 +3,7 @@ import { makeAutoObservable, observable, runInAction, toJS } from 'mobx';
 import { nanoid } from 'nanoid';
 
 import { DocumentType } from '@/lib/data-engine/syncing-engine';
-import { deleteFile, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
+import { deleteFileFromDisk, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
 import { mobxDebounce } from '../lib/mobx-debounce';
 import { formatDuplicatedTitle } from '../lib/utils';
@@ -150,6 +150,8 @@ class Entries {
   }
 
   addNewEntry() {
+    const id = nanoid();
+
     const DEFAULT_ENTRY: Entry = {
       content: null,
       createdAt: new Date().toISOString(),
@@ -158,7 +160,7 @@ class Entries {
       // TODO: before moving this to toISOString string. implement migrator to move all the existing data to new format
       // TOOD: standardize this date formatting stuff also
 
-      id: `${new Date().toTimeString()}-${nanoid()}`,
+      id: `${id}`,
       tags: [tagsState.tags.filter((tag: Tag) => tag.label === 'Private')?.[0]?.value],
     };
 
@@ -245,7 +247,7 @@ ${editorState}
 
     saveFileToDisk({
       type: DocumentType.Index,
-      data: toJS(currentData),
+      data: JSON.stringify(toJS(currentData)),
     });
   }
 
@@ -291,7 +293,9 @@ ${editorState}
     this.deletedEntriesId = updatedDeletedEntries;
     this.entries = updatedEntries;
     this.saveIndexFileToDisk();
-    deleteFile(entry?.[0]);
+    deleteFileFromDisk({
+      data: entry?.[0],
+    });
   }
 
   duplicateEntry(entry: Entry) {
