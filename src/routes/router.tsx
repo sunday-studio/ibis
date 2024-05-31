@@ -1,28 +1,31 @@
 import { createBrowserRouter } from 'react-router-dom';
 
+import { AppErrorBoundary } from '@/components/shared/ErrorBoundary';
+
 import Root from './Root';
 import AppLayout from './layout/AppLayout';
 import EntryPage from './pages/entry/Entry.page';
+import JournalPage from './pages/journal/Journal.page';
 import { SafeLoadout } from './pages/safe/SafeLoadout.page';
 import SettingsPage from './pages/settings/Settings.page';
-import Today from './pages/today/Today.page';
 import TrashPage from './pages/trash/Trash.page';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
+    ErrorBoundary: AppErrorBoundary,
     children: [
       {
         element: <AppLayout />,
         children: [
           {
             path: '/',
-            element: <Today />,
+            element: <JournalPage />,
           },
           {
             path: '/today',
-            element: <Today />,
+            element: <JournalPage />,
           },
 
           {

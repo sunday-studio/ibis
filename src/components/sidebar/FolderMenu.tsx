@@ -7,7 +7,7 @@ import { type Folder, entriesStore } from '@/store/entries';
 
 interface FolderMenu {
   entryId: string;
-  onFolderSelect: () => {};
+  onFolderSelect: () => void;
 }
 
 export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => {

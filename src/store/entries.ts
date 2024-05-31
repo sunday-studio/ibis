@@ -157,9 +157,6 @@ class Entries {
       createdAt: new Date().toISOString(),
       title: 'Untitled',
 
-      // TODO: before moving this to toISOString string. implement migrator to move all the existing data to new format
-      // TOOD: standardize this date formatting stuff also
-
       id: `${id}`,
       tags: [tagsState.tags.filter((tag: Tag) => tag.label === 'Private')?.[0]?.value],
     };
@@ -187,6 +184,7 @@ class Entries {
       type: DocumentType.Entry,
       data: {
         createdAt: entry.createdAt,
+        id: entry.id,
         content: `---
 id: ${entry?.id}
 createdAt: ${entry?.createdAt}

@@ -61,11 +61,6 @@ export const Sidebar = observer(() => {
     return entriesStore.foldersWithEntries;
   }, [entriesStore.foldersWithEntries]);
 
-  console.log(
-    'se =>',
-    privateEntries.map((s) => s.id),
-  );
-
   return (
     <div className="sidebar">
       <SidebarHeader />
@@ -140,7 +135,6 @@ export const Sidebar = observer(() => {
               {privateEntries?.map((entry) => (
                 <SidebarEntry
                   selectEntry={(entry) => {
-                    // console.log('entryData', entry.id);
                     navigate(`/entry/${entry.id}`);
                     entriesStore.selectEntry(entry);
                   }}

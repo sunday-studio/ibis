@@ -16,9 +16,6 @@ type DirFunction = (dateString: string, basePath: string) => [string, string, st
 
 const file_exist = async (path: string) => await invoke('path_exists', { path });
 
-/**
- * this is the main sync service to save files changes on device and in the future in the cloud
- */
 class Meili {
   basePath = '';
 
@@ -44,6 +41,8 @@ class Meili {
     }
 
     const { path, directoryPath } = pathGenerator.generatePath({ dateString, type, id });
+
+    console.log({ path });
 
     const directoryExist = await file_exist(directoryPath);
 
@@ -163,6 +162,8 @@ class PathGenerator {
   }): PathReturn {
     const date = new Date(dateString);
     const entryId = id ?? nanoid();
+
+    console.log({ entryId, id });
 
     const monthAndYear = format(date, 'yyyy/LLL');
     const filename = `${format(date, DATE_PATTERN)}.${entryId}.md`;

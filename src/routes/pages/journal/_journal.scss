@@ -1,4 +1,4 @@
-.today-page {
+.journal-page {
   display: flex;
   margin: 0 auto;
   padding: 0 80px;
@@ -23,11 +23,13 @@
       align-items: center;
       gap: 15px;
       height: 100%;
+      position: relative;
 
       h1 {
         font-size: 5em;
-        font-variant-numeric: lining-nums;
-        line-height: 0.75;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+        position: relative;
 
         &.is-today {
           display: inline-block;

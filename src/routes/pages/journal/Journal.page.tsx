@@ -1,10 +1,10 @@
 import { AppErrorBoundary } from '@/components/shared/ErrorBoundary';
 
-import DailyNote from '../../../components/daily-notes/Note';
+import DailyNote from '../../../components/journal/Note';
 
-export default function TodayPage() {
+export default function JournalPage() {
   return (
-    <div className="container today-page">
+    <div className="container journal-page">
       <AppErrorBoundary>
         <DailyNote />
       </AppErrorBoundary>

@@ -4,7 +4,6 @@ import * as Popover from '@radix-ui/react-popover';
 import clsx from 'clsx';
 import { format, isToday } from 'date-fns';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
 import { entryHasValidContent, getDayPercentageCompleted } from '@/lib/utils';

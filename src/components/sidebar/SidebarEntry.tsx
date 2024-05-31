@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Fragment, useState } from 'react';
 import { useMemo } from 'react';
 
@@ -66,11 +65,7 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
           </div>
         </ContextMenu.Trigger>
         <ContextMenu.Portal>
-          <ContextMenu.Content
-            className="popover-content popover-container"
-            sideOffset={5}
-            align="end"
-          >
+          <ContextMenu.Content className="popover-content popover-container">
             <EntryActionOptions entry={entry} />
           </ContextMenu.Content>
         </ContextMenu.Portal>
@@ -79,11 +74,13 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
   );
 });
 
-const EntryActionOptions = observer(({ entry }: { entry: Entry; onDelete: () => void }) => {
+const EntryActionOptions = observer<{ entry: Entry }>(({ entry }) => {
   const { pinnedEntriesId } = entriesStore;
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
-  const isPinned = pinnedEntriesId.includes(entry.id!);
   const [showFolderMenu, setShowFolderMenu] = useState(false);
+
+  // @ts-ignores
+  const isPinned = pinnedEntriesId.includes(entry?.id!);
 
   const options = useMemo(() => {
     return [
