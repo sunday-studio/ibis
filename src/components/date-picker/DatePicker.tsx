@@ -4,6 +4,7 @@ import { CalendarDate, createCalendar, parseDate } from '@internationalized/date
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { PressEvent, useCalendar, useLocale } from 'react-aria';
 import { useCalendarState } from 'react-stately';
+import { c } from 'vitest/dist/reporters-5f784f42';
 
 import { DatePickerGrid } from './DatePicker.Grid';
 
@@ -23,13 +24,15 @@ export const DatePicker = (props: DatePickerProps) => {
   const { showDotIndicator, onChange, value } = props;
   let { locale } = useLocale();
 
+  const dateValue = parseDate(new Date(value).toISOString().split('T')[0]) ?? null;
+
   const handleOnChange = useCallback((date: CalendarDate) => {
     return onChange(new Date(date as unknown as Date));
   }, []);
 
   let state = useCalendarState({
     onChange: handleOnChange,
-    value: parseDate(value) || null,
+    value: dateValue,
     locale,
     createCalendar,
   });
@@ -37,7 +40,7 @@ export const DatePicker = (props: DatePickerProps) => {
   let { calendarProps, prevButtonProps, nextButtonProps, title } = useCalendar(
     {
       onChange: handleOnChange,
-      value: parseDate(value) || null,
+      value: dateValue,
     },
     state,
   );

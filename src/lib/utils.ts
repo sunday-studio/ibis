@@ -35,13 +35,3 @@ export const getDayPercentageCompleted = () => {
 
   return Number(remainingPercentage.toFixed(2));
 };
-
-export const entryHasValidContent = (entry: string) => {
-  if (!entry) return false;
-
-  // TODO: refactor later when files are switched to markdown
-  const parsedEntry = JSON.parse(entry);
-  if (parsedEntry?.root?.children.length === 0) return false;
-
-  return true;
-};

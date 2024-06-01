@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 
@@ -13,12 +12,14 @@ const {
   $applyNodeReplacement,
   $createParagraphNode,
   $createTextNode,
-  // LexicalNode,
+  LexicalNode,
   ElementNode,
 } = require('lexical');
 const Prism = require('prismjs');
 
+// @ts-ignore
 global.window = {};
+// @ts-ignore
 global.window.Prism = Prism;
 
 type SerializedPageBreakNode = {
@@ -41,10 +42,10 @@ class PageBreakNode extends ElementNode {
   }
 
   static clone(node: PageBreakNode): PageBreakNode {
-    return new PageBreakNode(node.__key);
+    return new PageBreakNode();
   }
 
-  static importJSON(_serializedNode: SerializedPageBreakNode): LexicalNode {
+  static importJSON(_serializedNode: SerializedPageBreakNode): typeof LexicalNode {
     return $createPageBreakNode();
   }
 
@@ -60,7 +61,9 @@ class PageBreakNode extends ElementNode {
   }
 }
 
-export function $isPageBreakNode(node: LexicalNode | null | undefined): node is PageBreakNode {
+export function $isPageBreakNode(
+  node: typeof LexicalNode | null | undefined,
+): node is PageBreakNode {
   return node instanceof PageBreakNode;
 }
 
@@ -69,12 +72,14 @@ export function $createPageBreakNode(): PageBreakNode {
 }
 
 const PAGE_BREAK_NODE_TRANSFORMER: Transformer = {
+  // @ts-ignore
   export: (node) => {
     if ($isPageBreakNode(node)) {
       return '---\n';
     }
   },
   regExp: /^---\s*$/,
+  // @ts-ignore
   replace: (parentNode, _, match) => {
     const [allMatch] = match;
     const paragraphNode = $createParagraphNode();
@@ -119,6 +124,7 @@ app.post('/json', async (c) => {
       LinkNode,
       PageBreakNode,
     ],
+    // @ts-ignore
     onError: (e) => {
       console.log('problem no dey finish =>', e);
       return c.json({ success: false, message: e.message, e });

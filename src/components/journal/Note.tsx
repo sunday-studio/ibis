@@ -6,8 +6,8 @@ import { format, isToday } from 'date-fns';
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 
-import { entryHasValidContent, getDayPercentageCompleted } from '@/lib/utils';
-import { dailyEntryState } from '@/store/daily-state';
+import { getDayPercentageCompleted } from '@/lib/utils';
+import { journalEntryState } from '@/store/journal-state';
 
 import { DatePicker } from '../date-picker/DatePicker';
 import { EDITOR_PAGES, Editor } from '../editor/Editor';
@@ -27,9 +27,9 @@ function getDateValues(d: string) {
 }
 
 const DailyPage = observer(() => {
-  const { dailyEntry } = dailyEntryState;
+  const { journalEntry } = journalEntryState;
 
-  const dateValues = getDateValues(dailyEntry?.date);
+  const dateValues = getDateValues(journalEntry?.date);
 
   const updatePercentageCompleted = () => {
     const dayCompleted = getDayPercentageCompleted();
@@ -44,6 +44,8 @@ const DailyPage = observer(() => {
     }, 45 * 60 * 1000);
     return () => clearInterval(intervalId);
   }, [dateValues.day]);
+
+  // console.log('date =>', journalEntry);
 
   return (
     <Popover.Root>
@@ -70,10 +72,10 @@ const DailyPage = observer(() => {
                 <Calendar className="icon-inner" size={14} strokeWidth={2.3} />
               </button>
             </Popover.Trigger>
-            <button className="icon" onClick={() => dailyEntryState.goToPreviousDay()}>
+            <button className="icon" onClick={() => journalEntryState.goToPreviousDay()}>
               <ChevronLeft className="icon-inner" size={16} strokeWidth={2.5} />
             </button>
-            <button className="icon" onClick={() => dailyEntryState.goToNextDay()}>
+            <button className="icon" onClick={() => journalEntryState.goToNextDay()}>
               <ChevronRight className="icon-inner" size={16} strokeWidth={2.5} />
             </button>
           </div>
@@ -81,13 +83,13 @@ const DailyPage = observer(() => {
 
         <div className="note">
           <div className="note-editor-container">
-            {dailyEntry && (
+            {journalEntry && (
               <Editor
                 page={EDITOR_PAGES.JOURNAL}
                 placeholderClassName="daily-note-placeholder"
-                onChange={(state) => dailyEntryState.saveContent(state)}
-                content={dailyEntry.content}
-                id={dailyEntry.id}
+                onChange={(state) => journalEntryState.saveContent(state)}
+                content={journalEntry.content}
+                id={journalEntry.id}
               />
             )}
           </div>
@@ -97,11 +99,11 @@ const DailyPage = observer(() => {
       <Popover.Portal>
         <Popover.Content sideOffset={10} data-align="left" alignOffset={10} align="start">
           {/* TODO: not sure why this is breaking but fix it later. something to do with the `parseDate` function;
-          too tired to worry about this */}
+        too tired to worry about this */}
           <DatePicker
-            onChange={(date: Date) => dailyEntryState.goToDate(date)}
-            value={dailyEntry?.date}
-            showDotIndicator={(date: Date) => dailyEntryState.showDotIndicator(date)}
+            onChange={(date: Date) => journalEntryState.goToDate(date)}
+            value={journalEntry?.date}
+            showDotIndicator={(date: Date) => journalEntryState.showDotIndicator(date)}
           />
         </Popover.Content>
       </Popover.Portal>

@@ -1,9 +1,11 @@
-// @ts-nocheck
 import { makeAutoObservable, observable, runInAction, toJS } from 'mobx';
 import { nanoid } from 'nanoid';
+import { redirect } from 'react-router-dom';
 
+import { ACTIVE_ENTRY } from '@/lib/constants';
 import { DocumentType } from '@/lib/data-engine/syncing-engine';
 import { deleteFileFromDisk, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
+import { getData, setData } from '@/lib/storage';
 
 import { mobxDebounce } from '../lib/mobx-debounce';
 import { formatDuplicatedTitle } from '../lib/utils';
@@ -25,16 +27,16 @@ export type Folder = {
   entries: Set<string>;
 };
 
-type Folders = Record<String, Folder>;
+type Folders = Record<string, Folder>;
 
 class Entries {
-  entries: Entry[] | [] = [];
-  deletedEntriesId: string[] | [] = [];
-  pinnedEntriesId: string[] | [] = [];
+  entries: Entry[] = [];
+  deletedEntriesId: string[] = [];
+  pinnedEntriesId: string[] = [];
   activeEntry?: Entry | null = null;
   activeEntryTitle?: string | null = this.activeEntry?.title;
   folders: Folders = {};
-  entriesInFolders: Set[] = new Set([]);
+  entriesInFolders = new Set([]);
 
   private schemaVersion: number;
 
@@ -73,6 +75,14 @@ class Entries {
 
     this.folders = observable(temFolders);
     this.entriesInFolders = observable(new Set(temEntriesInFolders));
+
+    const currentActiveEntry = getData(ACTIVE_ENTRY);
+    const activeEntry = this.entries.find((entry: Entry) => entry.id === currentActiveEntry);
+
+    if (activeEntry) {
+      this.activeEntry = activeEntry;
+      redirect(`/entry/${activeEntry.id}`);
+    }
   }
 
   get pinnedEntries() {
@@ -113,21 +123,13 @@ class Entries {
     if (type === 'ADD') {
       const updatedList = [...this.pinnedEntriesId, id];
       this.pinnedEntriesId = updatedList;
-
       this.saveIndexFileToDisk();
     }
 
     if (type === 'REMOVE') {
       const updatedList = [...this.pinnedEntriesId].filter((i) => i != id);
       this.pinnedEntriesId = updatedList;
-
-      saveFileToDisk({
-        type: DocumentType.Index,
-        data: {
-          pinnedEntries: updatedList,
-          deletedEntries: this.deletedEntriesId,
-        },
-      });
+      this.saveIndexFileToDisk();
     }
   }
 
@@ -142,6 +144,7 @@ class Entries {
   selectEntry(entry: Entry) {
     this.activeEntry = entry;
     this.activeEntryTitle = entry.title;
+    setData(ACTIVE_ENTRY, entry.id);
   }
 
   removeActiveEntry() {
@@ -172,7 +175,7 @@ class Entries {
     return DEFAULT_ENTRY.id;
   }
 
-  saveEditedContent(editorState: string) {
+  saveContent(editorState: string) {
     const entry: Entry = {
       ...this.activeEntry,
       updatedAt: new Date().toISOString(),
@@ -188,7 +191,7 @@ class Entries {
         content: `---
 id: ${entry?.id}
 createdAt: ${entry?.createdAt}
-updatedAt: ${entry?.updatedAt ?? content?.createdAt ?? ''}
+updatedAt: ${entry?.updatedAt ?? entry?.createdAt ?? ''}
 tags: ${entry?.tags || []}
 title: ${entry?.title || 'Untitled'}        
 ---
@@ -203,38 +206,6 @@ ${editorState}
     this.entries = updatedEntries;
   }
 
-  // TODO: merge with saveEditedContent
-  saveContent(editorState: string) {
-    const activeEntryIndex = this.entries.findIndex(
-      (entry: Entry) => entry.id === this?.activeEntry?.id,
-    );
-
-    if (activeEntryIndex !== -1) {
-      this.saveEditedContent(editorState);
-      return;
-    }
-
-    console.log('I am called', activeEntryIndex);
-
-    return;
-
-    const entry = {
-      id: nanoid(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      content: editorState,
-      title: this.activeEntryTitle!,
-    };
-
-    saveFileToDisk({
-      type: DocumentType.Entry,
-      data: entry,
-    });
-
-    const updatedEntries = [entry, ...this.entries];
-    this.entries = updatedEntries;
-  }
-
   saveIndexFileToDisk() {
     const currentData = {
       deletedEntries: this.deletedEntriesId,
@@ -245,7 +216,7 @@ ${editorState}
 
     saveFileToDisk({
       type: DocumentType.Index,
-      data: JSON.stringify(toJS(currentData)),
+      data: toJS(currentData),
     });
   }
 
@@ -363,9 +334,10 @@ ${editorState}
   removeEntryFromFolder(folderId: string, entryId: string) {
     if (this.folders[folderId]) {
       const folder: Folder = this.folders[folderId];
+      folder.entries.delete(entryId);
+
       const updatedFolder: Folder = {
         ...folder,
-        entries: folder.entries.delete(entryId),
       };
 
       runInAction(() => {
@@ -406,7 +378,6 @@ ${editorState}
   }
 
   tagEntryWithFolder(entryId: string, actionType: 'ADD' | 'REMOVE') {
-    console.log('I am called');
     if (actionType === 'ADD') {
       this.entriesInFolders.add(entryId);
     } else {

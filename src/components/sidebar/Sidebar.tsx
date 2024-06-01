@@ -5,7 +5,7 @@ import { BadgePlus, DoorOpen, Layers, Search, Trash2Icon } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
-import { dailyEntryState } from '@/store/daily-state';
+import { journalEntryState } from '@/store/journal-state';
 import { searchStore } from '@/store/search';
 
 import { type Entry, entriesStore } from '../../store/entries';
@@ -71,7 +71,7 @@ export const Sidebar = observer(() => {
             icon={DoorOpen}
             shortcutKey="⌘ J"
             onClick={() => {
-              dailyEntryState.goToToday();
+              journalEntryState.goToToday();
               goToPage('/today');
             }}
           />

@@ -117,7 +117,6 @@ export const Editor = ({
   };
 
   const debouncedUpdates = useDebouncedCallback(async () => {
-    // @ts-ignore
     onChange(markdownRef.current);
   }, 750);
 

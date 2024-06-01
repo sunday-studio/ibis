@@ -1,10 +1,17 @@
-// @ts-nocheck
-import * as React from 'react';
 import { useEffect, useRef } from 'react';
 
 import { createPortal } from 'react-dom';
 
 import './Modal.scss';
+
+interface ModalProps {
+  onClose: () => void;
+  children: any;
+  title?: string;
+  closeOnClickOutside?: boolean;
+  className?: string;
+  isDialog?: boolean;
+}
 
 function PortalImpl({ onClose, children, title, closeOnClickOutside, isDialog, className = '' }) {
   const modalRef = useRef(null);
@@ -74,14 +81,7 @@ export default function Modal({
   closeOnClickOutside = false,
   className,
   isDialog,
-}: {
-  onClose: () => void;
-  children: any;
-  title?: string;
-  closeOnClickOutside?: boolean;
-  className?: string;
-  isDialog?: boolean;
-}) {
+}: ModalProps) {
   return createPortal(
     <PortalImpl
       className={className}

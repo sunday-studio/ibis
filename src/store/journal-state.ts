@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { addDays, format, subDays } from 'date-fns';
 import { makeAutoObservable } from 'mobx';
 import { nanoid } from 'nanoid';
@@ -6,24 +5,24 @@ import { nanoid } from 'nanoid';
 import { DocumentType } from '@/lib/data-engine/syncing-engine';
 import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
-import { DAILY_NOTES_KEY, DATE_PATTERN } from '../lib/constants';
+import { DATE_PATTERN, JOURNAL_NOTES_KEY } from '../lib/constants';
 import { setData } from '../lib/storage';
 
 export function getDateInStringFormat(date: Date, pattern = DATE_PATTERN) {
   return format(date, pattern);
 }
 
-export type DailyEntry = {
+export type JournalEntry = {
   id: string;
   content: string | null;
   date: string;
 };
 
-type DailyNotes = Record<string, DailyEntry>;
+type JournalEntries = Record<string, JournalEntry>;
 
-class DailyStore {
-  dailyEntry: DailyEntry = {};
-  dailyEntries: DailyNotes | {} = {};
+class JournalStore {
+  journalEntry: JournalEntry;
+  journalEntries: JournalEntries | {} = {};
   intervalId = null;
 
   constructor() {
@@ -46,7 +45,7 @@ class DailyStore {
     }, {});
 
     const today = getDateInStringFormat(new Date());
-    let entryForToday: DailyEntry = allEntries[today];
+    let entryForToday: JournalEntry = allEntries[today];
 
     if (!entryForToday) {
       entryForToday = {
@@ -56,13 +55,13 @@ class DailyStore {
       };
     }
 
-    this.dailyEntry = entryForToday;
-    this.dailyEntries = allEntries;
+    this.journalEntry = entryForToday;
+    this.journalEntries = allEntries;
   }
 
   saveContent(editorState: string) {
-    const updatedEntry: DailyEntry = {
-      ...(this.dailyEntry as DailyEntry),
+    const updatedEntry: JournalEntry = {
+      ...(this.journalEntry as JournalEntry),
       content: editorState,
     };
 
@@ -79,42 +78,41 @@ ${updatedEntry.content}
       },
     });
 
-    this.dailyEntry = updatedEntry;
-    this.dailyEntries[updatedEntry.date] = updatedEntry;
+    this.journalEntry = updatedEntry;
+    this.journalEntries[updatedEntry.date] = updatedEntry;
   }
 
   goToNextDay() {
-    const nextDate = addDays(new Date(this.dailyEntry.date), 1);
+    const nextDate = addDays(new Date(this.journalEntry.date), 1);
     this.goToDate(nextDate);
   }
 
   goToPreviousDay() {
-    const prevDate = subDays(new Date(this.dailyEntry.date), 1);
+    const prevDate = subDays(new Date(this.journalEntry.date), 1);
 
     this.goToDate(prevDate);
   }
 
   goToDate(date: Date) {
     const dateString = getDateInStringFormat(date);
-    let entryForToday: DailyEntry = this.dailyEntries[dateString];
+    let entryForToday: JournalEntry = this.journalEntries[dateString];
 
     if (!entryForToday) {
       entryForToday = {
         id: nanoid(),
-        noteContent: null,
-        todos: [],
+        content: null,
         date: dateString,
       };
     }
-    this.dailyEntry = entryForToday;
-    this.dailyEntries[dateString] = entryForToday;
-    setData(DAILY_NOTES_KEY, Object.assign({}, this.dailyEntries));
+    this.journalEntry = entryForToday;
+    this.journalEntries[dateString] = entryForToday;
+    setData(JOURNAL_NOTES_KEY, Object.assign({}, this.journalEntries));
   }
 
   goToToday() {
     const currentDate = getDateInStringFormat(new Date());
 
-    let todayEntry = this.dailyEntries[currentDate];
+    let todayEntry = this.journalEntries[currentDate];
 
     if (!todayEntry) {
       todayEntry = {
@@ -124,20 +122,19 @@ ${updatedEntry.content}
       };
     }
 
-    this.dailyEntry = todayEntry;
+    this.journalEntry = todayEntry;
   }
 
   showDotIndicator(date: Date) {
     const dateString = getDateInStringFormat(date);
 
-    if (this.dailyEntries[dateString]) {
-      const note = this.dailyEntries[dateString] as DailyEntry;
-      console.log('note =>', note);
-      // return Boolean(note.content);
+    if (this.journalEntries[dateString]) {
+      const note = this.journalEntries[dateString] as JournalEntry;
+      return note?.content?.length > 0;
     }
 
     return false;
   }
 }
 
-export const dailyEntryState = new DailyStore();
+export const journalEntryState = new JournalStore();

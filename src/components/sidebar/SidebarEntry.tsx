@@ -79,7 +79,6 @@ const EntryActionOptions = observer<{ entry: Entry }>(({ entry }) => {
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
   const [showFolderMenu, setShowFolderMenu] = useState(false);
 
-  // @ts-ignores
   const isPinned = pinnedEntriesId.includes(entry?.id!);
 
   const options = useMemo(() => {

@@ -2,7 +2,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { useNavigate } from 'react-router-dom';
 import { Key } from 'ts-key-enum';
 
-import { appState, dailyEntryState, entriesStore, searchStore } from '@/store/index';
+import { appState, entriesStore, journalEntryState, searchStore } from '@/store/index';
 
 export const useRegisterAllShortcuts = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export const useRegisterAllShortcuts = () => {
   });
 
   useHotkeys(`${Key.Meta}+j`, () => {
-    dailyEntryState.goToToday();
+    journalEntryState.goToToday();
     navigate('/today');
   });
 

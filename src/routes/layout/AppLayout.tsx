@@ -10,9 +10,10 @@ import { SplashScreen } from '@/components/splash-screen/SplashScreen';
 
 import { SearchDialog } from '@/components';
 import { useRegisterAllShortcuts } from '@/hooks/useRegisterAllShortcuts';
-import { SAFE_LOCATION_KEY } from '@/lib/constants';
+import { ACTIVE_ENTRY, SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { getData } from '@/lib/storage';
+import { entriesStore } from '@/store';
 import { appState } from '@/store/app-state';
 
 const AppLayout = observer(() => {
@@ -23,17 +24,7 @@ const AppLayout = observer(() => {
     const SAFEURL = getData(SAFE_LOCATION_KEY);
     loadDirectoryContent(SAFEURL);
     appState.load();
-
-    // const id = setTimeout(() => {
-    //   setShowSplashScreen(false);
-    // }, 1000);
-
-    // return () => clearTimeout(id);
   }, []);
-
-  // if (showSplashScreen) {
-  //   return;
-  // }
 
   return (
     <div className="page-container">

@@ -42,8 +42,6 @@ class Meili {
 
     const { path, directoryPath } = pathGenerator.generatePath({ dateString, type, id });
 
-    console.log({ path });
-
     const directoryExist = await file_exist(directoryPath);
 
     if (!directoryExist) {
@@ -137,10 +135,10 @@ type PathReturn = {
 };
 
 export enum DocumentType {
-  Entry,
-  Journal,
-  Index,
-  Tags,
+  Entry = 'Entry',
+  Journal = 'Journal',
+  Index = 'Index',
+  Tags = 'Tags',
 }
 
 class PathGenerator {

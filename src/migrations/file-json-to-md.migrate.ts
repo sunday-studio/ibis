@@ -18,8 +18,8 @@ export function getNewId(oldId: string) {
   }
 }
 
-const createFrontMatterData = (type: 'dailyNotes' | 'entries', content: any) => {
-  if (type === 'dailyNotes') {
+const createFrontMatterData = (type: 'journalNotes' | 'entries', content: any) => {
+  if (type === 'journalNotes') {
     return `---
 id: ${getNewId(content?.id)}
 date: ${content?.date}
@@ -71,7 +71,7 @@ export const migrateJSONTOMarkdown = async ({ data }): Promise<MigrationReturnTy
     if (item.type === 'entries') {
       return item?.fileContent?.content;
     }
-    if (item.type === 'dailyNotes') {
+    if (item.type === 'journalNotes') {
       return item?.fileContent?.noteContent;
     }
   };

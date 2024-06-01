@@ -3,24 +3,24 @@ import { nanoid } from 'nanoid';
 import { toast } from 'sonner';
 
 import { migrateFileSystem } from '@/migrations';
-import { DailyEntry, dailyEntryState } from '@/store/daily-state';
-import { Entry, entriesStore } from '@/store/entries';
+import { Entry, Folder, entriesStore } from '@/store/entries';
+import { journalEntryState } from '@/store/journal-state';
 import { tagsState } from '@/store/tags-state';
 
 import { searchEngine } from '../search/search-engine';
-import { DocumentType, meili, pathGenerator } from './syncing-engine';
+import { DocumentType, meili } from './syncing-engine';
 
 // pattern year-month-day; 2023-01-12
 const DATE_PATTERN = 'y-MM-dd';
 
 type EntryType = {
   type: DocumentType.Entry;
-  data: Entry;
+  data: Pick<Entry, 'createdAt' | 'id' | 'content'>;
 };
 
-type DailyEntryType = {
+type JournalEntryType = {
   type: DocumentType.Journal;
-  data: DailyEntry;
+  data: { date: string; content: string };
 };
 
 type TagsType = {
@@ -33,13 +33,15 @@ type IndexType = {
   data: {
     deletedEntries: string[];
     pinnedEntries: string[];
+    schemaVersion: number;
+    folders: Record<string, Folder>;
   };
 };
 
-type SaveFileToDiskProps = EntryType | DailyEntryType | TagsType | IndexType;
+type SaveFileToDiskProps = EntryType | JournalEntryType | TagsType | IndexType;
 
 type DeleteFileFromDiskProps = {
-  type: DocumentType.Entry;
+  type?: DocumentType;
   data: Entry;
 };
 
@@ -59,9 +61,9 @@ export const months = [
 ];
 
 export const syncAllTodaysToDisk = async () => {
-  const dailyEntries = Object.entries(dailyEntryState.dailyEntries);
+  const journalEntries = Object.entries(journalEntryState.journalEntries);
 
-  const entriesToSync = dailyEntries.map(([date, entry]) => {
+  const entriesToSync = journalEntries.map(([date, entry]) => {
     return {
       dateString: date,
       content: entry,
@@ -96,7 +98,7 @@ const getFileType = (url: string, baseURL: string) => {
   const cleanedurl = url.replace(baseURL, '').toLowerCase();
 
   if (cleanedurl.includes('today')) {
-    return 'dailyNotes';
+    return 'journalNotes';
   }
 
   if (cleanedurl.includes('highlight')) {
@@ -140,9 +142,9 @@ export const loadDirectoryContent = async (safeURL: string) => {
       entries: groupedData.entries,
       index: indexFile,
     });
-    dailyEntryState.localLocalData(groupedData.dailyNotes);
+    journalEntryState.localLocalData(groupedData.journalNotes);
     tagsState.loadLocalData(groupedData['tags.json']?.[0]);
-    searchEngine.loadLocalData(groupedData.entries, groupedData.dailyNotes);
+    searchEngine.loadLocalData(groupedData.entries, groupedData.journalNotes);
   } catch (error) {
     console.log('error =>', error);
   }
