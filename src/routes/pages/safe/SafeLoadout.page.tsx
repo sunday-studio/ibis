@@ -45,8 +45,13 @@ export const SafeLoadout = () => {
     <div className="page-container safe-loadout" data-tauri-drag-region>
       <div className="form-wrapper">
         <div className="form-wrapper-header">
-          <h2 className="satoshi-font">IBIS</h2>
+          <div className="logo">
+            <img src="/app-icon.png" />
+          </div>
           <p>All your journal and notes, local first.</p>
+          <span className="subtext">
+            Now with <span className="ai">AI butler</span>
+          </span>
         </div>
         <form action="">
           <div className="form-control">
