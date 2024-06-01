@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 
 import { entriesStore } from '@/store/entries';
 
-import { TagEditor } from './Editor.TagEditor';
+// import { TagEditor } from './Editor.TagEditor';
 
 export const EntryTitle = observer(() => {
   const entryStore = entriesStore;
@@ -29,9 +29,7 @@ export const EntryHeader = observer(() => {
   return (
     <div className="entry-header">
       <EntryTitle />
-      <div className="tags">
-        <TagEditor />
-      </div>
+      <div className="tags">{/* <TagEditor /> */}</div>
     </div>
   );
 });

@@ -123,10 +123,13 @@
     content: '';
     width: 14px;
     height: 14px;
+
+    top: 50%;
+    transform: translate(0%, -50%);
+
     left: 0;
     cursor: pointer;
     position: absolute;
-    top: 4px;
     border-radius: var(--xs-radii);
   }
 }
