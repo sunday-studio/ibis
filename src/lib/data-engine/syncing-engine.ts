@@ -161,8 +161,6 @@ class PathGenerator {
     const date = new Date(dateString);
     const entryId = id ?? nanoid();
 
-    console.log({ entryId, id });
-
     const monthAndYear = format(date, 'yyyy/LLL');
     const filename = `${format(date, DATE_PATTERN)}.${entryId}.md`;
 

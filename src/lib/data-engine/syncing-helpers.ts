@@ -231,9 +231,10 @@ export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
       break;
 
     case DocumentType.Index:
+      console.log('data => data', data);
       await meili.writeFileContentToDisk({
         dateString: '',
-        content: data,
+        content: JSON.stringify(data),
         type: DocumentType.Index,
       });
       break;

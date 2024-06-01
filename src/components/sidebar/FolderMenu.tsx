@@ -33,7 +33,12 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
   return (
     <div className="folder-menu">
       <div className="search-input">
-        <input placeholder="Search for folders" value={inputValue} onChange={handleInputChange} />
+        <input
+          placeholder="Search for folders"
+          autoFocus
+          value={inputValue}
+          onChange={handleInputChange}
+        />
       </div>
       <ul>
         {hasNoFolders && (

@@ -18,7 +18,7 @@ import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router-dom';
 
 import { generateNewDirectory } from '@/lib/auth/auth-helpers';
-import { SAFE_LOCATION_KEY } from '@/lib/constants';
+import { ACTIVE_ENTRY, SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { searchEngine } from '@/lib/search/search-engine';
 import { clearData, getData } from '@/lib/storage';
@@ -99,6 +99,7 @@ export const SearchDialog = observer(() => {
       name: 'Load new safe',
       onClick: () => {
         clearData(SAFE_LOCATION_KEY);
+        clearData(ACTIVE_ENTRY);
         navigate('/safe');
       },
       icon: MonitorDown,
