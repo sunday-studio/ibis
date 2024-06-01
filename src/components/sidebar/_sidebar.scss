@@ -133,8 +133,15 @@
     width: 100%;
     overflow: scroll;
     border-top: 1.5px solid transparent;
-    padding-bottom: 40px;
     mask-image: linear-gradient(to top, black calc(100% - 40px), transparent 100%);
+
+    .bottom-mask {
+      flex: 1;
+      height: 100%;
+      padding-bottom: 40px;
+      overflow: scroll;
+      mask-image: linear-gradient(to bottom, black calc(100% - 40px), transparent 100%);
+    }
   }
 
   &-folders {

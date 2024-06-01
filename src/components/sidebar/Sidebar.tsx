@@ -107,45 +107,47 @@ export const Sidebar = observer(() => {
       </div>
 
       <div className={clsx('sidebar-entries')}>
-        <div className="sidebar-folders">
-          <SidebarFolder
-            open
-            isSystemFolder
-            folder={{ name: 'Pinned', id: null }}
-            entries={pinnedEntries}
-          />
-          {folders?.map((folder) => {
-            return <SidebarFolder folder={folder.folder} entries={folder.entries} />;
-          })}
-        </div>
-
-        {privateEntries.length > 0 && (
-          <div className="section disabled-selection">
-            <div className="header">
-              <p className="title">Private</p>
-              <div
-                className="icon"
-                onClick={() => {
-                  const id = entriesStore.addNewEntry();
-                  navigate(`/entry/${id}`);
-                }}
-              />
-            </div>
-            <div className="entries">
-              {privateEntries?.map((entry) => (
-                <SidebarEntry
-                  selectEntry={(entry) => {
-                    navigate(`/entry/${entry.id}`);
-                    entriesStore.selectEntry(entry);
-                  }}
-                  entry={entry}
-                  activeEntry={entriesStore.activeEntry}
-                  key={entry.id}
-                />
-              ))}
-            </div>
+        <div className="bottom-mask">
+          <div className="sidebar-folders">
+            <SidebarFolder
+              open
+              isSystemFolder
+              folder={{ name: 'Pinned', id: null }}
+              entries={pinnedEntries}
+            />
+            {folders?.map((folder) => {
+              return <SidebarFolder folder={folder.folder} entries={folder.entries} />;
+            })}
           </div>
-        )}
+
+          {privateEntries.length > 0 && (
+            <div className="section disabled-selection">
+              <div className="header">
+                <p className="title">Private</p>
+                <div
+                  className="icon"
+                  onClick={() => {
+                    const id = entriesStore.addNewEntry();
+                    navigate(`/entry/${id}`);
+                  }}
+                />
+              </div>
+              <div className="entries">
+                {privateEntries?.map((entry) => (
+                  <SidebarEntry
+                    selectEntry={(entry) => {
+                      navigate(`/entry/${entry.id}`);
+                      entriesStore.selectEntry(entry);
+                    }}
+                    entry={entry}
+                    activeEntry={entriesStore.activeEntry}
+                    key={entry.id}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
