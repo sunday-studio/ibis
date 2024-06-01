@@ -1,6 +1,7 @@
 import { makeAutoObservable, observable } from 'mobx';
 import { nanoid } from 'nanoid';
 
+import { DocumentType } from '@/lib/data-engine/syncing-engine';
 import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
 export type Tag = {
@@ -8,7 +9,7 @@ export type Tag = {
   value: string;
 };
 
-export type TagsMap = Record<string, Tag>;
+type TagsMap = Record<string, Tag>;
 
 // TODO: create these at the initial folder creation stage
 export const DEFAULT_MAP_TAGS = {
@@ -53,7 +54,7 @@ class Tags {
     this.tagsMap[value] = observable(newTag);
 
     saveFileToDisk({
-      type: 'tags',
+      type: DocumentType.Tags,
       data: this.tagsMap,
     });
 

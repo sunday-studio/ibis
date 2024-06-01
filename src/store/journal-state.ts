@@ -12,7 +12,7 @@ export function getDateInStringFormat(date: Date, pattern = DATE_PATTERN) {
   return format(date, pattern);
 }
 
-export type JournalEntry = {
+type JournalEntry = {
   id: string;
   content: string | null;
   date: string;
