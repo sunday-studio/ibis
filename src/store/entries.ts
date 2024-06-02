@@ -82,7 +82,7 @@ class Entries {
     if (activeEntry) {
       this.activeEntry = activeEntry;
       redirect(`/entry/${activeEntry.id}`);
-    }
+    } else redirect('/');
   }
 
   get pinnedEntries() {
@@ -134,11 +134,11 @@ class Entries {
   }
 
   findAndReplaceEntry(updatedEntry: Entry) {
-    const entryIndex = this.entries.findIndex((entry) => entry.id === updatedEntry.id);
-    let updatedEntries = this.entries;
-    updatedEntries[entryIndex] = updatedEntry;
+    let updatedEntries = this.entries.map((entry) =>
+      entry.id === updatedEntry.id ? observable(updatedEntry) : entry,
+    );
 
-    return updatedEntries;
+    return observable(updatedEntries);
   }
 
   selectEntry(entry: Entry) {
@@ -180,8 +180,10 @@ class Entries {
       ...this.activeEntry,
       updatedAt: new Date().toISOString(),
       content: editorState,
-      title: this.activeEntryTitle!,
+      title: this.activeEntryTitle! ?? this.activeEntry.title,
     } as Entry;
+
+    console.log({ entry });
 
     saveFileToDisk({
       type: DocumentType.Entry,
@@ -192,8 +194,8 @@ class Entries {
 id: ${entry?.id}
 createdAt: ${entry?.createdAt}
 updatedAt: ${entry?.updatedAt ?? entry?.createdAt ?? ''}
-tags: ${entry?.tags || []}
-title: ${entry?.title || 'Untitled'}        
+tags: ${entry?.tags ?? []}
+title: ${entry?.title ?? 'Untitled'}        
 ---
 
 ${editorState}
@@ -202,7 +204,6 @@ ${editorState}
     });
 
     const updatedEntries = this.findAndReplaceEntry(entry);
-
     this.entries = updatedEntries;
   }
 

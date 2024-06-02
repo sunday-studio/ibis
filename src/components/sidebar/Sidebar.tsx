@@ -88,12 +88,12 @@ export const Sidebar = observer(() => {
             icon={Trash2Icon}
             onClick={() => goToPage('/trash')}
           />
-          <RouteLink
+          {/* <RouteLink
             icon={Layers}
             title="Templates"
             onClick={() => goToPage('/templates')}
             shortcutKey="⌘ t"
-          />
+          /> */}
           <RouteLink
             title="New Entry"
             shortcutKey="⌘ n"

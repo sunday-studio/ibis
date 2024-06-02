@@ -45,7 +45,7 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
               selectEntry(entry);
             }}
           >
-            <p className="entry-title">{truncate(entry.title) || 'Untitled'}</p>
+            <p className="entry-title">{truncate(entry.title) ?? 'Untitled'}</p>
             <Popover.Trigger asChild>
               <div
                 className="icon more-options"

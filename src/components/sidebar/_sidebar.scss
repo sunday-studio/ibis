@@ -190,8 +190,11 @@
           font-size: 14px;
           color: var(--text-primary);
 
+          &::selection {
+            background-color: var(--primary-color-50);
+          }
+
           &:focus {
-            outline: none;
             // color: red;
           }
         }

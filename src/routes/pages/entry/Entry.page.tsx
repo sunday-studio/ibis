@@ -13,10 +13,7 @@ const EntryPage = observer(() => {
       {activeEntry && (
         <Editor
           page={EDITOR_PAGES.ENTRY}
-          onChange={(state) => {
-            const isChange = state !== content;
-            if (isChange) entriesStore.saveContent(state);
-          }}
+          onChange={(state) => entriesStore.saveContent(state)}
           id={activeEntry.id}
           content={content}
         />
