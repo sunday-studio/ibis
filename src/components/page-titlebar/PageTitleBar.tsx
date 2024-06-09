@@ -38,10 +38,7 @@ export const PageTitleBar = observer(() => {
 
       {SAFE_NAME && (
         <div className="current-safe">
-          <Tooltip
-            content="Your current safe."
-            trigger={<p className="safe-name">{SAFE_NAME}</p>}
-          />
+          <Tooltip content="Your current safe" trigger={<p className="safe-name">{SAFE_NAME}</p>} />
         </div>
       )}
     </div>

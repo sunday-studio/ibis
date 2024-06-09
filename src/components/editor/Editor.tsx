@@ -132,7 +132,7 @@ export const Editor = ({
         placeholder={<Placeholder className={placeholderClassName} />}
         ErrorBoundary={LexicalErrorBoundary}
       />
-      <OnChangePlugin
+      {/* <OnChangePlugin
         onChange={(state) => {
           state.read(() => {
             markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS).replaceAll(
@@ -143,22 +143,22 @@ export const Editor = ({
 
           debouncedUpdates();
         }}
-      />
-      <ClickableLinkPlugin />
-      <FloatingMenuPlugin />
-      <SlashCommandPickerPlugin />
-      <TabFocusPlugin />
-      <ListPlugin />
-      <LinkPlugin validateUrl={validateUrl} />
-      <HistoryPlugin />
-      <AutoLinkPlugin />
-      <AutoFocusPlugin />
+      /> */}
+      {/* <ClickableLinkPlugin /> */}
+      {/* <FloatingMenuPlugin /> */}
+      {/* <SlashCommandPickerPlugin /> */}
+      {/* <TabFocusPlugin /> */}
+      {/* <LinkPlugin validateUrl={validateUrl} /> */}
+      {/* <ListPlugin /> */}
       <CheckListPlugin />
-      <TabIndentationPlugin />
-      <MarkdownShortcutPlugin />
-      <CodeHighlightPlugin />
-      <PageBreakPlugin />
-      <SearchDialogPlugin />
+      <HistoryPlugin />
+      {/* <AutoLinkPlugin /> */}
+      {/* <AutoFocusPlugin /> */}
+      {/* <TabIndentationPlugin /> */}
+      {/* <MarkdownShortcutPlugin /> */}
+      {/* <CodeHighlightPlugin /> */}
+      {/* <PageBreakPlugin /> */}
+      {/* <SearchDialogPlugin /> */}
       <MarkdownContentPlugin markdown={content} />
     </LexicalComposer>
   );

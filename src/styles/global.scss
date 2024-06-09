@@ -114,7 +114,6 @@ html[data-theme='night'] {
 * {
   margin: 0;
   box-sizing: border-box;
-  // outline: 1px dotted red;
 
   &::-webkit-scrollbar {
     display: none;
@@ -141,15 +140,17 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-#root {
-  border-radius: 10px;
-}
-#root,
 body {
   position: relative;
   overflow: hidden;
-  height: 100%;
   margin: 0;
+  height: 100vh;
+}
+
+#root {
+  border-radius: 10px;
+  height: 100%;
+  overflow: hidden;
 }
 
 [contenteditable] {

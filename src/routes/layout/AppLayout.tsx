@@ -10,10 +10,9 @@ import { SplashScreen } from '@/components/splash-screen/SplashScreen';
 
 import { SearchDialog } from '@/components';
 import { useRegisterAllShortcuts } from '@/hooks/useRegisterAllShortcuts';
-import { ACTIVE_ENTRY, SAFE_LOCATION_KEY } from '@/lib/constants';
+import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { getData } from '@/lib/storage';
-import { entriesStore } from '@/store';
 import { appState } from '@/store/app-state';
 
 const AppLayout = observer(() => {

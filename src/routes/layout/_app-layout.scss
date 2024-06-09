@@ -1,5 +1,5 @@
 .page-container {
-  height: 100vh;
+  height: 100%;
 
   .layout-divider {
     background-color: var(--main-border);
@@ -26,7 +26,6 @@
 
   .page-wrapper {
     flex: 1;
-    // position: relative;
     overflow: hidden;
     background-color: var(--panel-background);
   }

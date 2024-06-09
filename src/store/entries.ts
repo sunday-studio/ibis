@@ -183,7 +183,7 @@ class Entries {
       title: this.activeEntryTitle! ?? this.activeEntry.title,
     } as Entry;
 
-    console.log({ entry });
+    // console.log({ entry });
 
     saveFileToDisk({
       type: DocumentType.Entry,
