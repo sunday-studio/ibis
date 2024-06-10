@@ -146,8 +146,6 @@ app.post('/json', async (c) => {
   return c.json({ success: true, content: markdown });
 });
 
-// .replaceAll(/\n{2}/gm, '\n');
-
 export default {
   port: 3323,
   fetch: app.fetch,

@@ -137,8 +137,7 @@ export const Editor = ({
           state.read(() => {
             markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS, undefined, true);
           });
-          onChange(markdownRef.current);
-          // debouncedUpdates();
+          debouncedUpdates();
         }}
       />
       <ClickableLinkPlugin />
