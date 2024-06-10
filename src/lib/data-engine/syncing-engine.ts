@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api';
 import { createDir } from '@tauri-apps/api/fs';
 import { format } from 'date-fns';
-import * as gm from 'gray-matter';
+import gm from 'gray-matter';
 import { nanoid } from 'nanoid';
 
 import { DATE_PATTERN, SAFE_LOCATION_KEY } from '../constants';

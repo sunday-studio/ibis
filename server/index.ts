@@ -139,11 +139,14 @@ app.post('/json', async (c) => {
       ...TRANSFORMERS,
       PAGE_BREAK_NODE_TRANSFORMER,
       CHECK_LIST,
-    ]).replaceAll(/\n{2}/gm, '\n');
+      true,
+    ]);
   });
 
   return c.json({ success: true, content: markdown });
 });
+
+// .replaceAll(/\n{2}/gm, '\n');
 
 export default {
   port: 3323,

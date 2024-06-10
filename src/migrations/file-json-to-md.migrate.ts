@@ -3,7 +3,7 @@ import { TauriEvent, listen } from '@tauri-apps/api/event';
 import { Body, ResponseType, fetch } from '@tauri-apps/api/http';
 import { Command } from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri';
-import * as gm from 'gray-matter';
+import gm from 'gray-matter';
 
 import { MigrationReturnType } from '.';
 

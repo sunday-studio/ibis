@@ -57,7 +57,7 @@ function MarkdownContentPlugin({ markdown }) {
       editor.update(() => {
         const root = $getRoot();
         root.clear();
-        $convertFromMarkdownString(markdown, CUSTOM_TRANSFORMERS);
+        $convertFromMarkdownString(markdown, CUSTOM_TRANSFORMERS, undefined, true);
       });
     }
   }, [editor, markdown]);
@@ -132,33 +132,30 @@ export const Editor = ({
         placeholder={<Placeholder className={placeholderClassName} />}
         ErrorBoundary={LexicalErrorBoundary}
       />
-      {/* <OnChangePlugin
+      <OnChangePlugin
         onChange={(state) => {
           state.read(() => {
-            markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS).replaceAll(
-              /\n{2}/gm,
-              '\n',
-            );
+            markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS, undefined, true);
           });
-
-          debouncedUpdates();
+          onChange(markdownRef.current);
+          // debouncedUpdates();
         }}
-      /> */}
-      {/* <ClickableLinkPlugin /> */}
-      {/* <FloatingMenuPlugin /> */}
-      {/* <SlashCommandPickerPlugin /> */}
-      {/* <TabFocusPlugin /> */}
-      {/* <LinkPlugin validateUrl={validateUrl} /> */}
-      {/* <ListPlugin /> */}
+      />
+      <ClickableLinkPlugin />
+      <FloatingMenuPlugin />
+      <SlashCommandPickerPlugin />
+      <TabFocusPlugin />
+      <LinkPlugin validateUrl={validateUrl} />
+      <ListPlugin />
       <CheckListPlugin />
       <HistoryPlugin />
-      {/* <AutoLinkPlugin /> */}
-      {/* <AutoFocusPlugin /> */}
-      {/* <TabIndentationPlugin /> */}
-      {/* <MarkdownShortcutPlugin /> */}
-      {/* <CodeHighlightPlugin /> */}
-      {/* <PageBreakPlugin /> */}
-      {/* <SearchDialogPlugin /> */}
+      <AutoLinkPlugin />
+      <AutoFocusPlugin />
+      <TabIndentationPlugin />
+      <MarkdownShortcutPlugin />
+      <CodeHighlightPlugin />
+      <PageBreakPlugin />
+      <SearchDialogPlugin />
       <MarkdownContentPlugin markdown={content} />
     </LexicalComposer>
   );

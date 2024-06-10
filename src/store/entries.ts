@@ -197,7 +197,6 @@ updatedAt: ${entry?.updatedAt ?? entry?.createdAt ?? ''}
 tags: ${entry?.tags ?? []}
 title: ${entry?.title ?? 'Untitled'}        
 ---
-
 ${editorState}
         `,
       },
