@@ -25,6 +25,7 @@ import { clearData, getData } from '@/lib/storage';
 // import { runMigration } from '@/migrations/file-date-pattern.migrate';
 import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
+import { meili } from '@/lib/data-engine/syncing-engine';
 
 type ActionProps = {
   name: string;
@@ -100,6 +101,7 @@ export const SearchDialog = observer(() => {
       onClick: () => {
         clearData(SAFE_LOCATION_KEY);
         clearData(ACTIVE_ENTRY);
+        meili.reset();
         navigate('/safe');
       },
       icon: MonitorDown,

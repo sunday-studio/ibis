@@ -211,39 +211,45 @@ const generateIndexPath = (_: any, basePath: string): [string, string] => {
 export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
   const { type, data } = props;
 
-  switch (type) {
-    case DocumentType.Entry:
-      await meili.writeFileContentToDisk({
-        dateString: data?.createdAt,
-        type: DocumentType.Entry,
-        id: data?.id,
-        content: data?.content ?? '',
-      });
-      break;
+  // console.log('logging ', data, type);
 
-    case DocumentType.Journal:
-      await meili.writeFileContentToDisk({
-        dateString: data?.date,
-        content: data?.content,
-        type: DocumentType.Journal,
-      });
+  try {
+    switch (type) {
+      case DocumentType.Entry:
+        await meili.writeFileContentToDisk({
+          dateString: data?.createdAt,
+          type: DocumentType.Entry,
+          id: data?.id,
+          content: data?.content ?? '',
+        });
+        break;
 
-      break;
+      case DocumentType.Journal:
+        await meili.writeFileContentToDisk({
+          dateString: data?.date,
+          content: data?.content,
+          type: DocumentType.Journal,
+        });
 
-    case DocumentType.Index:
-      await meili.writeFileContentToDisk({
-        dateString: '',
-        content: JSON.stringify(data),
-        type: DocumentType.Index,
-      });
-      break;
+        break;
 
-    case DocumentType.Tags:
-      await meili.writeFileContentToDisk({
-        dateString: '',
-        content: data,
-        type: DocumentType.Tags,
-      });
+      case DocumentType.Index:
+        await meili.writeFileContentToDisk({
+          dateString: '',
+          content: JSON.stringify(data),
+          type: DocumentType.Index,
+        });
+        break;
+
+      case DocumentType.Tags:
+        await meili.writeFileContentToDisk({
+          dateString: '',
+          content: data,
+          type: DocumentType.Tags,
+        });
+    }
+  } catch (error) {
+    console.log('error =>', error);
   }
 };
 

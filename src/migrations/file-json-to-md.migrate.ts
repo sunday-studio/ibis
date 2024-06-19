@@ -12,9 +12,9 @@ export function getNewId(oldId: string) {
   const datePattern = /^[0-2]\d:[0-5]\d:[0-5]\d GMT[+-]\d{4} \(.+\)-/;
 
   if (typeof oldId === 'string' && datePattern.test(oldId)) {
-    return oldId.replace(datePattern, '').trim();
+    return oldId?.replace(datePattern, '')?.trim();
   } else {
-    return oldId.trim();
+    return oldId?.trim();
   }
 }
 

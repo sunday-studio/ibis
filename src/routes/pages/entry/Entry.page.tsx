@@ -2,14 +2,16 @@ import { observer } from 'mobx-react-lite';
 
 import { EDITOR_PAGES, Editor } from '../../../components/editor/Editor';
 import { entriesStore } from '../../../store/entries';
+import { useEffect, useRef } from 'react';
 
 const EntryPage = observer(() => {
   const { activeEntry } = entriesStore;
+  const ref = useRef<HTMLDivElement>(null);
 
   const content = activeEntry?.content || '';
 
   return (
-    <div className="entry-page">
+    <div className="entry-page" ref={ref}>
       {activeEntry && (
         <Editor
           page={EDITOR_PAGES.ENTRY}

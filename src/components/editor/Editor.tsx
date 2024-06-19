@@ -38,17 +38,6 @@ function Placeholder({ className }) {
   return <div className={className}>Write or type '/' for slash commands....</div>;
 }
 
-function AutoFocusPlugin() {
-  const [editor] = useLexicalComposerContext();
-
-  useEffect(() => {
-    // Focus the editor when the effect fires!
-    editor.focus();
-  }, [editor]);
-
-  return null;
-}
-
 function MarkdownContentPlugin({ markdown }) {
   const [editor] = useLexicalComposerContext();
 
@@ -149,7 +138,6 @@ export const Editor = ({
       <CheckListPlugin />
       <HistoryPlugin />
       <AutoLinkPlugin />
-      <AutoFocusPlugin />
       <TabIndentationPlugin />
       <MarkdownShortcutPlugin />
       <CodeHighlightPlugin />

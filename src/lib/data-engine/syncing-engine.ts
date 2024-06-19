@@ -24,6 +24,11 @@ class Meili {
     this.basePath = data;
   }
 
+  reset() {
+    this.basePath = '';
+    pathGenerator.reset();
+  }
+
   async writeFileContentToDisk({
     dateString,
     content,
@@ -48,10 +53,14 @@ class Meili {
       await createDir(directoryPath, { recursive: true });
     }
 
-    await invoke('write_to_file', {
-      path,
-      content: content,
-    });
+    try {
+      await invoke('write_to_file', {
+        path,
+        content: content,
+      });
+    } catch (error) {
+      console.log('error =>', error);
+    }
   }
 
   // TODO: fix this
@@ -149,6 +158,10 @@ class PathGenerator {
     this.basePath = data;
   }
 
+  reset() {
+    this.basePath = '';
+  }
+
   private generateEntryPath({
     dateString,
     basePath,
@@ -204,7 +217,13 @@ class PathGenerator {
     id?: string;
     basePath?: string;
   }): PathReturn {
-    const currentBasePath = basePath ?? this.basePath;
+    let currentBasePath = basePath ?? this.basePath;
+
+    if (!currentBasePath) {
+      const url = getData(SAFE_LOCATION_KEY);
+      this.basePath = url;
+      currentBasePath = url;
+    }
 
     switch (type) {
       case DocumentType.Entry:
