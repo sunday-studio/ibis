@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import clsx from 'clsx';
-import { BadgePlus, DoorOpen, Layers, Search, Trash2Icon } from 'lucide-react';
+import { BadgePlus, DoorOpen, Search, Trash2Icon } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,6 @@ import { journalEntryState } from '@/store/journal-state';
 import { searchStore } from '@/store/search';
 
 import { type Entry, entriesStore } from '../../store/entries';
-import { Tooltip } from '../tooltip/Tooltip';
 import { SidebarEntry } from './SidebarEntry';
 import { SidebarFolder } from './SidebarFolder';
 import { SidebarHeader } from './SidebarHeader';

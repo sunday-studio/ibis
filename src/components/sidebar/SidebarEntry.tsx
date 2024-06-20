@@ -4,7 +4,8 @@ import { useMemo } from 'react';
 import * as ContextMenu from '@radix-ui/react-context-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
-import format from 'date-fns/format';
+import { format } from 'date-fns';
+
 import {
   BadgeInfo,
   Columns,

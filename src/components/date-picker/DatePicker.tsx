@@ -4,7 +4,6 @@ import { CalendarDate, createCalendar, parseDate } from '@internationalized/date
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { PressEvent, useCalendar, useLocale } from 'react-aria';
 import { useCalendarState } from 'react-stately';
-import { c } from 'vitest/dist/reporters-5f784f42';
 
 import { DatePickerGrid } from './DatePicker.Grid';
 

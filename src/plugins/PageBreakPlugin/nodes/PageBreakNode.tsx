@@ -123,7 +123,7 @@ export class PageBreakNode extends DecoratorNode<JSX.Element> {
   }
 
   static clone(node: PageBreakNode): PageBreakNode {
-    return new PageBreakNode(node._key);
+    return new PageBreakNode(node.__key);
   }
 
   static importJSON(_serializedNode: SerializedLexicalNode): PageBreakNode {
