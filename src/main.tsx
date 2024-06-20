@@ -1,4 +1,6 @@
 import React from 'react';
+import { TauriEvent, listen } from '@tauri-apps/api/event';
+import { Command } from '@tauri-apps/api/shell';
 
 import * as Sentry from '@sentry/react';
 import ReactDOM from 'react-dom/client';
@@ -7,15 +9,27 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './routes/router';
 import './styles/index.scss';
 
+const command = Command.sidecar('binaries/ibis-server');
+command.spawn().then((child) => {
+  listen(TauriEvent.WINDOW_DESTROYED, function () {
+    // child.kill();
+  });
+});
+
 Sentry.init({
-  dsn: 'https://0b362d94f01e0a41d9fba0854d04f657@o4506903320068096.ingest.us.sentry.io/4506903329243136',
+  dsn:
+    process.env.NODE_ENV === 'production'
+      ? 'https://0b362d94f01e0a41d9fba0854d04f657@o4506903320068096.ingest.us.sentry.io/4506903329243136'
+      : undefined,
   integrations: [
+    Sentry.breadcrumbsIntegration({ console: false }),
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration({
       maskAllText: false,
       blockAllMedia: false,
     }),
   ],
+  environment: process.env.NODE_ENV,
   // Performance Monitoring
   tracesSampleRate: 1.0, //  Capture 100% of the transactions
   // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled

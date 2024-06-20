@@ -8,7 +8,7 @@ use std::io::Read;
 use std::io::Write;
 use std::path::Path;
 use tauri::Manager;
-use window_vibrancy::{apply_blur, apply_vibrancy, NSVisualEffectMaterial};
+use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial};
 
 use tauri::command;
 use walkdir::{DirEntry, WalkDir};
@@ -109,11 +109,11 @@ async fn rename_file(old_path: String, new_path: String) -> Result<(), String> {
 fn main() {
     tauri::Builder::default()
         .setup(|app| {
-            let window = app.get_window("main").unwrap();
+            // let window = app.get_window("main").unwrap();
 
-            #[cfg(target_os = "macos")]
-            apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, None, Some(10.0))
-                .expect("Unsupported platform! 'apply_vibrancy' is only supported on macOS");
+            // #[cfg(target_os = "macos")]
+            // apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, None, Some(10.0))
+            //     .expect("Unsupported platform! 'apply_vibrancy' is only supported on macOS");
 
             Ok(())
         })

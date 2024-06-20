@@ -11,10 +11,13 @@ const DEFAULT_APPSTATE = {
   sidebarIsOpen: true,
 };
 
+const ZEN_MODE_KEY = 'zen-mode';
+
 class AppState {
   sidebarIsOpen: boolean = true;
   theme: Theme = 'light';
   session: any | null = null;
+  isZenMode: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -28,6 +31,18 @@ class AppState {
     this.theme = state.theme;
     this.session = session;
     document.documentElement.setAttribute('data-theme', state.theme);
+    document.documentElement.setAttribute('zen-mode', 'off');
+  }
+
+  toggleZenMode() {
+    const isZenModeOff = document.documentElement.getAttribute(ZEN_MODE_KEY) === 'off';
+
+    if (isZenModeOff) {
+      document.documentElement.setAttribute(ZEN_MODE_KEY, 'on');
+      this.sidebarIsOpen = false;
+    } else {
+      document.documentElement.setAttribute(ZEN_MODE_KEY, 'off');
+    }
   }
 
   toggleSidebarOpenState() {
@@ -71,7 +86,6 @@ class AppState {
       sidebarIsOpen: !this.sidebarIsOpen,
       theme: t,
     });
-
     this.removeTurnOffTranstions(css);
   }
 }

@@ -1,32 +1,31 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import { checkIfLoggedIn } from '@/lib/auth/auth-helpers';
-import AppLayout from '@/routes/layout/AppLayout';
+import { AppErrorBoundary } from '@/components/shared/ErrorBoundary';
 
-// import AuthPage from './pages/auth/Auth';
 import Root from './Root';
-import { Onboarding } from './pages/auth/Onboarding.page';
+import AppLayout from './layout/AppLayout';
 import EntryPage from './pages/entry/Entry.page';
+import JournalPage from './pages/journal/Journal.page';
+import { SafeLoadout } from './pages/safe/SafeLoadout.page';
 import SettingsPage from './pages/settings/Settings.page';
-import Today from './pages/today/Today.page';
 import TrashPage from './pages/trash/Trash.page';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
+    ErrorBoundary: AppErrorBoundary,
     children: [
       {
         element: <AppLayout />,
-        loader: checkIfLoggedIn,
         children: [
           {
             path: '/',
-            element: <Today />,
+            element: <JournalPage />,
           },
           {
             path: '/today',
-            element: <Today />,
+            element: <JournalPage />,
           },
 
           {
@@ -47,8 +46,8 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: '/auth',
-        element: <Onboarding />,
+        path: '/safe',
+        element: <SafeLoadout />,
       },
     ],
   },

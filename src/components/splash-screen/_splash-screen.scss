@@ -1,0 +1,31 @@
+.splash-screen {
+  outline: 1px solid red;
+  background-color: var(--gray-12);
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  color: var(--gray-1);
+  backdrop-filter: blur(4px);
+  flex-direction: column;
+  padding: 40px 0;
+  position: absolute;
+  z-index: 99999;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  * {
+    outline: 1px dotted red;
+  }
+
+  .logo {
+    margin-top: auto;
+  }
+
+  .version {
+    font-variant-numeric: slashed-zero;
+    margin-top: auto;
+    font-weight: 600;
+  }
+}

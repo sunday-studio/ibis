@@ -11,8 +11,22 @@
     "version": "0.0.1"
   },
   "tauri": {
+    "updater": {
+      "active": false,
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDM5MEFEN0I1RDEyMzU2MDEKUldRQlZpUFJ0ZGNLT1llVllUOUVQU2RCb1VWM0JMeGM5RGV1azhzVHoxbFgyTW9TaG4yQnhSc1YK",
+      "windows": {
+        "installMode": "passive",
+        "installerArgs": []
+      }
+    },
     "allowlist": {
       "all": false,
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": ["http://localhost/*", "http://localhost:3323/json"]
+      },
       "path": {
         "all": true
       },
@@ -32,6 +46,13 @@
         "setDecorations": false
       },
       "shell": {
+        "sidecar": true,
+        "scope": [
+          {
+            "name": "binaries/ibis-server",
+            "sidecar": true
+          }
+        ],
         "all": false,
         "open": true
       },
@@ -61,6 +82,7 @@
       "active": true,
       "targets": "all",
       "identifier": "com.opps.dev",
+      "externalBin": ["binaries/ibis-server"],
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -78,7 +100,7 @@
         "fullscreen": false,
         "resizable": true,
         "title": "Ibis",
-        "width": 1000,
+        "width": 1200,
         "height": 800,
         "decorations": false,
         "transparent": true

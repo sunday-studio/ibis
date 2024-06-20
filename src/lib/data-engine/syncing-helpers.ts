@@ -1,39 +1,49 @@
 import { format } from 'date-fns';
+import { nanoid } from 'nanoid';
 import { toast } from 'sonner';
 
-import { DailyEntry, dailyEntryState } from '@/store/daily-state';
-import { Entry, entriesStore } from '@/store/entries';
+import { migrateFileSystem } from '@/migrations';
+import { Entry, Folder, entriesStore } from '@/store/entries';
+import { journalEntryState } from '@/store/journal-state';
 import { tagsState } from '@/store/tags-state';
 
-import { meili } from './syncing-engine';
+import { searchEngine } from '../search/search-engine';
+import { DocumentType, meili } from './syncing-engine';
 
 // pattern year-month-day; 2023-01-12
 const DATE_PATTERN = 'y-MM-dd';
 
 type EntryType = {
-  type: 'entry';
-  data: Entry;
+  type: DocumentType.Entry;
+  data: Pick<Entry, 'createdAt' | 'id' | 'content'>;
 };
 
-type DailyEntryType = {
-  type: 'today';
-  data: DailyEntry;
+type JournalEntryType = {
+  type: DocumentType.Journal;
+  data: { date: string; content: string };
 };
 
 type TagsType = {
-  type: 'tags';
+  type: DocumentType.Tags;
   data: Record<string, { value: string; label: string }>;
 };
 
 type IndexType = {
-  type: 'index';
+  type: DocumentType.Index;
   data: {
     deletedEntries: string[];
     pinnedEntries: string[];
+    schemaVersion: number;
+    folders: Record<string, Folder>;
   };
 };
 
-type SaveFileToDiskProps = EntryType | DailyEntryType | TagsType | IndexType;
+type SaveFileToDiskProps = EntryType | JournalEntryType | TagsType | IndexType;
+
+type DeleteFileFromDiskProps = {
+  type?: DocumentType;
+  data: Entry;
+};
 
 export const months = [
   'Jan',
@@ -51,9 +61,9 @@ export const months = [
 ];
 
 export const syncAllTodaysToDisk = async () => {
-  const dailyEntries = Object.entries(dailyEntryState.dailyEntries);
+  const journalEntries = Object.entries(journalEntryState.journalEntries);
 
-  const entriesToSync = dailyEntries.map(([date, entry]) => {
+  const entriesToSync = journalEntries.map(([date, entry]) => {
     return {
       dateString: date,
       content: entry,
@@ -88,7 +98,7 @@ const getFileType = (url: string, baseURL: string) => {
   const cleanedurl = url.replace(baseURL, '').toLowerCase();
 
   if (cleanedurl.includes('today')) {
-    return 'dailyNotes';
+    return 'journalNotes';
   }
 
   if (cleanedurl.includes('highlight')) {
@@ -110,13 +120,17 @@ export const loadDirectoryContent = async (safeURL: string) => {
     return {
       type: getFileType(file, safeURL),
       url: file,
-      content: await meili.readFileContent(file),
+      fileContent: await meili.readFileContent(file),
     };
   });
 
   const content = await Promise.all(promises);
 
-  const groupedData = content.reduce((acc, obj) => {
+  const { migratedData, indexFile } = await migrateFileSystem(content);
+
+  console.log('content =>', { migratedData, content });
+
+  const groupedData = migratedData.reduce((acc, obj) => {
     if (!acc[obj.type]) {
       acc[obj.type] = [];
     }
@@ -128,17 +142,25 @@ export const loadDirectoryContent = async (safeURL: string) => {
   try {
     entriesStore.loadLocalData({
       entries: groupedData.entries,
-      index: groupedData['index.json']?.[0],
+      index: indexFile,
     });
-    dailyEntryState.localLocalData(groupedData.dailyNotes);
+    journalEntryState.localLocalData(groupedData.journalNotes);
     tagsState.loadLocalData(groupedData['tags.json']?.[0]);
+    searchEngine.loadLocalData(groupedData.entries, groupedData.journalNotes);
   } catch (error) {
     console.log('error =>', error);
   }
 };
 
-const generateEntryPath = (dateString: string, basePath: string): [string, string, string] => {
+/**
+ * @deprecated
+ */
+export const generateEntryPath = (
+  dateString: string,
+  basePath: string,
+): [string, string, string] => {
   // Convert the provided dateString to a JavaScript Date object.
+
   const date = new Date(dateString);
 
   // Extract the year and month from the date.
@@ -146,7 +168,7 @@ const generateEntryPath = (dateString: string, basePath: string): [string, strin
   const month = format(date, 'LLL');
 
   // Generate a unique filename based on the date and time.
-  const filename = `${format(date, DATE_PATTERN)}.${format(date, 't')}.json`;
+  const filename = `${format(date, DATE_PATTERN)}.${nanoid()}.md`;
 
   // Construct the directory path where the file will be saved.
   const dirPath = `${basePath}/${year}/${month}`;
@@ -156,14 +178,17 @@ const generateEntryPath = (dateString: string, basePath: string): [string, strin
   return [dirPath, filename, path];
 };
 
-const generateTodayPath = (dateString: string, basePath: string): [string, string] => {
+/**
+ * @deprecated
+ */
+export const generateTodayPath = (dateString: string, basePath: string): [string, string] => {
   // Convert the provided dateString to a JavaScript Date object.
   const date = new Date(dateString);
 
   // Extract the year and month from the date.
   const year = date.getFullYear().toString();
 
-  const filename = `${format(date, DATE_PATTERN)}.json`;
+  const filename = `${format(date, DATE_PATTERN)}.md`;
 
   // Construct the directory path where the file will be saved.
   const dirPath = `${basePath}/${year}/Today`;
@@ -171,10 +196,16 @@ const generateTodayPath = (dateString: string, basePath: string): [string, strin
   return [dirPath, filename];
 };
 
+/**
+ * @deprecated
+ */
 const generateTagsPath = (_: any, basePath: string): [string, string] => {
   return [basePath, 'tags.json'];
 };
 
+/**
+ * @deprecated
+ */
 const generateIndexPath = (_: any, basePath: string): [string, string] => {
   return [basePath, 'index.json'];
 };
@@ -182,34 +213,50 @@ const generateIndexPath = (_: any, basePath: string): [string, string] => {
 export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
   const { type, data } = props;
 
-  switch (type) {
-    case 'entry':
-      try {
-        await meili.writeFileContentToDisk(data?.createdAt, data, generateEntryPath);
-      } catch (error) {
-        // TODO: fix instances of this.basePath being null
-        console.log('error =>', error);
-      }
-      break;
+  try {
+    switch (type) {
+      case DocumentType.Entry:
+        await meili.writeFileContentToDisk({
+          dateString: data?.createdAt,
+          type: DocumentType.Entry,
+          id: data?.id,
+          content: data?.content ?? '',
+        });
+        break;
 
-    case 'today':
-      await meili.writeFileContentToDisk(data?.date, data, generateTodayPath);
-      break;
+      case DocumentType.Journal:
+        await meili.writeFileContentToDisk({
+          dateString: data?.date,
+          content: data?.content,
+          type: DocumentType.Journal,
+        });
 
-    case 'tags':
-      await meili.writeFileContentToDisk('', data, generateTagsPath);
-      break;
+        break;
 
-    case 'index':
-      await meili.writeFileContentToDisk('', data, generateIndexPath);
+      case DocumentType.Index:
+        await meili.writeFileContentToDisk({
+          dateString: '',
+          content: JSON.stringify(data),
+          type: DocumentType.Index,
+        });
+        break;
 
-    default:
-      break;
+      case DocumentType.Tags:
+        await meili.writeFileContentToDisk({
+          dateString: '',
+          content: data,
+          type: DocumentType.Tags,
+        });
+    }
+  } catch (error) {
+    console.log('error =>', error);
   }
 };
 
-export const deleteFile = async (entry: Entry) => {
-  const [_, _s, path] = generateEntryPath(entry.createdAt, meili.basePath);
-
-  await meili.deletefile(path);
+export const deleteFileFromDisk = async (props: DeleteFileFromDiskProps) => {
+  await meili.deletefile({
+    type: DocumentType.Entry,
+    dateString: props.data.createdAt,
+    id: props.data.id,
+  });
 };

@@ -20,6 +20,7 @@ export const theme = {
     ol: 'editor-list-ol',
     ul: 'editor-list-ul',
     listitem: 'editor-listitem',
+    checklist: 'editor-checklist',
   },
   image: 'editor-image',
   link: 'editor-link',

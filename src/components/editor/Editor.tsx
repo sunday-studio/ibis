@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
-import { $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
+import { $convertFromMarkdownString, $convertToMarkdownString } from '@lexical/markdown';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -12,19 +12,19 @@ import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { EditorState } from 'lexical';
+import { $getRoot } from 'lexical';
 import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from '@/plugins/AutolinkPlugin';
 import ClickableLinkPlugin from '@/plugins/ClickableLinkPlugin';
 import CodeHighlightPlugin from '@/plugins/CodeHighlightPlugin';
 import FloatingMenuPlugin from '@/plugins/FloatingMenuPlugin';
+import { CUSTOM_TRANSFORMERS, MarkdownShortcutPlugin } from '@/plugins/MarkdownShortcut';
 import PageBreakPlugin from '@/plugins/PageBreakPlugin/PageBreakPlugin';
 import { PageBreakNode } from '@/plugins/PageBreakPlugin/nodes/PageBreakNode';
 import SearchDialogPlugin from '@/plugins/SearchDialogPlugin';
@@ -38,13 +38,18 @@ function Placeholder({ className }) {
   return <div className={className}>Write or type '/' for slash commands....</div>;
 }
 
-function MyCustomAutoFocusPlugin() {
+function MarkdownContentPlugin({ markdown }) {
   const [editor] = useLexicalComposerContext();
 
   useEffect(() => {
-    // Focus the editor when the effect fires!
-    editor.focus();
-  }, [editor]);
+    if (markdown) {
+      editor.update(() => {
+        const root = $getRoot();
+        root.clear();
+        $convertFromMarkdownString(markdown, CUSTOM_TRANSFORMERS, undefined, true);
+      });
+    }
+  }, [editor, markdown]);
 
   return null;
 }
@@ -75,8 +80,6 @@ export const Editor = ({
   extendTheme,
   placeholderClassName = 'editor-placeholder',
 }: EditorType) => {
-  const editorState = useRef<EditorState>();
-  // const markd
   const markdownRef = useRef<string>();
 
   const editorConfig = {
@@ -86,8 +89,6 @@ export const Editor = ({
       ...extendTheme,
     },
     onError,
-    editorState: content ? JSON.stringify(content) : null,
-
     nodes: [
       HeadingNode,
       ListNode,
@@ -105,27 +106,14 @@ export const Editor = ({
   };
 
   const debouncedUpdates = useDebouncedCallback(async () => {
-    // @ts-ignore
-    onChange(editorState?.current?.toJSON?.());
+    onChange(markdownRef.current);
   }, 750);
-
-  // useEffect(() => {
-
-  // })
 
   return (
     <LexicalComposer initialConfig={editorConfig} key={id}>
       <RichTextPlugin
         contentEditable={
           <div className="editor-wrapper">
-            {/* <button
-              onClick={() => {
-                // console.log('editor =>', editor);
-                console.log('markdown =>', markdownRef.current);
-              }}
-            >
-              convert to markdown
-            </button> */}
             {page === EDITOR_PAGES.ENTRY && <EntryHeader />}
             <ContentEditable className="editor-input" />
           </div>
@@ -135,30 +123,27 @@ export const Editor = ({
       />
       <OnChangePlugin
         onChange={(state) => {
-          editorState.current = state;
-          // console.log('state =>', state);
           state.read(() => {
-            markdownRef.current = $convertToMarkdownString(TRANSFORMERS);
+            markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS, undefined, true);
           });
           debouncedUpdates();
         }}
       />
-      {/* @ts-ignore */}
-      <ClickableLinkPlugin newTap />
+      <ClickableLinkPlugin />
       <FloatingMenuPlugin />
       <SlashCommandPickerPlugin />
       <TabFocusPlugin />
-      <ListPlugin />
       <LinkPlugin validateUrl={validateUrl} />
+      <ListPlugin />
+      <CheckListPlugin />
       <HistoryPlugin />
       <AutoLinkPlugin />
-      <MyCustomAutoFocusPlugin />
-      <CheckListPlugin />
       <TabIndentationPlugin />
-      <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+      <MarkdownShortcutPlugin />
       <CodeHighlightPlugin />
       <PageBreakPlugin />
       <SearchDialogPlugin />
+      <MarkdownContentPlugin markdown={content} />
     </LexicalComposer>
   );
 };

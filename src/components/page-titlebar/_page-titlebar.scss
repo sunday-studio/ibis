@@ -1,5 +1,5 @@
 .page-titlebar {
-  position: sticky;
+  // position: sticky;
   top: 0;
   width: 100%;
   display: flex;
@@ -15,6 +15,10 @@
     p {
       margin-left: auto;
     }
+
+    .single-title {
+      margin-left: auto;
+    }
   }
 
   .sidebar-toggle-container {
@@ -27,12 +31,26 @@
     height: 100%;
   }
 
-  p {
+  .single-title {
     font-size: 15px;
-    margin-right: auto;
+    font-weight: 500;
   }
 
   .sidebar-toggle {
     margin-right: auto;
+  }
+
+  .current-safe {
+    margin-left: auto;
+
+    .safe-name {
+      padding: 3px 6px;
+      border-radius: var(--md-radii);
+      background: var(--panel-background);
+      font-size: 12px;
+      font-weight: 500;
+      margin-right: 12px;
+      box-shadow: 0 0 0 1px var(--main-border);
+    }
   }
 }

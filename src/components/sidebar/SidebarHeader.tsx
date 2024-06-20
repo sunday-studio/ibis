@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { appState } from '@/store/app-state';
 
+import { Tooltip } from '../tooltip/Tooltip';
+
 export const SidebarHeader = () => {
   const navigate = useNavigate();
 
@@ -20,18 +22,30 @@ export const SidebarHeader = () => {
           <Maximize2 size={8} strokeWidth={3} />
         </div>
 
-        <div className="window-action" onClick={() => navigate(0)}>
-          <RefreshCcw size={8} strokeWidth={3} />
-        </div>
+        <Tooltip
+          content="You are currently on the latest version"
+          hoverDuration={400}
+          trigger={
+            <div className="window-action" onClick={() => navigate(0)}>
+              <RefreshCcw size={8} strokeWidth={3} />
+            </div>
+          }
+        />
       </div>
 
-      <button
-        className="sidebar-toggle"
-        role="button"
-        onClick={() => appState.toggleSidebarOpenState()}
-      >
-        <PanelRight size={18} />
-      </button>
+      <Tooltip
+        content="Close sidebar"
+        shortcuts={['⌘', 'D']}
+        trigger={
+          <button
+            className="sidebar-toggle"
+            role="button"
+            onClick={() => appState.toggleSidebarOpenState()}
+          >
+            <PanelRight size={18} />
+          </button>
+        }
+      />
     </div>
   );
 };

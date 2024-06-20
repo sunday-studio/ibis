@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -41,7 +41,6 @@ export const TagEditor = observer(() => {
         </div>
       ) : (
         <TagSelector
-          // @ts-ignore
           onTagSelect={(tags: string[]) => {
             entriesStore.updateActiveEntryTags(tags);
           }}
