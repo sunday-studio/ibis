@@ -7,6 +7,7 @@ import { generateNewDirectory } from '@/lib/auth/auth-helpers';
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { setData } from '@/lib/storage';
+import { logger } from '@/lib/logger';
 
 export const SafeLoadout = () => {
   const [location, setLocation] = useState<null | string>(null);
@@ -34,8 +35,12 @@ export const SafeLoadout = () => {
       setData(SAFE_LOCATION_KEY, directoryName);
       await generateNewDirectory(directoryName);
       await loadDirectoryContent(directoryName);
+
+      console.log('I am called');
+
       navigate('/today');
     } catch (error) {
+      logger.error('createDirectoryAndStartService =>', error);
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,6 @@
 import React from 'react';
+import { TauriEvent, listen } from '@tauri-apps/api/event';
+import { Command } from '@tauri-apps/api/shell';
 
 import * as Sentry from '@sentry/react';
 import ReactDOM from 'react-dom/client';
@@ -6,6 +8,13 @@ import { RouterProvider } from 'react-router-dom';
 
 import { router } from './routes/router';
 import './styles/index.scss';
+
+const command = Command.sidecar('binaries/ibis-server');
+command.spawn().then((child) => {
+  listen(TauriEvent.WINDOW_DESTROYED, function () {
+    // child.kill();
+  });
+});
 
 Sentry.init({
   dsn:

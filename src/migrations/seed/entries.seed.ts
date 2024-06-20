@@ -88,8 +88,6 @@ updatedAt: ${timestamp}
 tags: ''
 title: 'What is Ibis'
 ---
-
-
 ## What exactly is Ibis? 
 
 Ibis a local-first writing tool. All your data is in markdown stored on your machine. Nothing goes out to anywhere. Total privacy. 

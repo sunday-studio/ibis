@@ -128,6 +128,8 @@ export const loadDirectoryContent = async (safeURL: string) => {
 
   const { migratedData, indexFile } = await migrateFileSystem(content);
 
+  console.log('content =>', { migratedData, content });
+
   const groupedData = migratedData.reduce((acc, obj) => {
     if (!acc[obj.type]) {
       acc[obj.type] = [];
@@ -210,8 +212,6 @@ const generateIndexPath = (_: any, basePath: string): [string, string] => {
 
 export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
   const { type, data } = props;
-
-  console.log('');
 
   try {
     switch (type) {

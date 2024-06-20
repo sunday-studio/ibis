@@ -1,7 +1,9 @@
 class Logger {
   info() {}
 
-  error() {}
+  error(...args) {
+    console.error(...args);
+  }
 }
 
 export const logger = new Logger();

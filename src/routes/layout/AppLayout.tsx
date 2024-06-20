@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { TauriEvent, listen } from '@tauri-apps/api/event';
-import { Command } from '@tauri-apps/api/shell';
 
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
@@ -16,13 +14,6 @@ import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
 import { getData } from '@/lib/storage';
 import { appState } from '@/store/app-state';
-
-const command = Command.sidecar('binaries/ibis-server');
-command.spawn().then((child) => {
-  listen(TauriEvent.WINDOW_DESTROYED, function () {
-    child.kill();
-  });
-});
 
 const AppLayout = observer(() => {
   const [showSplashScreen, setShowSplashScreen] = useState(false);

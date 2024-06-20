@@ -14,6 +14,9 @@ export const removeDateStringsFromIndex = async ({
   indexFile,
 }): Promise<MigrationReturnType> => {
   const { fileContent, ...rest } = indexFile;
+  const fileFolders = fileContent?.folders ?? {};
+
+  console.log('filecontent =>', fileContent);
 
   const deletedEntries = fileContent.deletedEntries.map((entryId: string) => getNewId(entryId));
   const pinnedEntries = fileContent.pinnedEntries.map((entry) => {
@@ -23,7 +26,7 @@ export const removeDateStringsFromIndex = async ({
     return getNewId(entry);
   });
 
-  const updatedFolders = Object.entries(fileContent.folders).map(([key, value]) => {
+  const updatedFolders = Object.entries(fileFolders).map(([key, value]) => {
     const folderValue = {
       // @ts-ignore
       ...value,
