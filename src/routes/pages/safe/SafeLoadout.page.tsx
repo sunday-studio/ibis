@@ -58,6 +58,7 @@ export const SafeLoadout = () => {
             <label htmlFor="safe-name">Safe name</label>
             <input
               type="text"
+              autoCorrect="off"
               value={name}
               onChange={(event) => setName(event.target.value)}
               placeholder="ibis safe"

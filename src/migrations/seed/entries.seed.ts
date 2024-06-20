@@ -2,19 +2,20 @@ import { writeTextFile } from '@tauri-apps/api/fs';
 import { nanoid } from 'nanoid';
 
 import { DocumentType, pathGenerator } from '@/lib/data-engine/syncing-engine';
-import { generateEntryPath } from '@/lib/data-engine/syncing-helpers';
 
 export const seedDefaultEntries = async (basePath: string) => {
   const timestamp = new Date().toISOString();
+  const id = nanoid();
 
   const { path } = pathGenerator.generatePath({
     dateString: timestamp,
     type: DocumentType.Entry,
     basePath,
+    id,
   });
 
   const welcomeMarkdown = `---
-id: ${nanoid()}
+id: ${id}
 createdAt: ${timestamp}
 updatedAt: ${timestamp}
 tags: ''

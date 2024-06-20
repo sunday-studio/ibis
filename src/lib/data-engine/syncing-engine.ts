@@ -74,12 +74,13 @@ class Meili {
 
   async readDirectoryContent(url = this.basePath) {
     try {
-      const data = await invoke<{ files: any }>('get_all_files', {
+      const data = await invoke<{ files: string[] }>('get_all_files', {
         path: url,
       });
+
       return data?.files;
     } catch (error) {
-      // console.log('error ->', error);
+      console.log('readDirectoryContent ->', error);
     }
   }
 
