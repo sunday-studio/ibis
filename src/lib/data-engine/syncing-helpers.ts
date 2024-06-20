@@ -128,8 +128,6 @@ export const loadDirectoryContent = async (safeURL: string) => {
 
   const { migratedData, indexFile } = await migrateFileSystem(content);
 
-  console.log('content =>', { migratedData, content });
-
   const groupedData = migratedData.reduce((acc, obj) => {
     if (!acc[obj.type]) {
       acc[obj.type] = [];
