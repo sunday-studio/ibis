@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { generateNewDirectory } from '@/lib/auth/auth-helpers';
 import { ACTIVE_ENTRY, SAFE_LOCATION_KEY } from '@/lib/constants';
-import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
+import { loadDirectoryContent, resetAppState } from '@/lib/data-engine/syncing-helpers';
 import { searchEngine } from '@/lib/search/search-engine';
 import { clearData, getData } from '@/lib/storage';
 // import { runMigration } from '@/migrations/file-date-pattern.migrate';
@@ -101,7 +101,7 @@ export const SearchDialog = observer(() => {
       onClick: () => {
         clearData(SAFE_LOCATION_KEY);
         clearData(ACTIVE_ENTRY);
-        meili.reset();
+        resetAppState();
         navigate('/safe');
       },
       icon: MonitorDown,
@@ -118,7 +118,6 @@ export const SearchDialog = observer(() => {
 
   const handleSearch = (term: string) => {
     const response = searchEngine.search(`${term}-1`);
-    console.log('response =>', response);
     setResults(response);
   };
 

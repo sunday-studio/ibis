@@ -9,6 +9,7 @@ import { tagsState } from '@/store/tags-state';
 
 import { searchEngine } from '../search/search-engine';
 import { DocumentType, meili } from './syncing-engine';
+import { logger } from '../logger';
 
 // pattern year-month-day; 2023-01-12
 const DATE_PATTERN = 'y-MM-dd';
@@ -113,7 +114,15 @@ const getFileType = (url: string, baseURL: string) => {
   return cleanedurl.split('/')[splitURL.length - 1];
 };
 
+export const resetAppState = () => {
+  entriesStore.reset();
+  journalEntryState.reset();
+  meili.reset();
+};
+
 export const loadDirectoryContent = async (safeURL: string) => {
+  resetAppState();
+
   const flatEntries = await meili.readDirectoryContent(safeURL);
 
   const promises = flatEntries.map(async (file: string) => {
@@ -142,7 +151,7 @@ export const loadDirectoryContent = async (safeURL: string) => {
       entries: groupedData.entries,
       index: indexFile,
     });
-    journalEntryState.localLocalData(groupedData.journalNotes);
+    journalEntryState.loadLocalData(groupedData.journalNotes);
     tagsState.loadLocalData(groupedData['tags.json']?.[0]);
     searchEngine.loadLocalData(groupedData.entries, groupedData.journalNotes);
   } catch (error) {

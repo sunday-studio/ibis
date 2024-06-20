@@ -1,5 +1,4 @@
-import { invoke } from '@tauri-apps/api/tauri';
-
+import { logger } from '@/lib/logger';
 import { MigrationReturnType } from '.';
 import { getNewId } from './file-json-to-md.migrate';
 
@@ -13,43 +12,47 @@ export const removeDateStringsFromIndex = async ({
   updatedVersion,
   indexFile,
 }): Promise<MigrationReturnType> => {
-  const { fileContent, ...rest } = indexFile;
-  const fileFolders = fileContent?.folders ?? {};
+  try {
+    const { fileContent, ...rest } = indexFile;
+    const fileFolders = fileContent?.folders ?? {};
 
-  const deletedEntries = fileContent.deletedEntries.map((entryId: string) => getNewId(entryId));
-  const pinnedEntries = fileContent.pinnedEntries.map((entry) => {
-    if (typeof entry === 'object') {
-      return entry?.id && getNewId(entry.id);
-    }
-    return getNewId(entry);
-  });
+    const deletedEntries = fileContent.deletedEntries.map((entryId: string) => getNewId(entryId));
+    const pinnedEntries = fileContent.pinnedEntries.map((entry) => {
+      if (typeof entry === 'object') {
+        return entry?.id && getNewId(entry.id);
+      }
+      return getNewId(entry);
+    });
 
-  const updatedFolders = Object.entries(fileFolders).map(([key, value]) => {
-    const folderValue = {
-      // @ts-ignore
-      ...value,
-      // @ts-ignore
-      entries: value?.entries?.map((e) => getNewId(e)),
+    const updatedFolders = Object.entries(fileFolders).map(([key, value]) => {
+      const folderValue = {
+        // @ts-ignore
+        ...value,
+        // @ts-ignore
+        entries: value?.entries?.map((e) => getNewId(e)),
+      };
+
+      return [key, folderValue];
+    });
+
+    const folders = Object.fromEntries(updatedFolders);
+
+    const updatedIndexFileContent = {
+      ...fileContent,
+      schemaVersion: updatedVersion,
+      deletedEntries,
+      pinnedEntries,
+      folders,
     };
 
-    return [key, folderValue];
-  });
-
-  const folders = Object.fromEntries(updatedFolders);
-
-  const updatedIndexFileContent = {
-    ...fileContent,
-    schemaVersion: updatedVersion,
-    deletedEntries,
-    pinnedEntries,
-    folders,
-  };
-
-  return {
-    indexFile: {
-      ...rest,
-      fileContent: updatedIndexFileContent,
-    },
-    data,
-  };
+    return {
+      indexFile: {
+        ...rest,
+        fileContent: updatedIndexFileContent,
+      },
+      data,
+    };
+  } catch (error) {
+    logger.error('removeDateStringFromIndex', error);
+  }
 };

@@ -16,7 +16,7 @@ const VERSION_INCREMENT = 0.1;
 const FILE_VERSION_MIGRATORS: Record<number, MigrationFunction> = {
   0: addVersionToFileSystem,
   0.1: migrateJSONTOMarkdown,
-  // 0.2: removeDateStringsFromIndex,
+  0.2: removeDateStringsFromIndex,
 };
 
 export const MAX_SCHEMA_VERSION: number = Math.max(

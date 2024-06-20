@@ -5,6 +5,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import gm from 'gray-matter';
 
 import { MigrationReturnType } from '.';
+import { logger } from '@/lib/logger';
 
 // TODO: move this into a migration util file
 export function getNewId(oldId: string) {
@@ -53,7 +54,7 @@ async function convertLexicalJSONToMarkdown(content: string) {
 
     return response?.data?.content;
   } catch (error) {
-    console.log('convertLexicalJSONToMarkdown =>', error);
+    logger.error('convertLexicalJSONToMarkdown =>', error);
   }
 }
 
@@ -84,8 +85,6 @@ export const migrateJSONTOMarkdown = async ({ data }): Promise<MigrationReturnTy
 
     const url = `${item.url.split('.')[0]}.${id}.md`;
 
-    console.log('url =>', url);
-
     const data = `${frontmatter}
 ${content}
         `;
@@ -96,7 +95,7 @@ ${content}
         content: data,
       });
     } catch (error) {
-      console.error('error >', error);
+      logger.error('error >', error);
     }
 
     await invoke('delete_file', { path: item.url });

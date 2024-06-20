@@ -7,6 +7,7 @@ import { saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
 
 import { DATE_PATTERN, JOURNAL_NOTES_KEY } from '../lib/constants';
 import { setData } from '../lib/storage';
+import { logger } from '@/lib/logger';
 
 export function getDateInStringFormat(date: Date, pattern = DATE_PATTERN) {
   return format(date, pattern);
@@ -23,40 +24,51 @@ type JournalEntries = Record<string, JournalEntry>;
 class JournalStore {
   journalEntry: JournalEntry;
   journalEntries: JournalEntries | {} = {};
-  intervalId = null;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  localLocalData(data: any[]) {
-    const allEntries = data.reduce((acc, obj) => {
-      const dateString = getDateInStringFormat(new Date(obj.fileContent?.data?.date));
+  reset() {
+    this.journalEntry = null;
+    this.journalEntries = {};
+  }
 
-      if (!acc[dateString]) {
-        acc[dateString] = {};
+  loadLocalData(data: any[]) {
+    try {
+      // console.log('data =>', data);
+      const allEntries = data.reduce((acc, obj) => {
+        // console.log('state', obj.fileContent);
+
+        const dateString = getDateInStringFormat(new Date(obj.fileContent?.data?.date));
+
+        if (!acc[dateString]) {
+          acc[dateString] = {};
+        }
+        acc[dateString] = {
+          content: obj.fileContent?.markdown,
+          id: obj.fileContent.data?.id,
+          date: obj.fileContent.data?.date,
+        };
+        return acc;
+      }, {});
+
+      const today = getDateInStringFormat(new Date());
+      let entryForToday: JournalEntry = allEntries[today];
+
+      if (!entryForToday) {
+        entryForToday = {
+          id: nanoid(),
+          content: null,
+          date: today,
+        };
       }
-      acc[dateString] = {
-        content: obj.fileContent?.markdown,
-        id: obj.fileContent.data?.id,
-        date: obj.fileContent.data?.date,
-      };
-      return acc;
-    }, {});
 
-    const today = getDateInStringFormat(new Date());
-    let entryForToday: JournalEntry = allEntries[today];
-
-    if (!entryForToday) {
-      entryForToday = {
-        id: nanoid(),
-        content: null,
-        date: today,
-      };
+      this.journalEntry = entryForToday;
+      this.journalEntries = allEntries;
+    } catch (error) {
+      // logger.error('loading local data', error);
     }
-
-    this.journalEntry = entryForToday;
-    this.journalEntries = allEntries;
   }
 
   saveContent(editorState: string) {

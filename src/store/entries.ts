@@ -44,6 +44,16 @@ class Entries {
     makeAutoObservable(this);
   }
 
+  reset() {
+    this.entries = [];
+    this.deletedEntriesId = [];
+    this.pinnedEntriesId = [];
+    this.activeEntry = null;
+    this.activeEntryTitle = null;
+    this.folders = {};
+    this.entriesInFolders = new Set([]);
+  }
+
   loadLocalData({ entries, index }) {
     const entryData = entries
       .filter((e) => e.fileContent)
