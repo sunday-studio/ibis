@@ -1,5 +1,4 @@
 // TODO: clean this file later; too much weird stuff goign on here
-import { TauriEvent, listen } from '@tauri-apps/api/event';
 import { Body, ResponseType, fetch } from '@tauri-apps/api/http';
 import { Command } from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri';
@@ -59,14 +58,6 @@ async function convertLexicalJSONToMarkdown(content: string) {
 }
 
 export const migrateJSONTOMarkdown = async ({ data }): Promise<MigrationReturnType> => {
-  // const command = Command.sidecar('binaries/ibis-server');
-  // command.spawn().then((child) => {
-  //   listen(TauriEvent.WINDOW_DESTROYED, function () {
-  //     console.log('Killed window ');
-  //     // child.kill();
-  //   });
-  // });
-
   const getContent = (item) => {
     if (item.type === 'entries') {
       return item?.fileContent?.content;

@@ -39,13 +39,14 @@ const DailyPage = observer(() => {
 
   useEffect(() => {
     updatePercentageCompleted();
-    const intervalId = setInterval(() => {
-      updatePercentageCompleted();
-    }, 45 * 60 * 1000);
+    const intervalId = setInterval(
+      () => {
+        updatePercentageCompleted();
+      },
+      45 * 60 * 1000,
+    );
     return () => clearInterval(intervalId);
   }, [dateValues.day]);
-
-  // console.log('date =>', journalEntry);
 
   return (
     <Popover.Root>

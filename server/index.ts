@@ -126,7 +126,6 @@ app.post('/json', async (c) => {
     ],
     // @ts-ignore
     onError: (e) => {
-      console.log('problem no dey finish =>', e);
       return c.json({ success: false, message: e.message, e });
     },
   });

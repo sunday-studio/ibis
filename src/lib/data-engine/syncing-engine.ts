@@ -53,15 +53,13 @@ class Meili {
       await createDir(directoryPath, { recursive: true });
     }
 
-    console.log({ path, id });
-
     try {
       await invoke('write_to_file', {
         path,
         content: content,
       });
     } catch (error) {
-      console.log('error =>', error);
+      console.error('error =>', error);
     }
   }
 
@@ -80,7 +78,7 @@ class Meili {
 
       return data?.files;
     } catch (error) {
-      console.log('readDirectoryContent ->', error);
+      console.error('readDirectoryContent ->', error);
     }
   }
 
