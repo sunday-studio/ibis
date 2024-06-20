@@ -26,6 +26,7 @@ const renameUrl = (url: string, createdAt: string) => {
 
     if (oldFilenamePaths.length === 3) return url;
     const newDateUrl = `${getDateInStringFormat(new Date(createdAt))}.${oldFilenamePaths[1]}`;
+
     urlPaths[oldFilenameIndex] = newDateUrl;
 
     return urlPaths.join('/');

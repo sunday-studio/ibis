@@ -36,8 +36,6 @@ export const SafeLoadout = () => {
       await generateNewDirectory(directoryName);
       await loadDirectoryContent(directoryName);
 
-      console.log('I am called');
-
       navigate('/today');
     } catch (error) {
       logger.error('createDirectoryAndStartService =>', error);

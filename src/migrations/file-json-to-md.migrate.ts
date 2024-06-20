@@ -1,4 +1,4 @@
-// TODO: clean this file later; too much weird stuff goign on here
+// TODO: clean this file later; too much weird stuff going on here
 import { Body, ResponseType, fetch } from '@tauri-apps/api/http';
 import { Command } from '@tauri-apps/api/shell';
 import { invoke } from '@tauri-apps/api/tauri';
@@ -83,6 +83,8 @@ export const migrateJSONTOMarkdown = async ({ data }): Promise<MigrationReturnTy
     const id = getNewId(item?.fileContent.id);
 
     const url = `${item.url.split('.')[0]}.${id}.md`;
+
+    console.log('url =>', url);
 
     const data = `${frontmatter}
 ${content}

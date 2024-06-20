@@ -16,8 +16,6 @@ export const removeDateStringsFromIndex = async ({
   const { fileContent, ...rest } = indexFile;
   const fileFolders = fileContent?.folders ?? {};
 
-  console.log('filecontent =>', fileContent);
-
   const deletedEntries = fileContent.deletedEntries.map((entryId: string) => getNewId(entryId));
   const pinnedEntries = fileContent.pinnedEntries.map((entry) => {
     if (typeof entry === 'object') {
