@@ -180,10 +180,21 @@ class Entries {
       ...this.activeEntry,
       updatedAt: new Date().toISOString(),
       content: editorState,
-      title: this.activeEntryTitle! ?? this.activeEntry.title,
+      title: this.activeEntryTitle ?? this.activeEntry.title,
     } as Entry;
 
-    // console.log({ entry });
+    console.log(
+      'data=>',
+      `---
+id: ${entry?.id}
+createdAt: ${entry?.createdAt}
+updatedAt: ${entry?.updatedAt ?? entry?.createdAt ?? ''}
+tags: ${entry?.tags ?? []}
+title: ${entry?.title ?? 'Untitled'}        
+---
+${editorState}
+        `,
+    );
 
     saveFileToDisk({
       type: DocumentType.Entry,
@@ -284,28 +295,10 @@ ${editorState}
     console.log('entries => ', entries);
   }
 
-  private saveTitle = mobxDebounce(() => {
-    const updatedEntry = {
-      ...this.activeEntry,
-      title: this.activeEntryTitle!,
-    } as Entry;
-
-    saveFileToDisk({
-      type: DocumentType.Entry,
-      data: updatedEntry,
-    });
-
-    const updatedEntries = this.findAndReplaceEntry(updatedEntry);
-
-    runInAction(() => {
-      this.activeEntry = updatedEntry;
-      this.entries = updatedEntries;
-    });
-  }, 500);
-
-  updateActiveEntireTitle(title: string) {
+  updateActiveEntryTitle(title: string) {
     this.activeEntryTitle = title;
-    this.saveTitle();
+
+    this.saveContent(this.activeEntry.content);
   }
 
   // Folders crud

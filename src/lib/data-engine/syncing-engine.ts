@@ -53,6 +53,8 @@ class Meili {
       await createDir(directoryPath, { recursive: true });
     }
 
+    console.log({ path, id });
+
     try {
       await invoke('write_to_file', {
         path,
@@ -224,6 +226,8 @@ class PathGenerator {
       this.basePath = url;
       currentBasePath = url;
     }
+
+    console.log('generatePath =>', { id });
 
     switch (type) {
       case DocumentType.Entry:

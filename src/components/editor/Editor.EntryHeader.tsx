@@ -15,7 +15,7 @@ export const EntryTitle = observer(() => {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
-    entryStore.updateActiveEntireTitle(value);
+    entryStore.updateActiveEntryTitle(value);
   };
 
   return (

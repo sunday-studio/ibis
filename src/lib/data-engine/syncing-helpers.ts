@@ -211,7 +211,7 @@ const generateIndexPath = (_: any, basePath: string): [string, string] => {
 export const saveFileToDisk = async (props: SaveFileToDiskProps) => {
   const { type, data } = props;
 
-  // console.log('logging ', data, type);
+  console.log('logging ', data);
 
   try {
     switch (type) {
