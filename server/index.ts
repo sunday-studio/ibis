@@ -74,7 +74,7 @@ export function $createPageBreakNode(): PageBreakNode {
 const PAGE_BREAK_NODE_TRANSFORMER: Transformer = {
   // @ts-ignore
   export: (node) => {
-    if ($isPageBreakNode(node)) {
+    if ($isPageBreakNode(node) || node.getType() === 'page-break') {
       return '---\n';
     }
   },
@@ -134,12 +134,11 @@ app.post('/json', async (c) => {
   editor.setEditorState(state);
 
   editor.update(() => {
-    markdown = $convertToMarkdownString([
-      ...TRANSFORMERS,
-      PAGE_BREAK_NODE_TRANSFORMER,
-      CHECK_LIST,
+    markdown = $convertToMarkdownString(
+      [CHECK_LIST, PAGE_BREAK_NODE_TRANSFORMER, ...TRANSFORMERS],
+      undefined,
       true,
-    ]);
+    );
   });
 
   return c.json({ success: true, content: markdown });

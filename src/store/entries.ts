@@ -193,19 +193,6 @@ class Entries {
       title: this.activeEntryTitle ?? this.activeEntry.title,
     } as Entry;
 
-    console.log(
-      'data=>',
-      `---
-id: ${entry?.id}
-createdAt: ${entry?.createdAt}
-updatedAt: ${entry?.updatedAt ?? entry?.createdAt ?? ''}
-tags: ${entry?.tags ?? []}
-title: ${entry?.title ?? 'Untitled'}        
----
-${editorState}
-        `,
-    );
-
     saveFileToDisk({
       type: DocumentType.Entry,
       data: {

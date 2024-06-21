@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid';
 
 import { DATE_PATTERN, SAFE_LOCATION_KEY } from '../constants';
 import { getData } from '../storage';
+import { logger } from '../logger';
 
 type Data = {
   dateString: string;
@@ -59,7 +60,7 @@ class Meili {
         content: content,
       });
     } catch (error) {
-      console.error('error =>', error);
+      logger.error('error =>', error);
     }
   }
 
@@ -78,7 +79,7 @@ class Meili {
 
       return data?.files;
     } catch (error) {
-      console.error('readDirectoryContent ->', error);
+      logger.error('readDirectoryContent ->', error);
     }
   }
 
@@ -100,7 +101,7 @@ class Meili {
         data: markdown?.data,
       };
     } catch (error) {
-      console.log('readFileContent =>', { error, message: error.message, url });
+      logger.info('readFileContent =>', { error, message: error.message, url });
     }
   }
 
@@ -122,7 +123,7 @@ class Meili {
     try {
       await invoke('delete_file', { path });
     } catch (error) {
-      console.log('deleting-file ->', error);
+      logger.info('deleting-file ->', error);
     }
   }
 
@@ -133,7 +134,7 @@ class Meili {
         newPath,
       });
     } catch (error) {
-      console.error('trying to rename =>', error);
+      logger.error('trying to rename =>', error);
     }
   }
 }
@@ -226,7 +227,7 @@ class PathGenerator {
       currentBasePath = url;
     }
 
-    console.log('generatePath =>', { id });
+    logger.info('generatePath =>', { id });
 
     switch (type) {
       case DocumentType.Entry:

@@ -145,7 +145,6 @@ export const loadDirectoryContent = async (safeURL: string) => {
     return acc;
   }, {});
 
-  // load data into localStores
   try {
     entriesStore.loadLocalData({
       entries: groupedData.entries,

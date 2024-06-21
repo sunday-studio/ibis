@@ -57,9 +57,6 @@ const createScissorSvg = () => {
   createAndAppendElement('circle', { cx: '4', cy: '8', r: '2' });
   createAndAppendElement('circle', { cx: '4', cy: '16', r: '2' });
 
-  // Append the SVG to the body or another element in your document
-  // document.body.appendChild(svg);
-
   return svg;
 };
 
@@ -154,6 +151,8 @@ export class PageBreakNode extends DecoratorNode<JSX.Element> {
   createDOM(): HTMLElement {
     const element = document.createElement('figure');
     const svg = createScissorSvg();
+
+    console.log('I am called');
 
     element.style.pageBreakAfter = 'always';
     element.setAttribute('type', this.getType());
