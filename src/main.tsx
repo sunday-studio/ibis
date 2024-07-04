@@ -12,7 +12,7 @@ import './styles/index.scss';
 const command = Command.sidecar('binaries/ibis-server');
 command.spawn().then((child) => {
   listen(TauriEvent.WINDOW_DESTROYED, function () {
-    // child.kill();
+    child.kill();
   });
 });
 

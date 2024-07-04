@@ -126,6 +126,7 @@ app.post('/json', async (c) => {
     ],
     // @ts-ignore
     onError: (e) => {
+      console.log('e =>', e);
       return c.json({ success: false, message: e.message, e });
     },
   });
