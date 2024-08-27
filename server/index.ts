@@ -71,6 +71,7 @@ export function $createPageBreakNode(): PageBreakNode {
   return $applyNodeReplacement(new PageBreakNode());
 }
 
+// @ts-ignore
 const PAGE_BREAK_NODE_TRANSFORMER: Transformer = {
   // @ts-ignore
   export: (node) => {
