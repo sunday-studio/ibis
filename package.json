@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "bunx --bun vite",
-    "build": "CI=true bunx --bun vite build",
+    "build": "bunx --bun vite build",
     "preview": "vite preview",
     "tauri": "tauri",
     "prettier": "prettier",

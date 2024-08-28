@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 
 import { AppErrorBoundary } from '@/components/shared/ErrorBoundary';
 
@@ -9,6 +9,15 @@ import JournalPage from './pages/journal/Journal.page';
 import { SafeLoadout } from './pages/safe/SafeLoadout.page';
 import SettingsPage from './pages/settings/Settings.page';
 import TrashPage from './pages/trash/Trash.page';
+
+const NewLayout = () => {
+  return (
+    <div>
+      hello world
+      <Outlet />
+    </div>
+  );
+};
 
 export const router = createBrowserRouter([
   {

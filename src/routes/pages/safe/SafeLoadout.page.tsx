@@ -52,9 +52,9 @@ export const SafeLoadout = () => {
             <img src="/app-icon.png" />
           </div>
           <p>All your journal and notes, local first.</p>
-          <span className="subtext">
+          {/* <span className="subtext">
             Now with <span className="ai">AI butler</span>
-          </span>
+          </span> */}
         </div>
         <form action="">
           <div className="form-control">

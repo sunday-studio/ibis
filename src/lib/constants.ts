@@ -6,6 +6,6 @@ export const JOURNAL_NOTES_KEY = 'ibis-journal-notes';
 export const APP_STATE = 'ibis-appstate';
 export const ACCESS_TOKEN = 'ibis-access-token';
 export const USER_DATA = 'ibis-user-data';
-export const SAFE_LOCATION_KEY = 'ibis-safe-location';
+export const SAFE_LOCATION_KEY = 'ibis-safe-location-test';
 export const DATE_PATTERN = 'y-MM-dd';
 export const ACTIVE_ENTRY = 'ibis-active-entry';

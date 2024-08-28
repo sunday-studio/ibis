@@ -108,6 +108,13 @@ async fn rename_file(old_path: String, new_path: String) -> Result<(), String> {
 
 fn main() {
     tauri::Builder::default()
+        // .setup(|app| {
+        //     // let window = app.get_window("main").unwrap();
+        //     // #[cfg(target_os = "macos")]
+        //     // apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, None, Some(10.0))
+        //     //     .expect("Unsupported platform! 'apply_vibrancy' is only supported on macOS");
+        //     Ok(())
+        // })
         .invoke_handler(tauri::generate_handler![
             get_all_files,
             read_file_content,

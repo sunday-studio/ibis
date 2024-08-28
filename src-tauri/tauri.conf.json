@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "yarn dev",
-    "beforeBuildCommand": "yarn build",
+    "beforeDevCommand": "bun run dev",
+    "beforeBuildCommand": "bun run build",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
     "withGlobalTauri": false
@@ -20,8 +20,22 @@
         "installerArgs": []
       }
     },
+
     "allowlist": {
       "all": false,
+      "fs": {
+        "scope": [""],
+        "all": true,
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "copyFile": true,
+        "createDir": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
+        "exists": true
+      },
       "http": {
         "all": true,
         "request": true,
@@ -46,6 +60,11 @@
         "setDecorations": false
       },
 
+      "shell": {
+        "sidecar": false,
+        "all": false,
+        "open": true
+      },
       "dialog": {
         "all": true,
         "ask": true,
@@ -53,19 +72,6 @@
         "message": true,
         "open": true,
         "save": true
-      },
-      "fs": {
-        "scope": [""],
-        "all": true,
-        "readFile": true,
-        "writeFile": true,
-        "readDir": true,
-        "copyFile": true,
-        "createDir": true,
-        "removeDir": true,
-        "removeFile": true,
-        "renameFile": true,
-        "exists": true
       }
     },
     "bundle": {
@@ -80,10 +86,10 @@
         "icons/icon.ico"
       ]
     },
+
     "security": {
       "csp": null
     },
-    "macOSPrivateApi": true,
     "windows": [
       {
         "fullscreen": false,
