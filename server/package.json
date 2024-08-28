@@ -9,7 +9,7 @@
     "typescript": "^5.5.3"
   },
   "scripts": {
-    "build": "bun build ./index.ts --compile --outfile  ../src-tauri/binaries/ibis-server"
+    "build": "bun build ./index.ts"
   },
   "dependencies": {
     "@lexical/code": "^0.16.1",

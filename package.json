@@ -5,17 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "bun run package-sidecar &&  bunx --bun vite",
-    "build": "bun run package-sidecar && tsc && bunx --bun vite build",
+    "build": "CI=true bunx --bun vite build",
     "preview": "vite preview",
     "tauri": "tauri",
     "prettier": "prettier",
     "knip": "knip",
     "package-sidecar": "cd server && bun run build &&  cd .. && node .scripts/move-binaries.js"
-  },
-  "pkg": {
-    "assets": [
-      "src/sidecar/*"
-    ]
   },
   "dependencies": {
     "@adobe/react-spectrum": "^3.35.1",
