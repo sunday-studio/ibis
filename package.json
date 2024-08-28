@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "bun run package-sidecar &&  bunx --bun vite",
+    "dev": "bunx --bun vite",
     "build": "CI=true bunx --bun vite build",
     "preview": "vite preview",
     "tauri": "tauri",
