@@ -43,7 +43,9 @@
         display: flex;
         visibility: hidden;
         opacity: 0;
-        transition: visibility 0s, opacity 0.2s eas;
+        transition:
+          visibility 0s,
+          opacity 0.2s eas;
         text-transform: uppercase;
         color: var(--text-primary);
       }
@@ -82,7 +84,9 @@
       svg {
         visibility: hidden;
         opacity: 0;
-        transition: visibility 0s, opacity 0.3s linear;
+        transition:
+          visibility 0s,
+          opacity 0.3s linear;
       }
 
       &:hover {
@@ -231,7 +235,9 @@
           color: var(--text-primary);
           visibility: hidden;
           opacity: 0;
-          transition: visibility 0s, opacity 0.2s ease;
+          transition:
+            visibility 0s,
+            opacity 0.2s ease;
           transform: translateY(-1px);
 
           &:hover {
@@ -462,28 +468,29 @@
       width: 100%;
       text-align: center;
       padding: 4px 0;
-    }
 
-    li {
-      margin-top: 4px;
-      font-size: 15px;
-      border: 1px solid transparent;
-      border-left: 0;
-      border-right: 0;
-      padding: 4px 10px;
-
-      &:hover {
-        border-color: var(--main-border);
-      }
-
-      &.folder-empty {
-        margin: 20px 0;
-        color: var(--text-secondary);
-        text-align: center;
+      &.folder {
+        margin-top: 4px;
+        font-size: 16px;
+        border: 1px solid transparent;
+        border-left: 0;
+        border-right: 0;
+        padding: 6px 12px;
+        text-align: start;
 
         &:hover {
-          background-color: transparent;
-          border-color: transparent;
+          border-color: var(--main-border);
+        }
+
+        &.folder-empty {
+          margin: 20px 0;
+          color: var(--text-secondary);
+          text-align: center;
+
+          &:hover {
+            background-color: transparent;
+            border-color: transparent;
+          }
         }
       }
     }
