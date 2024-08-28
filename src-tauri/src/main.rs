@@ -7,8 +7,6 @@ use std::fs::File;
 use std::io::Read;
 use std::io::Write;
 use std::path::Path;
-// use tauri::Manager;
-// use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial};
 
 use tauri::command;
 use walkdir::{DirEntry, WalkDir};
