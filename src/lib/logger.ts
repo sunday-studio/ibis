@@ -1,7 +1,6 @@
 import * as Sentry from '@sentry/react';
 import { Config } from './config';
-
-type Environment = 'production' | 'developmenet';
+export type Environment = 'production' | 'developmenet';
 
 interface LoggerFactoryProps {
   environment: Environment;
@@ -10,15 +9,15 @@ interface LoggerFactoryProps {
 type LogProps = {
   message: string;
   data?: any;
-  breadcrumb: Sentry.Breadcrumb;
+  breadcrumb?: Sentry.Breadcrumb;
   isProduction: boolean;
   level: Sentry.SeverityLevel;
 };
 
 type LoggerProps = {
   message: string;
-  breadcrumb: Sentry.Breadcrumb;
-  data: any;
+  breadcrumb?: Sentry.Breadcrumb;
+  data?: any;
 };
 
 type ErrorLoggerProps = Omit<LoggerProps, 'data'> & { error: any };
@@ -65,15 +64,17 @@ const captureException = (message: string, data: any): void => {
 const log = ({ message, isProduction, level, data, breadcrumb }: LogProps) => {
   if (!isProduction) {
     let consoleLevel = SENTRY_SEVERITY_MAP[level];
-    consoleLevel(message, data);
+    consoleLevel(message, data ?? '');
   }
 
-  addBreadcrumb({
-    data,
-    breadcrumb,
-    level: level,
-    message,
-  });
+  if (!!breadcrumb) {
+    addBreadcrumb({
+      data,
+      breadcrumb,
+      level: level,
+      message,
+    });
+  }
 
   if (level === 'error') {
     captureException(message, data);
