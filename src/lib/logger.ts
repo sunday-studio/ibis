@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react';
 import { Config } from './config';
-export type Environment = 'production' | 'developmenet';
+export type Environment = 'production' | 'development';
 
 interface LoggerFactoryProps {
   environment: Environment;
