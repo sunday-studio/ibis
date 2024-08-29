@@ -1,26 +1,21 @@
 import React from 'react';
-import { TauriEvent, listen } from '@tauri-apps/api/event';
-import { Command } from '@tauri-apps/api/shell';
 
 import * as Sentry from '@sentry/react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider } from 'react-router-dom';
+import {
+  createRoutesFromChildren,
+  matchRoutes,
+  useLocation,
+  useNavigationType,
+  RouterProvider,
+} from 'react-router-dom';
 
 import { router } from './routes/router';
 import './styles/index.scss';
-
-const command = Command.sidecar('binaries/ibis-server');
-command.spawn().then((child) => {
-  listen(TauriEvent.WINDOW_DESTROYED, function () {
-    child.kill();
-  });
-});
+import { Config } from '@/lib/config';
 
 Sentry.init({
-  dsn:
-    process.env.NODE_ENV === 'production'
-      ? 'https://0b362d94f01e0a41d9fba0854d04f657@o4506903320068096.ingest.us.sentry.io/4506903329243136'
-      : undefined,
+  dsn: Config.sentry_dsn,
   integrations: [
     Sentry.breadcrumbsIntegration({ console: false }),
     Sentry.browserTracingIntegration(),
@@ -28,19 +23,29 @@ Sentry.init({
       maskAllText: false,
       blockAllMedia: false,
     }),
+    Sentry.reactRouterV6BrowserTracingIntegration({
+      useEffect: React.useEffect,
+      useLocation,
+      useNavigationType,
+      createRoutesFromChildren,
+      matchRoutes,
+    }),
+    Sentry.feedbackIntegration({
+      colorScheme: 'system',
+      isNameRequired: false,
+      isEmailRequired: false,
+      showBranding: false,
+    }),
   ],
   environment: process.env.NODE_ENV,
-  // Performance Monitoring
-  tracesSampleRate: 1.0, //  Capture 100% of the transactions
-  // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
+  tracesSampleRate: 1.0,
   tracePropagationTargets: ['localhost', /^https:\/\/yourserver\.io\/api/],
-  // Session Replay
-  replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
-  replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  // <React.StrictMode>
-  <RouterProvider router={router}></RouterProvider>,
-  // </React.StrictMode>,
+  <React.StrictMode>
+    <RouterProvider router={router}></RouterProvider>, //{' '}
+  </React.StrictMode>,
 );

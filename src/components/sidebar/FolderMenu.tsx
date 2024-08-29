@@ -49,12 +49,13 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
           <>
             {filteredFolders.map((folder: Folder) => {
               return (
-                <li
-                  onClick={() => entriesStore.addEntryToFolder(folder.id, entryId)}
+                <button
                   key={folder.id}
+                  onClick={() => entriesStore.addEntryToFolder(folder.id, entryId)}
+                  className="folder"
                 >
                   {folder.name}
-                </li>
+                </button>
               );
             })}
           </>

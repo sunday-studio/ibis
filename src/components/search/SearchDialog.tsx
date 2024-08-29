@@ -8,16 +8,16 @@ import {
   LucideIcon,
   MonitorDown,
   Palette,
-  Play,
+  // Play,
   RefreshCcwDot,
   Search,
-  Sparkles,
+  // Sparkles,
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router-dom';
 
-import { generateNewDirectory } from '@/lib/auth/auth-helpers';
+// import { generateNewDirectory } from '@/lib/auth/auth-helpers';
 import { ACTIVE_ENTRY, SAFE_LOCATION_KEY } from '@/lib/constants';
 import { loadDirectoryContent, resetAppState } from '@/lib/data-engine/syncing-helpers';
 import { searchEngine } from '@/lib/search/search-engine';
@@ -25,7 +25,7 @@ import { clearData, getData } from '@/lib/storage';
 // import { runMigration } from '@/migrations/file-date-pattern.migrate';
 import { appState } from '@/store/app-state';
 import { searchStore } from '@/store/search';
-import { meili } from '@/lib/data-engine/syncing-engine';
+// import { meili } from '@/lib/data-engine/syncing-engine';
 
 type ActionProps = {
   name: string;
@@ -140,29 +140,28 @@ export const SearchDialog = observer(() => {
         />
       </div>
 
-      <div className="search">
+      {/* <div className="search">
         {showSearchResults &&
           results.map((result) => {
             return <div className="search-results">{result.title}</div>;
           })}
-      </div>
+      </div> */}
 
       <Command.List>
         <Command.Empty>No results found.</Command.Empty>
         <Command.Group heading="Actions">
-          {!showSearchResults &&
-            defaultActions.map((action: ActionProps, index) => {
-              return (
-                <ActionItem
-                  {...action}
-                  key={index}
-                  onClick={() => {
-                    action.onClick();
-                    searchStore.toggleSearchModal();
-                  }}
-                />
-              );
-            })}
+          {defaultActions.map((action: ActionProps, index) => {
+            return (
+              <ActionItem
+                {...action}
+                key={index}
+                onClick={() => {
+                  action.onClick();
+                  searchStore.toggleSearchModal();
+                }}
+              />
+            );
+          })}
         </Command.Group>
       </Command.List>
     </Command.Dialog>
