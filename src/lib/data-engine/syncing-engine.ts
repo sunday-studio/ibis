@@ -60,7 +60,10 @@ class Meili {
         content: content,
       });
     } catch (error) {
-      logger.error('error =>', error);
+      logger.error({
+        message: 'writeFileContentToDisk',
+        error,
+      });
     }
   }
 
@@ -79,11 +82,17 @@ class Meili {
 
       return data?.files;
     } catch (error) {
-      logger.error('readDirectoryContent ->', error);
+      logger.error({
+        message: 'readDirectoryContent',
+        error,
+      });
     }
   }
 
   async readFileContent(url: string) {
+    logger.info({
+      message: `readFileContent => ${url}`,
+    });
     try {
       const content = await invoke<string>('read_file_content', {
         path: url,
@@ -101,7 +110,14 @@ class Meili {
         data: markdown?.data,
       };
     } catch (error) {
-      logger.info('readFileContent =>', { error, message: error.message, url });
+      console.log('readFileContent =>', error);
+      logger.error({
+        message: 'readFileContent',
+        error,
+      });
+      throw new Error(error);
+
+      // logger.error('readFileContent =>', { error, message: error.message, url });
     }
   }
 
@@ -123,7 +139,7 @@ class Meili {
     try {
       await invoke('delete_file', { path });
     } catch (error) {
-      logger.info('deleting-file ->', error);
+      logger.error({ error, message: 'deletefile' });
     }
   }
 
@@ -134,7 +150,10 @@ class Meili {
         newPath,
       });
     } catch (error) {
-      logger.error('trying to rename =>', error);
+      logger.error({
+        error,
+        message: 'renameFile',
+      });
     }
   }
 }
@@ -226,8 +245,6 @@ class PathGenerator {
       this.basePath = url;
       currentBasePath = url;
     }
-
-    logger.info('generatePath =>', { id });
 
     switch (type) {
       case DocumentType.Entry:

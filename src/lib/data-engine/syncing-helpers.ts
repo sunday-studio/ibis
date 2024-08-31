@@ -125,15 +125,22 @@ export const loadDirectoryContent = async (safeURL: string) => {
 
   const flatEntries = await meili.readDirectoryContent(safeURL);
 
-  const promises = flatEntries.map(async (file: string) => {
+  const promises = flatEntries.map(async (fileUrl: string) => {
     return {
-      type: getFileType(file, safeURL),
-      url: file,
-      fileContent: await meili.readFileContent(file),
+      type: getFileType(fileUrl, safeURL),
+      url: fileUrl,
+      fileContent: await meili.readFileContent(fileUrl),
     };
   });
 
-  const content = await Promise.all(promises);
+  const content = await Promise.all(promises).catch((error) =>
+    logger.error({
+      message: 'error trying to load data',
+      error,
+    }),
+  );
+
+  console.log('content =>', content);
 
   const { migratedData, indexFile } = await migrateFileSystem(content);
 
@@ -145,6 +152,8 @@ export const loadDirectoryContent = async (safeURL: string) => {
     return acc;
   }, {});
 
+  console.log({ migratedData, indexFile, groupedData });
+
   try {
     entriesStore.loadLocalData({
       entries: groupedData.entries,
@@ -152,7 +161,7 @@ export const loadDirectoryContent = async (safeURL: string) => {
     });
     journalEntryState.loadLocalData(groupedData.journalNotes);
     tagsState.loadLocalData(groupedData['tags.json']?.[0]);
-    searchEngine.loadLocalData(groupedData.entries, groupedData.journalNotes);
+    // searchEngine.loadLocalData(groupedData.entries, groupedData.journalNotes);
   } catch (error) {
     console.log('error =>', error);
   }

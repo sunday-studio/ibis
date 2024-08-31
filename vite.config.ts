@@ -8,12 +8,12 @@ import { sentryVitePlugin } from '@sentry/vite-plugin';
 export default defineConfig({
   plugins: [
     react(),
-    sentryVitePlugin({
-      org: 'sundaystudio-ba',
-      project: 'ibis',
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      telemetry: false,
-    }),
+    // sentryVitePlugin({
+    //   org: 'sundaystudio-ba',
+    //   project: 'ibis',
+    //   authToken: process.env.SENTRY_AUTH_TOKEN,
+    //   telemetry: false,
+    // }),
   ],
   define: {
     APP_VERSION: JSON.stringify(process.env.npm_package_version),

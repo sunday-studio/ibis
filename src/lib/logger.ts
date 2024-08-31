@@ -77,6 +77,12 @@ const log = ({ message, isProduction, level, data, breadcrumb }: LogProps) => {
   }
 
   if (level === 'error') {
+    if (!isProduction) {
+      console.error({
+        message,
+        data,
+      });
+    }
     captureException(message, data);
   }
 };

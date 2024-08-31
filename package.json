@@ -4,13 +4,14 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "bunx --bun vite",
-    "build": "bunx --bun vite build",
+    "dev": "pnpm vite",
+    "build": "pnpm vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "tsc": "tsc --noEmit",
     "prettier": "prettier",
     "knip": "knip",
-    "package-sidecar": "cd server && bun run build &&  cd .. && node .scripts/move-binaries.js"
+    "package-sidecar": "cd server && pnpm build &&  cd .. && node .scripts/move-binaries.js"
   },
   "dependencies": {
     "@adobe/react-spectrum": "^3.35.1",
@@ -18,11 +19,16 @@
     "@floating-ui/dom": "^1.6.5",
     "@floating-ui/react": "^0.26.16",
     "@internationalized/date": "^3.5.4",
+    "@lexical/clipboard": "0.17.1",
+    "@lexical/code": "^0.17.1",
     "@lexical/headless": "^0.16.0",
+    "@lexical/link": "^0.17.1",
     "@lexical/list": "^0.16.0",
     "@lexical/markdown": "^0.16.0",
     "@lexical/react": "^0.16.0",
     "@lexical/rich-text": "^0.16.0",
+    "@lexical/selection": "^0.17.1",
+    "@lexical/table": "^0.17.1",
     "@lexical/utils": "^0.16.0",
     "@radix-ui/react-context-menu": "^2.1.5",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -31,6 +37,7 @@
     "@sentry/vite-plugin": "^2.22.3",
     "@tauri-apps/api": "^1.5.6",
     "@uidotdev/usehooks": "^2.4.1",
+    "buffer": "^6.0.3",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
@@ -81,6 +88,5 @@
     "sass": "^1.77.4",
     "vite": "^5.2.13",
     "vitest": "^1.6.0"
-  },
-  "packageManager": "yarn@1.22.1"
+  }
 }

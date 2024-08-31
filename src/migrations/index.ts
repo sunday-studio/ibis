@@ -31,35 +31,43 @@ export const migrateFileSystem = async (data: any) => {
   let migratedData = data;
   const indexFile = migratedData?.find((file: any) => file.type === 'index.json');
 
-  let migratedIndex = indexFile;
+  // let migratedIndex = indexFile;
 
-  let currentVersion = indexFile?.fileContent?.schemaVersion;
+  // let currentVersion = indexFile?.fileContent?.schemaVersion;
 
-  // only run this once when when there's no version
-  if (currentVersion === null || currentVersion === undefined) {
-    FILE_VERSION_MIGRATORS[0.0]?.({ data, indexFile });
-    currentVersion = 0;
-  }
+  // // only run this once when when there's no version
+  // if (currentVersion === null || currentVersion === undefined) {
+  //   FILE_VERSION_MIGRATORS[0.0]?.({ data, indexFile });
+  //   currentVersion = 0;
+  // }
 
-  while (currentVersion < MAX_SCHEMA_VERSION) {
-    currentVersion = Number((currentVersion + VERSION_INCREMENT).toFixed(2));
-    const currentMigrationData = await FILE_VERSION_MIGRATORS[currentVersion]?.({
-      data: migratedData,
-      updatedVersion: currentVersion,
-      indexFile: migratedIndex,
-    });
+  // while (currentVersion < MAX_SCHEMA_VERSION) {
+  //   currentVersion = Number((currentVersion + VERSION_INCREMENT).toFixed(2));
+  //   const currentMigrationData = await FILE_VERSION_MIGRATORS[currentVersion]?.({
+  //     data: migratedData,
+  //     updatedVersion: currentVersion,
+  //     indexFile: migratedIndex,
+  //   });
 
-    migratedIndex = currentMigrationData.indexFile ?? indexFile;
-    migratedData = currentMigrationData?.data ?? data;
-  }
+  //   console.log({
+  //     currentVersion,
+  //     curentdata: migratedData,
+  //     nextData: currentMigrationData,
+  //     // migerated,
+  //   });
 
-  await addVersionToFileSystem({
-    updatedVersion: MAX_SCHEMA_VERSION,
-    indexFile: migratedIndex,
-  });
+  //   migratedIndex = currentMigrationData.indexFile ?? indexFile;
+  //   migratedData = currentMigrationData?.data ?? data;
+  // }
+
+  // await addVersionToFileSystem({
+  //   updatedVersion: MAX_SCHEMA_VERSION,
+  //   indexFile: migratedIndex,
+  // });
 
   return {
     migratedData,
-    indexFile: migratedIndex,
+    indexFile,
+    // indexFile: migratedIndex,
   };
 };
