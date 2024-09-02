@@ -1,24 +1,31 @@
-import { SAFE_LOCATION_KEY } from '@/lib/constants';
-import { loadDirectoryContent } from '@/lib/data-engine/syncing-helpers';
-import { clearData, getData } from '@/lib/storage';
-import { runMigration } from '@/migrations/file-date-pattern.migrate';
-import { appState } from '@/store/app-state';
-import { searchStore } from '@/store/search';
+import { useState } from 'react';
+
 import { Command } from 'cmdk';
 import {
   BadgePlus,
+  Construction,
   Library,
   LucideIcon,
   MonitorDown,
   Palette,
-  Play,
+  // Play,
   RefreshCcwDot,
   Search,
-  Settings,
-  Sparkles,
+  // Sparkles,
 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
+// import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router-dom';
+
+// import { generateNewDirectory } from '@/lib/auth/auth-helpers';
+import { ACTIVE_ENTRY, SAFE_LOCATION_KEY } from '@/lib/constants';
+import { loadDirectoryContent, resetAppState } from '@/lib/data-engine/syncing-helpers';
+import { searchEngine } from '@/lib/search/search-engine';
+import { clearData, getData } from '@/lib/storage';
+// import { runMigration } from '@/migrations/file-date-pattern.migrate';
+import { appState } from '@/store/app-state';
+import { searchStore } from '@/store/search';
+// import { meili } from '@/lib/data-engine/syncing-engine';
 
 type ActionProps = {
   name: string;
@@ -39,12 +46,14 @@ const ActionItem = (props: ActionProps) => {
 export const SearchDialog = observer(() => {
   const { showSearchModal } = searchStore;
   const navigate = useNavigate();
+  const [results, setResults] = useState([]);
 
   const defaultActions: ActionProps[] = [
     // {
     //   name: 'Run Migrations',
     //   onClick: () => {
-    //     runMigration();
+    //     generateNewDirectory(`/Users/cas/Desktop/ibis-tests/${nanoid()}`);
+    //     // ""
     //   },
     //   icon: Play,
     // },
@@ -56,13 +65,13 @@ export const SearchDialog = observer(() => {
       icon: BadgePlus,
     },
 
-    {
-      name: 'New Highlight',
-      onClick: () => {
-        navigate('/highlight');
-      },
-      icon: Sparkles,
-    },
+    // {
+    //   name: 'New Highlight',
+    //   onClick: () => {
+    //     navigate('/highlight');
+    //   },
+    //   icon: Sparkles,
+    // },
     {
       name: 'New Journal log',
       onClick: () => {
@@ -72,7 +81,7 @@ export const SearchDialog = observer(() => {
     },
 
     {
-      name: `Toggle ${appState.theme === 'night' ? 'light' : 'night'} mode`,
+      name: `Toggle ${appState.theme === 'night' ? 'light' : 'dark'} mode`,
       onClick: () => {
         appState.toggleTheme(appState.theme === 'night' ? 'light' : 'night');
       },
@@ -91,11 +100,28 @@ export const SearchDialog = observer(() => {
       name: 'Load new safe',
       onClick: () => {
         clearData(SAFE_LOCATION_KEY);
-        navigate(0);
+        clearData(ACTIVE_ENTRY);
+        resetAppState();
+        navigate('/safe');
       },
       icon: MonitorDown,
     },
+
+    {
+      name: 'Toggle zen mode',
+      onClick: () => {
+        appState.toggleZenMode();
+      },
+      icon: Construction,
+    },
   ];
+
+  const handleSearch = (term: string) => {
+    const response = searchEngine.search(`${term}-1`);
+    setResults(response);
+  };
+
+  const showSearchResults = results.length > 0;
 
   return (
     <Command.Dialog
@@ -107,8 +133,20 @@ export const SearchDialog = observer(() => {
         <div className="search-icon">
           <Search size={15} strokeWidth={3} />
         </div>
-        <Command.Input className="geist-mono-font" placeholder="Search through everyone on Opps" />
+        <Command.Input
+          onValueChange={handleSearch}
+          className="geist-mono-font"
+          placeholder="Search through everyone on Ibis"
+        />
       </div>
+
+      {/* <div className="search">
+        {showSearchResults &&
+          results.map((result) => {
+            return <div className="search-results">{result.title}</div>;
+          })}
+      </div> */}
+
       <Command.List>
         <Command.Empty>No results found.</Command.Empty>
         <Command.Group heading="Actions">

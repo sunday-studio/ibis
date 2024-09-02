@@ -2,7 +2,7 @@ import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { meili } from '@/lib/data-engine/syncing-engine';
 import { months } from '@/lib/data-engine/syncing-helpers';
 import { getData } from '@/lib/storage';
-import { getDateInStringFormat } from '@/store/daily-state';
+import { getDateInStringFormat } from '@/store/journal-state';
 
 const renameUrl = (url: string, createdAt: string) => {
   // rename today files
@@ -26,6 +26,7 @@ const renameUrl = (url: string, createdAt: string) => {
 
     if (oldFilenamePaths.length === 3) return url;
     const newDateUrl = `${getDateInStringFormat(new Date(createdAt))}.${oldFilenamePaths[1]}`;
+
     urlPaths[oldFilenameIndex] = newDateUrl;
 
     return urlPaths.join('/');

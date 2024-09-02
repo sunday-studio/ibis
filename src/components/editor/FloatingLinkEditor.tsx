@@ -1,6 +1,6 @@
-// @ts-nocheck
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { $isAtNodeEnd } from '@lexical/selection';
 import { mergeRegister } from '@lexical/utils';
 import { $getSelection, $isRangeSelection, SELECTION_CHANGE_COMMAND } from 'lexical';

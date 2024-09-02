@@ -16,14 +16,15 @@ export const formatDuplicatedTitle = (title: string, isDuplicate = false) => {
   return `${title} (1)`;
 };
 
-export const truncate = (value: string) =>
-  value.length >= 40 ? `${value.slice(0, 26)}...` : value;
+export const truncate = (value: string) => {
+  if (!value) return null;
+
+  return value.length >= 40 ? `${value.slice(0, 26)}...` : value;
+};
 
 export function formatDateString(date: Date, pattern = 'y-MM-dd') {
   return format(date, pattern);
 }
-
-// const completedPercentage = (elapsedSeconds / totalSeconds) * 100;
 
 export const getDayPercentageCompleted = () => {
   const now: Date = new Date();

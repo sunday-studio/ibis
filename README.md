@@ -1,21 +1,15 @@
-# Tauri + React
+# Ibis
 
-This template should help get you started developing with Tauri and React in Vite.
+Ibis is a desktop app for writing and journaling in markdown. It allows you to organsize and tags your owns based on your own structure.
 
-## Recommended IDE Setup
+![Ibis app screenshot](./public/cover-photo.png)
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+## Getting started
 
-# Getting started:
+1. Download the latest version of Ibis on the [release page](https://github.com/sunday-studio/ibis/releases)
+2. Open the `.zip` or `.dmg` file and drag the application into the `Applications/` folder.
+3. Open the application, select a location for your `safe` and start writing.
 
-## Install packages
+## License
 
-```
-$ yarn
-```
-
-## Start desktop app
-
-```
-$ yarn tauri dev
-```
+This project is licensed under the MIT License.

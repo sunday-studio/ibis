@@ -1,98 +1,56 @@
 .page-titlebar {
-  position: sticky;
+  // position: sticky;
   top: 0;
   width: 100%;
-  height: var(--page-title-height);
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--background-primary);
+  background-color: var(--main-background);
   z-index: 2;
-  border-bottom: 1px solid var(--background-secondary);
-  transition: $ease-out-200;
+  border-bottom: 1px solid var(--main-border);
+  color: var(--text-primary);
+  height: var(--page-title-height);
 
-  // padding: 0 12px;
+  &.side-opened {
+    p {
+      margin-left: auto;
+    }
+
+    .single-title {
+      margin-left: auto;
+    }
+  }
 
   .sidebar-toggle-container {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  &.multi-page {
-    justify-content: flex-start;
-
-    .sidebar-toggle-container {
-      height: 100%;
-      border-right: 1px solid var(--main-border);
-      padding: 0 12px;
-    }
-
-    .sidebar-toggle {
-      margin-right: unset;
-    }
-  }
-
-  p {
-    font-size: 15px;
+    border-right: 1px solid var(--main-border);
+    padding: 0 12px;
+    margin-right: auto;
+    height: 100%;
   }
 
   .single-title {
-    margin: 0 auto;
+    font-size: 15px;
+    font-weight: 500;
   }
 
   .sidebar-toggle {
     margin-right: auto;
   }
 
-  .tabs {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
+  .current-safe {
+    margin-left: auto;
 
-  .tab {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-    border-right: 1px solid var(--main-border);
-    padding: 0 8px;
-    cursor: pointer;
-
-    &-active {
-      background-color: white;
-    }
-
-    .close-button {
-      visibility: hidden;
-      opacity: 0;
-    }
-
-    &:hover {
-      .close-button {
-        opacity: 1;
-        visibility: visible;
-      }
-    }
-
-    p {
+    .safe-name {
+      padding: 3px 6px;
+      border-radius: var(--md-radii);
+      background: var(--panel-background);
+      font-size: 12px;
       font-weight: 500;
-    }
-
-    .close-button {
-      padding: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 4px;
-
-      &:hover {
-        color: var(--primary-color);
-      }
+      margin-right: 12px;
+      box-shadow: 0 0 0 1px var(--main-border);
     }
   }
 }

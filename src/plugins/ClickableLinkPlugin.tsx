@@ -1,5 +1,3 @@
-// @ts-nocheck
-// TODO: add types
 import { useEffect } from 'react';
 
 import { $isLinkNode } from '@lexical/link';

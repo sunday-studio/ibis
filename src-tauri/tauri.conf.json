@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeDevCommand": "yarn dev",
-    "beforeBuildCommand": "yarn build",
+    "beforeDevCommand": "pnpm run dev",
+    "beforeBuildCommand": "pnpm run build",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
     "withGlobalTauri": false
@@ -11,8 +11,36 @@
     "version": "0.0.1"
   },
   "tauri": {
+    "updater": {
+      "active": false,
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDM5MEFEN0I1RDEyMzU2MDEKUldRQlZpUFJ0ZGNLT1llVllUOUVQU2RCb1VWM0JMeGM5RGV1azhzVHoxbFgyTW9TaG4yQnhSc1YK",
+      "windows": {
+        "installMode": "passive",
+        "installerArgs": []
+      }
+    },
+
     "allowlist": {
       "all": false,
+      "fs": {
+        "scope": [""],
+        "all": true,
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "copyFile": true,
+        "createDir": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
+        "exists": true
+      },
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": ["http://localhost/*", "http://localhost:3323/json"]
+      },
       "path": {
         "all": true
       },
@@ -31,7 +59,9 @@
         "startDragging": true,
         "setDecorations": false
       },
+
       "shell": {
+        "sidecar": false,
         "all": false,
         "open": true
       },
@@ -42,19 +72,6 @@
         "message": true,
         "open": true,
         "save": true
-      },
-      "fs": {
-        "scope": [""],
-        "all": true,
-        "readFile": true,
-        "writeFile": true,
-        "readDir": true,
-        "copyFile": true,
-        "createDir": true,
-        "removeDir": true,
-        "removeFile": true,
-        "renameFile": true,
-        "exists": true
       }
     },
     "bundle": {
@@ -69,9 +86,11 @@
         "icons/icon.ico"
       ]
     },
+
     "security": {
       "csp": null
     },
+    "macOSPrivateApi": true,
     "windows": [
       {
         "fullscreen": false,
@@ -79,8 +98,6 @@
         "title": "Ibis",
         "width": 1200,
         "height": 800,
-        "titleBarStyle": "Overlay",
-        "hiddenTitle": true,
         "decorations": false,
         "transparent": true
       }

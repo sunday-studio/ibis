@@ -7,7 +7,7 @@ import { type Folder, entriesStore } from '@/store/entries';
 
 interface FolderMenu {
   entryId: string;
-  onFolderSelect: () => {};
+  onFolderSelect: () => void;
 }
 
 export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => {
@@ -18,7 +18,6 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-
     setFilteredFolders(
       folders.filter((folder) =>
         folder.name.toLocaleLowerCase().includes(value.toLocaleLowerCase()),
@@ -34,7 +33,12 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
   return (
     <div className="folder-menu">
       <div className="search-input">
-        <input placeholder="Search for folders" value={inputValue} onChange={handleInputChange} />
+        <input
+          placeholder="Search for folders"
+          autoFocus
+          value={inputValue}
+          onChange={handleInputChange}
+        />
       </div>
       <ul>
         {hasNoFolders && (
@@ -45,12 +49,13 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
           <>
             {filteredFolders.map((folder: Folder) => {
               return (
-                <li
-                  onClick={() => entriesStore.addEntryToFolder(folder.id, entryId)}
+                <button
                   key={folder.id}
+                  onClick={() => entriesStore.addEntryToFolder(folder.id, entryId)}
+                  className="folder"
                 >
                   {folder.name}
-                </li>
+                </button>
               );
             })}
           </>
@@ -59,11 +64,14 @@ export const FolderMenu = observer<FolderMenu>(({ entryId, onFolderSelect }) => 
         {showCreateButton && (
           <button
             onClick={() => {
-              entriesStore.addFolder({
-                id: nanoid(),
-                name: inputValue,
-                entries: new Set([entryId]),
-              });
+              entriesStore.addFolder(
+                {
+                  id: nanoid(),
+                  name: inputValue,
+                  entries: new Set([entryId]),
+                },
+                entryId,
+              );
 
               onFolderSelect();
             }}

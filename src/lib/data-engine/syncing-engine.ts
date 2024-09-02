@@ -1,8 +1,12 @@
 import { invoke } from '@tauri-apps/api';
 import { createDir } from '@tauri-apps/api/fs';
+import { format } from 'date-fns';
+import gm from 'gray-matter';
+import { nanoid } from 'nanoid';
 
-import { SAFE_LOCATION_KEY } from '../constants';
+import { DATE_PATTERN, SAFE_LOCATION_KEY } from '../constants';
 import { getData } from '../storage';
+import { logger } from '../logger';
 
 type Data = {
   dateString: string;
@@ -13,85 +17,129 @@ type DirFunction = (dateString: string, basePath: string) => [string, string, st
 
 const file_exist = async (path: string) => await invoke('path_exists', { path });
 
-/**
- * this is the main sync service to save files changes on device and in the future in the cloud
- */
 class Meili {
   basePath = '';
 
   constructor() {
     const data = getData(SAFE_LOCATION_KEY);
     this.basePath = data;
-    // this.basePath = data?.user?.user_metadata?.safeDirectory;
   }
 
-  /**
-   * This async function takes a date string and some content as parameters
-   * and writes the content to a JSON file on disk, organizing the file based on the date.
-   */
-  async writeFileContentToDisk(dateString: string, content: any, dirFn: DirFunction) {
+  reset() {
+    this.basePath = '';
+    pathGenerator.reset();
+  }
+
+  async writeFileContentToDisk({
+    dateString,
+    content,
+    type,
+    id,
+  }: {
+    dateString: string;
+    content: string | {};
+    type: DocumentType;
+    id?: string;
+  }) {
     if (!this.basePath) {
       const url = getData(SAFE_LOCATION_KEY);
       this.basePath = url;
     }
 
-    const [dirPath, filename] = dirFn?.(dateString, this.basePath);
+    const { path, directoryPath } = pathGenerator.generatePath({ dateString, type, id });
 
-    // // Check if the directory already exists on disk.
-    const directoryExist = await file_exist(dirPath);
+    const directoryExist = await file_exist(directoryPath);
 
-    // If the directory doesn't exist, create it (including any missing parent directories).
     if (!directoryExist) {
-      await createDir(dirPath, { recursive: true });
+      await createDir(directoryPath, { recursive: true });
     }
 
-    // Write the JSON content to a file in the specified directory.
-    await invoke('write_to_file', {
-      path: `${dirPath}/${filename}`,
-      content: JSON.stringify(content),
-    });
+    try {
+      await invoke('write_to_file', {
+        path,
+        content: content,
+      });
+    } catch (error) {
+      logger.error({
+        message: 'writeFileContentToDisk',
+        error,
+      });
+    }
   }
 
-  /**
-   * This async function takes an array of data objects and performs bulk saving of each data object
-   * by calling the writeFileContentToDisk function for each element in the array.
-   */
+  // TODO: fix this
   async bulkSavingToFile(data: Array<Data>, dirFn: DirFunction) {
-    // Iterate through each element (Data object) in the data array.
-    data.forEach((element: Data) => {
-      // Call the writeFileContentToDisk function for each element, passing the date string and content.
-      this.writeFileContentToDisk(element.dateString, element.content, dirFn);
-    });
+    // data.forEach((element: Data) => {
+    //   this.writeFileContentToDisk(element.dateString, element.content, dirFn);
+    // });
   }
 
   async readDirectoryContent(url = this.basePath) {
     try {
-      const data = await invoke<{ files: any }>('get_all_files', {
+      const data = await invoke<{ files: string[] }>('get_all_files', {
         path: url,
       });
+
       return data?.files;
     } catch (error) {
-      console.log('error ->', error);
+      logger.error({
+        message: 'readDirectoryContent',
+        error,
+      });
     }
   }
 
   async readFileContent(url: string) {
+    logger.info({
+      message: `readFileContent => ${url}`,
+    });
     try {
       const content = await invoke<string>('read_file_content', {
         path: url,
       });
 
-      return JSON.parse(content);
+      // edge case for when user has .json files
+      if (url.includes('.json')) {
+        return JSON.parse(content);
+      }
+
+      const markdown = gm(content);
+
+      return {
+        markdown: markdown?.content,
+        data: markdown?.data,
+      };
     } catch (error) {
-      console.error('unable to read file content =>', error);
+      console.log('readFileContent =>', error);
+      logger.error({
+        message: 'readFileContent',
+        error,
+      });
+      throw new Error(error);
+
+      // logger.error('readFileContent =>', { error, message: error.message, url });
     }
   }
 
-  async deletefile(path: string) {
+  async deletefile({
+    dateString,
+    type,
+    id,
+  }: {
+    dateString: string;
+    id?: string;
+    type: DocumentType;
+  }) {
+    const { path } = pathGenerator.generatePath({
+      type,
+      dateString,
+      id,
+    });
+
     try {
       await invoke('delete_file', { path });
     } catch (error) {
-      console.log('deleting-file ->', error);
+      logger.error({ error, message: 'deletefile' });
     }
   }
 
@@ -102,9 +150,128 @@ class Meili {
         newPath,
       });
     } catch (error) {
-      console.error('trying to rename =>', error);
+      logger.error({
+        error,
+        message: 'renameFile',
+      });
+    }
+  }
+}
+
+type PathReturn = {
+  directoryPath: string;
+  filename: string;
+  path: string;
+};
+
+export enum DocumentType {
+  Entry = 'Entry',
+  Journal = 'Journal',
+  Index = 'Index',
+  Tags = 'Tags',
+}
+
+class PathGenerator {
+  basePath: string = '';
+
+  constructor() {
+    const data = getData(SAFE_LOCATION_KEY);
+    this.basePath = data;
+  }
+
+  reset() {
+    this.basePath = '';
+  }
+
+  private generateEntryPath({
+    dateString,
+    basePath,
+    id,
+  }: {
+    dateString: string;
+    basePath: string;
+    id?: string;
+  }): PathReturn {
+    const date = new Date(dateString);
+    const entryId = id ?? nanoid();
+
+    const monthAndYear = format(date, 'yyyy/LLL');
+    const filename = `${format(date, DATE_PATTERN)}.${entryId}.md`;
+
+    const directoryPath = `${basePath}/${monthAndYear}`;
+
+    return {
+      directoryPath,
+      filename,
+      path: `${directoryPath}/${filename}`,
+    };
+  }
+
+  private generateJournalPath({
+    dateString,
+    basePath,
+  }: {
+    dateString: string;
+    basePath?: string;
+  }): PathReturn {
+    const date = new Date(dateString);
+    const year = format(date, 'yyyy');
+
+    const filename = `${format(date, DATE_PATTERN)}.md`;
+    const directoryPath = `${basePath}/${year}/today`;
+
+    return {
+      directoryPath,
+      filename,
+      path: `${directoryPath}/${filename}`,
+    };
+  }
+
+  generatePath({
+    dateString,
+    id,
+    type,
+    basePath,
+  }: {
+    type: DocumentType;
+    dateString: string;
+    id?: string;
+    basePath?: string;
+  }): PathReturn {
+    let currentBasePath = basePath ?? this.basePath;
+
+    if (!currentBasePath) {
+      const url = getData(SAFE_LOCATION_KEY);
+      this.basePath = url;
+      currentBasePath = url;
+    }
+
+    switch (type) {
+      case DocumentType.Entry:
+        return this.generateEntryPath({ dateString, id, basePath: currentBasePath });
+
+      case DocumentType.Journal:
+        return this.generateJournalPath({ dateString, basePath: currentBasePath });
+
+      case DocumentType.Index:
+        return {
+          path: `${currentBasePath}/index.json`,
+          filename: 'index.json',
+          directoryPath: this.basePath,
+        };
+
+      case DocumentType.Tags:
+        return {
+          path: `${currentBasePath}/tags.json`,
+          filename: 'tags.json',
+          directoryPath: this.basePath,
+        };
+
+      default:
+        throw new Error(`Unable to find document type => ${type}`);
     }
   }
 }
 
 export const meili = new Meili();
+export const pathGenerator = new PathGenerator();

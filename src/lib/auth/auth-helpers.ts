@@ -1,18 +1,8 @@
 import { createDir, exists, writeTextFile } from '@tauri-apps/api/fs';
-import { redirect } from 'react-router-dom';
 
-import { SAFE_LOCATION_KEY } from '../constants';
-import { getData } from '../storage';
-
-export const checkIfLoggedIn = async () => {
-  const safe = Boolean(await getData(SAFE_LOCATION_KEY));
-
-  if (safe) {
-    return null;
-  }
-
-  return redirect('/auth');
-};
+import { seedDefaultEntries, seedPinnedEntry } from '@/migrations/seed/entries.seed';
+import { generateIndexSeed } from '@/migrations/seed/index.seed';
+import { seedDefaultJournal } from '@/migrations/seed/journal.seed';
 
 const createNewDirectory = async (path: string) => {
   const directoryExist = await exists(path);
@@ -25,6 +15,12 @@ const createNewDirectory = async (path: string) => {
 };
 
 export const generateNewDirectory = async (name: string) => {
+  // check if index exist then return early
+  const indexExist = await exists(`${name}/index.json`);
+  if (indexExist) {
+    return;
+  }
+
   const currentYear = new Date().getFullYear().toString();
   const basePath = `${name}/${currentYear}`;
 
@@ -43,7 +39,7 @@ export const generateNewDirectory = async (name: string) => {
     'Dec',
   ];
 
-  const files = ['index.json', 'tags.json'];
+  // const files = ['index.json', 'tags.json'];
 
   // create months
   for (let index = 0; index < months.length; index++) {
@@ -53,16 +49,16 @@ export const generateNewDirectory = async (name: string) => {
   // create today directory
   await createNewDirectory(`${basePath}/today`);
 
-  // create highlights directory
-  await createNewDirectory(`${basePath}/highlights`);
-
-  // create initial files
-  for (let index = 0; index < files.length; index++) {
-    const path = `${name}/${files[index]}`;
-    const fileExist = await exists(path);
-    if (!fileExist) {
-      await writeTextFile(`${name}/${files[index]}`, JSON.stringify({}));
-    }
-    return;
+  // seed new directory with dummy data
+  try {
+    const pinnedEntryId = await seedPinnedEntry(name);
+    await writeTextFile(
+      `${name}/index.json`,
+      JSON.stringify(generateIndexSeed({ pinnedId: pinnedEntryId })),
+    );
+    await seedDefaultJournal(name);
+    await seedDefaultEntries(name);
+  } catch (error) {
+    console.log('trying to seed app => ', error);
   }
 };

@@ -1,9 +1,12 @@
 import { useCallback, useEffect } from 'react';
 
+import { Transformer } from '@lexical/markdown';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
 import { mergeRegister } from '@lexical/utils';
 import {
+  $createParagraphNode,
+  $createTextNode,
   $getNodeByKey,
   $getSelection,
   $isNodeSelection,
@@ -19,8 +22,6 @@ import {
   NodeKey,
   SerializedLexicalNode,
 } from 'lexical';
-
-export type SerializedPageBreakNode = SerializedLexicalNode;
 
 const createScissorSvg = () => {
   // Create the main SVG element
@@ -55,9 +56,6 @@ const createScissorSvg = () => {
   // Create circle elements
   createAndAppendElement('circle', { cx: '4', cy: '8', r: '2' });
   createAndAppendElement('circle', { cx: '4', cy: '16', r: '2' });
-
-  // Append the SVG to the body or another element in your document
-  // document.body.appendChild(svg);
 
   return svg;
 };
@@ -122,7 +120,7 @@ export class PageBreakNode extends DecoratorNode<JSX.Element> {
   }
 
   static clone(node: PageBreakNode): PageBreakNode {
-    return new PageBreakNode(node._key);
+    return new PageBreakNode(node.__key);
   }
 
   static importJSON(_serializedNode: SerializedLexicalNode): PageBreakNode {
@@ -153,6 +151,8 @@ export class PageBreakNode extends DecoratorNode<JSX.Element> {
   createDOM(): HTMLElement {
     const element = document.createElement('figure');
     const svg = createScissorSvg();
+
+    console.log('I am called');
 
     element.style.pageBreakAfter = 'always';
     element.setAttribute('type', this.getType());
@@ -191,3 +191,22 @@ export function $createPageBreakNode(): PageBreakNode {
 export function $isPageBreakNode(node: LexicalNode | null | undefined): node is PageBreakNode {
   return node instanceof PageBreakNode;
 }
+
+export const PAGE_BREAK_NODE_TRANSFORMER: Transformer = {
+  export: (node) => {
+    if (node.getType() === 'page-break') {
+      return '---\n';
+    }
+    return null;
+  },
+  regExp: /^---\s*$/,
+  replace: (parentNode, _, match) => {
+    const [allMatch] = match;
+    const paragraphNode = $createParagraphNode();
+    const textNode = $createTextNode(allMatch);
+    paragraphNode.append(textNode);
+    parentNode.replace($createPageBreakNode());
+  },
+  type: 'element',
+  dependencies: [],
+};

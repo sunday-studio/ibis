@@ -1,0 +1,25 @@
+{
+  "name": "ibis-server",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "^1.1.6"
+  },
+  "peerDependencies": {
+    "typescript": "^5.5.3"
+  },
+  "scripts": {
+    "build": "bun build ./index.ts"
+  },
+  "dependencies": {
+    "@lexical/code": "^0.16.1",
+    "@lexical/headless": "^0.16.1",
+    "@lexical/link": "^0.16.1",
+    "@lexical/list": "^0.16.1",
+    "@lexical/markdown": "^0.16.1",
+    "@lexical/rich-text": "^0.16.1",
+    "hono": "^4.4.11",
+    "lexical": "^0.16.1",
+    "prismjs": "^1.29.0"
+  }
+}

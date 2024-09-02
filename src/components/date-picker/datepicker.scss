@@ -1,116 +1,137 @@
-.datepicker-container {
-  padding: 10px;
-  overflow: hidden;
-  background-color: var(--panel-background);
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  animation-duration: 400ms;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
-  border: 1px solid var(--main-border);
+.datepicker {
+  padding: 20px 10px;
+  border-radius: 8px;
 
-  .calendar {
-    border-radius: 10px;
-    background-color: var(--panel-background);
-    border: 1.5px solid #e5e7eb;
+  font-family: var(--current-font);
+  font-weight: 450;
+
+  --cell-width: 30px;
+  --cell-height: 30px;
+
+  * {
+    // outline: 1px dotted red;
   }
 
-  &__header {
-    .date-details {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .datestamp {
+  &-header {
+    display: flex;
+    align-items: center;
+    padding: 0px 10px;
+    padding-bottom: 20px;
+    gap: 10px;
+    h2 {
+      font-weight: 550;
       font-size: 1.1rem;
+      margin-right: auto;
     }
 
     button {
       all: unset;
       cursor: pointer;
-      width: 30px;
-      height: 30px;
+      width: 26px;
+      height: 26px;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: var(--panel-background);
-      border-radius: 99999;
+      border-radius: 99999px;
+      background-color: var(--main-background);
+
+      &:hover {
+        background-color: var(--hover-background);
+        border-color: var(--main-border);
+      }
     }
+  }
 
-    .days {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 20px 10px;
+  }
 
-      .day {
+  thead {
+    th {
+      height: var(--cell-height);
+      font-weight: inherit;
+      color: var(--subtitle-text-color);
+    }
+  }
+
+  tbody {
+    td {
+      &:last-child {
+        border-right: none;
+      }
+
+      &:first-child {
+        border-left: none;
+      }
+
+      .cell {
+        width: 100%;
+        height: 100%;
         display: flex;
-        justify-content: center;
         align-items: center;
-        width: 50px;
-        height: 40px;
-      }
-    }
-  }
+        justify-content: center;
+        flex-direction: column;
 
-  .week-container {
-    display: flex;
-    overflow: hidden;
-    border-bottom: 1.5px solid #e5e7eb;
+        &:focus {
+          outline: none;
 
-    &.is-last-week {
-      border-width: 0;
-    }
-  }
-
-  .day-container {
-    width: 50px;
-    height: 40px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    border-left: 1.5px solid #e5e7eb;
-
-    &.is-first-day {
-      border-left-width: 0;
-    }
-
-    &.is-today {
-      p {
-        font-weight: 600;
-        color: #fc521f;
-      }
-    }
-
-    &.out-of-month {
-      color: hsl(0, 0%, 62.8%);
-    }
-
-    &.is-selected-day {
-      p {
-        font-weight: 600;
-        background-color: #fee2e2;
+          .date {
+            outline: 1.5px solid var(--primary-color);
+            outline-offset: 2px;
+          }
+        }
 
         &:hover {
-          background-color: #fca5a5;
+          .date {
+            outline: 1.5px solid var(--primary-color);
+            outline-offset: 2px;
+          }
+        }
+
+        &[hidden] {
+          display: none;
+        }
+
+        &.today {
+          .date {
+            color: var(--primary-color);
+          }
+        }
+
+        &.selected {
+          .date {
+            background-color: var(--primary-color);
+            color: white;
+          }
+        }
+
+        &.outsideVisibleRange {
+          pointer-events: none;
+
+          .date {
+            color: var(--text-tertiary);
+          }
+        }
+
+        .date {
+          width: var(--cell-width);
+          height: var(--cell-height);
+          border-radius: 99999px;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .dot-indicator {
+          color: var(--text-tertiary);
+          line-height: 1;
+          margin-top: 2px;
         }
       }
-    }
-
-    p {
-      width: 25px;
-      height: 25px;
-      font-size: 13px;
-      border-radius: 9999px;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
   }
 }

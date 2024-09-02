@@ -1,8 +1,11 @@
-// @ts-nocheck
-import { makeAutoObservable, observable, runInAction } from 'mobx';
+import { makeAutoObservable, observable, runInAction, toJS } from 'mobx';
 import { nanoid } from 'nanoid';
+import { redirect } from 'react-router-dom';
 
-import { deleteFile, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
+import { ACTIVE_ENTRY } from '@/lib/constants';
+import { DocumentType } from '@/lib/data-engine/syncing-engine';
+import { deleteFileFromDisk, saveFileToDisk } from '@/lib/data-engine/syncing-helpers';
+import { getData, setData } from '@/lib/storage';
 
 import { mobxDebounce } from '../lib/mobx-debounce';
 import { formatDuplicatedTitle } from '../lib/utils';
@@ -24,26 +27,72 @@ export type Folder = {
   entries: Set<string>;
 };
 
-type Folders = Record<String, Folder>;
+type Folders = Record<string, Folder>;
 
 class Entries {
-  entries: Entry[] | [] = [];
-  deletedEntriesId: string[] | [] = [];
-  pinnedEntriesId: string[] | [] = [];
+  entries: Entry[] = [];
+  deletedEntriesId: string[] = [];
+  pinnedEntriesId: string[] = [];
   activeEntry?: Entry | null = null;
   activeEntryTitle?: string | null = this.activeEntry?.title;
   folders: Folders = {};
+  entriesInFolders = new Set([]);
+
+  private schemaVersion: number;
 
   constructor() {
     makeAutoObservable(this);
   }
 
+  reset() {
+    this.entries = [];
+    this.deletedEntriesId = [];
+    this.pinnedEntriesId = [];
+    this.activeEntry = null;
+    this.activeEntryTitle = null;
+    this.folders = {};
+    this.entriesInFolders = new Set([]);
+  }
+
   loadLocalData({ entries, index }) {
-    const entryData = entries.filter((e) => e.content).map((e) => e.content);
+    const entryData = entries
+      .filter((e) => e.fileContent)
+      .map((e) => {
+        return {
+          ...e.fileContent?.data,
+          content: e.fileContent?.markdown,
+          tags: e.fileContent?.data?.tags?.split(','),
+        };
+      });
+
     this.entries = observable(entryData);
-    this.deletedEntriesId = observable(index?.content?.deletedEntries ?? []);
-    this.pinnedEntriesId = observable(index?.content?.pinnedEntries ?? []);
-    this.folders = observable(index?.content?.folders ?? {});
+    this.deletedEntriesId = observable(index?.fileContent?.deletedEntries ?? []);
+    this.pinnedEntriesId = observable(index?.fileContent?.pinnedEntries ?? []);
+    this.schemaVersion = index.fileContent.schemaVersion;
+
+    let temFolders = {};
+    let temEntriesInFolders = [];
+
+    Object.keys(index?.fileContent?.folders ?? {}).forEach((folderKey) => {
+      const currentFolder = index.fileContent.folders[folderKey];
+
+      temFolders[folderKey] = {
+        ...currentFolder,
+        entries: new Set(currentFolder?.entries ?? []),
+      };
+      temEntriesInFolders = temEntriesInFolders.concat(currentFolder?.entries ?? []);
+    });
+
+    this.folders = observable(temFolders);
+    this.entriesInFolders = observable(new Set(temEntriesInFolders));
+
+    const currentActiveEntry = getData(ACTIVE_ENTRY);
+    const activeEntry = this.entries.find((entry: Entry) => entry.id === currentActiveEntry);
+
+    if (activeEntry) {
+      this.activeEntry = activeEntry;
+      redirect(`/entry/${activeEntry.id}`);
+    } else redirect('/');
   }
 
   get pinnedEntries() {
@@ -54,8 +103,11 @@ class Entries {
 
   get privateEntries() {
     return this.entries.filter((entry: Entry) => {
+      const entryIsInFolder = this.entriesInFolders.has(entry.id);
       return (
-        !this?.pinnedEntriesId?.includes(entry?.id) && !this.deletedEntriesId.includes(entry.id)
+        !this?.pinnedEntriesId?.includes(entry?.id) &&
+        !this.deletedEntriesId.includes(entry.id) &&
+        !entryIsInFolder
       );
     });
   }
@@ -64,44 +116,45 @@ class Entries {
     return this.deletedEntriesId.map((id) => this.entries.find((entry) => entry.id === id));
   }
 
-  updatePinned({ id, type }) {
+  get foldersWithEntries() {
+    const folders = Object.values<Folder>(this.folders);
+    return folders.map((folder: Folder) => {
+      const entries = [...folder.entries]?.map((entryId) => {
+        return this.entries.find((entry: Entry) => entry.id === entryId);
+      });
+      return {
+        folder,
+        entries,
+      };
+    });
+  }
+
+  updatePinned({ id, type }: { id: string; type: 'ADD' | 'REMOVE' }) {
     if (type === 'ADD') {
       const updatedList = [...this.pinnedEntriesId, id];
       this.pinnedEntriesId = updatedList;
-
-      saveFileToDisk({
-        type: 'index',
-        data: {
-          pinnedEntries: updatedList,
-          deletedEntries: this.deletedEntriesId,
-        },
-      });
+      this.saveIndexFileToDisk();
     }
+
     if (type === 'REMOVE') {
       const updatedList = [...this.pinnedEntriesId].filter((i) => i != id);
       this.pinnedEntriesId = updatedList;
-
-      saveFileToDisk({
-        type: 'index',
-        data: {
-          pinnedEntries: updatedList,
-          deletedEntries: this.deletedEntriesId,
-        },
-      });
+      this.saveIndexFileToDisk();
     }
   }
 
   findAndReplaceEntry(updatedEntry: Entry) {
-    const entryIndex = this.entries.findIndex((entry) => entry.id === updatedEntry.id);
-    let updatedEntries = this.entries;
-    updatedEntries[entryIndex] = updatedEntry;
+    let updatedEntries = this.entries.map((entry) =>
+      entry.id === updatedEntry.id ? observable(updatedEntry) : entry,
+    );
 
-    return updatedEntries;
+    return observable(updatedEntries);
   }
 
   selectEntry(entry: Entry) {
     this.activeEntry = entry;
     this.activeEntryTitle = entry.title;
+    setData(ACTIVE_ENTRY, entry.id);
   }
 
   removeActiveEntry() {
@@ -109,30 +162,15 @@ class Entries {
     this.activeEntryTitle = null;
   }
 
-  saveEditedContent(editorState) {
-    const entry: Entry = {
-      ...this.activeEntry,
-      updatedAt: new Date().toISOString(),
-      content: JSON.stringify(editorState),
-      title: this.activeEntryTitle!,
-    } as Entry;
-
-    saveFileToDisk({
-      type: 'entry',
-      data: entry,
-    });
-
-    const updatedEntries = this.findAndReplaceEntry(entry);
-
-    this.entries = updatedEntries;
-  }
-
   addNewEntry() {
+    const id = nanoid();
+
     const DEFAULT_ENTRY: Entry = {
       content: null,
       createdAt: new Date().toISOString(),
       title: 'Untitled',
-      id: `${new Date().toTimeString()}-${nanoid()}`,
+
+      id: `${id}`,
       tags: [tagsState.tags.filter((tag: Tag) => tag.label === 'Private')?.[0]?.value],
     };
 
@@ -147,30 +185,32 @@ class Entries {
     return DEFAULT_ENTRY.id;
   }
 
-  saveContent(editorState) {
-    const activeEntryIndex = this.entries.findIndex(
-      (entry: Entry) => entry.id === this?.activeEntry?.id!,
-    );
-
-    if (activeEntryIndex !== -1) {
-      this.saveEditedContent(editorState);
-      return;
-    }
-
-    const entry = {
-      id: nanoid(),
-      createdAt: new Date().toISOString(),
+  saveContent(editorState: string) {
+    const entry: Entry = {
+      ...this.activeEntry,
       updatedAt: new Date().toISOString(),
-      content: JSON.stringify(editorState),
-      title: this.activeEntryTitle!,
-    };
+      content: editorState,
+      title: this.activeEntryTitle ?? this.activeEntry.title,
+    } as Entry;
 
     saveFileToDisk({
-      type: 'entry',
-      data: entry,
+      type: DocumentType.Entry,
+      data: {
+        createdAt: entry.createdAt,
+        id: entry.id,
+        content: `---
+id: ${entry?.id}
+createdAt: ${entry?.createdAt}
+updatedAt: ${entry?.updatedAt ?? entry?.createdAt ?? ''}
+tags: ${entry?.tags ?? []}
+title: ${entry?.title ?? 'Untitled'}        
+---
+${editorState}
+        `,
+      },
     });
 
-    const updatedEntries = [entry, ...this.entries];
+    const updatedEntries = this.findAndReplaceEntry(entry);
     this.entries = updatedEntries;
   }
 
@@ -179,10 +219,12 @@ class Entries {
       deletedEntries: this.deletedEntriesId,
       pinnedEntries: this.pinnedEntriesId,
       folders: this.folders,
+      schemaVersion: this.schemaVersion,
     };
+
     saveFileToDisk({
-      type: 'index',
-      data: currentData,
+      type: DocumentType.Index,
+      data: toJS(currentData),
     });
   }
 
@@ -195,7 +237,7 @@ class Entries {
     const updatedEntries = this.findAndReplaceEntry(updateEntry);
 
     saveFileToDisk({
-      type: 'entry',
+      type: DocumentType.Entry,
       data: updateEntry,
     });
 
@@ -209,30 +251,15 @@ class Entries {
     }
 
     const updatedDeletedIds = [entryId, ...this.deletedEntriesId];
-
     this.deletedEntriesId = updatedDeletedIds;
-
-    saveFileToDisk({
-      type: 'index',
-      data: {
-        deletedEntries: updatedDeletedIds,
-        pinnedEntries: this.pinnedEntriesId,
-      },
-    });
+    this.saveIndexFileToDisk();
   }
 
   restoreEntry(entryId: string) {
     const updatedDeletedEntries = this.deletedEntriesId.filter((id) => id !== entryId);
 
     this.deletedEntriesId = updatedDeletedEntries;
-
-    saveFileToDisk({
-      type: 'index',
-      data: {
-        deletedEntries: updatedDeletedEntries,
-        pinnedEntries: this.pinnedEntriesId,
-      },
-    });
+    this.saveIndexFileToDisk();
   }
 
   permanentDelete(entryId: string) {
@@ -242,16 +269,10 @@ class Entries {
 
     this.deletedEntriesId = updatedDeletedEntries;
     this.entries = updatedEntries;
-
-    saveFileToDisk({
-      type: 'index',
-      data: {
-        deletedEntries: updatedDeletedEntries,
-        pinnedEntries: this.pinnedEntriesId,
-      },
+    this.saveIndexFileToDisk();
+    deleteFileFromDisk({
+      data: entry?.[0],
     });
-
-    deleteFile(entry?.[0]);
   }
 
   duplicateEntry(entry: Entry) {
@@ -271,34 +292,17 @@ class Entries {
     console.log('entries => ', entries);
   }
 
-  private saveTitle = mobxDebounce(() => {
-    const updatedEntry = {
-      ...this.activeEntry,
-      title: this.activeEntryTitle!,
-    } as Entry;
-
-    saveFileToDisk({
-      type: 'entry',
-      data: updatedEntry,
-    });
-
-    const updatedEntries = this.findAndReplaceEntry(updatedEntry);
-
-    runInAction(() => {
-      this.activeEntry = updatedEntry;
-      this.entries = updatedEntries;
-    });
-  }, 500);
-
-  updateActiveEntireTitle(title: string) {
+  updateActiveEntryTitle(title: string) {
     this.activeEntryTitle = title;
-    this.saveTitle();
+
+    this.saveContent(this.activeEntry.content);
   }
 
   // Folders crud
-  addFolder(folder: Folder) {
+  addFolder(folder: Folder, entryId: string) {
     if (!this.folders[folder.id]) {
       this.folders[folder.id] = folder;
+      this.tagEntryWithFolder(entryId, 'ADD');
       this.saveIndexFileToDisk();
     }
   }
@@ -310,6 +314,8 @@ class Entries {
         ...folder,
         entries: folder.entries.add(entryId),
       };
+
+      this.tagEntryWithFolder(entryId, 'ADD');
       this.folders[folderId] = updatedFolder;
       this.saveIndexFileToDisk();
     }
@@ -318,12 +324,54 @@ class Entries {
   removeEntryFromFolder(folderId: string, entryId: string) {
     if (this.folders[folderId]) {
       const folder: Folder = this.folders[folderId];
+      folder.entries.delete(entryId);
+
       const updatedFolder: Folder = {
         ...folder,
-        entries: folder.entries.delete(entryId),
       };
+
+      runInAction(() => {
+        this.tagEntryWithFolder(entryId, 'REMOVE');
+      });
       this.folders[folderId] = updatedFolder;
       this.saveIndexFileToDisk();
+    }
+  }
+
+  renamedFolder(folderId: string, newName: string) {
+    const updatedFolder: Folder = {
+      ...this.folders[folderId],
+      name: newName,
+    };
+
+    this.folders[folderId] = updatedFolder;
+    this.saveIndexFileToDisk();
+  }
+
+  deleteFolder(folderId: string, type: 'WITH-ENTRIES' | 'WITHOUT-ENTRIES') {
+    const folders = this.folders;
+    const folder: Folder = folders[folderId];
+    delete folders[folderId];
+
+    runInAction(() => {
+      folder.entries.forEach((entry) => {
+        if (type === 'WITHOUT-ENTRIES') {
+          this.tagEntryWithFolder(entry, 'REMOVE');
+        } else {
+          this.deleteEntry(entry);
+        }
+      });
+    });
+
+    this.folders = folders;
+    this.saveIndexFileToDisk();
+  }
+
+  tagEntryWithFolder(entryId: string, actionType: 'ADD' | 'REMOVE') {
+    if (actionType === 'ADD') {
+      this.entriesInFolders.add(entryId);
+    } else {
+      this.entriesInFolders.delete(entryId);
     }
   }
 }

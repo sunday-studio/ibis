@@ -1,18 +1,16 @@
-// @ts-nocheck
 import { Fragment, useState } from 'react';
 import { useMemo } from 'react';
 
 import * as ContextMenu from '@radix-ui/react-context-menu';
 import * as Popover from '@radix-ui/react-popover';
 import { clsx } from 'clsx';
-import format from 'date-fns/format';
-import { motion, useIsPresent } from 'framer-motion';
+import { format } from 'date-fns';
+
 import {
   BadgeInfo,
   Columns,
   Copy,
   CornerUpRight,
-  Folder,
   MoreHorizontal,
   Package,
   Pin,
@@ -35,32 +33,20 @@ type SidebarEntry = {
 
 export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: SidebarEntry) => {
   const isActive = entry?.id === activeEntry?.id;
-  const isPresent = useIsPresent();
-
-  const animations = {
-    style: {
-      position: isPresent ? 'static' : 'absolute',
-    },
-    initial: { opacity: 0, y: 10 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 10 },
-    transition: { type: 'linear', duration: 0.1 },
-  };
 
   return (
     <Popover.Root key={entry.id}>
       <ContextMenu.Root>
         <ContextMenu.Trigger asChild>
-          <motion.div
-            {...animations}
-            className={`entry ${isActive ? 'active-entry' : ''}`}
+          <div
+            className={`entry disabled-selection ${isActive ? 'active-entry' : ''}`}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               selectEntry(entry);
             }}
           >
-            <p className="entry-title">{truncate(entry.title) || 'Untitled'}</p>
+            <p className="entry-title">{truncate(entry.title) ?? 'Untitled'}</p>
             <Popover.Trigger asChild>
               <div
                 className="icon more-options"
@@ -68,23 +54,19 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
                   e.stopPropagation();
                 }}
               >
-                <MoreHorizontal
-                  strokeWidth={2.5}
-                  size={18}
-                  color={isActive ? 'var(--primary-color)' : '#6b7280'}
-                />
+                <MoreHorizontal strokeWidth={2.5} size={18} color="var(--text-primary)" />
               </div>
             </Popover.Trigger>
 
             <Popover.Portal>
-              <Popover.Content className="PopoverContent" sideOffset={5}>
+              <Popover.Content className="popover-content popover-container" sideOffset={5}>
                 <EntryActionOptions entry={entry} />
               </Popover.Content>
             </Popover.Portal>
-          </motion.div>
+          </div>
         </ContextMenu.Trigger>
         <ContextMenu.Portal>
-          <ContextMenu.Content className="PopoverContent" sideOffset={5} align="end">
+          <ContextMenu.Content className="popover-content popover-container">
             <EntryActionOptions entry={entry} />
           </ContextMenu.Content>
         </ContextMenu.Portal>
@@ -93,11 +75,12 @@ export const SidebarEntry = observer(({ entry, activeEntry, selectEntry }: Sideb
   );
 });
 
-const EntryActionOptions = observer(({ entry }: { entry: Entry; onDelete: () => void }) => {
+const EntryActionOptions = observer<{ entry: Entry }>(({ entry }) => {
   const { pinnedEntriesId } = entriesStore;
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
-  const isPinned = pinnedEntriesId.includes(entry.id!);
   const [showFolderMenu, setShowFolderMenu] = useState(false);
+
+  const isPinned = pinnedEntriesId.includes(entry?.id!);
 
   const options = useMemo(() => {
     return [
@@ -147,7 +130,7 @@ const EntryActionOptions = observer(({ entry }: { entry: Entry; onDelete: () => 
       },
 
       {
-        title: 'Info',
+        title: 'Share',
         action: () => {},
         icon: <BadgeInfo size={16} />,
         disabled: true,
@@ -168,20 +151,20 @@ const EntryActionOptions = observer(({ entry }: { entry: Entry; onDelete: () => 
       >
         {options.map((option, index) => {
           return (
-            <div
-              className={clsx('option', {
+            <button
+              className={clsx('option unstyled', {
                 option__disabled: option.disabled,
                 option__active: option.active,
               })}
               onClick={(e) => {
-                option.action();
                 e.stopPropagation();
+                option.action();
               }}
               key={index}
             >
               <div className="option-icon">{option.icon}</div>
               <p>{option.title}</p>
-            </div>
+            </button>
           );
         })}
 

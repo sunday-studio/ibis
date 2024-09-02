@@ -147,13 +147,13 @@ export default function SlashCommandPickerPlugin() {
         onSelect: () => editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined),
       }),
 
-      new ComponentPickerOption('Numbered List', {
+      new ComponentPickerOption('Numbered list', {
         icon: <ListOrdered size={18} />,
         keywords: ['numbered list', 'ordered list', 'ol'],
         onSelect: () => editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined),
       }),
 
-      new ComponentPickerOption('Check List', {
+      new ComponentPickerOption('Check list', {
         icon: <CheckSquare size={18} />,
         keywords: ['check list', 'todo list'],
         onSelect: () => editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined),
@@ -168,7 +168,6 @@ export default function SlashCommandPickerPlugin() {
               if (selection.isCollapsed()) {
                 $setBlocksType(selection, () => $createCodeNode());
               } else {
-                // Will this ever happen?
                 const textContent = selection.getTextContent();
                 const codeNode = $createCodeNode();
                 selection.insertNodes([codeNode]);
@@ -189,7 +188,7 @@ export default function SlashCommandPickerPlugin() {
           }),
       }),
 
-      new ComponentPickerOption('Page Break', {
+      new ComponentPickerOption('Page break', {
         icon: <ScissorsIcon size={18} />,
         keywords: ['page break', 'divider'],
         onSelect: () => {
@@ -242,7 +241,7 @@ export default function SlashCommandPickerPlugin() {
         ) =>
           anchorElementRef.current && options.length
             ? ReactDOM.createPortal(
-                <div className="typeahead-popover component-picker-menu">
+                <div className="component-picker-menu popover-container">
                   <ul>
                     {options.map((option: Omit<Option, 'setRefElement'>, i) => (
                       <SlashCommandMenuItem

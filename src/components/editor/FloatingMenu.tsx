@@ -1,8 +1,8 @@
-// @ts-nocheck
-import { forwardRef, useEffect, useState } from 'react';
+import { RefObject, forwardRef, useEffect, useState } from 'react';
 import { useCallback } from 'react';
 
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
+import { $isAtNodeEnd } from '@lexical/selection';
 import { $getSelection, $isRangeSelection, FORMAT_TEXT_COMMAND, LexicalEditor } from 'lexical';
 import {
   Bold,
@@ -16,7 +16,22 @@ import {
 } from 'lucide-react';
 
 import { validateUrl } from '../../plugins/AutolinkPlugin';
-import { getSelectedNode } from '../../plugins/ToolbarPlugin';
+
+export function getSelectedNode(selection) {
+  const anchor = selection.anchor;
+  const focus = selection.focus;
+  const anchorNode = selection.anchor.getNode();
+  const focusNode = selection.focus.getNode();
+  if (anchorNode === focusNode) {
+    return anchorNode;
+  }
+  const isBackward = selection.isBackward();
+  if (isBackward) {
+    return $isAtNodeEnd(focus) ? anchorNode : focusNode;
+  } else {
+    return $isAtNodeEnd(anchor) ? focusNode : anchorNode;
+  }
+}
 
 const LinkInput = ({ value, onChange, onBackClick, onSave }) => {
   const isValueLink = validateUrl(value.toLowerCase());
@@ -43,7 +58,7 @@ const LinkInput = ({ value, onChange, onBackClick, onSave }) => {
 
 export const FloatingMenu = forwardRef(function FloatingMenu(
   props: { editor: LexicalEditor },
-  ref,
+  ref: RefObject<HTMLDivElement>,
 ) {
   const { editor } = props;
   const [showLinkInput, setShowLinkInput] = useState(false);
@@ -91,7 +106,6 @@ export const FloatingMenu = forwardRef(function FloatingMenu(
       isActive: state.isLink,
       action: () => {
         setShowLinkInput(true);
-        // editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code')
       },
     },
   ];
@@ -153,7 +167,7 @@ export const FloatingMenu = forwardRef(function FloatingMenu(
   }, [editor]);
 
   return (
-    <div ref={ref} className="floating-menu">
+    <div ref={ref} className="floating-menu popover-container">
       {showLinkInput ? (
         <LinkInput
           onSave={() => {
