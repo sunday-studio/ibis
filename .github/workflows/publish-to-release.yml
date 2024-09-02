@@ -48,11 +48,6 @@ jobs:
       - name: install frontend dependencies
         run: pnpm install
 
-      - name: Extract version
-        id: extract_version
-        uses: Saionaro/extract-package-version@v1.2.1
-      - run: echo ${{ steps.package_ver.outputs.version }}
-
       - name: build the app
         uses: tauri-apps/tauri-action@v0
         env:
@@ -64,8 +59,9 @@ jobs:
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         with:
-          tagName: app-v__VERSION__
+          tagName: ibis-v__VERSION__
           releaseName: 'Ibis v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: false
+          releaseDraft: true
           prerelease: false
+          args: ${{ matrix.settings.args }}
