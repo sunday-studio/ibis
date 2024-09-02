@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - release
+  merge:
+    branches:
+      - release
 
 jobs:
   release-mac-os:
