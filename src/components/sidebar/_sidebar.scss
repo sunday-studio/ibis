@@ -435,6 +435,7 @@
 .folder-menu {
   width: 300px;
   height: 350px;
+  overflow-y: scroll;
 
   .search-input {
     padding: 8px;
@@ -473,6 +474,7 @@
         border-right: 0;
         padding: 6px 12px;
         text-align: start;
+        color: var(--text-primary);
 
         &:hover {
           border-color: var(--main-border);
