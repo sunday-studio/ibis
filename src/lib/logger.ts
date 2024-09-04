@@ -15,7 +15,6 @@ type LogProps = {
 };
 
 type LoggerProps = {
-  message: string;
   breadcrumb?: Sentry.Breadcrumb;
   data?: any;
 };
@@ -91,33 +90,37 @@ const loggerFactory = ({ environment }: LoggerFactoryProps) => {
   const isProduction = environment === 'production';
 
   return {
-    info: (props: LoggerProps): void => {
+    info: (message: string, options?: LoggerProps): void => {
       log({
-        ...props,
+        ...options,
+        message,
         isProduction,
         level: 'info',
       });
     },
 
-    debug: (props: LoggerProps): void => {
+    debug: (message: string, options?: LoggerProps): void => {
       log({
-        ...props,
+        ...options,
+        message,
         isProduction,
         level: 'debug',
       });
     },
 
-    warn: (props: LoggerProps): void => {
+    warn: (message: string, options?: LoggerProps): void => {
       log({
-        ...props,
+        ...options,
+        message,
         isProduction,
         level: 'warning',
       });
     },
 
-    error: ({ error, ...rest }: ErrorLoggerProps): void => {
+    error: (message: string, { error, ...rest }: ErrorLoggerProps): void => {
       log({
         ...rest,
+        message,
         isProduction,
         level: 'error',
         data: error,

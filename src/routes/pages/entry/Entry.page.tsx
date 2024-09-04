@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 
 import { EDITOR_PAGES, Editor } from '../../../components/editor/Editor';
 import { entriesStore } from '../../../store/entries';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 const EntryPage = observer(() => {
   const { activeEntry } = entriesStore;

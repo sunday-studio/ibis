@@ -8,7 +8,7 @@ import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
+import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
@@ -33,6 +33,7 @@ import TabFocusPlugin from '@/plugins/TabFocusPlugin';
 import { theme } from '@/plugins/theme';
 
 import { EntryHeader } from './Editor.EntryHeader';
+import { logger } from '@/lib/logger';
 
 function Placeholder({ className }) {
   return <div className={className}>Write or type '/' for slash commands....</div>;

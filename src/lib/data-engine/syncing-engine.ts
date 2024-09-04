@@ -60,8 +60,7 @@ class Meili {
         content: content,
       });
     } catch (error) {
-      logger.error({
-        message: 'writeFileContentToDisk',
+      logger.error('writeFileContentToDisk =>', {
         error,
       });
     }
@@ -82,17 +81,11 @@ class Meili {
 
       return data?.files;
     } catch (error) {
-      logger.error({
-        message: 'readDirectoryContent',
-        error,
-      });
+      logger.error('error =>', { error });
     }
   }
 
   async readFileContent(url: string) {
-    logger.info({
-      message: `readFileContent => ${url}`,
-    });
     try {
       const content = await invoke<string>('read_file_content', {
         path: url,
@@ -110,14 +103,10 @@ class Meili {
         data: markdown?.data,
       };
     } catch (error) {
-      console.log('readFileContent =>', error);
-      logger.error({
-        message: 'readFileContent',
+      logger.error('readFileContent', {
         error,
       });
-      throw new Error(error);
-
-      // logger.error('readFileContent =>', { error, message: error.message, url });
+      // throw new Error(error);
     }
   }
 
@@ -139,7 +128,7 @@ class Meili {
     try {
       await invoke('delete_file', { path });
     } catch (error) {
-      logger.error({ error, message: 'deletefile' });
+      logger.error('deletefile', { error });
     }
   }
 
@@ -150,9 +139,8 @@ class Meili {
         newPath,
       });
     } catch (error) {
-      logger.error({
+      logger.error('renameFile =>', {
         error,
-        message: 'renameFile',
       });
     }
   }

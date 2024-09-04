@@ -134,13 +134,10 @@ export const loadDirectoryContent = async (safeURL: string) => {
   });
 
   const content = await Promise.all(promises).catch((error) =>
-    logger.error({
-      message: 'error trying to load data',
+    logger.error('loadDirectoryContent =>', {
       error,
     }),
   );
-
-  console.log('content =>', content);
 
   const { migratedData, indexFile } = await migrateFileSystem(content);
 
@@ -152,8 +149,6 @@ export const loadDirectoryContent = async (safeURL: string) => {
     return acc;
   }, {});
 
-  console.log({ migratedData, indexFile, groupedData });
-
   try {
     entriesStore.loadLocalData({
       entries: groupedData.entries,
@@ -163,7 +158,7 @@ export const loadDirectoryContent = async (safeURL: string) => {
     tagsState.loadLocalData(groupedData['tags.json']?.[0]);
     // searchEngine.loadLocalData(groupedData.entries, groupedData.journalNotes);
   } catch (error) {
-    console.log('error =>', error);
+    logger.error('loadDirectoryContent', { error });
   }
 };
 

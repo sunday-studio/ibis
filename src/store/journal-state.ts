@@ -90,7 +90,6 @@ ${updatedEntry.content}
       },
     });
 
-    this.journalEntry = updatedEntry;
     this.journalEntries[updatedEntry.date] = updatedEntry;
   }
 

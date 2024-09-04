@@ -38,6 +38,7 @@ const DailyPage = observer(() => {
   };
 
   useEffect(() => {
+    console.log('I am called');
     updatePercentageCompleted();
     const intervalId = setInterval(
       () => {
@@ -47,6 +48,8 @@ const DailyPage = observer(() => {
     );
     return () => clearInterval(intervalId);
   }, [dateValues.day]);
+
+  const journalContent = journalEntry?.content || '';
 
   return (
     <Popover.Root>
@@ -88,8 +91,9 @@ const DailyPage = observer(() => {
               <Editor
                 page={EDITOR_PAGES.JOURNAL}
                 placeholderClassName="daily-note-placeholder"
+                // onChange={(state) => console.log('state =>', state)}
                 onChange={(state) => journalEntryState.saveContent(state)}
-                content={journalEntry.content}
+                content={journalContent}
                 id={journalEntry.id}
               />
             )}
