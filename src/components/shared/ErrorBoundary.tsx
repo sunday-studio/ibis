@@ -34,5 +34,12 @@ const AppErrorPage = observer(() => {
 });
 
 export function AppErrorBoundary({ children }: { children: React.ReactNode }) {
-  return <ErrorBoundary fallback={<AppErrorPage />}>{children}</ErrorBoundary>;
+  const handleError = (error) => {
+    console.log('error =>', error);
+  };
+  return (
+    <ErrorBoundary onError={handleError} fallback={<AppErrorPage />}>
+      {children}
+    </ErrorBoundary>
+  );
 }

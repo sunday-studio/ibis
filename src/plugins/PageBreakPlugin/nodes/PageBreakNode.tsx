@@ -152,8 +152,6 @@ export class PageBreakNode extends DecoratorNode<JSX.Element> {
     const element = document.createElement('figure');
     const svg = createScissorSvg();
 
-    console.log('I am called');
-
     element.style.pageBreakAfter = 'always';
     element.setAttribute('type', this.getType());
 

@@ -118,10 +118,14 @@ class Entries {
 
   get foldersWithEntries() {
     const folders = Object.values<Folder>(this.folders);
+
     return folders.map((folder: Folder) => {
-      const entries = [...folder.entries]?.map((entryId) => {
-        return this.entries.find((entry: Entry) => entry.id === entryId);
-      });
+      const entries = [...folder.entries]
+        ?.map((entryId) => {
+          return this.entries.find((entry: Entry) => entry.id === entryId);
+        })
+        .filter(Boolean);
+
       return {
         folder,
         entries,

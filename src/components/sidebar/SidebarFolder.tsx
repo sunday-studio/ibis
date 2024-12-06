@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { BadgePlus, ChevronRight, FolderPen, Trash2 } from 'lucide-react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-
 import { Entry, type Folder, entriesStore } from '@/store/entries';
 
 import Modal from '../modal/Modal';
@@ -95,8 +94,8 @@ export const SidebarFolder = observer<SidebarFolder>(
       entries.length > 1
         ? `${entries.length} entries`
         : entries.length === 0
-        ? 'No entries'
-        : '1 entry';
+          ? 'No entries'
+          : '1 entry';
 
     return (
       <>

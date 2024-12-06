@@ -38,7 +38,6 @@ const DailyPage = observer(() => {
   };
 
   useEffect(() => {
-    console.log('I am called');
     updatePercentageCompleted();
     const intervalId = setInterval(
       () => {
