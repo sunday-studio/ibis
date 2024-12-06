@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useNavigate } from 'react-router-dom';
-
+import { logger } from '@/lib/logger';
 import { SAFE_LOCATION_KEY } from '@/lib/constants';
 import { clearData } from '@/lib/storage';
 import { entriesStore } from '@/store/entries';
@@ -35,7 +35,7 @@ const AppErrorPage = observer(() => {
 
 export function AppErrorBoundary({ children }: { children: React.ReactNode }) {
   const handleError = (error) => {
-    console.log('error =>', error);
+    logger.error('error =>', error);
   };
   return (
     <ErrorBoundary onError={handleError} fallback={<AppErrorPage />}>
