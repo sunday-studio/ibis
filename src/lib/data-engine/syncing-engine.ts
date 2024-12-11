@@ -1,5 +1,5 @@
-import { invoke } from '@tauri-apps/api';
-import { createDir } from '@tauri-apps/api/fs';
+import { invoke } from '@tauri-apps/api/core';
+import { mkdir } from '@tauri-apps/plugin-fs';
 import { format } from 'date-fns';
 import gm from 'gray-matter';
 import { nanoid } from 'nanoid';
@@ -51,7 +51,7 @@ class Meili {
     const directoryExist = await file_exist(directoryPath);
 
     if (!directoryExist) {
-      await createDir(directoryPath, { recursive: true });
+      await mkdir(directoryPath, { recursive: true });
     }
 
     try {

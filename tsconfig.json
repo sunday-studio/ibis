@@ -27,6 +27,7 @@
         "src/*"
       ]
     },
+    "preserveConstEnums": true
   },
   "include": [
     "src"

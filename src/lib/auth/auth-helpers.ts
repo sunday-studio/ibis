@@ -1,4 +1,4 @@
-import { createDir, exists, writeTextFile } from '@tauri-apps/api/fs';
+import { mkdir, exists, writeTextFile } from '@tauri-apps/plugin-fs'
 
 import { seedDefaultEntries, seedPinnedEntry } from '@/migrations/seed/entries.seed';
 import { generateIndexSeed } from '@/migrations/seed/index.seed';
@@ -8,7 +8,7 @@ const createNewDirectory = async (path: string) => {
   const directoryExist = await exists(path);
 
   if (!directoryExist) {
-    await createDir(path, { recursive: true });
+    await mkdir(path, { recursive: true });
   }
 
   return;
