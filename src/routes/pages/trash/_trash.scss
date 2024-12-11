@@ -1,0 +1,28 @@
+.trash-page {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 20px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  outline: 1px solid;
+
+  .entry {
+    display: flex;
+    flex: 1;
+    outline: 1px solid;
+    width: 100%;
+    align-items: center;
+    padding: 5px 0;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e7eb;
+
+    p {
+      margin-right: auto;
+    }
+
+    button {
+      margin-left: 5px;
+    }
+  }
+}

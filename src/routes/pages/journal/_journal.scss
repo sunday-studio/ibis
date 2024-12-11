@@ -1,0 +1,115 @@
+.journal-page {
+  display: flex;
+  margin: 0 auto;
+  padding: 0 80px;
+  height: 100vh;
+  color: var(--text-primary);
+
+  .daily-note {
+    padding: 10px;
+    width: 100%;
+    padding-top: 40px;
+    overflow-y: scroll;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 30px 0;
+    }
+
+    .note-date {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      height: 100%;
+      position: relative;
+
+      h1 {
+        font-size: 5em;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+        position: relative;
+
+        &.is-today {
+          display: inline-block;
+          background: linear-gradient(
+            to bottom,
+            var(--text-primary) var(--percentage-completed),
+            var(--primary-color) 0%
+          );
+          background-clip: text;
+          color: transparent;
+        }
+      }
+
+      .date-data {
+        p {
+          font-size: 15px;
+          font-weight: 600;
+          color: var(--text-secondary);
+        }
+      }
+    }
+
+    .note {
+      .title {
+        padding: 15px 0;
+
+        h3 {
+          font-size: 27px;
+          line-height: 28px;
+          font-weight: 600;
+          color: var(--base-text-color);
+        }
+      }
+    }
+
+    .editor-container {
+      position: relative;
+    }
+
+    .note-editor-container {
+      position: relative;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-end;
+      padding: 8px;
+
+      .active-date {
+        margin-right: auto;
+      }
+
+      button {
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0;
+        border-radius: 100%;
+        box-shadow: 0 0 0 1px var(--main-border);
+        background-color: transparent;
+        color: var(--text-primary);
+
+        &.action {
+          width: auto;
+          padding: 0 8px;
+          border-radius: 4px;
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        &:hover {
+          background-color: var(--hover-background);
+          box-shadow: 0 0 0 1px var(--darker-border);
+        }
+      }
+    }
+  }
+}

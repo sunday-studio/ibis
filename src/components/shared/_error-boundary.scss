@@ -1,0 +1,35 @@
+.error-page {
+  background-color: var(--main-background);
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .error-message {
+    max-width: 500px;
+    text-align: center;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+
+    p {
+      font-size: 15px;
+    }
+
+    button {
+      all: unset;
+      font-family: var(--satoshi-font);
+      margin-top: 10px;
+      width: 50%;
+      font-size: 16px;
+      height: 38px;
+      border-radius: 8px;
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+      font-weight: 500;
+    }
+  }
+}

@@ -1,0 +1,127 @@
+.safe-loadout {
+  background-color: var(--main-background);
+  color: var(--text-primary);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .form-wrapper {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &-header {
+      text-align: center;
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      .subtext {
+        font-size: 14px;
+        margin-top: 4px;
+
+        .ai {
+          font-weight: 600;
+        }
+      }
+
+      .logo {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 10px;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    form {
+      width: 100%;
+
+      .footnote {
+        margin-top: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        text-align: right;
+        font-family: var(--favorit-font);
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      span.description {
+        font-size: 13px;
+        color: var(--subtitle-text-color);
+        margin-top: 2px;
+      }
+
+      .location-picker {
+        text-align: center;
+        border: 1.5px solid var(--main-border);
+        background-color: transparent;
+        color: var(--base-text-color);
+        width: 100%;
+        padding: 0.5em 1.2em;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 0.9em;
+        cursor: pointer;
+      }
+    }
+
+    .form-control {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-direction: column;
+      margin-bottom: 20px;
+      width: 100%;
+
+      label {
+        margin-bottom: 4px;
+        font-size: 15px;
+      }
+
+      input {
+        width: 100%;
+        border: 1.5px solid var(--main-border);
+        background-color: transparent;
+        color: var(--base-text-color);
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 500;
+        font-family: var(--current-font);
+
+        &::placeholder {
+          font-size: 14px;
+        }
+
+        &:focus,
+        &:active {
+          outline: 1.5px solid var(--primary-color);
+          outline-offset: 2px;
+        }
+      }
+    }
+
+    button {
+      width: 100%;
+      font-size: 16px;
+      height: 48px;
+      border-radius: 8px;
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+      font-weight: 500;
+    }
+  }
+}
