@@ -1,42 +1,39 @@
 /** @type {import('vite').UserConfig} */
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 import * as path from 'path';
-import { defineConfig } from 'vite';
-import { sentryVitePlugin } from '@sentry/vite-plugin';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 
-export default defineConfig({
-  plugins: [
-    react(),
-    // sentryVitePlugin({
-    //   org: 'sundaystudio-ba',
-    //   project: 'ibis',
-    //   authToken: process.env.SENTRY_AUTH_TOKEN,
-    //   telemetry: false,
-    // }),
-  ],
+// @ts-expect-error process is a nodejs global
+const host = process.env.TAURI_DEV_HOST;
+
+// https://vitejs.dev/config/
+export default defineConfig(async () => ({
+  plugins: [react()],
+
+  clearScreen: false,
+  server: {
+    port: 1420,
+    strictPort: true,
+    host: host || false,
+    hmr: host
+      ? {
+        protocol: "ws",
+        host,
+        port: 1421,
+      }
+      : undefined,
+    watch: {
+      ignored: ["**/src-tauri/**"],
+    },
+  },
   define: {
     APP_VERSION: JSON.stringify(process.env.npm_package_version),
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
-      buffer: 'buffer',
+      "@": path.resolve(__dirname, "src"),
     },
-  },
-  server: {
-    port: 1420,
-    strictPort: true,
-  },
-
-  envPrefix: ['VITE_', 'TAURI_'],
-  build: {
-    // Tauri supports es2021
-    target: process.env.TAURI_PLATFORM == 'windows' ? 'chrome105' : 'safari13',
-    // don't minify for debug builds
-    minify: !process.env.TAURI_DEBUG ? 'esbuild' : false,
-    // produce sourcemaps for debug builds
-    sourcemap: !!process.env.TAURI_DEBUG,
   },
 
   optimizeDeps: {
@@ -51,4 +48,4 @@ export default defineConfig({
       ],
     },
   },
-});
+}));

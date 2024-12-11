@@ -1,40 +1,25 @@
 [package]
-authors = ["casprine"]
-description = "all in one daily writing driver"
-edition = "2021"
-license = ""
 name = "Ibis"
-repository = ""
-version = "0.1.0"
+version = "0.2.0"
+description = "all in one daily writing driver"
+authors = ["casprine"]
+edition = "2021"
 
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# The `_lib` suffix may seem redundant but it is necessary
+# to make the lib name unique and wouldn't conflict with the bin name.
+# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+name = "ibis_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
-tauri-build = { version = "1.4", features = [] }
+tauri-build = { version = "2", features = [] }
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-tauri = { version = "1.4", features = [
-  "macos-private-api",
-  "http-all",
-  "window-unminimize",
-  "window-minimize",
-  "window-maximize",
-  "window-unmaximize",
-  "window-show",
-  "window-hide",
-  "window-close",
-  "path-all",
-  "global-shortcut-all",
-  "fs-all",
-  "dialog-all",
-  "window-start-dragging",
-  "shell-open",
-] }
-walkdir = "2"
-window-vibrancy = "0.4.0"
+tauri = { version = "2", features = [] }
+tauri-plugin-shell = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 
-[features]
-# this feature is used for production builds or when `devPath` points to the filesystem
-# DO NOT REMOVE!!
-custom-protocol = ["tauri/custom-protocol"]
