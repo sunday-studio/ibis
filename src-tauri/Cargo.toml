@@ -9,28 +9,18 @@ version = "0.1.0"
 
 
 [build-dependencies]
-tauri-build = { version = "1.4", features = [] }
+tauri-build = { version = "2", features = [] }
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tauri = { version = "1.4", features = [
+tauri = { version = "2", features = [
   "macos-private-api",
-  "http-all",
-  "window-unminimize",
-  "window-minimize",
-  "window-maximize",
-  "window-unmaximize",
-  "window-show",
-  "window-hide",
-  "window-close",
-  "path-all",
-  "global-shortcut-all",
-  "fs-all",
-  "dialog-all",
-  "window-start-dragging",
-  "shell-open",
 ] }
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-http = "2"
+tauri-plugin-shell = "2"
 walkdir = "2"
 window-vibrancy = "0.4.0"
 
@@ -38,3 +28,8 @@ window-vibrancy = "0.4.0"
 # this feature is used for production builds or when `devPath` points to the filesystem
 # DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-updater = "2"
+

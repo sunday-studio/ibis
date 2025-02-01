@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { open } from '@tauri-apps/api/dialog';
+import { open } from '@tauri-apps/plugin-dialog';
 import { useNavigate } from 'react-router-dom';
 
 import { generateNewDirectory } from '@/lib/auth/auth-helpers';

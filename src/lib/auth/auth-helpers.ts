@@ -1,4 +1,4 @@
-import { createDir, exists, writeTextFile } from '@tauri-apps/api/fs';
+import { createDir, exists, writeTextFile } from '@tauri-apps/plugin-fs';
 
 import { seedDefaultEntries, seedPinnedEntry } from '@/migrations/seed/entries.seed';
 import { generateIndexSeed } from '@/migrations/seed/index.seed';

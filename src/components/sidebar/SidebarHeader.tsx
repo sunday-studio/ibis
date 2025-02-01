@@ -1,10 +1,11 @@
-import { appWindow } from '@tauri-apps/api/window';
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { Maximize2, Minus, PanelRight, RefreshCcw, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 import { appState } from '@/store/app-state';
 
 import { Tooltip } from '../tooltip/Tooltip';
+const appWindow = getCurrentWebviewWindow()
 
 export const SidebarHeader = () => {
   const navigate = useNavigate();

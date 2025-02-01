@@ -2,95 +2,35 @@
   "build": {
     "beforeDevCommand": "pnpm run dev:vite",
     "beforeBuildCommand": "pnpm run build:vite",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist",
-    "withGlobalTauri": false
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
   },
-  "package": {
-    "productName": "Ibis",
-    "version": "0.1.0"
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "createUpdaterArtifacts": "v1Compatible"
   },
-  "tauri": {
+  "productName": "Ibis",
+  "mainBinaryName": "Ibis",
+  "version": "0.1.0",
+  "identifier": "com.opps.dev",
+  "plugins": {
     "updater": {
-      "active": false,
-      "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDM5MEFEN0I1RDEyMzU2MDEKUldRQlZpUFJ0ZGNLT1llVllUOUVQU2RCb1VWM0JMeGM5RGV1azhzVHoxbFgyTW9TaG4yQnhSc1YK",
       "windows": {
         "installMode": "passive",
         "installerArgs": []
       }
-    },
-
-    "allowlist": {
-      "all": false,
-      "fs": {
-        "scope": [""],
-        "all": true,
-        "readFile": true,
-        "writeFile": true,
-        "readDir": true,
-        "copyFile": true,
-        "createDir": true,
-        "removeDir": true,
-        "removeFile": true,
-        "renameFile": true,
-        "exists": true
-      },
-      "http": {
-        "all": true,
-        "request": true,
-        "scope": ["http://localhost/*", "http://localhost:3323/json"]
-      },
-      "path": {
-        "all": true
-      },
-      "globalShortcut": {
-        "all": true
-      },
-      "window": {
-        "all": false,
-        "close": true,
-        "hide": true,
-        "show": true,
-        "maximize": true,
-        "minimize": true,
-        "unmaximize": true,
-        "unminimize": true,
-        "startDragging": true,
-        "setDecorations": false
-      },
-
-      "shell": {
-        "sidecar": false,
-        "all": false,
-        "open": true
-      },
-      "dialog": {
-        "all": true,
-        "ask": true,
-        "confirm": true,
-        "message": true,
-        "open": true,
-        "save": true
-      }
-    },
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "com.opps.dev",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ]
-    },
-
-    "security": {
-      "csp": null
-    },
-    "macOSPrivateApi": true,
+    }
+  },
+  "app": {
     "windows": [
       {
         "fullscreen": false,
@@ -99,8 +39,14 @@
         "width": 1200,
         "height": 800,
         "decorations": false,
-        "transparent": true
+        "transparent": true,
+        "useHttpsScheme": true
       }
-    ]
+    ],
+    "withGlobalTauri": false,
+    "macOSPrivateApi": true,
+    "security": {
+      "csp": null
+    }
   }
 }

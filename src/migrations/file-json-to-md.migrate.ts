@@ -1,7 +1,7 @@
 // TODO: clean this file later; too much weird stuff going on here
-import { Body, ResponseType, fetch } from '@tauri-apps/api/http';
-import { Command } from '@tauri-apps/api/shell';
-import { invoke } from '@tauri-apps/api/tauri';
+import { Body, ResponseType, fetch } from '@tauri-apps/plugin-http';
+import { Command } from '@tauri-apps/plugin-shell';
+import { invoke } from '@tauri-apps/api/core';
 import gm from 'gray-matter';
 
 import { MigrationReturnType } from '.';

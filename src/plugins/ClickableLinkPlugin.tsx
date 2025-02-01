@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { $isLinkNode } from '@lexical/link';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $findMatchingParent, isHTMLAnchorElement } from '@lexical/utils';
-import { open } from '@tauri-apps/api/shell';
+import { open } from '@tauri-apps/plugin-shell';
 import {
   $getNearestNodeFromDOMNode,
   $getSelection,

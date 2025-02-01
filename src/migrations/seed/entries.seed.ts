@@ -1,4 +1,4 @@
-import { writeTextFile } from '@tauri-apps/api/fs';
+import { writeTextFile } from '@tauri-apps/plugin-fs';
 import { nanoid } from 'nanoid';
 
 import { DocumentType, pathGenerator } from '@/lib/data-engine/syncing-engine';

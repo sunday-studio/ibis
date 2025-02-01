@@ -1,5 +1,5 @@
 import { invoke } from '@tauri-apps/api';
-import { createDir } from '@tauri-apps/api/fs';
+import { createDir } from '@tauri-apps/plugin-fs';
 import { format } from 'date-fns';
 import gm from 'gray-matter';
 import { nanoid } from 'nanoid';
