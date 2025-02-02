@@ -1,48 +1,14 @@
 @import 'tailwindcss';
 
-* {
-  margin: 0;
-}
-
 html {
   font-weight: 350;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 @layer base {
   html {
     font-family: 'Inter', system-ui, sans-serif;
-  }
-
-  @font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url(/fonts/Inter-Regular.ttf) format('ttf');
-  }
-
-  @font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 500;
-    font-display: swap;
-    src: url(/fonts/Inter-Medium.ttf) format('ttf');
-  }
-
-  @font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 600;
-    font-display: swap;
-    src: url(/fonts/Inter-SemiBold.ttf) format('ttf');
-  }
-
-  @font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    src: url(/fonts/Inter-Bold.ttf) format('ttf');
+    font-size: 14px;
   }
 }
 
@@ -52,4 +18,70 @@ html {
 
 .debug * {
   border: 1px dotted red;
+}
+
+@layer components {
+  .tooltip-trigger {
+    all: unset;
+  }
+
+  .tooltip-container {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    background-color: var(--color-white);
+    padding: var(--spacing-1) var(--spacing-1-5);
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+    max-width: var(--max-width-xs);
+    color: var(--color-gray-900);
+    box-shadow: var(--shadow-md);
+  }
+
+  .tooltip-content {
+    display: flex;
+    align-items: center;
+  }
+
+  .tooltip-shortcuts {
+    margin-left: var(--spacing-1-5);
+    display: flex;
+    gap: var(--spacing-0-75);
+  }
+
+  .tooltip-shortcuts span {
+    width: var(--spacing-4-5);
+    font-size: var(--font-size-xs);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    border-radius: var(--radius-sm);
+  }
+
+  .arrow {
+    position: absolute;
+    fill: var(--color-white);
+    stroke: var(--color-gray-200);
+    stroke-width: 1px;
+    width: var(--spacing-3);
+    height: var(--spacing-3);
+  }
+
+  .arrow[data-placement='top'] {
+    top: 100%;
+    transform: translateX(-50%);
+  }
+
+  .arrow[data-placement='bottom'] {
+    bottom: 100%;
+    transform: translateX(-50%) rotate(180deg);
+  }
+
+  .arrow[data-placement='left'] {
+    left: 100%;
+    transform: translateY(-50%) rotate(-90deg);
+  }
+
+  .arrow[data-placement='right'] {
+    right: 100%;
+    transform: translateY(-50%) rotate(90deg);
+  }
 }

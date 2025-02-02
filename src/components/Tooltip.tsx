@@ -1,48 +1,109 @@
-import React from 'react';
-import {
-  Tooltip as AriaTooltip,
-  TooltipProps as AriaTooltipProps,
-  OverlayArrow,
-  composeRenderProps,
-} from 'react-aria-components';
-import { tv } from 'tailwind-variants';
+import { cloneElement, useRef } from 'react';
 
-export interface TooltipProps extends Omit<AriaTooltipProps, 'children'> {
+import { DismissButton, Overlay, usePopover } from 'react-aria';
+import type { AriaPopoverProps, Placement } from 'react-aria';
+import { useOverlayTrigger } from 'react-aria';
+import type { OverlayTriggerState } from 'react-stately';
+import { useOverlayTriggerState } from 'react-stately';
+
+import { useHoverToggle } from '@/hooks/useHoverToggle';
+
+interface TooltipContentProps extends Omit<AriaPopoverProps, 'popoverRef'> {
   children: React.ReactNode;
+  state: OverlayTriggerState;
 }
 
-const styles = tv({
-  base: 'group bg-slate-700 dark:bg-slate-600 border border-slate-800 dark:border-white/10 shadow-[inset_0_1px_0_0_theme(colors.gray.600)] dark:shadow-none text-white text-sm rounded-lg drop-shadow-lg will-change-transform px-3 py-1',
-  variants: {
-    isEntering: {
-      true: 'animate-in fade-in placement-bottom:slide-in-from-top-0.5 placement-top:slide-in-from-bottom-0.5 placement-left:slide-in-from-right-0.5 placement-right:slide-in-from-left-0.5 ease-out duration-200',
-    },
-    isExiting: {
-      true: 'animate-out fade-out placement-bottom:slide-out-to-top-0.5 placement-top:slide-out-to-bottom-0.5 placement-left:slide-out-to-right-0.5 placement-right:slide-out-to-left-0.5 ease-in duration-150',
-    },
-  },
-});
+export const Popover = (props: TooltipContentProps) => {
+  const { offset = 8, state, children } = props;
 
-export function Tooltip({ children, ...props }: TooltipProps) {
-  return (
-    <AriaTooltip
-      {...props}
-      offset={10}
-      className={composeRenderProps(props.className, (className, renderProps) =>
-        styles({ ...renderProps, className }),
-      )}
-    >
-      <OverlayArrow>
-        <svg
-          width={8}
-          height={8}
-          viewBox="0 0 8 8"
-          className="fill-slate-700 dark:fill-slate-600 forced-colors:fill-[Canvas] stroke-gray-800 dark:stroke-white/10 forced-colors:stroke-[ButtonBorder] group-placement-bottom:rotate-180 group-placement-left:-rotate-90 group-placement-right:rotate-90"
-        >
-          <path d="M0 0 L4 4 L8 0" />
-        </svg>
-      </OverlayArrow>
-      {children}
-    </AriaTooltip>
+  let popoverRef = useRef(null);
+  let { popoverProps, arrowProps, placement } = usePopover(
+    {
+      ...props,
+      offset,
+      popoverRef,
+    },
+    state,
   );
+
+  return (
+    <Overlay>
+      <div {...popoverProps} ref={popoverRef} className="tooltip-container">
+        <svg {...arrowProps} className="arrow" data-placement={placement} viewBox="0 0 12 12">
+          <path d="M0 0 L6 6 L12 0" />
+        </svg>
+        <DismissButton onDismiss={state.close} />
+        {children}
+        <DismissButton onDismiss={state.close} />
+      </div>
+    </Overlay>
+  );
+};
+
+interface TooltipProps {
+  trigger: any;
+  shortcuts?: string[];
+  content: string | React.ReactElement;
+  shouldFlip?: boolean;
+  placement?: Placement;
+  leaveDuration?: number;
+  hoverDuration?: number;
 }
+
+export const Tooltip = ({ trigger, content, shortcuts, ...rest }: TooltipProps) => {
+  const { shouldFlip = false, placement = 'bottom', leaveDuration, hoverDuration, ...props } = rest;
+  let ref = useRef(null);
+  let state = useOverlayTriggerState({
+    ...props,
+  });
+  let {
+    triggerProps: { onPress, ...restOfTriggerProps },
+    overlayProps,
+  } = useOverlayTrigger({ type: 'dialog' }, state, ref);
+
+  useHoverToggle({
+    ref,
+    leaveDuration,
+    hoverDuration,
+    onHoverCallback: () => state.setOpen(true),
+    onLeaveCallback: () => state.setOpen(false),
+  });
+
+  const contentElemenet = () => {
+    if (typeof content === 'string') {
+      return (
+        <p className="tooltip-content">
+          {content}
+          {shortcuts?.length > 0 ? (
+            <span className="tooltip-shortcuts">
+              {shortcuts.map((s, i) => (
+                <span key={i}>{s}</span>
+              ))}
+            </span>
+          ) : null}
+        </p>
+      );
+    }
+
+    return content;
+  };
+
+  return (
+    <>
+      <span {...restOfTriggerProps} ref={ref} className="tooltip-trigger">
+        {trigger}
+      </span>
+      {state.isOpen && (
+        <Popover
+          {...props}
+          placement={placement}
+          shouldFlip={shouldFlip}
+          triggerRef={ref}
+          state={state}
+        >
+          {cloneElement(contentElemenet(), overlayProps)}
+        </Popover>
+      )}
+    </>
+  );
+};
