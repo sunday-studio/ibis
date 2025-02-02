@@ -1,0 +1,59 @@
+:root {
+  --editor-input-padding: 20px;
+}
+
+[type='page-break'] {
+  position: relative;
+  display: block;
+  overflow: unset;
+  margin-left: calc(var(--editor-input-padding, 28px) * -1);
+  margin-top: var(--editor-input-padding, 28px);
+  margin-bottom: var(--editor-input-padding, 28px);
+
+  border: none;
+
+  border-top: 1px dashed var(--main-border);
+  border-bottom: 1px dashed var(--main-border);
+  background-color: var(--main-background);
+}
+
+[type='page-break'] {
+  .page-break-svg {
+    position: absolute;
+    top: 50%;
+    left: calc(var(--editor-input-padding, 28px) + 12px);
+    transform: translateY(-50%);
+    opacity: 0.7;
+    color: var(--text-primary);
+  }
+}
+
+[type='page-break']::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: block;
+  padding: 4px 8px;
+  border: 1px solid var(--main-border);
+  background-color: var(--panel-background);
+  border-radius: 4px;
+
+  content: 'PAGE BREAK';
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.selected[type='page-break'] {
+  .page-break-svg {
+    opacity: 1;
+    color: var(--primary-color);
+  }
+  border-color: var(--primary-color);
+}
+
+.selected[type='page-break']::before {
+  opacity: 1;
+}

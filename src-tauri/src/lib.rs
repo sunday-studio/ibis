@@ -3,11 +3,10 @@ use tauri_plugin_sql::{Migration, MigrationKind};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let migrations = vec![
-        Migration {
-            version: 1,
-            description: "create_initial_tables",
-            sql: "
+    let migrations = vec![Migration {
+        version: 1,
+        description: "create_initial_tables",
+        sql: "
                 CREATE TABLE IF NOT EXISTS entries (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL,
@@ -55,13 +54,13 @@ pub fn run() {
                     FOREIGN KEY (folder_id) REFERENCES folders(id) ON DELETE CASCADE
                 );
             ",
-            kind: MigrationKind::Up,
-        },
-    ];
+        kind: MigrationKind::Up,
+    }];
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
         .plugin(
-                tauri_plugin_sql::Builder::default()
+            tauri_plugin_sql::Builder::default()
                 .add_migrations("sqlite:ibis.db", migrations)
                 .build(),
         )

@@ -1,3 +1,5 @@
+import { Outlet } from 'react-router';
+
 export const NotesScene = () => {
-  return <div>NotesScene</div>;
+  return <Outlet />;
 };

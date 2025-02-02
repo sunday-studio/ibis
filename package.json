@@ -10,14 +10,26 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@lexical/code": "^0.23.1",
+    "@lexical/headless": "^0.23.1",
+    "@lexical/link": "^0.23.1",
+    "@lexical/list": "^0.23.1",
+    "@lexical/markdown": "^0.23.1",
+    "@lexical/react": "^0.23.1",
+    "@lexical/rich-text": "^0.23.1",
+    "@lexical/selection": "^0.23.1",
+    "@lexical/table": "^0.23.1",
+    "@lexical/utils": "^0.23.1",
     "@sentry/react": "^8.53.0",
     "@tailwindcss/vite": "^4.0.3",
     "@tanstack/react-query": "^5.66.0",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-shell": "~2",
     "@tauri-apps/plugin-sql": "~2",
     "@types/node": "^22.13.0",
     "clsx": "^2.1.1",
+    "lexical": "^0.23.1",
     "lucide-react": "^0.474.0",
     "react": "^18.3.1",
     "react-aria": "^3.37.0",
@@ -28,7 +40,8 @@
     "sonner": "^1.7.4",
     "tailwind-merge": "^3.0.1",
     "tailwind-variants": "^0.3.1",
-    "tailwindcss": "^4.0.3"
+    "tailwindcss": "^4.0.3",
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2",

@@ -60,16 +60,21 @@ export const Sidebar = () => {
   const pathName = useLocation().pathname;
 
   const sidebarMenus = {
-    '/journal': <JournalSidebarMenu />,
-    '/notes': <NotesSidebarMenu />,
-    '/tasks': <TasksSidebarMenu />,
-    '/thoughts': <ThoughtsSidebarMenu />,
+    journal: <JournalSidebarMenu />,
+    notes: <NotesSidebarMenu />,
+    tasks: <TasksSidebarMenu />,
+    thoughts: <ThoughtsSidebarMenu />,
   };
+
+  const currentPath = Object.keys(sidebarMenus).find((path) => pathName.includes(path));
+  const currentSidebarMenu = currentPath
+    ? sidebarMenus[currentPath as keyof typeof sidebarMenus]
+    : null;
 
   return (
     <div className="flex h-full">
       <ProductNavigation />
-      <div className="p-2">{sidebarMenus[pathName as keyof typeof sidebarMenus]}</div>
+      <div className="w-full h-full">{currentSidebarMenu}</div>
     </div>
   );
 };
