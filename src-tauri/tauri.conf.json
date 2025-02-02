@@ -1,9 +1,25 @@
 {
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "ibis",
+  "version": "0.1.0",
+  "identifier": "com.sundaystudio.ibis",
   "build": {
-    "beforeDevCommand": "pnpm run dev:vite",
-    "beforeBuildCommand": "pnpm run build:vite",
-    "frontendDist": "../dist",
-    "devUrl": "http://localhost:1420"
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "ibis",
+        "width": 1200,
+        "height": 800
+      }
+    ],
+    "security": {
+      "csp": null
+    }
   },
   "bundle": {
     "active": true,
@@ -14,39 +30,11 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ],
-    "createUpdaterArtifacts": "v1Compatible"
+    ]
   },
-  "productName": "Ibis",
-  "mainBinaryName": "Ibis",
-  "version": "0.1.0",
-  "identifier": "com.opps.dev",
   "plugins": {
-    "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDM5MEFEN0I1RDEyMzU2MDEKUldRQlZpUFJ0ZGNLT1llVllUOUVQU2RCb1VWM0JMeGM5RGV1azhzVHoxbFgyTW9TaG4yQnhSc1YK",
-      "windows": {
-        "installMode": "passive",
-        "installerArgs": []
-      }
-    }
-  },
-  "app": {
-    "windows": [
-      {
-        "fullscreen": false,
-        "resizable": true,
-        "title": "Ibis",
-        "width": 1200,
-        "height": 800,
-        "decorations": false,
-        "transparent": true,
-        "useHttpsScheme": true
-      }
-    ],
-    "withGlobalTauri": false,
-    "macOSPrivateApi": true,
-    "security": {
-      "csp": null
+    "sql": {
+      "preload": ["sqlite:ibis.db"]
     }
   }
 }
