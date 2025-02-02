@@ -1,14 +1,16 @@
-import Database from "@tauri-apps/plugin-sql";
+import Database from '@tauri-apps/plugin-sql';
 
-class DatabaseService {
-  private db: any;
+export type DatabaseType = Database;
+
+export class DatabaseService {
+  db?: DatabaseType;
 
   constructor() {
     this.initialize();
   }
 
   private async initialize() {
-    this.db = await Database.load("sqlite:ibis.db");
+    this.db = await Database.load('sqlite:ibis.db');
   }
 
   public getDb() {

@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router';
-import { DashboardLayout } from '../components/DashboardLayout';
+import { AppLayout } from '../components/AppLayout';
 
 const Home = () => {
   return <div>Home</div>;
@@ -8,7 +8,7 @@ const Home = () => {
 export const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<DashboardLayout />}>
+      <Route path="/" element={<AppLayout />}>
         <Route path="/" element={<Home />} />
       </Route>
     </Routes>
