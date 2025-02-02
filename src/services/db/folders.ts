@@ -1,5 +1,6 @@
 import { DatabaseType, db } from './index';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Folder } from './types';
 
 enum FolderKeys {
   ALL = 'folders',
@@ -22,11 +23,15 @@ async function getAllTopLevelFolders(database: DatabaseType) {
     WHERE f1.parent_id IS NULL;  -- Only select top-level folders
   `;
 
-  return await database?.select(query);
+  return (await database?.select(query)) as Folder[];
 }
 
 async function getFolders(database: DatabaseType) {
-  return await database?.select('SELECT * FROM folders');
+  return (await database?.select('SELECT * FROM folders')) as {
+    id: number;
+    name: string;
+    parent_id: number | null;
+  }[];
 }
 
 async function getFolderById(database: DatabaseType, folderId: number) {
