@@ -55,7 +55,16 @@ pub fn run() {
                 );
             ",
         kind: MigrationKind::Up,
-    }];
+    }, 
+    Migration {
+        version: 2,
+        description: "add_icon_column_to_entries",
+        sql: "
+            ALTER TABLE entries ADD COLUMN icon TEXT DEFAULT NULL;
+        ",
+        kind: MigrationKind::Up,
+    },
+    ];
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())

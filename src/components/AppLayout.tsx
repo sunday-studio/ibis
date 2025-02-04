@@ -4,8 +4,8 @@ import { Sidebar } from './Sidebar';
 
 export const AppLayout = () => {
   return (
-    <div className="flex h-screen font-sans">
-      <div className="w-[350px] bg-gray-50 h-full border-r border-gray-100">
+    <div className="flex h-screen font-display text-md">
+      <div className="w-[350px] h-full border-r border-gray-100 shrink-0">
         <Sidebar />
       </div>
 
