@@ -7,7 +7,7 @@ export const NoteEditor = () => {
   const { data } = useGetNote({ noteId: noteId as string });
   const { mutate: updateNote } = useUpdateNote();
 
-  console.log({ data });
+  // console.log({ data });
 
   return (
     <div className="flex flex-col w-full h-full p-4">

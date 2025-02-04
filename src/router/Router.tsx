@@ -5,6 +5,8 @@ import { JournalScene } from '@/features/journal/JournalScene';
 import { TasksScene } from '@/features/tasks/TasksScene';
 import { MappedThoughtsScene } from '@/features/thought/ThoughtsScene';
 import { NoteEditor } from '@/features/notes/NoteEditor';
+import { SettingsScene } from '@/features/settings/SettingsScene';
+
 export const Router = () => {
   return (
     <Routes>
@@ -15,6 +17,7 @@ export const Router = () => {
         <Route path="/journal" element={<JournalScene />} />
         <Route path="/tasks" element={<TasksScene />} />
         <Route path="/thoughts" element={<MappedThoughtsScene />} />
+        <Route path="/settings" element={<SettingsScene />} />
       </Route>
     </Routes>
   );
