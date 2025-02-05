@@ -48,11 +48,21 @@ async function deleteNote(database: DatabaseType, noteId: number) {
   return await database?.execute('DELETE FROM entries WHERE id = ?', [noteId]);
 }
 
-async function updateNote(database: DatabaseType, noteId: number, params: Entry) {
-  return await database?.execute(
-    'UPDATE entries SET title = ?, content = ?, isPinned = ?, isDuplicate = ?, tagsId = ? WHERE id = ?',
-    [params.title, params.content, params.isPinned, params.isDuplicate, params.tagsId, noteId],
-  );
+async function updateNote(database: DatabaseType, noteId: number, params: Partial<Entry>) {
+  try {
+    const entries = Object.entries(params);
+    if (entries.length === 0) return;
+
+    const setClause = entries.map(([key]) => `${key} = ?`).join(', ');
+    const values = entries.map(([_, value]) => value);
+
+    return await database?.execute(`UPDATE entries SET ${setClause} WHERE id = ?`, [
+      ...values,
+      noteId,
+    ]);
+  } catch (error) {
+    console.log('error =>', error);
+  }
 }
 
 export function useNotes() {
@@ -110,7 +120,7 @@ export function useUnpinNote() {
 export function useUpdateNote() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, entry }: { id: number; entry: Entry }) =>
+    mutationFn: ({ id, entry }: { id: number; entry: Partial<Entry> }) =>
       updateNote(db.getDb() as DatabaseType, id, entry),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [NoteKeys.ALL] });

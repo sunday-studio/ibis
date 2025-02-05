@@ -1,6 +1,4 @@
 import { NavLink, useLocation } from 'react-router';
-import { ForwardRefExoticComponent, ReactNode, RefAttributes } from 'react';
-import { Tooltip } from './Tooltip';
 import {
   TrashIcon,
   FeatherIcon,

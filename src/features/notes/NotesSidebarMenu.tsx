@@ -10,7 +10,7 @@ export const NotesSidebarMenu = () => {
 
   const handleCreateNote = () => {
     createNote({
-      title: 'New note',
+      title: 'Untitled',
       content: null,
       isPinned: false,
       isDuplicate: false,
@@ -20,19 +20,24 @@ export const NotesSidebarMenu = () => {
 
   return (
     <div className="flex flex-col gap-2 w-full  h-full">
-      <div className="p-2">
+      <div className="p-4">
         <p>Notes</p>
+
         {isNotesLoading && <p>Loading...</p>}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 mt-4">
           {notes?.map((note) => (
-            <NavLink to={`/notes/${note.id}`} key={note.id}>
+            <NavLink
+              to={`/notes/${note.id}`}
+              key={note.id}
+              className="hover:bg-gray-100 cursor-pointer"
+            >
               {note.title}
             </NavLink>
           ))}
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 mt-8 w-full p-2">
+      <div className="flex flex-col gap-2 mt-8 w-full p-4">
         <p className="text-sm font-medium pb-2">Folders</p>
         {topLevelFolders?.map((folder) => (
           <div key={folder.folder_id} className="w-full">

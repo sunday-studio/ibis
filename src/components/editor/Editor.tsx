@@ -1,9 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
-import { $convertFromMarkdownString, $convertToMarkdownString } from '@lexical/markdown';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -12,12 +11,10 @@ import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { $getRoot } from 'lexical';
 import { useDebouncedCallback } from 'use-debounce';
 
 import AutoLinkPlugin, { validateUrl } from './plugins/AutolinkPlugin';
@@ -42,10 +39,10 @@ function MyOnChangePlugin({ onChange }) {
   return null;
 }
 
-import { EntryHeader } from './Editor.EntryHeader';
+// import { EntryHeader } from './Editor.EntryHeader';
 // import { logger } from '@/lib/logger';
 
-function Placeholder({ className }) {
+function Placeholder({ className }: { className: string }) {
   return <div className={className}>Write or type '/' for slash commands....</div>;
 }
 
@@ -78,7 +75,6 @@ interface EditorType {
   id: string;
   content: string | null;
   onChange: (state: any) => void;
-  // page: keyof typeof EDITOR_PAGES;
   extendTheme?: {};
   placeholderClassName?: string;
 }
@@ -87,15 +83,11 @@ export const Editor = ({
   id,
   content,
   onChange,
-  page,
   extendTheme,
   placeholderClassName = 'editor-placeholder',
 }: EditorType) => {
-  // const markdownRef = useRef<string | null>(null);
-
   const editorConfig = {
-    // initialEditorState: content,
-    editorState: content,
+    editorState: content ?? null,
     namespace: 'ContentEditor',
     theme: {
       ...theme,
@@ -119,12 +111,8 @@ export const Editor = ({
   };
 
   const debouncedUpdates = useDebouncedCallback(async (editorState) => {
-    // Call toJSON on the EditorState object, which produces a serialization safe string
     const editorStateJSON = editorState.toJSON();
-    // However, we still have a JavaScript object, so we need to convert it to an actual string with JSON.stringify
     onChange(JSON.stringify(editorStateJSON));
-
-    // onChange(markdownRef.current);
   }, 750);
 
   return (
