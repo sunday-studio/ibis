@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_ENVIRONMENT: string;
   readonly VITE_VERSION: string;
   readonly MODE: string;
+  readonly VITE_CRYPTO_SECRET: number;
 }
 
 interface ImportMeta {

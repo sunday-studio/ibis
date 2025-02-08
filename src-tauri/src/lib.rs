@@ -99,6 +99,44 @@ pub fn run() {
         ",
         kind: MigrationKind::Up,
     },
+    Migration {
+        version: 7,
+        description: "add_user_table",
+        sql: "
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                password TEXT NOT NULL,
+                recoveryToken TEXT NULL,
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+            );
+        ",
+        kind: MigrationKind::Up,
+    },
+    {
+        version: 8,
+        description: "add_preferences_table",
+        sql: "
+            CREATE TABLE IF NOT EXISTS preferences (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                userId INTEGER NOT NULL,
+                appearance TEXT NOT NULL,
+                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+            );
+        ",
+        kind: MigrationKind::Up,
+    },
+    {
+        version: 9,
+        description: "add_isLocked_column_to_entries",
+        sql: "
+            ALTER TABLE entries ADD COLUMN isLocked BOOLEAN DEFAULT 0;
+        ",
+        kind: MigrationKind::Up,
+    }
     ];
 
     tauri::Builder::default()
