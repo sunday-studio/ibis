@@ -16,6 +16,7 @@ export type Note = {
   updatedAt: string;
   tagsId: string | null;
   isArchived: boolean;
+  isLocked: boolean;
 };
 
 export type ArchivedEntry = {

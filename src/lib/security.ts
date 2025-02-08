@@ -1,13 +1,37 @@
-import crypto from 'crypto';
+// import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 
-export const encrypt = (data: any) => {
-  return crypto.encrypt(data);
+// export const encrypt = (data: any) => {
+//   return crypto.encrypt(data);
+// };
+
+// export const decrypt = (data: any) => {
+//   return crypto.decrypt(data);
+// };
+
+// export const generatedRevokedToken = () => {
+//   return crypto.randomBytes(import.meta.env.VITE_CRYPTO_SECRET).toString('hex');
+// };
+
+export const encryptPin = async (pin: string) => {
+  const salt = await bcrypt.genSalt(import.meta.env.VITE_SALT_ROUNDS);
+  const hashedPin = await bcrypt.hash(pin, salt);
+  return {
+    salt,
+    hashedPin,
+  };
 };
 
-export const decrypt = (data: any) => {
-  return crypto.decrypt(data);
+export const verifyPin = async (pin: string, hashedPin: string) => {
+  return await bcrypt.compare(pin, hashedPin);
 };
 
-export const generatedRevokedToken = () => {
-  return crypto.randomBytes(process.env.VITE_CRYPTO_SECRET).toString('hex');
+export const generateRecoveryToken = () => {
+  const saltRounds = parseInt(import.meta.env.VITE_SALT_ROUNDS, 10);
+  const salt = bcrypt.genSaltSync(saltRounds);
+
+  const randomString = crypto.randomUUID();
+  const token = bcrypt.hashSync(randomString, salt);
+
+  return token;
 };

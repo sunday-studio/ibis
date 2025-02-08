@@ -5,11 +5,15 @@ import { useState } from 'react';
 import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
 import { NoteActionsMenu } from './NoteActionsMenu';
+import { PinVerification } from '@/components/PinVerification';
 
 export const NoteEditor = () => {
   const { noteId } = useParams();
-  const { data } = useGetNote({ noteId: noteId as string });
+  const { data, isLoading } = useGetNote({ noteId: noteId as string });
   const { mutate: updateNote } = useUpdateNote();
+  const [isPinVerificationOpen, setIsPinVerificationOpen] = useState<boolean>(
+    data?.isLocked || true,
+  );
 
   const [title, setTitle] = useState(data?.title);
 
@@ -28,6 +32,8 @@ export const NoteEditor = () => {
 
   const headerTitle = title ?? data.title;
 
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="flex flex-col w-full h-full p-4 relative px-20">
       <div className="flex absolute top-0 right-0 w-full justify-between items-center p-2 px-4">
@@ -35,6 +41,16 @@ export const NoteEditor = () => {
         <p>{headerTitle}</p>
         <NoteActionsMenu note={data} />
       </div>
+
+      {isPinVerificationOpen && (
+        <PinVerification
+          title="This note is locked"
+          description="Enter your PIN to view this note"
+          onSubmit={() => {
+            setIsPinVerificationOpen(false);
+          }}
+        />
+      )}
 
       {data && (
         <div className="flex flex-col w-full h-full mt-24">

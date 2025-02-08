@@ -115,7 +115,7 @@ pub fn run() {
         ",
         kind: MigrationKind::Up,
     },
-    {
+    Migration {
         version: 8,
         description: "add_preferences_table",
         sql: "
@@ -129,7 +129,7 @@ pub fn run() {
         ",
         kind: MigrationKind::Up,
     },
-    {
+    Migration {
         version: 9,
         description: "add_isLocked_column_to_entries",
         sql: "
