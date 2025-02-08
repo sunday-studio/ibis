@@ -64,6 +64,41 @@ pub fn run() {
         ",
         kind: MigrationKind::Up,
     },
+    Migration {
+        version: 3,
+        description: "default_pinned_to_0", 
+        sql: "
+            UPDATE entries SET isPinned = 0 WHERE isPinned IS NULL;
+        ",
+        kind: MigrationKind::Up,
+    },
+    Migration {
+        version: 4,
+        description: "defaul_boolean_states_to_false", 
+        sql: "
+            UPDATE entries SET isPinned = false WHERE isPinned IS NULL;
+            UPDATE entries SET isDuplicate = false WHERE isDuplicate IS NULL;
+        ",
+        kind: MigrationKind::Up,
+    },
+    Migration {
+        version: 5,
+        description: "default_boolean_states_to_false", 
+        sql: "
+        UPDATE entries SET isPinned = 0 WHERE isPinned IS NULL OR isPinned = 'false' OR isPinned = 0;
+        UPDATE entries SET isDuplicate = 0 WHERE isDuplicate IS NULL OR isDuplicate = 'false' OR isDuplicate = 0;
+    ",
+    kind: MigrationKind::Up,
+    },
+    Migration {
+        version: 6,
+        description: "add_archived_column_to_entries",
+        sql: "
+            ALTER TABLE entries ADD COLUMN isArchived BOOLEAN DEFAULT 0;
+            DROP TABLE IF EXISTS archived_entries;
+        ",
+        kind: MigrationKind::Up,
+    },
     ];
 
     tauri::Builder::default()

@@ -33,7 +33,7 @@ export const NoteEditor = () => {
       <div className="flex absolute top-0 right-0 w-full justify-between items-center p-2 px-4">
         <p>Syncing</p>
         <p>{headerTitle}</p>
-        <NoteActionsMenu />
+        <NoteActionsMenu note={data} />
       </div>
 
       {data && (

@@ -8,23 +8,70 @@ import {
   Trash2,
   EllipsisIcon,
   Link,
+  Lock,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { useGetAllPinnedNotes } from '@/services/db/notes';
+import {
+  useDeleteNote,
+  useArchiveNote,
+  useGetAllPinnedNotes,
+  usePinNote,
+  useUnpinNote,
+  useUnarchiveNote,
+} from '@/services/db/notes';
 import { DropdownMenu } from '@/components/DropdownMenu';
+import { Note } from '@/services/db/types';
 
-export const NoteActionsMenu = () => {
+interface NoteActionsMenuProps {
+  note: Note;
+}
+
+export const NoteActionsMenu = ({ note }: NoteActionsMenuProps) => {
+  const { mutate: pinNote } = usePinNote(note.id);
+  const { mutate: unpinNote } = useUnpinNote(note.id);
+  const { mutate: deleteNote } = useDeleteNote();
+  const { mutate: archiveNote } = useArchiveNote(note.id);
+  const { mutate: unarchiveNote } = useUnarchiveNote(note.id);
   const { data: pinnedNotes } = useGetAllPinnedNotes();
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
 
   const pinnedNotesIds = pinnedNotes?.map((note) => note.id);
 
+  const defaultIconColor = 'var(--color-neutral-800)';
+
   const options = useMemo(() => {
     return [
       {
-        title: 'Favorite',
+        title: note.isPinned ? 'Unpin' : 'Pin',
+        action: () => {
+          note.isPinned ? unpinNote() : pinNote();
+        },
+        icon: (
+          <StarIcon
+            size={16}
+            color={note.isPinned ? 'var(--color-orange-600)' : defaultIconColor}
+            fill={note.isPinned ? 'var(--color-orange-600)' : 'none'}
+          />
+        ),
+      },
+
+      {
+        title: note.isArchived ? 'Unarchive' : 'Archive',
+        action: () => {
+          note.isArchived ? unarchiveNote() : archiveNote();
+        },
+        icon: (
+          <Package
+            size={16}
+            color={note.isArchived ? 'var(--color-neutral-600)' : defaultIconColor}
+          />
+        ),
+      },
+
+      {
+        title: 'Lock',
         action: () => {},
-        icon: <StarIcon size={16} />,
+        icon: <Lock size={16} />,
       },
 
       {
@@ -34,22 +81,8 @@ export const NoteActionsMenu = () => {
       },
 
       {
-        title: 'Move to',
-        action: () => {},
-        icon: <CornerUpRight size={16} />,
-      },
-
-      {
-        title: 'Archive',
-        action: () => {},
-        icon: <Package size={16} />,
-      },
-
-      {
         title: isDoubleClicked ? 'Click again to delete' : 'Delete',
-        action: (e) => {
-          e.preventDefault();
-          e.stopPropagation();
+        action: () => {
           if (isDoubleClicked) {
             // /  deleteNote({ id: noteId });
           } else {
@@ -60,6 +93,13 @@ export const NoteActionsMenu = () => {
         icon: <Trash2 size={16} />,
         disabled: false,
         active: isDoubleClicked,
+      },
+
+      {
+        title: 'Move to',
+        action: () => {},
+        icon: <CornerUpRight size={16} />,
+        disabled: true,
       },
 
       {

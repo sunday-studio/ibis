@@ -6,8 +6,8 @@ export type Folder = {
   child_entry_id: number | null;
 };
 
-export type Entry = {
-  id: number;
+export type Note = {
+  id: string;
   title: string;
   content: string | null;
   isPinned: boolean;
@@ -15,6 +15,7 @@ export type Entry = {
   createdAt: string;
   updatedAt: string;
   tagsId: string | null;
+  isArchived: boolean;
 };
 
 export type ArchivedEntry = {

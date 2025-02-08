@@ -14,7 +14,7 @@ export class DatabaseService {
   }
 
   public getDb() {
-    return this.db;
+    return this.db as DatabaseType;
   }
 }
 

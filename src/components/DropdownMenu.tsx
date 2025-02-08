@@ -1,4 +1,13 @@
-import { Button, Menu, Popover, MenuTrigger, MenuItem, Separator } from 'react-aria-components';
+import { FC } from 'react';
+import {
+  Button,
+  Menu,
+  Popover,
+  MenuTrigger,
+  MenuItem,
+  Separator,
+  MenuItemProps,
+} from 'react-aria-components';
 
 const DropdownMenuRoot = ({ children }: { children: React.ReactNode }) => {
   return <MenuTrigger>{children}</MenuTrigger>;
@@ -22,19 +31,24 @@ export const Content = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const DropdownMenuItem = ({
-  children,
-  icon,
-  shortcut,
-  disabled,
-}: {
+interface DropdownMenuItemProps extends MenuItemProps {
   children: React.ReactNode;
   icon?: React.ReactNode;
   shortcut?: string;
   disabled?: boolean;
+  action?: () => void;
+}
+
+export const DropdownMenuItem: FC<DropdownMenuItemProps> = ({
+  children,
+  icon,
+  shortcut,
+  disabled,
+  action,
 }) => {
   return (
     <MenuItem
+      onAction={action}
       isDisabled={disabled}
       className={`
         transition-all
