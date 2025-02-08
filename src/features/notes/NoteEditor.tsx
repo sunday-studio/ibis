@@ -4,7 +4,7 @@ import { useGetNote, useUpdateNote } from '@/services/db/notes';
 import { useState } from 'react';
 import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
-import { EllipsisIcon } from 'lucide-react';
+import { NoteActionsMenu } from './NoteActionsMenu';
 
 export const NoteEditor = () => {
   const { noteId } = useParams();
@@ -30,12 +30,10 @@ export const NoteEditor = () => {
 
   return (
     <div className="flex flex-col w-full h-full p-4 relative px-20">
-      <div className="flex debug absolute top-0 right-0 w-full justify-between items-center p-2">
+      <div className="flex absolute top-0 right-0 w-full justify-between items-center p-2 px-4">
         <p>Syncing</p>
         <p>{headerTitle}</p>
-        <button>
-          <EllipsisIcon />
-        </button>
+        <NoteActionsMenu />
       </div>
 
       {data && (

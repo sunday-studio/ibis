@@ -9,7 +9,7 @@ export const AppLayout = () => {
         <ProductNavigation />
       </div>
 
-      <div className="w-[300px] h-full border-r border-neutral-100 shrink-0 shadow-sm">
+      <div className="w-[250px] h-full border-r border-neutral-100 shrink-0 shadow-sm">
         <Sidebar />
       </div>
 

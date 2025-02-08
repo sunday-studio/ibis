@@ -1,10 +1,10 @@
 import { useTopLevelFolders } from '@/services/db/folders';
-import { useCreateNote, useNotes } from '@/services/db/notes';
+import { useCreateNote, useGetAllActiveNotes } from '@/services/db/notes';
 import { NavLink } from 'react-router';
 
 export const NotesSidebarMenu = () => {
   const { data: topLevelFolders } = useTopLevelFolders();
-  const { data: notes, isLoading: isNotesLoading } = useNotes();
+  const { data: activeNotes, isLoading: isNotesLoading } = useGetAllActiveNotes();
 
   const { mutate: createNote } = useCreateNote();
 
@@ -25,7 +25,7 @@ export const NotesSidebarMenu = () => {
 
         {isNotesLoading && <p>Loading...</p>}
         <div className="flex flex-col gap-2 mt-4">
-          {notes?.map((note) => (
+          {activeNotes?.map((note) => (
             <NavLink
               to={`/notes/${note.id}`}
               key={note.id}

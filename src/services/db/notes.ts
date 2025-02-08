@@ -5,10 +5,22 @@ import { Entry } from './types';
 enum NoteKeys {
   ALL = 'notes',
   DETAIL = 'notes/detail',
+  ALL_PINNED_NOTES = 'notes/pinned',
 }
 
-async function getNotes(database: DatabaseType) {
-  return (await database?.select('SELECT * FROM entries')) as Entry[];
+async function getActiveNotes(database: DatabaseType) {
+  return (await database?.select(`
+    SELECT * FROM entries 
+    WHERE id NOT IN (
+      SELECT entry_id 
+      FROM archived_entries
+    )
+    AND id NOT IN (
+      SELECT entry_id 
+      FROM bin 
+      WHERE restoredAt IS NULL
+    )
+  `)) as Entry[];
 }
 
 async function createNote(
@@ -65,10 +77,14 @@ async function updateNote(database: DatabaseType, noteId: number, params: Partia
   }
 }
 
-export function useNotes() {
+async function getAllPinnedNotes(database: DatabaseType) {
+  return (await database?.select('SELECT * FROM entries WHERE isPinned = 1')) as Entry[];
+}
+
+export function useGetAllActiveNotes() {
   return useQuery({
     queryKey: [NoteKeys.ALL],
-    queryFn: () => getNotes(db.getDb() as DatabaseType),
+    queryFn: () => getActiveNotes(db.getDb() as DatabaseType),
   });
 }
 
@@ -145,5 +161,12 @@ export function useGetNote({ noteId }: { noteId: string }) {
     queryFn: () => {
       return getNote(db.getDb() as DatabaseType, noteId);
     },
+  });
+}
+
+export function useGetAllPinnedNotes() {
+  return useQuery({
+    queryKey: [NoteKeys.ALL_PINNED_NOTES],
+    queryFn: () => getAllPinnedNotes(db.getDb() as DatabaseType),
   });
 }
