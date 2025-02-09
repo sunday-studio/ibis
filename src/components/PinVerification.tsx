@@ -8,18 +8,24 @@ interface PinVerificationProps {
   onSubmit: (fullPin: string) => void;
   title: string;
   description: string;
+  onClose: () => void;
 }
 
 interface PinCreationProps {
   onSubmit: (fullPin: string) => void;
 }
 
-export const PinVerification: FC<PinVerificationProps> = ({ onSubmit, title, description }) => {
+export const PinVerification: FC<PinVerificationProps> = ({
+  onSubmit,
+  title,
+  description,
+  onClose,
+}) => {
   const { mutate: verifyPin } = useVerifyUserPin();
   const { data: user } = useGetUser();
 
   if (!user) {
-    return <CreateUserModal onClose={() => {}} />;
+    return <CreateUserModal onClose={onClose} />;
   }
 
   return (

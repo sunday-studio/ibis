@@ -70,20 +70,24 @@ export const Modal: FC<ModalProps> = ({
       <RACModal {...props} className={modalStyles}>
         <div className="flex items-center justify-between gap-2 p-4">
           <h3 className="text-sm font-semibold">{title}</h3>
-          <button onClick={onClose} className="p-2 cursor-pointer">
-            <XIcon size={14} strokeWidth={2.5} />
-          </button>
+          {showCloseButton && (
+            <button onClick={onClose} className="p-2 cursor-pointer">
+              <XIcon size={14} strokeWidth={2.5} />
+            </button>
+          )}
         </div>
         <div className="px-4 pt-0 pb-4 text-sm">{children}</div>
 
-        <div className="flex items-center justify-end gap-2 p-4 border-t border-neutral-200">
-          {showCloseButton && (
-            <Button size="medium" variant="secondary" onPress={onClose}>
-              Cancel
-            </Button>
-          )}
-          {footerActions}
-        </div>
+        {footerActions && (
+          <div className="flex items-center justify-end gap-2 p-4 border-t border-neutral-200">
+            {showCloseButton && (
+              <Button size="medium" variant="secondary" onPress={onClose}>
+                Cancel
+              </Button>
+            )}
+            {footerActions}
+          </div>
+        )}
       </RACModal>
     </ModalOverlay>
   );

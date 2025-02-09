@@ -1,16 +1,18 @@
 import { Editor } from '@/components/editor/Editor';
 import { getEditorContent } from '@/components/editor/utils';
-import { useGetNote, useUpdateNote } from '@/services/db/notes';
+import { useDeleteNote, useGetNote, useUpdateNote } from '@/services/db/notes';
 import { useState } from 'react';
 import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
 import { NoteActionsMenu } from './NoteActionsMenu';
 import { PinVerification } from '@/components/PinVerification';
+import { useDeleteUser } from '@/services/db/user';
 
 export const NoteEditor = () => {
   const { noteId } = useParams();
   const { data, isLoading } = useGetNote({ noteId: noteId as string });
   const { mutate: updateNote } = useUpdateNote();
+  const { mutate: deleteUser } = useDeleteUser();
 
   const [isPinVerificationOpen, setIsPinVerificationOpen] = useState<boolean | undefined>(
     data?.isLocked,
@@ -52,6 +54,9 @@ export const NoteEditor = () => {
           title="This note is locked"
           description="Enter your PIN to view this note"
           onSubmit={() => {
+            setIsPinVerificationOpen(false);
+          }}
+          onClose={() => {
             setIsPinVerificationOpen(false);
           }}
         />

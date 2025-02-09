@@ -8,8 +8,8 @@ import { TextInput } from './Input';
 import { PinInput } from './PinInput';
 import { Label } from './Field';
 import { useCreateUser } from '@/services/db/user';
-import { useClipboard } from 'react-aria';
 import { toast } from 'sonner';
+import { useClipboard } from '@/hooks/useClipboard';
 
 interface CreateUserModalProps
   extends Omit<ModalProps, 'isOpen' | 'title' | 'showCloseButton' | 'footerActions'> {
@@ -28,19 +28,11 @@ type FormSchema = z.infer<typeof formSchema>;
 
 interface RecoveryTokenProps {
   recoveryToken: string;
+  onClose: () => void;
 }
 
-const RecoveryToken: FC<RecoveryTokenProps> = ({ recoveryToken }) => {
-  const { clipboardProps } = useClipboard({
-    getItems() {
-      return [
-        {
-          'text/plain': recoveryToken,
-        },
-      ];
-    },
-  });
-
+const RecoveryToken: FC<RecoveryTokenProps> = ({ recoveryToken, onClose }) => {
+  const { copy } = useClipboard(recoveryToken);
   return (
     <div className="flex flex-col gap-4">
       <p>
@@ -55,9 +47,12 @@ const RecoveryToken: FC<RecoveryTokenProps> = ({ recoveryToken }) => {
       <div className="flex justify-end">
         <Button
           variant="secondary"
-          onPress={(e) => {
-            clipboardProps.onFocus?.(e as any);
+          onPress={() => {
+            copy();
             toast.success('Recovery token copied to clipboard');
+            setTimeout(() => {
+              onClose();
+            }, 1000);
           }}
         >
           Copy
@@ -92,16 +87,18 @@ export const CreateUserModal: FC<CreateUserModalProps> = ({ onClose }) => {
     <Modal
       isOpen
       title={recoveryToken ? 'Recovery Token' : 'Create User'}
-      showCloseButton={!recoveryToken}
+      showCloseButton={false}
       footerActions={
-        <Button type="submit" form={formId} isLoading={isPending}>
-          {recoveryToken ? 'Close' : 'Create'}
-        </Button>
+        !recoveryToken ? (
+          <Button type="submit" form={formId} isLoading={isPending}>
+            Create
+          </Button>
+        ) : null
       }
       onClose={onClose}
     >
       {recoveryToken ? (
-        <RecoveryToken recoveryToken={recoveryToken} />
+        <RecoveryToken onClose={onClose} recoveryToken={recoveryToken} />
       ) : (
         <form id={formId} onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <Controller

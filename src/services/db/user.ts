@@ -56,6 +56,10 @@ async function createUser(
   return recoveryToken;
 }
 
+async function deleteUser(database: DatabaseType) {
+  return await database?.execute('DELETE FROM users');
+}
+
 // react query hooks
 export const useGetUser = () => {
   return useQuery({
@@ -80,5 +84,11 @@ export const useCreateUser = () => {
   return useMutation({
     mutationFn: (params: { name: string; email: string; pin: string }) =>
       createUser(db.getDb(), params),
+  });
+};
+
+export const useDeleteUser = () => {
+  return useMutation({
+    mutationFn: () => deleteUser(db.getDb()),
   });
 };
