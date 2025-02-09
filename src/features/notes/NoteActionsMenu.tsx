@@ -8,8 +8,9 @@ import {
   EllipsisIcon,
   Link,
   Lock,
+  KeySquareIcon,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import {
   // useDeleteNote,
   useArchiveNote,
@@ -17,21 +18,24 @@ import {
   usePinNote,
   useUnpinNote,
   useUnarchiveNote,
+  useLockNote,
+  useUnlockNote,
 } from '@/services/db/notes';
 import { DropdownMenu } from '@/components/DropdownMenu';
 import { Note } from '@/services/db/types';
 
 interface NoteActionsMenuProps {
   note: Note;
-  onLock: () => void;
 }
 
-export const NoteActionsMenu = ({ note, onLock }: NoteActionsMenuProps) => {
+export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
   const { mutate: pinNote } = usePinNote(note.id);
   const { mutate: unpinNote } = useUnpinNote(note.id);
   const { mutate: archiveNote } = useArchiveNote(note.id);
   const { mutate: unarchiveNote } = useUnarchiveNote(note.id);
   const { data: pinnedNotes } = useGetAllPinnedNotes();
+  const { mutate: lockNote } = useLockNote(note.id);
+  const { mutate: unlockNote } = useUnlockNote(note.id);
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
 
   const pinnedNotesIds = pinnedNotes?.map((note) => note.id);
@@ -68,11 +72,11 @@ export const NoteActionsMenu = ({ note, onLock }: NoteActionsMenuProps) => {
       },
 
       {
-        title: 'Lock',
+        title: note.isLocked ? 'Unlock' : 'Lock',
         action: () => {
-          onLock();
+          note.isLocked ? unlockNote() : lockNote();
         },
-        icon: <Lock size={16} />,
+        icon: note.isLocked ? <KeySquareIcon size={16} /> : <Lock size={16} />,
       },
 
       {

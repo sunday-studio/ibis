@@ -6,17 +6,15 @@ import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
 import { NoteActionsMenu } from './NoteActionsMenu';
 import { PinVerification } from '@/components/PinVerification';
-// import { PinVerification } from '@/components/PinVerification';
 
 export const NoteEditor = () => {
   const { noteId } = useParams();
   const { data, isLoading } = useGetNote({ noteId: noteId as string });
   const { mutate: updateNote } = useUpdateNote();
-  const [isPinVerificationOpen, setIsPinVerificationOpen] = useState<boolean>(
-    data?.isLocked || true,
-  );
 
-  const [isLocked, setIsLocked] = useState<boolean>(data?.isLocked || true);
+  const [isPinVerificationOpen, setIsPinVerificationOpen] = useState<boolean | undefined>(
+    data?.isLocked,
+  );
 
   const [title, setTitle] = useState(data?.title);
 
@@ -37,25 +35,19 @@ export const NoteEditor = () => {
 
   if (isLoading) return <div>Loading...</div>;
 
+  const showPinVerification =
+    isPinVerificationOpen === undefined ? data.isLocked : isPinVerificationOpen;
+
   return (
     <div className="flex flex-col w-full h-full p-4 relative px-20">
       <div className="flex absolute top-0 right-0 w-full justify-between items-center p-2 px-4">
         <p>Syncing</p>
         <p>{headerTitle}</p>
 
-        <NoteActionsMenu
-          note={data}
-          onLock={() => {
-            if (data?.isLocked) {
-              setIsPinVerificationOpen(true);
-            } else {
-              setIsLocked(true);
-            }
-          }}
-        />
+        <NoteActionsMenu note={data} />
       </div>
 
-      {isPinVerificationOpen && isLocked && (
+      {showPinVerification && (
         <PinVerification
           title="This note is locked"
           description="Enter your PIN to view this note"
