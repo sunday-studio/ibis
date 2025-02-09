@@ -1,5 +1,4 @@
 import {
-  BadgeInfo,
   Columns,
   CornerUpRight,
   Copy,
@@ -12,7 +11,7 @@ import {
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import {
-  useDeleteNote,
+  // useDeleteNote,
   useArchiveNote,
   useGetAllPinnedNotes,
   usePinNote,
@@ -24,12 +23,13 @@ import { Note } from '@/services/db/types';
 
 interface NoteActionsMenuProps {
   note: Note;
+  onLock: () => void;
 }
 
-export const NoteActionsMenu = ({ note }: NoteActionsMenuProps) => {
+export const NoteActionsMenu = ({ note, onLock }: NoteActionsMenuProps) => {
   const { mutate: pinNote } = usePinNote(note.id);
   const { mutate: unpinNote } = useUnpinNote(note.id);
-  const { mutate: deleteNote } = useDeleteNote();
+  // const { mutate: deleteNote } = useDeleteNote();
   const { mutate: archiveNote } = useArchiveNote(note.id);
   const { mutate: unarchiveNote } = useUnarchiveNote(note.id);
   const { data: pinnedNotes } = useGetAllPinnedNotes();
@@ -70,7 +70,9 @@ export const NoteActionsMenu = ({ note }: NoteActionsMenuProps) => {
 
       {
         title: 'Lock',
-        action: () => {},
+        action: () => {
+          onLock();
+        },
         icon: <Lock size={16} />,
       },
 
@@ -119,19 +121,21 @@ export const NoteActionsMenu = ({ note }: NoteActionsMenuProps) => {
   }, [pinnedNotesIds, isDoubleClicked]);
 
   return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger>
-        <EllipsisIcon />
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        {options.map((option) => (
-          <DropdownMenu.Item key={option.title} {...option}>
-            {option.title}
-          </DropdownMenu.Item>
-        ))}
+    <>
+      <DropdownMenu>
+        <DropdownMenu.Trigger>
+          <EllipsisIcon />
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          {options.map((option) => (
+            <DropdownMenu.Item key={option.title} {...option}>
+              {option.title}
+            </DropdownMenu.Item>
+          ))}
 
-        <DropdownMenu.Separator />
-      </DropdownMenu.Content>
-    </DropdownMenu>
+          <DropdownMenu.Separator />
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    </>
   );
 };

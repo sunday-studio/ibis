@@ -10,9 +10,9 @@ import { tv } from 'tailwind-variants';
 import { fieldBorderStyles, FieldError, FieldTextarea, Input, Label } from './Field';
 import { composeTailwindRenderProps, focusRing } from './utils.ts';
 
-const inputStyles = tv({
+export const inputStyles = tv({
   extend: focusRing,
-  base: 'border-gray-200 focus-visible:ring-4 border-2 rounded-lg outline-transparent hover:border-gray-300 transition',
+  base: 'border-neutral-200 focus-visible:ring-4 border-2 rounded-xl outline-transparent hover:border-neutral-300 transition',
   variants: {
     isFocused: fieldBorderStyles.variants.isFocusWithin,
     ...fieldBorderStyles.variants,
@@ -31,7 +31,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     return (
       <AriaTextField
         {...props}
-        className={composeTailwindRenderProps(props.className, 'flex flex-col')}
+        className={composeTailwindRenderProps(props.className, 'flex flex-col gap-1')}
       >
         {label && (
           <Label

@@ -2,6 +2,7 @@ import { DatabaseType, db } from './index';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Note } from './types';
 import { useInvalidateQueries } from '@/lib/use-rq';
+
 enum NoteKeys {
   ALL = 'notes',
   DETAIL = 'notes/detail',

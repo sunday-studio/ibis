@@ -16,21 +16,21 @@ let button = tv({
   variants: {
     variant: {
       primary:
-        'bg-brand-bold-default hover:bg-border-button pressed:bg-border-button text-white shadow-blue-500/20 focus-visible:ring-brand-bold-default/20',
+        'bg-orange-600 hover:bg-orange-700 pressed:bg-orange-800 text-white shadow-orange-500/20 focus-visible:ring-orange-500/20',
       secondary:
-        'bg-white border border-border-default text-text-primary text-text-primary focus-visible:ring-brand-bold-default/20 focus-visible:border-brand-bold-default',
+        'bg-white border border-neutral-200 text-gray-700 hover:bg-gray-50 pressed:bg-gray-100 focus-visible:ring-neutral-500/20 focus-visible:border-neutral-400',
       destructive:
-        'bg-brand-destructive hover:bg-brand-destructive/80 pressed:bg-brand-destructive/90 focus-visible:ring-brand-destructive/20 text-white',
+        'bg-red-600 hover:bg-red-700 pressed:bg-red-800 focus-visible:ring-red-500/20 text-white',
     },
 
     size: {
       default: 'w-full h-10',
-      medium: 'px-4 h-8 text-sm text-center  font-medium',
-      small: 'px-2 h-6 text-xs text-center  font-medium',
+      medium: 'px-4 h-8 text-sm text-center font-medium',
+      small: 'px-2 h-6 text-xs text-center font-medium',
     },
 
     isDisabled: {
-      true: 'bg-brand-bold-default/50 shadow-none text-text-secondary forced-colors:text-[GrayText] border-black/5',
+      true: 'bg-gray-400 shadow-none text-gray-300 forced-colors:text-[GrayText] border-black/5',
     },
   },
   defaultVariants: {
@@ -39,7 +39,7 @@ let button = tv({
   },
 });
 
-export const Button = ({ variant, size, ...props }: ButtonProps) => {
+export const Button = ({ variant = 'primary', size = 'medium', ...props }: ButtonProps) => {
   return (
     <RACButton
       {...props}

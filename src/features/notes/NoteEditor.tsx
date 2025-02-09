@@ -6,6 +6,7 @@ import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
 import { NoteActionsMenu } from './NoteActionsMenu';
 import { PinVerification } from '@/components/PinVerification';
+// import { PinVerification } from '@/components/PinVerification';
 
 export const NoteEditor = () => {
   const { noteId } = useParams();
@@ -14,6 +15,8 @@ export const NoteEditor = () => {
   const [isPinVerificationOpen, setIsPinVerificationOpen] = useState<boolean>(
     data?.isLocked || true,
   );
+
+  const [isLocked, setIsLocked] = useState<boolean>(data?.isLocked || true);
 
   const [title, setTitle] = useState(data?.title);
 
@@ -39,14 +42,24 @@ export const NoteEditor = () => {
       <div className="flex absolute top-0 right-0 w-full justify-between items-center p-2 px-4">
         <p>Syncing</p>
         <p>{headerTitle}</p>
-        <NoteActionsMenu note={data} />
+
+        <NoteActionsMenu
+          note={data}
+          onLock={() => {
+            // if (data?.isLocked) {
+            //   setIsPinVerificationOpen(true);
+            // } else {
+            //   setIsLocked(true);
+            // }
+          }}
+        />
       </div>
 
       {isPinVerificationOpen && (
         <PinVerification
           title="This note is locked"
           description="Enter your PIN to view this note"
-          onSubmit={() => {
+          onSubmit={(pin) => {
             setIsPinVerificationOpen(false);
           }}
         />

@@ -39,3 +39,19 @@ export type BinItem = {
   deletedAt: string;
   restoredAt: string | null;
 };
+
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  recoveryToken: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type Preference = {
+  id: number;
+  userId: number;
+  appearance: string;
+};

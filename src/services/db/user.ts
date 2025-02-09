@@ -1,13 +1,18 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { DatabaseType, db } from '.';
 import { encryptPin, verifyPin } from '@/lib/security';
+import { User } from './types';
 
 enum UserKeys {
   USER = 'user',
 }
 
-async function getUser(database: DatabaseType, userId: string) {
-  return await database?.select('SELECT * FROM users WHERE id = ?', [userId]);
+async function getUser(database: DatabaseType) {
+  const users = (await database?.select('SELECT * FROM users')) as User[];
+  if (users.length === 0) {
+    return null;
+  }
+  return users[0];
 }
 
 async function setUserPin(database: DatabaseType, params: { pin: string; userId: string }) {
@@ -28,11 +33,10 @@ async function verifyUserPin(database: DatabaseType, params: { pin: string; user
 }
 
 // react query hooks
-
 export const useGetUser = () => {
   return useQuery({
     queryKey: [UserKeys.USER],
-    queryFn: () => getUser(db.getDb(), '1'),
+    queryFn: () => getUser(db.getDb()),
   });
 };
 

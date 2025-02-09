@@ -1,8 +1,19 @@
 import { useState } from 'react';
+import { ValidationResult } from 'react-aria-components';
+import { clsx } from 'clsx';
+import { Input, FieldError } from './Field';
+import { composeTailwindRenderProps } from './utils';
+import { inputStyles } from './Input';
 
-export const PinInput = ({ onSubmit }: { onSubmit: (pin: string) => void }) => {
+interface PinInputProps {
+  onSubmit: (pin: string) => void;
+  errorMessage?: string | ((validation: ValidationResult) => string);
+}
+
+export const PinInput = ({ onSubmit, errorMessage }: PinInputProps) => {
   const [pin, setPin] = useState(['', '', '', '']);
   const [error, setError] = useState('');
+
   const handlePinChange = (index: number, value: string) => {
     if (value.length > 1) return;
     if (!/^\d*$/.test(value)) return;
@@ -27,15 +38,6 @@ export const PinInput = ({ onSubmit }: { onSubmit: (pin: string) => void }) => {
     }
   };
 
-  const handleSubmit = () => {
-    const fullPin = pin.join('');
-    if (fullPin.length !== 4) {
-      setError('Please enter a 4-digit PIN');
-      return;
-    }
-    onSubmit(fullPin);
-  };
-
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Backspace' && !pin[index] && index > 0) {
       const prevInput = document.querySelector<HTMLInputElement>(`#pin-${index - 1}`);
@@ -44,10 +46,10 @@ export const PinInput = ({ onSubmit }: { onSubmit: (pin: string) => void }) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-start">
       <div className="flex gap-2">
         {pin.map((digit, index) => (
-          <input
+          <Input
             key={index}
             id={`pin-${index}`}
             inputMode="numeric"
@@ -55,11 +57,11 @@ export const PinInput = ({ onSubmit }: { onSubmit: (pin: string) => void }) => {
             value={digit}
             onChange={(e) => handlePinChange(index, e.target.value)}
             onKeyDown={(e) => handleKeyDown(index, e)}
-            className="w-12 h-12 text-center border-2 rounded-lg focus:border-orange-500 focus:outline-none"
+            className={composeTailwindRenderProps(inputStyles, 'w-12 h-12 text-center')}
           />
         ))}
       </div>
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {errorMessage && <FieldError>{error}</FieldError>}
     </div>
   );
 };

@@ -1,11 +1,11 @@
-import React, { PropsWithChildren } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import {
   DialogProps,
   ModalOverlay,
   Dialog as RACDialog,
   Modal as RACModal,
 } from 'react-aria-components';
-import { FiX } from 'react-icons/fi';
+import { XIcon } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
@@ -21,7 +21,7 @@ export interface ModalProps extends PropsWithChildren<DialogProps> {
 export type SubModalProps = Pick<ModalProps, 'isOpen' | 'onClose'>;
 
 const overlayStyles = tv({
-  base: 'fixed top-0 left-0 w-full h-[--visual-viewport-height] isolate z-20 bg-black/[15%] flex items-center justify-center p-4 text-center backdrop-blur-sm',
+  base: 'fixed top-0 left-0 w-full h-full isolate z-20 bg-black/[15%] flex items-center justify-center p-4 text-center backdrop-blur-sm',
   variants: {
     isEntering: {
       true: 'animate-in fade-in duration-200 ease-out',
@@ -56,19 +56,19 @@ export function Dialog(props: DialogProps) {
   );
 }
 
-export const Modal = ({ children, title, footerActions, onClose, ...props }: ModalProps) => {
+export const Modal: FC<ModalProps> = ({ children, title, footerActions, onClose, ...props }) => {
   return (
     <ModalOverlay {...props} className={overlayStyles}>
       <RACModal {...props} className={modalStyles}>
         <div className="flex items-start justify-between gap-2 p-4">
           <h3 className="text-sm font-semibold">{title}</h3>
-          <button onClick={onClose}>
-            <FiX />
+          <button onClick={onClose} className="p-2 cursor-pointer">
+            <XIcon size={14} strokeWidth={2.5} />
           </button>
         </div>
         <div className="px-4 pt-0 pb-4 text-sm">{children}</div>
 
-        <div className="flex items-center justify-end gap-2 p-4 border-t border-border-secondary">
+        <div className="flex items-center justify-end gap-2 p-4 border-t border-neutral-200">
           <Button size="medium" variant="secondary" onPress={onClose}>
             Cancel
           </Button>

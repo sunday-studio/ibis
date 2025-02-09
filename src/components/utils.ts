@@ -7,7 +7,7 @@ export const focusRing = tv({
   variants: {
     isFocusVisible: {
       false: 'focus-visible:ring-transparent',
-      true: 'focus-visible:ring-brand-bold-default/20',
+      true: 'focus-visible:ring-orange-500/20 border-orange-500',
     },
   },
 });

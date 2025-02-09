@@ -23,10 +23,7 @@ export function Label(props: LabelProps) {
   return (
     <RACLabel
       {...props}
-      className={twMerge(
-        'text-sm text-text-primary font-medium cursor-default w-fit',
-        props.className,
-      )}
+      className={twMerge('text-sm text-gray-900 font-medium cursor-default w-fit', props.className)}
     />
   );
 }
@@ -36,7 +33,7 @@ export function Description(props: TextProps) {
     <Text
       {...props}
       slot="description"
-      className={twMerge('text-sm text-text-secondary', props.className)}
+      className={twMerge('text-sm text-gray-500', props.className)}
     />
   );
 }
@@ -57,21 +54,31 @@ export const fieldBorderStyles = tv({
   variants: {
     isFocusWithin: {
       false: 'outline-transparent',
-      true: 'hover:border-brand-bold-default border-brand-bold-default',
+      true: 'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-orange-500/20',
     },
     isInvalid: {
-      true: 'border-brand-destructive hover:border-brand-destructive focus-visible:ring-brand-destructive/20 border-brand-destructive',
+      true: 'border-red-600 hover:border-red-600 focus-visible:ring-red-500/20 border-red-600',
     },
     isDisabled: {
-      true: 'bg-brand-surface-secondary text-text-secondary',
+      true: 'bg-gray-400 shadow-none text-gray-300 forced-colors:text-[GrayText] border-black/5',
     },
   },
 });
 
 export const fieldGroupStyles = tv({
-  extend: focusRing,
-  base: 'group flex items-center h-9 bg-white  forced-colors:bg-[Field] border-2 rounded-lg overflow-hidden',
-  variants: fieldBorderStyles.variants,
+  base: 'rounded-lg flex items-center h-9 bg-white forced-colors:bg-[Field] border-2 overflow-hidden shadow-sm transition focus-visible:outline-none focus-visible:ring-4',
+  variants: {
+    isFocusWithin: {
+      false: 'outline-transparent',
+      true: 'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-orange-500/20',
+    },
+    isInvalid: {
+      true: 'border-red-600 hover:border-red-600 focus-visible:ring-red-500/20 border-red-600',
+    },
+    isDisabled: {
+      true: 'bg-gray-400 shadow-none text-gray-300 forced-colors:text-[GrayText] border-black/5',
+    },
+  },
 });
 
 export function FieldGroup(props: GroupProps) {
@@ -92,7 +99,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       ref={ref}
       className={composeTailwindRenderProps(
         props.className,
-        'px-3 py-2 flex-1 min-w-0 bg-white text-sm text-gray-800',
+        'px-3 py-2 flex-1 min-w-0 bg-white text-sm text-gray-900',
       )}
     />
   );
@@ -105,7 +112,7 @@ export const FieldTextarea = forwardRef<HTMLTextAreaElement, TextAreaProps>((pro
       ref={ref}
       className={composeTailwindRenderProps(
         props.className,
-        'px-3 py-2 flex-1 min-w-0 bg-white text-sm text-gray-800',
+        'px-3 py-2 flex-1 min-w-0 bg-white text-sm text-gray-900',
       )}
     />
   );
