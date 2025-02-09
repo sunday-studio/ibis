@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { PinInput } from './PinInput';
 import { useGetUser, useVerifyUserPin } from '@/services/db/user';
 import { CreateUserModal } from './CreateUserModal';
+import { toast } from 'sonner';
 
 interface PinVerificationProps {
   onSubmit: (fullPin: string) => void;
@@ -14,10 +15,8 @@ interface PinCreationProps {
 }
 
 export const PinVerification: FC<PinVerificationProps> = ({ onSubmit, title, description }) => {
-  const { mutate: verifyPin, isPending } = useVerifyUserPin();
+  const { mutate: verifyPin } = useVerifyUserPin();
   const { data: user } = useGetUser();
-
-  const userId = user?.id ?? '';
 
   if (!user) {
     return <CreateUserModal onClose={() => {}} />;
@@ -30,10 +29,17 @@ export const PinVerification: FC<PinVerificationProps> = ({ onSubmit, title, des
         <p className="text-gray-600 mb-4">{description}</p>
         <PinInput
           onSubmit={(pin) => {
-            console.log(pin);
-            onSubmit(pin);
-            // const state = verifyPin({ pin, userId });
-            // console.log(state);
+            verifyPin(
+              { pin, userId: user.id.toString() },
+              {
+                onSuccess: () => {
+                  onSubmit(pin);
+                },
+                onError: (error) => {
+                  toast.error('Invalid PIN');
+                },
+              },
+            );
           }}
         />
       </div>

@@ -29,7 +29,6 @@ interface NoteActionsMenuProps {
 export const NoteActionsMenu = ({ note, onLock }: NoteActionsMenuProps) => {
   const { mutate: pinNote } = usePinNote(note.id);
   const { mutate: unpinNote } = useUnpinNote(note.id);
-  // const { mutate: deleteNote } = useDeleteNote();
   const { mutate: archiveNote } = useArchiveNote(note.id);
   const { mutate: unarchiveNote } = useUnarchiveNote(note.id);
   const { data: pinnedNotes } = useGetAllPinnedNotes();

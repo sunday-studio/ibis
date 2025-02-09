@@ -136,8 +136,15 @@ pub fn run() {
             ALTER TABLE entries ADD COLUMN isLocked BOOLEAN DEFAULT 0;
         ",
         kind: MigrationKind::Up,
-    }
-    ];
+    }, 
+    Migration {
+        version: 10,
+        description: "change_password_to_pin",
+        sql: "
+            ALTER TABLE users RENAME COLUMN password TO pin;
+        ",
+        kind: MigrationKind::Up,
+    }];
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())

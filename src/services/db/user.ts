@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { DatabaseType, db } from '.';
-import { encryptPin, verifyPin } from '@/lib/security';
+import { encryptPin, generateRecoveryToken, verifyPin } from '@/lib/security';
 import { User } from './types';
 
 enum UserKeys {
@@ -27,9 +27,33 @@ async function verifyUserPin(database: DatabaseType, params: { pin: string; user
   const userPin = (await database?.select('SELECT pin FROM users WHERE id = ?', [
     params.userId,
   ])) as { pin: string }[];
+
   const { pin } = userPin[0];
 
-  return await verifyPin(params.pin, pin);
+  try {
+    const test = await verifyPin(params.pin, pin);
+
+    if (!test) {
+      throw new Error('Invalid PIN');
+    }
+  } catch (error) {
+    throw new Error('Invalid PIN');
+  }
+}
+
+async function createUser(
+  database: DatabaseType,
+  params: { name: string; email: string; pin: string },
+) {
+  const encryptedPin = await encryptPin(params.pin);
+  const recoveryToken = generateRecoveryToken();
+
+  await database?.execute(
+    'INSERT INTO users (name, email, pin, recoveryToken) VALUES (?, ?, ?, ?)',
+    [params.name, params.email, encryptedPin.hashedPin, recoveryToken],
+  );
+
+  return recoveryToken;
 }
 
 // react query hooks
@@ -49,5 +73,12 @@ export const useSetUserPin = () => {
 export const useVerifyUserPin = () => {
   return useMutation({
     mutationFn: (params: { pin: string; userId: string }) => verifyUserPin(db.getDb(), params),
+  });
+};
+
+export const useCreateUser = () => {
+  return useMutation({
+    mutationFn: (params: { name: string; email: string; pin: string }) =>
+      createUser(db.getDb(), params),
   });
 };

@@ -51,6 +51,7 @@ export function FieldError(props: FieldErrorProps) {
 }
 
 export const fieldBorderStyles = tv({
+  extend: focusRing,
   variants: {
     isFocusWithin: {
       false: 'outline-transparent',

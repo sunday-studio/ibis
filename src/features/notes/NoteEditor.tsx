@@ -46,20 +46,20 @@ export const NoteEditor = () => {
         <NoteActionsMenu
           note={data}
           onLock={() => {
-            // if (data?.isLocked) {
-            //   setIsPinVerificationOpen(true);
-            // } else {
-            //   setIsLocked(true);
-            // }
+            if (data?.isLocked) {
+              setIsPinVerificationOpen(true);
+            } else {
+              setIsLocked(true);
+            }
           }}
         />
       </div>
 
-      {isPinVerificationOpen && (
+      {isPinVerificationOpen && isLocked && (
         <PinVerification
           title="This note is locked"
           description="Enter your PIN to view this note"
-          onSubmit={(pin) => {
+          onSubmit={() => {
             setIsPinVerificationOpen(false);
           }}
         />

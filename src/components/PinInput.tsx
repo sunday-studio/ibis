@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { ValidationResult } from 'react-aria-components';
-import { clsx } from 'clsx';
 import { Input, FieldError } from './Field';
 import { composeTailwindRenderProps } from './utils';
 import { inputStyles } from './Input';

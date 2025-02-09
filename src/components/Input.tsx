@@ -9,6 +9,7 @@ import { tv } from 'tailwind-variants';
 
 import { fieldBorderStyles, FieldError, FieldTextarea, Input, Label } from './Field';
 import { composeTailwindRenderProps, focusRing } from './utils.ts';
+import { ControllerFieldState } from 'react-hook-form';
 
 export const inputStyles = tv({
   extend: focusRing,
@@ -19,18 +20,18 @@ export const inputStyles = tv({
   },
 });
 
-export interface TextInputProps extends AriaTextFieldProps {
+export interface TextInputProps extends AriaTextFieldProps, ControllerFieldState {
   label?: string;
   description?: string;
-  errorMessage?: string | ((validation: ValidationResult) => string);
   placeholder?: string;
 }
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ label, description, errorMessage, placeholder, ...props }, ref) => {
+  ({ label, description, error, placeholder, invalid, isDisabled, ...props }, ref) => {
     return (
       <AriaTextField
         {...props}
+        isInvalid={invalid}
         className={composeTailwindRenderProps(props.className, 'flex flex-col gap-1')}
       >
         {label && (
@@ -44,14 +45,14 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         )}
         {description && <p className="text-xs text-text-secondary mb-2">{description}</p>}
         <Input ref={ref} className={inputStyles} placeholder={placeholder} />
-        <FieldError>{errorMessage}</FieldError>
+        <FieldError>{error?.message}</FieldError>
       </AriaTextField>
     );
   },
 );
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextInputProps>(
-  ({ label, description, errorMessage, placeholder, ...props }, ref) => {
+  ({ label, description, error, placeholder, ...props }, ref) => {
     return (
       <AriaTextField
         {...props}
@@ -68,7 +69,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextInputProps>(
         )}
         {description && <p className="text-xs text-text-secondary mb-2">{description}</p>}
         <FieldTextarea ref={ref} className={inputStyles} placeholder={placeholder} />
-        <FieldError>{errorMessage}</FieldError>
+        <FieldError>{error?.message}</FieldError>
       </AriaTextField>
     );
   },

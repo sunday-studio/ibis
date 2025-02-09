@@ -16,6 +16,7 @@ export interface ModalProps extends PropsWithChildren<DialogProps> {
   title: string;
   footerActions: React.ReactNode;
   onClose: () => void;
+  showCloseButton?: boolean;
 }
 
 export type SubModalProps = Pick<ModalProps, 'isOpen' | 'onClose'>;
@@ -56,11 +57,18 @@ export function Dialog(props: DialogProps) {
   );
 }
 
-export const Modal: FC<ModalProps> = ({ children, title, footerActions, onClose, ...props }) => {
+export const Modal: FC<ModalProps> = ({
+  children,
+  title,
+  footerActions,
+  onClose,
+  showCloseButton = true,
+  ...props
+}) => {
   return (
     <ModalOverlay {...props} className={overlayStyles}>
       <RACModal {...props} className={modalStyles}>
-        <div className="flex items-start justify-between gap-2 p-4">
+        <div className="flex items-center justify-between gap-2 p-4">
           <h3 className="text-sm font-semibold">{title}</h3>
           <button onClick={onClose} className="p-2 cursor-pointer">
             <XIcon size={14} strokeWidth={2.5} />
@@ -69,9 +77,11 @@ export const Modal: FC<ModalProps> = ({ children, title, footerActions, onClose,
         <div className="px-4 pt-0 pb-4 text-sm">{children}</div>
 
         <div className="flex items-center justify-end gap-2 p-4 border-t border-neutral-200">
-          <Button size="medium" variant="secondary" onPress={onClose}>
-            Cancel
-          </Button>
+          {showCloseButton && (
+            <Button size="medium" variant="secondary" onPress={onClose}>
+              Cancel
+            </Button>
+          )}
           {footerActions}
         </div>
       </RACModal>
