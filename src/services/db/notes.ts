@@ -1,16 +1,23 @@
 import { DatabaseType, db } from './index';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Note } from './types';
-import { useInvalidateQueries } from '@/lib/use-rq';
+import { CreateNoteType, Note } from './types';
+import { useInvalidateQueries, rq } from '@/lib/use-rq';
 import { normalizeNote } from '@/services/normalizers/note.normalizer';
 import { toast } from 'sonner';
 
 enum NoteKeys {
-  ALL = 'notes',
+  ALL_ACTIVE_NOTES = 'notes/active',
   DETAIL = 'notes/detail',
   ALL_PINNED_NOTES = 'notes/pinned',
   ALL_ARCHIVED_NOTES = 'notes/archived',
   DETAIL_ARCHIVED_STATUS = 'notes/archived/status',
+}
+
+
+export async function getAll(database: DatabaseType) {
+  return (await database?.select(`
+    SELECT * FROM entries
+  `)) as Note[];
 }
 
 async function getActiveNotes(database: DatabaseType) {
@@ -28,13 +35,7 @@ async function getActiveNotes(database: DatabaseType) {
 
 async function createNote(
   database: DatabaseType,
-  params: {
-    title: string;
-    content: string | null;
-    isPinned: boolean;
-    isDuplicate: boolean;
-    tagsId: string | null;
-  },
+  params: CreateNoteType,
 ) {
   return await database?.execute(
     'INSERT INTO entries (title, content, isPinned, isDuplicate, tagsId) VALUES (?, ?, ?, ?, ?)',
@@ -113,44 +114,47 @@ async function getAllPinnedNotes(database: DatabaseType) {
 
 export function useGetAllActiveNotes() {
   return useQuery({
-    queryKey: [NoteKeys.ALL],
-    queryFn: () => getActiveNotes(db.getDb()),
+    queryKey: [NoteKeys.ALL_ACTIVE_NOTES],
+    queryFn: async () => {
+      return rq(() => getActiveNotes(db.getDb()));
+    },
   });
 }
 
 export function useCreateNote() {
   return useMutation({
-    mutationFn: (params: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) =>
-      createNote(db.getDb(), params),
+    mutationFn: (params: CreateNoteType) =>
+      rq(() => createNote(db.getDb(), params)),
     onSuccess: () => {
-      useInvalidateQueries([NoteKeys.ALL]);
-    },
+      useInvalidateQueries([NoteKeys.ALL_ACTIVE_NOTES]);
+    }
   });
 }
 
 export function usePinNote(noteId: string) {
   const invalidateQueries = useInvalidateQueries([
-    NoteKeys.ALL,
+    NoteKeys.ALL_ACTIVE_NOTES,
     NoteKeys.ALL_PINNED_NOTES,
     `${NoteKeys.DETAIL}/${noteId}`,
   ]);
 
   return useMutation({
-    mutationFn: () => pinNote(db.getDb(), noteId),
+    mutationFn: () => rq(() => pinNote(db.getDb(), noteId)),
     onSuccess: () => {
       invalidateQueries();
     },
   });
 }
+
 export function useUnpinNote(noteId: string) {
   const invalidateQueries = useInvalidateQueries([
-    NoteKeys.ALL,
+    NoteKeys.ALL_ACTIVE_NOTES,
     NoteKeys.ALL_PINNED_NOTES,
     `${NoteKeys.DETAIL}/${noteId}`,
   ]);
 
   return useMutation({
-    mutationFn: () => unpinNote(db.getDb(), noteId),
+    mutationFn: () => rq(() => unpinNote(db.getDb(), noteId)),
     onSuccess: () => {
       invalidateQueries();
     },
@@ -162,7 +166,7 @@ export function useUpdateNote() {
 
   return useMutation({
     mutationFn: ({ id, entry }: { id: string; entry: Partial<Note> }) =>
-      updateNote(db.getDb(), id, entry),
+      rq(() => updateNote(db.getDb(), id, entry)),
     onSuccess: () => {
       invalidateQueries();
     },
@@ -171,13 +175,13 @@ export function useUpdateNote() {
 
 export function useDeleteNote() {
   const invalidateQueries = useInvalidateQueries([
-    NoteKeys.ALL,
+    NoteKeys.ALL_ACTIVE_NOTES,
     NoteKeys.ALL_ARCHIVED_NOTES,
     NoteKeys.ALL_PINNED_NOTES,
   ]);
 
   return useMutation({
-    mutationFn: (noteId: string) => deleteNote(db.getDb(), noteId),
+    mutationFn: (noteId: string) => rq(() => deleteNote(db.getDb(), noteId)),
     onSuccess: () => {
       invalidateQueries();
     },
@@ -188,7 +192,7 @@ export function useGetNote({ noteId }: { noteId: string }) {
   return useQuery({
     queryKey: [`${NoteKeys.DETAIL}/${noteId}`],
     queryFn: async () => {
-      const note = await getNote(db.getDb(), noteId);
+      const note = await rq(() => getNote(db.getDb(), noteId));
       return normalizeNote(note);
     },
   });
@@ -197,7 +201,7 @@ export function useGetNote({ noteId }: { noteId: string }) {
 export function useGetAllPinnedNotes() {
   return useQuery({
     queryKey: [NoteKeys.ALL_PINNED_NOTES],
-    queryFn: () => getAllPinnedNotes(db.getDb()),
+    queryFn: () => rq(() => getAllPinnedNotes(db.getDb())),
   });
 }
 
@@ -210,7 +214,7 @@ export function useUnarchiveNote(noteId: string) {
   ]);
 
   return useMutation({
-    mutationFn: () => unarchiveNote(db.getDb(), noteId),
+    mutationFn: () => rq(() => unarchiveNote(db.getDb(), noteId)),
     onSuccess: () => {
       invalidateQueries();
     },
@@ -219,13 +223,13 @@ export function useUnarchiveNote(noteId: string) {
 
 export function useArchiveNote(noteId: string) {
   const invalidateQueries = useInvalidateQueries([
-    NoteKeys.ALL,
+    NoteKeys.ALL_ACTIVE_NOTES,
     NoteKeys.ALL_ARCHIVED_NOTES,
     `${NoteKeys.DETAIL}/${noteId}`,
   ]);
 
   return useMutation({
-    mutationFn: () => archiveNote(db.getDb(), noteId),
+    mutationFn: () => rq(() => archiveNote(db.getDb(), noteId)),
     onSuccess: () => {
       invalidateQueries();
     },
@@ -235,7 +239,7 @@ export function useArchiveNote(noteId: string) {
 export function useGetAllArchivedNotes() {
   return useQuery({
     queryKey: [NoteKeys.ALL_ARCHIVED_NOTES],
-    queryFn: () => getAllArchivedNotes(db.getDb()),
+    queryFn: () => rq(() => getAllArchivedNotes(db.getDb())),
   });
 }
 
@@ -243,7 +247,7 @@ export function useLockNote(noteId: string) {
   const invalidateQueries = useInvalidateQueries([`${NoteKeys.DETAIL}/${noteId}`]);
 
   return useMutation({
-    mutationFn: () => lockNote(db.getDb(), noteId),
+    mutationFn: () => rq(() => lockNote(db.getDb(), noteId)),
     onSuccess: () => {
       toast.success('Note locked');
       invalidateQueries();
@@ -255,7 +259,7 @@ export function useUnlockNote(noteId: string) {
   const invalidateQueries = useInvalidateQueries([`${NoteKeys.DETAIL}/${noteId}`]);
 
   return useMutation({
-    mutationFn: () => unlockNote(db.getDb(), noteId),
+    mutationFn: () => rq(() => unlockNote(db.getDb(), noteId)),
     onSuccess: () => {
       toast.success('Note unlocked');
       invalidateQueries();

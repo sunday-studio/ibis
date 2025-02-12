@@ -19,6 +19,16 @@ export type Note = {
   isLocked: boolean;
 };
 
+export type CreateNoteType = {
+  title: string;
+  content: string | null;
+  tagsId: string | null;
+  isArchived: number;
+  isDuplicate: number;
+  isPinned: number;
+  isLocked: number;
+}
+
 export type ArchivedEntry = {
   entry_id: number;
   archivedAt: string;

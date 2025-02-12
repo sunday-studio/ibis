@@ -23,7 +23,7 @@ const ProductNavigationItem = ({ product }: { product: TopLevelProducts }) => (
     to={product.route}
     className={({ isActive }) => (isActive ? 'text-orange-500' : 'text-gray-600')}
   >
-    <button className="flex h-10 w-10 items-center debug justify-center font-medium transition-all duration-300 cursor-pointer">
+    <button className="flex h-10 w-10 items-center justify-center font-medium transition-all duration-300 cursor-pointer">
       {<product.icon size={18} strokeWidth={2} className="text-inherit" />}
     </button>
   </NavLink>
@@ -85,7 +85,10 @@ export const Sidebar = () => {
 
   return (
     <div className="flex h-full">
-      <div className="w-full h-full">{currentSidebarMenu}</div>
+      <div className="w-full h-full">
+        {/* {currentSidebarMenu} */}
+        <NotesSidebarMenu />
+      </div>
     </div>
   );
 };

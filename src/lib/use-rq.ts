@@ -9,3 +9,16 @@ export const useInvalidateQueries = (queryKeys: string[]) => {
     }
   };
 };
+
+
+
+export async function rq<T>(fn: () => Promise<T>): Promise<T> {
+  try {
+    return await fn();
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('Database error occurred');
+  }
+}

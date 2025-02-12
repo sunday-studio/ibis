@@ -4,7 +4,7 @@ import { Sidebar, ProductNavigation } from './Sidebar';
 
 export const AppLayout = () => {
   return (
-    <div className="flex h-screen font-display text-md overflow-hidden">
+    <div className="flex h-screen font-display text-md overflow-hidden border-t border-gray-100">
       <div className="w-[50px] h-full bg-neutral-100 shrink-0 border-r border-gray-100">
         <ProductNavigation />
       </div>

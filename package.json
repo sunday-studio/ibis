@@ -24,6 +24,7 @@
     "@sentry/react": "^8.53.0",
     "@tailwindcss/vite": "^4.0.3",
     "@tanstack/react-query": "^5.66.0",
+    "@tanstack/react-query-devtools": "^5.66.0",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-opener": "^2",
     "@tauri-apps/plugin-shell": "~2",
@@ -50,6 +51,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.66.1",
     "@tauri-apps/cli": "^2",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
