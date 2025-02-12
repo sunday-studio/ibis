@@ -5,6 +5,7 @@ import {
   useGetAllPinnedNotes,
 } from '@/services/db/notes';
 import { Note } from '@/services/db/types';
+import clsx from 'clsx';
 import { NavLink } from 'react-router';
 
 const EmptyState = ({ text }: { text: string }) => {
@@ -34,7 +35,14 @@ const Section = ({ title, children, emptyStateText, showEmptyState }: SectionPro
 
 const NoteItem = ({ note }: { note: Note }) => {
   return (
-    <NavLink to={`/notes/${note.id}`} className="hover:bg-gray-100 p-1 rounded-md cursor-pointer">
+    <NavLink
+      to={`/notes/${note.id}`}
+      className={({ isActive }) =>
+        clsx('hover:bg-gray-100 p-1 rounded-md cursor-pointer hover:ring-1 hover:ring-gray-200', {
+          'text-orange-500': isActive,
+        })
+      }
+    >
       {note.title}
     </NavLink>
   );
@@ -60,39 +68,43 @@ export const NotesSidebarMenu = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full  h-full">
-      <div className="p-4 flex flex-col gap-2">
-        {isNotesLoading && <p>Loading...</p>}
+    <div className="flex flex-col gap-2 w-full h-full">
+      <div className="px-4 flex flex-col gap-2">
+        {isNotesLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <Section
+              title="Pinned"
+              emptyStateText="No pinned notes yet"
+              showEmptyState={pinnedNotes?.length === 0}
+            >
+              {pinnedNotes?.map((note) => (
+                <NoteItem key={note.id} note={note} />
+              ))}
+            </Section>
 
-        <Section
-          title="Pinned"
-          emptyStateText="No pinned notes yet"
-          showEmptyState={pinnedNotes?.length === 0}
-        >
-          {pinnedNotes?.map((note) => (
-            <NoteItem key={note.id} note={note} />
-          ))}
-        </Section>
+            <Section
+              title="Notes"
+              emptyStateText="No notes yet"
+              showEmptyState={activeNotes?.length === 0}
+            >
+              {activeNotes?.map((note) => (
+                <NoteItem key={note.id} note={note} />
+              ))}
+            </Section>
 
-        <Section
-          title="Notes"
-          emptyStateText="No notes yet"
-          showEmptyState={activeNotes?.length === 0}
-        >
-          {activeNotes?.map((note) => (
-            <NoteItem key={note.id} note={note} />
-          ))}
-        </Section>
-
-        <Section
-          title="Archived"
-          emptyStateText="No archived notes yet"
-          showEmptyState={archivedNotes?.length === 0}
-        >
-          {archivedNotes?.map((note) => (
-            <NoteItem key={note.id} note={note} />
-          ))}
-        </Section>
+            <Section
+              title="Archived"
+              emptyStateText="No archived notes yet"
+              showEmptyState={archivedNotes?.length === 0}
+            >
+              {archivedNotes?.map((note) => (
+                <NoteItem key={note.id} note={note} />
+              ))}
+            </Section>
+          </>
+        )}
       </div>
 
       {/* <div className="flex flex-col gap-2 mt-8 w-full p-4">
@@ -104,7 +116,7 @@ export const NotesSidebarMenu = () => {
         ))}
       </div> */}
 
-      <div className="border-t border-gray-200 w-full mt-auto">
+      <div className="border-t border-gray-100 w-full mt-auto">
         <button
           onClick={() => {
             handleCreateNote();

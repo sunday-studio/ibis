@@ -66,13 +66,14 @@ export const NoteEditor = () => {
         <div className="flex flex-col w-full h-full mt-24">
           <input
             value={title ?? data?.title ?? 'Untitled'}
-            className="mb-4 font-semibold text-2xl text-gray-700 outline-none"
+            className="mb-6 font-semibold text-4xl text-gray-800 outline-none"
             onChange={(e) => {
               const value = e.target.value;
               setTitle(value);
               updateTitle(value);
             }}
           />
+
           <Editor
             id={noteId ?? ''}
             content={getEditorContent(data?.content ?? '')}

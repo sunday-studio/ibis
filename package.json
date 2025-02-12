@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@lexical/code": "^0.23.1",
+    "@lexical/hashtag": "^0.23.1",
     "@lexical/headless": "^0.23.1",
     "@lexical/link": "^0.23.1",
     "@lexical/list": "^0.23.1",
@@ -36,6 +37,7 @@
     "date-fns": "^4.1.0",
     "lexical": "^0.23.1",
     "lucide-react": "^0.474.0",
+    "motion": "^12.4.2",
     "react": "^18.3.1",
     "react-aria": "^3.37.0",
     "react-aria-components": "^1.6.0",

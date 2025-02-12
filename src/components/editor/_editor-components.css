@@ -3,9 +3,6 @@
   padding: 6px;
   border-radius: 8px;
 
-  // TODO: switch this to offset
-  margin-top: 25px;
-
   ul {
     padding: 0;
     list-style: none;
@@ -42,7 +39,6 @@
   }
 }
 
-// Floating Menu
 .floating-menu {
   padding: 4px;
   border-radius: 10px;
@@ -110,7 +106,6 @@
   }
 }
 
-// entry header styling
 .entry-header {
   margin-bottom: 20px;
   color: var(--text-primary);

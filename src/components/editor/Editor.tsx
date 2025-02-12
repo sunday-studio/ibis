@@ -15,21 +15,25 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+import { HashtagNode } from '@lexical/hashtag';
 import { useDebouncedCallback } from 'use-debounce';
+import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
 
 import AutoLinkPlugin, { validateUrl } from './plugins/AutolinkPlugin';
 import ClickableLinkPlugin from './plugins/ClickableLinkPlugin';
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin';
-// import FloatingMenuPlugin from './plugins/FloatingMenuPlugin';
-import { CUSTOM_TRANSFORMERS, MarkdownShortcutPlugin } from './plugins/MarkdownShortcut';
+import { MarkdownShortcutPlugin } from './plugins/MarkdownShortcut';
 import PageBreakPlugin from './plugins/PageBreakPlugin/PageBreakPlugin';
 import { PageBreakNode } from './plugins/PageBreakPlugin/nodes/PageBreakNode';
 import SearchDialogPlugin from './plugins/SearchDialogPlugin';
 import SlashCommandPickerPlugin from './plugins/SlashCommandPicker';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
 import { theme } from './plugins/theme';
+import { EditorState } from 'lexical';
+import './_editor.css';
+// import FloatingMenuPlugin from './plugins/FloatingMenuPlugin';
 
-function MyOnChangePlugin({ onChange }) {
+const MyOnChangePlugin = ({ onChange }: { onChange: (editorState: EditorState) => void }) => {
   const [editor] = useLexicalComposerContext();
   useEffect(() => {
     return editor.registerUpdateListener(({ editorState }) => {
@@ -37,7 +41,7 @@ function MyOnChangePlugin({ onChange }) {
     });
   }, [editor, onChange]);
   return null;
-}
+};
 
 // import { EntryHeader } from './Editor.EntryHeader';
 // import { logger } from '@/lib/logger';
@@ -95,6 +99,7 @@ export const Editor = ({
     },
     onError,
     nodes: [
+      HashtagNode,
       HeadingNode,
       ListNode,
       ListItemNode,
@@ -120,24 +125,15 @@ export const Editor = ({
       <RichTextPlugin
         contentEditable={
           <div className="editor-wrapper">
-            {/* {page === EDITOR_PAGES.ENTRY && <EntryHeader />} */}
             <ContentEditable className="editor-input" />
           </div>
         }
         placeholder={<Placeholder className={placeholderClassName} />}
         ErrorBoundary={LexicalErrorBoundary}
       />
-      {/* <OnChangePlugin
-        onChange={(state) => {
-          state.read(() => {
-            // markdownRef.current = $convertToMarkdownString(CUSTOM_TRANSFORMERS, undefined, true);
-          });
-          debouncedUpdates();
-        }}
-      /> */}
+
       <ClickableLinkPlugin />
       <MyOnChangePlugin onChange={debouncedUpdates} />
-      {/* <FloatingMenuPlugin /> */}
       <SlashCommandPickerPlugin />
       <TabFocusPlugin />
       <LinkPlugin validateUrl={validateUrl} />
@@ -150,7 +146,7 @@ export const Editor = ({
       <CodeHighlightPlugin />
       <PageBreakPlugin />
       <SearchDialogPlugin />
-      {/* <MarkdownContentPlugin markdown={content} /> */}
+      <HashtagPlugin />
     </LexicalComposer>
   );
 };

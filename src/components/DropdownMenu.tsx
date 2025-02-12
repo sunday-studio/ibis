@@ -16,7 +16,9 @@ const DropdownMenuRoot = ({ children }: { children: React.ReactNode }) => {
 export const DropdownMenuTrigger = ({ children }: { children: React.ReactNode }) => {
   return (
     <MenuTrigger>
-      <Button>{children}</Button>
+      <Button className="bg-transparent hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center p-1 rounded-md">
+        {children}
+      </Button>
     </MenuTrigger>
   );
 };
@@ -24,7 +26,7 @@ export const DropdownMenuTrigger = ({ children }: { children: React.ReactNode })
 export const Content = ({ children }: { children: React.ReactNode }) => {
   return (
     <Popover>
-      <Menu className="w-[250px] p-1 shadow-md border border-neutral-50 ring-1 ring-neutral-200 rounded-lg flex flex-col gap-1">
+      <Menu className="w-[250px] bg-white p-1 shadow-md border border-neutral-50 ring-1 ring-neutral-200 rounded-lg flex flex-col gap-1">
         {children}
       </Menu>
     </Popover>
