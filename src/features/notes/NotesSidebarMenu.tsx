@@ -1,10 +1,10 @@
-import { useTopLevelFolders } from '@/services/db/folders';
 import {
   useCreateNote,
   useGetAllActiveNotes,
   useGetAllArchivedNotes,
   useGetAllPinnedNotes,
 } from '@/services/db/notes';
+import { Note } from '@/services/db/types';
 import { NavLink } from 'react-router';
 
 const EmptyState = ({ text }: { text: string }) => {
@@ -15,19 +15,37 @@ const EmptyState = ({ text }: { text: string }) => {
   );
 };
 
+interface SectionProps {
+  title: string;
+  children: React.ReactNode;
+  emptyStateText: string;
+  showEmptyState?: boolean;
+}
+
+const Section = ({ title, children, emptyStateText, showEmptyState }: SectionProps) => {
+  return (
+    <div className="flex flex-col mt-4">
+      <p className="font-medium pb-2.5 pl-1">{title}</p>
+      <div className="flex flex-col">{children}</div>
+      {showEmptyState && <EmptyState text={emptyStateText} />}
+    </div>
+  );
+};
+
+const NoteItem = ({ note }: { note: Note }) => {
+  return (
+    <NavLink to={`/notes/${note.id}`} className="hover:bg-gray-100 p-1 rounded-md cursor-pointer">
+      {note.title}
+    </NavLink>
+  );
+};
+
 export const NotesSidebarMenu = () => {
-  const { data: topLevelFolders } = useTopLevelFolders();
-  const {
-    data: activeNotes,
-    isLoading: isNotesLoading,
-    error: notesError,
-  } = useGetAllActiveNotes();
+  const { data: activeNotes, isLoading: isNotesLoading } = useGetAllActiveNotes();
   const { data: pinnedNotes } = useGetAllPinnedNotes();
   const { data: archivedNotes } = useGetAllArchivedNotes();
 
   const { mutate: createNote } = useCreateNote();
-
-  console.log('notesError', notesError);
 
   const handleCreateNote = async () => {
     createNote({
@@ -43,53 +61,38 @@ export const NotesSidebarMenu = () => {
 
   return (
     <div className="flex flex-col gap-2 w-full  h-full">
-      <div className="p-4">
+      <div className="p-4 flex flex-col gap-2">
         {isNotesLoading && <p>Loading...</p>}
-        <div className="flex flex-col gap-2 mb-8 ">
-          <p className="text-sm font-medium pb-2">Pinned</p>
-          {pinnedNotes?.length === 0 ? (
-            <EmptyState text="No pinned notes yet" />
-          ) : (
-            pinnedNotes?.map((note) => (
-              <NavLink
-                to={`/notes/${note.id}`}
-                key={note.id}
-                className="hover:bg-gray-100 cursor-pointer"
-              >
-                {note.title}
-              </NavLink>
-            ))
-          )}
-        </div>
 
-        <div className="flex flex-col gap-2 mt-4">
-          <p className="text-sm font-medium pb-2">Notes</p>
-          {activeNotes?.length === 0 ? (
-            <EmptyState text="No notes yet" />
-          ) : (
-            activeNotes?.map((note) => (
-              <NavLink
-                to={`/notes/${note.id}`}
-                key={note.id}
-                className="hover:bg-gray-100 cursor-pointer"
-              >
-                {note.title}
-              </NavLink>
-            ))
-          )}
-        </div>
-        <div className="flex flex-col gap-2 mt-4">
-          <p className="text-sm font-medium pb-2">Archived</p>
-          {archivedNotes?.map((note) => (
-            <NavLink
-              to={`/notes/${note.id}`}
-              key={note.id}
-              className="hover:bg-gray-100 cursor-pointer"
-            >
-              {note.title}
-            </NavLink>
+        <Section
+          title="Pinned"
+          emptyStateText="No pinned notes yet"
+          showEmptyState={pinnedNotes?.length === 0}
+        >
+          {pinnedNotes?.map((note) => (
+            <NoteItem key={note.id} note={note} />
           ))}
-        </div>
+        </Section>
+
+        <Section
+          title="Notes"
+          emptyStateText="No notes yet"
+          showEmptyState={activeNotes?.length === 0}
+        >
+          {activeNotes?.map((note) => (
+            <NoteItem key={note.id} note={note} />
+          ))}
+        </Section>
+
+        <Section
+          title="Archived"
+          emptyStateText="No archived notes yet"
+          showEmptyState={archivedNotes?.length === 0}
+        >
+          {archivedNotes?.map((note) => (
+            <NoteItem key={note.id} note={note} />
+          ))}
+        </Section>
       </div>
 
       {/* <div className="flex flex-col gap-2 mt-8 w-full p-4">

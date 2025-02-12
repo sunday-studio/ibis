@@ -207,7 +207,7 @@ export function useGetAllPinnedNotes() {
 
 export function useUnarchiveNote(noteId: string) {
   const invalidateQueries = useInvalidateQueries([
-    NoteKeys.ALL,
+    NoteKeys.ALL_ACTIVE_NOTES,
     NoteKeys.ALL_PINNED_NOTES,
     NoteKeys.ALL_ARCHIVED_NOTES,
     `${NoteKeys.DETAIL}/${noteId}`,
