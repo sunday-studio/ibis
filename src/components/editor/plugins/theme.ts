@@ -1,4 +1,7 @@
-export const theme = {
+import type { EditorThemeClasses } from 'lexical';
+
+
+export const theme: EditorThemeClasses = {
   ltr: 'ltr',
   rtl: 'rtl',
   placeholder: 'editor-placeholder',
@@ -8,6 +11,9 @@ export const theme = {
   link: 'editor-link',
   hashtag: 'editor-hashtag',
   code: 'editor-code',
+  blockCursor: 'editor-block-cursor',
+  hr: 'editor-hr',
+  indent: 'editor-indent',
   heading: {
     h1: 'editor-heading-h1',
     h2: 'editor-heading-h2',
@@ -16,15 +22,21 @@ export const theme = {
     h5: 'editor-heading-h5',
   },
   list: {
-    listitemChecked: 'editor-listItemChecked',
-    listitemUnchecked: 'editor-listItemUnchecked',
-    nested: {
-      listitem: 'editor-nested-listitem',
-    },
-    ol: 'editor-list-ol',
-    ul: 'editor-list-ul',
-    listitem: 'editor-listitem',
     checklist: 'editor-checklist',
+    listitem: 'editor-list-item',
+    listitemChecked: 'editor-list-item-checked',
+    listitemUnchecked: 'editor-list-item-unchecked',
+    nested: {
+      listitem: 'editor-nested-list-item',
+    },
+    olDepth: [
+      'editor-ol-1',
+      'editor-ol-2',
+      'editor-ol-3',
+      'editor-ol-4',
+      'editor-ol-5',
+    ],
+    ul: 'editor-ul',
   },
   text: {
     bold: 'editor-text-bold',

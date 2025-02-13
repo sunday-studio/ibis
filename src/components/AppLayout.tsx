@@ -13,7 +13,7 @@ export const AppLayout = () => {
         <Sidebar />
       </div>
 
-      <div className="bg-white w-full">
+      <div className="bg-white w-full overflow-y-auto">
         <Outlet />
       </div>
     </div>
