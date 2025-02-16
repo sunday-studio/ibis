@@ -1,18 +1,13 @@
 .draggable-element {
-  position: absolute;
-  border-radius: 5px;
+  /* position: absolute; */
+  /* border-radius: 5px;
   width: 15px;
-  height: 40px;
-  background-color: red;
-  /* background-image: url(./draggable-block-menu.svg); */
-  background-repeat: no-repeat;
+  height: 40px; */
+  /* background-color: red; */
+  /* background-repeat: no-repeat;
   background-position-y: 1px;
-  opacity: 0.5;
+  opacity: 1; */
   cursor: grab;
-  transition: background-color 150ms linear;
-
-  animation-duration: 0.5s;
-  animation-name: animate-fade;
 }
 
 @keyframes animate-fade {
@@ -26,8 +21,27 @@
 
 .draggable-element:active {
   cursor: grabbing;
+  background-color: red;
 }
 
 .draggable-element:hover {
   background-color: rgba(190, 190, 190, 0.63);
+}
+
+.draggable-block {
+  /* background-color: var(--color-gray-300); */
+  /* padding: 20px; */
+  border-radius: 4px;
+}
+
+.draggable-block:hover {
+  /* background-color: var(--color-gray-300); */
+}
+
+.draggable-block:hover .draggable-element {
+  opacity: 1;
+  width: 20px;
+  height: 40px;
+  cursor: grab;
+  background-color: var(--color-gray-300);
 }

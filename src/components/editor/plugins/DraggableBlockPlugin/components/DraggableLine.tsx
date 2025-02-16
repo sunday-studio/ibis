@@ -1,9 +1,10 @@
 import React from 'react';
 import { useDraggableLineStore } from '../draggable-block-store';
 import './_draggable-line.css';
+import { useShallow } from 'zustand/react/shallow';
 
 const OnDragLine: React.FC = () => {
-  const { line } = useDraggableLineStore();
+  const { line } = useShallow(useDraggableLineStore);
 
   if (!line?.data) {
     return null;

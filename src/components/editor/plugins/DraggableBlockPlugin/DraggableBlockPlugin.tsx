@@ -5,14 +5,10 @@ import { OnDragLine } from './components/DraggableLine';
 import { useOnDrop } from './hooks/use-on-drop.hook';
 import { useDragListeners } from './hooks/use-drag-listeners.hook';
 import { createPortal } from 'react-dom';
-import { useDraggableStore } from './draggable-block-store';
 import { DRAGGABLE_WRAPPER_ID } from './components/DraggableWrapper';
-import { useShallow } from 'zustand/react/shallow';
 
 export const DraggableBlockPlugin: React.FC = () => {
   const [editor] = useLexicalComposerContext();
-
-  const { isMarkdown } = useShallow(useDraggableStore);
 
   useDragListeners();
   useOnDrop();
@@ -21,13 +17,19 @@ export const DraggableBlockPlugin: React.FC = () => {
 
   const wrapperHtmlElement = document.getElementById(DRAGGABLE_WRAPPER_ID);
 
-  if (!isEditable || !wrapperHtmlElement || isMarkdown) {
+  if (!isEditable || !wrapperHtmlElement) {
     return null;
   }
 
-  return createPortal(
+  return (
     <>
       <DraggableElement />
+      <OnDragLine />
+    </>
+  );
+
+  return createPortal(
+    <>
       <OnDragLine />
     </>,
     wrapperHtmlElement,

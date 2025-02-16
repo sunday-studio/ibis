@@ -1,10 +1,12 @@
 import React, { DragEvent as ReactDragEvent, useCallback } from 'react';
 import { useDraggableStore } from '../draggable-block-store';
+import { useShallow } from 'zustand/react/shallow';
 
 import './_draggable-element.css';
+import { GripVerticalIcon } from 'lucide-react';
 
 const DraggableElement: React.FC = () => {
-  const { draggable, resetState } = useDraggableStore();
+  const { draggable, resetState } = useShallow(useDraggableStore);
 
   const handleOnDragStart = useCallback(
     ({ dataTransfer }: ReactDragEvent<HTMLDivElement>) => {
@@ -24,10 +26,7 @@ const DraggableElement: React.FC = () => {
   const scrollOffset = document.body.getBoundingClientRect().top;
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
-      // THIS IS VERY IMPORTANT!!!
-      // Without is element will need to be dragged twice;
       draggable={true}
       className="draggable-element"
       onDragStart={handleOnDragStart}
@@ -37,7 +36,9 @@ const DraggableElement: React.FC = () => {
         left: (draggable.data.left ?? 0) - 23,
         height: draggable.data.height,
       }}
-    />
+    >
+      <GripVerticalIcon className="w-4 h-4" />
+    </div>
   );
 };
 

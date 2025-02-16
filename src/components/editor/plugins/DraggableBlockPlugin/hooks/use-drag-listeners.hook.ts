@@ -43,16 +43,10 @@ export const useDragListeners = () => {
 
         // TODO: JUST FOR VISUALIZATION! You can remove it!
         htmlElement.classList.add('draggable-block');
-
         htmlElement.setAttribute(DRAGGABLE_KEY, key);
 
         // NOTE: Don't use "mouseover"/"mousemove" because then it will be triggered on children too!
         htmlElement.addEventListener('mouseenter', setDraggableElement);
-
-        // We need "dragenter" with "DRAGOVER_COMMAND" because:
-        // 1. target on "dragenter" -> current html element;
-        // 2. target on "DRAGOVER_COMMAND" -> editable container;
-        // 3. without "DRAGOVER_COMMAND" -> "DROP_COMMAND" will not work;
         htmlElement.addEventListener('dragenter', handleOnDragEnter);
       });
     };

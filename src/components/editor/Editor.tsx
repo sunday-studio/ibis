@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
@@ -30,10 +30,38 @@ import SlashCommandPickerPlugin from './plugins/SlashCommandPicker';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
 import { theme } from './plugins/theme';
 import { EditorState } from 'lexical';
-import { DraggableBlockPlugin } from './plugins/DraggableBlockPlugin/DraggableBlockPlugin';
+// import { DraggableBlockPlugin } from './plugins/DraggableBlockPlugin/DraggableBlockPlugin';
 import './_editor.css';
 import { DraggableWrapper } from './plugins/DraggableBlockPlugin/components/DraggableWrapper';
-// import FloatingMenuPlugin from './plugins/FloatingMenuPlugin';
+import { DraggableBlockPluginTest } from './plugins/TestPlugin';
+import { GripIcon } from 'lucide-react';
+
+const DRAGGABLE_BLOCK_MENU_CLASSNAME = 'draggable-block-menu';
+
+function isOnMenu(element: HTMLElement): boolean {
+  return !!element.closest(`.${DRAGGABLE_BLOCK_MENU_CLASSNAME}`);
+}
+
+const DraggableBlockPlugin = ({ anchorElem = document.body }: { anchorElem?: HTMLElement }) => {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const targetLineRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <DraggableBlockPluginTest
+      anchorElem={anchorElem}
+      menuRef={menuRef}
+      targetLineRef={targetLineRef}
+      menuComponent={
+        <div ref={menuRef} className="draggable-block-menu">
+          <GripIcon />
+          {/* <div className="icon" /> */}
+        </div>
+      }
+      targetLineComponent={<div ref={targetLineRef} className="draggable-block-target-line" />}
+      isOnMenu={isOnMenu}
+    />
+  );
+};
 
 const MyOnChangePlugin = ({ onChange }: { onChange: (editorState: EditorState) => void }) => {
   const [editor] = useLexicalComposerContext();
@@ -73,20 +101,18 @@ export const Editor = ({
   extendTheme,
   placeholderClassName = 'editor-placeholder',
 }: EditorType) => {
-  // const [floatingMenu, setFloatingMenu] = useState<HTMLDivElement | null>(null);
-  // const onRef = (_floatingMenu: HTMLDivElement) => {
-  //   if (_floatingMenu !== null) {
-  //     setFloatingMenu(_floatingMenu);
-  //   }
-  // };
+  const [floatingMenu, setFloatingMenu] = useState<HTMLDivElement | null>(null);
+  const onRef = (_floatingMenu: HTMLDivElement) => {
+    if (_floatingMenu !== null) {
+      setFloatingMenu(_floatingMenu);
+    }
+  };
 
   const CustomContent = useMemo(() => {
     return (
-      <DraggableWrapper>
-        <div style={{ position: 'relative' }}>
-          <ContentEditable className="editor-input" />
-        </div>
-      </DraggableWrapper>
+      <div ref={onRef}>
+        <ContentEditable />
+      </div>
     );
   }, []);
 
@@ -129,7 +155,8 @@ export const Editor = ({
           ErrorBoundary={LexicalErrorBoundary}
         />
 
-        {/* {floatingMenu && <DraggableBlockPlugin anchorElem={floatingMenu} />} */}
+        {floatingMenu && <DraggableBlockPlugin anchorElem={floatingMenu} />}
+
         <ClickableLinkPlugin />
         <MyOnChangePlugin onChange={debouncedUpdates} />
         <SlashCommandPickerPlugin />

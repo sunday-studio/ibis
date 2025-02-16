@@ -1,16 +1,13 @@
 import React, { PropsWithChildren, useEffect, useRef } from 'react';
 import { draggableStore } from '../draggable-block-store';
 
-export const DRAGGABLE_WRAPPER_ID = 'lexical-draggable-wrapper-id';
+export const DRAGGABLE_WRAPPER_ID = 'editor-draggable-wrapper-id';
 
-/**
- * Reset state on mouse leave
- */
 export const DraggableWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   /**
-   * NOTE: onMouseLeave will not work as expected.
+   * onMouseLeave will not work as expected.
    */
   useEffect(() => {
     const callback = () => {
