@@ -17,6 +17,7 @@
     "@lexical/link": "^0.23.1",
     "@lexical/list": "^0.23.1",
     "@lexical/markdown": "^0.23.1",
+    "@lexical/mark": "^0.23.1",
     "@lexical/react": "^0.23.1",
     "@lexical/rich-text": "^0.23.1",
     "@lexical/selection": "^0.23.1",
@@ -50,7 +51,8 @@
     "tailwind-variants": "^0.3.1",
     "tailwindcss": "^4.0.3",
     "use-debounce": "^10.0.4",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.66.1",

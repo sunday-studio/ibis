@@ -1,18 +1,16 @@
 import { Editor } from '@/components/editor/Editor';
 import { getEditorContent } from '@/components/editor/utils';
-import { useDeleteNote, useGetNote, useUpdateNote } from '@/services/db/notes';
+import { useGetNote, useUpdateNote } from '@/services/db/notes';
 import { useState } from 'react';
 import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
 import { NoteActionsMenu } from './NoteActionsMenu';
 import { PinVerification } from '@/components/PinVerification';
-import { useDeleteUser } from '@/services/db/user';
 
 export const NoteEditor = () => {
   const { noteId } = useParams();
   const { data, isLoading } = useGetNote({ noteId: noteId as string });
-  const { mutate: updateNote } = useUpdateNote();
-  const { mutate: deleteUser } = useDeleteUser();
+  const { mutate: updateNote } = useUpdateNote({ noteId: noteId as string });
 
   const [isPinVerificationOpen, setIsPinVerificationOpen] = useState<boolean | undefined>(
     data?.isLocked,
@@ -41,7 +39,7 @@ export const NoteEditor = () => {
     isPinVerificationOpen === undefined ? data.isLocked : isPinVerificationOpen;
 
   return (
-    <div className="flex flex-col w-full h-full p-4 relative px-20">
+    <div className="flex flex-col w-full min-h-screen p-4 relative px-20">
       <div className="flex absolute top-0 right-0 w-full justify-between items-center p-2 px-4">
         <p>Syncing</p>
         <p>{headerTitle}</p>

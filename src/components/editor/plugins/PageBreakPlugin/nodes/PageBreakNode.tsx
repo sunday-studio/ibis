@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { JSX, useCallback, useEffect } from 'react';
 
 import { Transformer } from '@lexical/markdown';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';

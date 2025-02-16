@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { FC, useMemo, useState } from 'react';
 import {
-  // useDeleteNote,
+  useDeleteNote,
   useArchiveNote,
   useGetAllPinnedNotes,
   usePinNote,
@@ -37,6 +37,7 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
   const { mutate: lockNote } = useLockNote(note.id);
   const { mutate: unlockNote } = useUnlockNote(note.id);
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
+  const { mutate: deleteNote } = useDeleteNote();
 
   const pinnedNotesIds = pinnedNotes?.map((note) => note.id);
 
@@ -88,11 +89,12 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
       {
         title: isDoubleClicked ? 'Click again to delete' : 'Delete',
         action: () => {
-          if (isDoubleClicked) {
-            // /  deleteNote({ id: noteId });
-          } else {
-            setIsDoubleClicked(true);
-          }
+          deleteNote(note.id);
+          // if (isDoubleClicked) {
+          //   // /  deleteNote({ id: noteId });
+          // } else {
+          //   setIsDoubleClicked(true);
+          // }
         },
         // isDoubleClicked ? entriesStore.deleteEntry(entry.id) : setIsDoubleClicked(true),
         icon: <Trash2 size={16} />,

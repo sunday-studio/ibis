@@ -1,0 +1,33 @@
+.draggable-element {
+  position: absolute;
+  border-radius: 5px;
+  width: 15px;
+  height: 40px;
+  background-color: red;
+  /* background-image: url(./draggable-block-menu.svg); */
+  background-repeat: no-repeat;
+  background-position-y: 1px;
+  opacity: 0.5;
+  cursor: grab;
+  transition: background-color 150ms linear;
+
+  animation-duration: 0.5s;
+  animation-name: animate-fade;
+}
+
+@keyframes animate-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.draggable-element:active {
+  cursor: grabbing;
+}
+
+.draggable-element:hover {
+  background-color: rgba(190, 190, 190, 0.63);
+}

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
@@ -30,7 +30,9 @@ import SlashCommandPickerPlugin from './plugins/SlashCommandPicker';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
 import { theme } from './plugins/theme';
 import { EditorState } from 'lexical';
+import { DraggableBlockPlugin } from './plugins/DraggableBlockPlugin/DraggableBlockPlugin';
 import './_editor.css';
+import { DraggableWrapper } from './plugins/DraggableBlockPlugin/components/DraggableWrapper';
 // import FloatingMenuPlugin from './plugins/FloatingMenuPlugin';
 
 const MyOnChangePlugin = ({ onChange }: { onChange: (editorState: EditorState) => void }) => {
@@ -43,28 +45,9 @@ const MyOnChangePlugin = ({ onChange }: { onChange: (editorState: EditorState) =
   return null;
 };
 
-// import { EntryHeader } from './Editor.EntryHeader';
-// import { logger } from '@/lib/logger';
-
 function Placeholder({ className }: { className: string }) {
   return <div className={className}>Write or type '/' for slash commands....</div>;
 }
-
-// function MarkdownContentPlugin({ markdown }) {
-//   const [editor] = useLexicalComposerContext();
-
-//   useEffect(() => {
-//     if (markdown) {
-//       editor.update(() => {
-//         const root = $getRoot();
-//         root.clear();
-//         $convertFromMarkdownString(markdown, CUSTOM_TRANSFORMERS, undefined, true);
-//       });
-//     }
-//   }, [editor, markdown]);
-
-//   return null;
-// }
 
 function onError(error: any) {
   console.error(error);
@@ -90,6 +73,23 @@ export const Editor = ({
   extendTheme,
   placeholderClassName = 'editor-placeholder',
 }: EditorType) => {
+  // const [floatingMenu, setFloatingMenu] = useState<HTMLDivElement | null>(null);
+  // const onRef = (_floatingMenu: HTMLDivElement) => {
+  //   if (_floatingMenu !== null) {
+  //     setFloatingMenu(_floatingMenu);
+  //   }
+  // };
+
+  const CustomContent = useMemo(() => {
+    return (
+      <DraggableWrapper>
+        <div style={{ position: 'relative' }}>
+          <ContentEditable className="editor-input" />
+        </div>
+      </DraggableWrapper>
+    );
+  }, []);
+
   const editorConfig = {
     editorState: content ?? null,
     namespace: 'ContentEditor',
@@ -122,31 +122,30 @@ export const Editor = ({
 
   return (
     <LexicalComposer initialConfig={editorConfig} key={id}>
-      <RichTextPlugin
-        contentEditable={
-          <div className="editor-wrapper">
-            <ContentEditable className="editor-input" />
-          </div>
-        }
-        placeholder={<Placeholder className={placeholderClassName} />}
-        ErrorBoundary={LexicalErrorBoundary}
-      />
+      <div className="editor-wrapper">
+        <RichTextPlugin
+          contentEditable={CustomContent}
+          placeholder={<Placeholder className={placeholderClassName} />}
+          ErrorBoundary={LexicalErrorBoundary}
+        />
 
-      <ClickableLinkPlugin />
-      <MyOnChangePlugin onChange={debouncedUpdates} />
-      <SlashCommandPickerPlugin />
-      <TabFocusPlugin />
-      <LinkPlugin validateUrl={validateUrl} />
-      <ListPlugin />
-      <CheckListPlugin />
-      <HistoryPlugin />
-      <AutoLinkPlugin />
-      <TabIndentationPlugin />
-      <MarkdownShortcutPlugin />
-      <CodeHighlightPlugin />
-      <PageBreakPlugin />
-      <SearchDialogPlugin />
-      <HashtagPlugin />
+        {/* {floatingMenu && <DraggableBlockPlugin anchorElem={floatingMenu} />} */}
+        <ClickableLinkPlugin />
+        <MyOnChangePlugin onChange={debouncedUpdates} />
+        <SlashCommandPickerPlugin />
+        <TabFocusPlugin />
+        <LinkPlugin validateUrl={validateUrl} />
+        <ListPlugin />
+        <CheckListPlugin />
+        <HistoryPlugin />
+        <AutoLinkPlugin />
+        <TabIndentationPlugin />
+        <MarkdownShortcutPlugin />
+        <CodeHighlightPlugin />
+        <PageBreakPlugin />
+        <SearchDialogPlugin />
+        <HashtagPlugin />
+      </div>
     </LexicalComposer>
   );
 };

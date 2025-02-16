@@ -13,7 +13,6 @@ enum NoteKeys {
   DETAIL_ARCHIVED_STATUS = 'notes/archived/status',
 }
 
-
 export async function getAll(database: DatabaseType) {
   return (await database?.select(`
     SELECT * FROM entries
@@ -33,10 +32,7 @@ async function getActiveNotes(database: DatabaseType) {
   `)) as Note[];
 }
 
-async function createNote(
-  database: DatabaseType,
-  params: CreateNoteType,
-) {
+async function createNote(database: DatabaseType, params: CreateNoteType) {
   return await database?.execute(
     'INSERT INTO entries (title, content, isPinned, isDuplicate, tagsId) VALUES (?, ?, ?, ?, ?)',
     [params.title, params.content, params.isPinned, params.isDuplicate, params.tagsId],
@@ -123,11 +119,10 @@ export function useGetAllActiveNotes() {
 
 export function useCreateNote() {
   return useMutation({
-    mutationFn: (params: CreateNoteType) =>
-      rq(() => createNote(db.getDb(), params)),
+    mutationFn: (params: CreateNoteType) => rq(() => createNote(db.getDb(), params)),
     onSuccess: () => {
       useInvalidateQueries([NoteKeys.ALL_ACTIVE_NOTES]);
-    }
+    },
   });
 }
 
@@ -161,8 +156,13 @@ export function useUnpinNote(noteId: string) {
   });
 }
 
-export function useUpdateNote() {
-  const invalidateQueries = useInvalidateQueries([NoteKeys.ALL]);
+export function useUpdateNote({ noteId }: { noteId: string }) {
+  const invalidateQueries = useInvalidateQueries([
+    NoteKeys.ALL_ACTIVE_NOTES,
+    NoteKeys.ALL_PINNED_NOTES,
+    NoteKeys.ALL_ARCHIVED_NOTES,
+    `${NoteKeys.DETAIL}/${noteId}`,
+  ]);
 
   return useMutation({
     mutationFn: ({ id, entry }: { id: string; entry: Partial<Note> }) =>

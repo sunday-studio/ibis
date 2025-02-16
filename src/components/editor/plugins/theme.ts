@@ -1,6 +1,5 @@
 import type { EditorThemeClasses } from 'lexical';
 
-
 export const theme: EditorThemeClasses = {
   ltr: 'ltr',
   rtl: 'rtl',
@@ -21,6 +20,7 @@ export const theme: EditorThemeClasses = {
     h4: 'editor-heading-h4',
     h5: 'editor-heading-h5',
   },
+
   list: {
     checklist: 'editor-checklist',
     listitem: 'editor-list-item',
@@ -29,13 +29,7 @@ export const theme: EditorThemeClasses = {
     nested: {
       listitem: 'editor-nested-list-item',
     },
-    olDepth: [
-      'editor-ol-1',
-      'editor-ol-2',
-      'editor-ol-3',
-      'editor-ol-4',
-      'editor-ol-5',
-    ],
+    olDepth: ['editor-ol-1', 'editor-ol-2', 'editor-ol-3', 'editor-ol-4', 'editor-ol-5'],
     ul: 'editor-ul',
   },
   text: {
