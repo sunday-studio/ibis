@@ -25,7 +25,7 @@ export default function DraggableBlockPlugin({
       targetLineRef={targetLineRef as RefObject<HTMLElement>}
       menuComponent={
         <div ref={menuRef} className="draggable-block-menu">
-          <GripVerticalIcon size={16} />
+          <GripVerticalIcon size={18} />
         </div>
       }
       targetLineComponent={<div ref={targetLineRef} className="draggable-block-target-line" />}

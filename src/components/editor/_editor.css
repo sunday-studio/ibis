@@ -5,6 +5,11 @@
   padding-bottom: 100px;
 }
 
+.editor-root {
+  padding: 20px;
+  outline: none;
+}
+
 .editor-placeholder {
   margin-top: -26px;
   font-style: italic;
@@ -279,14 +284,14 @@
   cursor: grab;
   opacity: 0;
   position: absolute;
-  left: 0;
+  left: -10px;
   top: 0;
   will-change: transform;
 }
 
 .draggable-block-menu .icon {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
 .draggable-block-menu:active {
@@ -294,12 +299,13 @@
 }
 
 .draggable-block-menu:hover {
-  background-color: #efefef;
+  background-color: var(--color-gray-100);
+  box-shadow: 0 0 0 1px var(--color-gray-200);
 }
 
 .draggable-block-target-line {
   pointer-events: none;
-  background: deepskyblue;
+  background: var(--color-orange-500);
   height: 4px;
   position: absolute;
   left: 0;

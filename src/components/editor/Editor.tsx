@@ -83,7 +83,7 @@ export const Editor = ({
   const CustomContent = useMemo(() => {
     return (
       <div className="editor-inner" ref={onRef}>
-        <ContentEditable className="editor-input" />
+        <ContentEditable className="editor-root" />
       </div>
     );
   }, []);
