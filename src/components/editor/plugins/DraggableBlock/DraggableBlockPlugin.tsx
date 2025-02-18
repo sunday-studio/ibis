@@ -1,11 +1,3 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
 import type { JSX } from 'react';
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
@@ -395,16 +387,24 @@ function useDraggableBlockMenu(
     hideTargetLine(targetLineRef.current);
   }
 
+  const onClick = (e: React.MouseEvent) => {
+    const targetBlockElem = getBlockElement(anchorElem, editor, e, true);
+
+    if (!isHTMLElement(targetBlockElem)) {
+      return;
+    }
+
+    targetBlockElem.classList.add('draggable-element');
+
+    console.log('targetBlockElem', targetBlockElem);
+
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
   return createPortal(
     <>
-      <div
-        draggable={true}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onClick={() => {
-          console.log('clicked');
-        }}
-      >
+      <div draggable={true} onDragStart={onDragStart} onDragEnd={onDragEnd} onClick={onClick}>
         {isEditable && menuComponent}
       </div>
       {targetLineComponent}

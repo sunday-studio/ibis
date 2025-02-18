@@ -31,6 +31,7 @@ import TabFocusPlugin from './plugins/TabFocusPlugin';
 import { theme } from './plugins/theme';
 import { EditorState } from 'lexical';
 import DraggableBlockPlugin from './plugins/DraggableBlock';
+import { setNodePlaceholderFromSelection } from './NodePlaceholder/utils';
 
 import './_editor.css';
 
@@ -38,6 +39,7 @@ const OnChangePlugin = ({ onChange }: { onChange: (editorState: EditorState) => 
   const [editor] = useLexicalComposerContext();
   useEffect(() => {
     return editor.registerUpdateListener(({ editorState }) => {
+      setNodePlaceholderFromSelection(editor);
       onChange(editorState);
     });
   }, [editor, onChange]);

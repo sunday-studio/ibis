@@ -1,11 +1,4 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-import {isPoint, Point} from './point';
+import { isPoint, Point } from './point';
 
 type ContainsPointReturn = {
   result: boolean;
@@ -24,11 +17,9 @@ export class Rectangle {
   private readonly _bottom: number;
 
   constructor(left: number, top: number, right: number, bottom: number) {
-    const [physicTop, physicBottom] =
-      top <= bottom ? [top, bottom] : [bottom, top];
+    const [physicTop, physicBottom] = top <= bottom ? [top, bottom] : [bottom, top];
 
-    const [physicLeft, physicRight] =
-      left <= right ? [left, right] : [right, left];
+    const [physicLeft, physicRight] = left <= right ? [left, right] : [right, left];
 
     this._top = physicTop;
     this._right = physicRight;
@@ -60,28 +51,24 @@ export class Rectangle {
     return Math.abs(this._bottom - this._top);
   }
 
-  public equals({top, left, bottom, right}: Rectangle): boolean {
+  public equals({ top, left, bottom, right }: Rectangle): boolean {
     return (
-      top === this._top &&
-      bottom === this._bottom &&
-      left === this._left &&
-      right === this._right
+      top === this._top && bottom === this._bottom && left === this._left && right === this._right
     );
   }
 
-  public contains({x, y}: Point): ContainsPointReturn;
-  public contains({top, left, bottom, right}: Rectangle): boolean;
+  public contains({ x, y }: Point): ContainsPointReturn;
+  public contains({ top, left, bottom, right }: Rectangle): boolean;
   public contains(target: Point | Rectangle): boolean | ContainsPointReturn {
     if (isPoint(target)) {
-      const {x, y} = target;
+      const { x, y } = target;
 
       const isOnTopSide = y < this._top;
       const isOnBottomSide = y > this._bottom;
       const isOnLeftSide = x < this._left;
       const isOnRightSide = x > this._right;
 
-      const result =
-        !isOnTopSide && !isOnBottomSide && !isOnLeftSide && !isOnRightSide;
+      const result = !isOnTopSide && !isOnBottomSide && !isOnLeftSide && !isOnRightSide;
 
       return {
         reason: {
@@ -93,7 +80,7 @@ export class Rectangle {
         result,
       };
     } else {
-      const {top, left, bottom, right} = target;
+      const { top, left, bottom, right } = target;
 
       return (
         top >= this._top &&
@@ -109,8 +96,8 @@ export class Rectangle {
   }
 
   public intersectsWith(rect: Rectangle): boolean {
-    const {left: x1, top: y1, width: w1, height: h1} = rect;
-    const {left: x2, top: y2, width: w2, height: h2} = this;
+    const { left: x1, top: y1, width: w1, height: h1 } = rect;
+    const { left: x2, top: y2, width: w2, height: h2 } = this;
     const maxX = x1 + w1 >= x2 + w2 ? x1 + w1 : x2 + w2;
     const maxY = y1 + h1 >= y2 + h2 ? y1 + h1 : y2 + h2;
     const minX = x1 <= x2 ? x1 : x2;
@@ -127,32 +114,22 @@ export class Rectangle {
     return new Rectangle(left, top, right, bottom);
   }
 
-  static fromLTRB(
-    left: number,
-    top: number,
-    right: number,
-    bottom: number,
-  ): Rectangle {
+  static fromLTRB(left: number, top: number, right: number, bottom: number): Rectangle {
     return new Rectangle(left, top, right, bottom);
   }
 
-  static fromLWTH(
-    left: number,
-    width: number,
-    top: number,
-    height: number,
-  ): Rectangle {
+  static fromLWTH(left: number, width: number, top: number, height: number): Rectangle {
     return new Rectangle(left, top, left + width, top + height);
   }
 
   static fromPoints(startPoint: Point, endPoint: Point): Rectangle {
-    const {y: top, x: left} = startPoint;
-    const {y: bottom, x: right} = endPoint;
+    const { y: top, x: left } = startPoint;
+    const { y: bottom, x: right } = endPoint;
     return Rectangle.fromLTRB(left, top, right, bottom);
   }
 
   static fromDOM(dom: HTMLElement): Rectangle {
-    const {top, width, left, height} = dom.getBoundingClientRect();
+    const { top, width, left, height } = dom.getBoundingClientRect();
     return Rectangle.fromLWTH(left, width, top, height);
   }
 }

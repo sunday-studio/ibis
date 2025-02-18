@@ -1,17 +1,18 @@
+:root {
+  --editor-padding: 20px;
+  --editor-font-size: 16px;
+}
+
 .editor-wrapper,
 .editor-inner {
   position: relative;
   background-color: var(--color-white);
-  padding-bottom: 100px;
-}
-
-:root {
-  --editor-padding: 20px;
 }
 
 .editor-root {
   padding: 0 var(--editor-padding);
   outline: none;
+  font-size: var(--editor-font-size);
 }
 
 .editor-title {
@@ -23,14 +24,15 @@
 }
 
 .editor-placeholder {
+  position: absolute;
   margin-top: -26px;
   font-style: italic;
   color: var(--color-gray-500);
-  font-size: 16px;
+  font-size: var(--editor-font-size);
   text-overflow: ellipsis;
   pointer-events: none;
-  padding-left: 4px;
-  z-index: 1;
+  padding-left: calc(var(--editor-padding) + 4px);
+  z-index: 2;
 }
 
 .editor-paragraph {
@@ -330,4 +332,14 @@
   transform: translateZ(0);
   background-color: var(--color-orange-50);
   border: none;
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 0 1px var(--color-orange-100);
+}
+
+.node-placeholder:has(br):not(:has(span))::before {
+  position: absolute;
+  content: attr(data-placeholder);
+  color: var(--color-gray-500);
+  padding-left: 4px;
+  font-style: italic;
 }
