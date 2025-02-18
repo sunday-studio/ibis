@@ -131,12 +131,12 @@ importers:
       use-debounce:
         specifier: ^10.0.4
         version: 10.0.4(react@18.3.1)
+      valtio:
+        specifier: ^2.1.3
+        version: 2.1.3(@types/react@19.0.8)(react@18.3.1)
       zod:
         specifier: ^3.24.1
         version: 3.24.2
-      zustand:
-        specifier: ^5.0.3
-        version: 5.0.3(@types/react@19.0.8)(react@18.3.1)(use-sync-external-store@1.4.0(react@18.3.1))
     devDependencies:
       '@tanstack/eslint-plugin-query':
         specifier: ^5.66.1
@@ -2038,6 +2038,9 @@ packages:
     resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
     engines: {node: '>=6'}
 
+  proxy-compare@3.0.1:
+    resolution: {integrity: sha512-V9plBAt3qjMlS1+nC8771KNf6oJ12gExvaxnNzN/9yVRLdTv/lc+oJlnSzrdYDAvBfTStPCoiaCOTmTs0adv7Q==}
+
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
@@ -2227,6 +2230,18 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
+  valtio@2.1.3:
+    resolution: {integrity: sha512-q+dVczY5zf7kO39JPVq2qR0VXMeEpF1t+P1njHU7hAhwgtyVa/p38YmgyHZq2IQYwnkNrkvh412k4sfDmcIJ2g==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      react: '>=18.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+
   vite@6.1.0:
     resolution: {integrity: sha512-RjjMipCKVoR4hVfPY6GQTgveinjNuyLw+qruksLDvA5ktI1150VmcMBKmQaEWJhg/j6Uaf6dNCNA0AfdzUb/hQ==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
@@ -2289,24 +2304,6 @@ packages:
 
   zod@3.24.2:
     resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
-
-  zustand@5.0.3:
-    resolution: {integrity: sha512-14fwWQtU3pH4dE0dOpdMiWjddcH+QzKIgk1cl8epwSE7yag43k/AD/m4L6+K7DytAOr9gGBe3/EXj9g7cdostg==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      '@types/react': '>=18.0.0'
-      immer: '>=9.0.6'
-      react: '>=18.0.0'
-      use-sync-external-store: '>=1.2.0'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      immer:
-        optional: true
-      react:
-        optional: true
-      use-sync-external-store:
-        optional: true
 
 snapshots:
 
@@ -4603,6 +4600,8 @@ snapshots:
 
   prismjs@1.29.0: {}
 
+  proxy-compare@3.0.1: {}
+
   punycode@2.3.1: {}
 
   queue-microtask@1.2.3: {}
@@ -4867,6 +4866,13 @@ snapshots:
     dependencies:
       react: 18.3.1
 
+  valtio@2.1.3(@types/react@19.0.8)(react@18.3.1):
+    dependencies:
+      proxy-compare: 3.0.1
+    optionalDependencies:
+      '@types/react': 19.0.8
+      react: 18.3.1
+
   vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(lightningcss@1.29.1):
     dependencies:
       esbuild: 0.24.2
@@ -4893,9 +4899,3 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   zod@3.24.2: {}
-
-  zustand@5.0.3(@types/react@19.0.8)(react@18.3.1)(use-sync-external-store@1.4.0(react@18.3.1)):
-    optionalDependencies:
-      '@types/react': 19.0.8
-      react: 18.3.1
-      use-sync-external-store: 1.4.0(react@18.3.1)
