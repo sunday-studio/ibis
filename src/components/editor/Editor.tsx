@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
@@ -30,6 +30,7 @@ import SlashCommandPickerPlugin from './plugins/SlashCommandPicker';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
 import { theme } from './plugins/theme';
 import { EditorState } from 'lexical';
+import DraggableBlockPlugin from './plugins/DraggableBlock';
 
 import './_editor.css';
 
@@ -71,9 +72,17 @@ export const Editor = ({
   extendTheme,
   placeholderClassName = 'editor-placeholder',
 }: EditorType) => {
+  const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
+
+  const onRef = (_floatingAnchorElem: HTMLDivElement) => {
+    if (_floatingAnchorElem !== null) {
+      setFloatingAnchorElem(_floatingAnchorElem);
+    }
+  };
+
   const CustomContent = useMemo(() => {
     return (
-      <div style={{ width: '100%', height: '100%', position: 'relative' }} className="editor-inner">
+      <div className="editor-inner" ref={onRef}>
         <ContentEditable className="editor-input" />
       </div>
     );
@@ -117,7 +126,7 @@ export const Editor = ({
           placeholder={<Placeholder className={placeholderClassName} />}
           ErrorBoundary={LexicalErrorBoundary}
         />
-
+        {floatingAnchorElem && <DraggableBlockPlugin anchorElem={floatingAnchorElem} />}
         <ClickableLinkPlugin />
         <OnChangePlugin onChange={debouncedUpdates} />
         <SlashCommandPickerPlugin />
