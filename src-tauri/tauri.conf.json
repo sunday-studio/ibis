@@ -13,8 +13,8 @@
     "windows": [
       {
         "title": "Ibis",
-        "width": 1800,
-        "height": 1200,
+        "width": 1400,
+        "height": 1000,
         "dragDropEnabled": false
       }
     ],
