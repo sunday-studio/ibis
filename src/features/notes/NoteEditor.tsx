@@ -41,9 +41,10 @@ export const NoteEditor = () => {
   return (
     <div className="flex flex-col w-full min-h-screen p-4 relative px-20">
       <div className="flex absolute top-0 right-0 w-full justify-between items-center p-2 px-4">
-        <p>Syncing</p>
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+        </div>
         <p>{headerTitle}</p>
-
         <NoteActionsMenu note={data} />
       </div>
 

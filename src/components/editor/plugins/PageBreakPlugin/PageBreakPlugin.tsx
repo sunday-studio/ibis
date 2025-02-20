@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, JSX } from 'react';
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $insertNodeToNearestRoot, mergeRegister } from '@lexical/utils';
