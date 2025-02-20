@@ -29,6 +29,11 @@ html {
   }
 }
 
+@theme {
+  --shadow-1: rgba(0, 0, 0, 0.07) 0px 16px 24px 0px, rgba(0, 0, 0, 0.1) 0px 2px 6px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+}
+
 .debug {
   border: 1px solid blue;
 }
@@ -47,18 +52,6 @@ html {
 @layer components {
   .tooltip-trigger {
     all: unset;
-  }
-
-  .tooltip-container {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-    background-color: var(--color-white);
-    padding: var(--spacing-1) var(--spacing-1-5);
-    border-radius: var(--radius-md);
-    box-sizing: border-box;
-    max-width: var(--max-width-xs);
-    color: var(--color-gray-900);
-    box-shadow: var(--shadow-md);
   }
 
   .tooltip-content {

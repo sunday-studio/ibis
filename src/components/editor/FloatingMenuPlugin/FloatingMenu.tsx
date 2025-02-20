@@ -9,10 +9,26 @@ import {
   SELECTION_CHANGE_COMMAND,
 } from 'lexical';
 import { Dispatch, useCallback, useEffect, useRef } from 'react';
+import {
+  Bold,
+  CodeXml,
+  Italic,
+  Link,
+  Strikethrough,
+  Underline,
+  Superscript,
+  Subscript,
+  CaseUpper,
+  CaseLower,
+  CaseSensitive,
+} from 'lucide-react';
 
 import { getDOMRangeRect } from './utils/getDOMRangeRect';
 import { setFloatingElemPosition } from './utils/setFloatingElemPosition';
 import { FC } from 'react';
+import { Fragment } from 'react/jsx-runtime';
+import clsx from 'clsx';
+import { Tooltip } from '@/components/Tooltip';
 
 interface FloatingMenuProps {
   editor: LexicalEditor;
@@ -30,6 +46,42 @@ interface FloatingMenuProps {
   isSuperscript: boolean;
   setIsLinkEditMode: Dispatch<boolean>;
 }
+
+interface SingleActionProps {
+  icon: React.ReactNode;
+  action: () => void;
+  isActive: boolean;
+  label: string;
+  shortcuts?: string[];
+}
+
+const SingleAction: FC<SingleActionProps> = ({
+  icon,
+  action,
+  isActive,
+  label = '',
+  shortcuts = [],
+}) => (
+  <Tooltip
+    trigger={
+      <button
+        type="button"
+        onClick={action}
+        aria-label={label}
+        className={clsx(
+          'flex items-center justify-center w-8 h-8 rounded-lg hover:bg-neutral-100 ',
+          {
+            'text-orange-600': isActive,
+          },
+        )}
+      >
+        {icon}
+      </button>
+    }
+    content={label}
+    shortcuts={shortcuts}
+  />
+);
 
 export const FloatingMenu: FC<FloatingMenuProps> = ({
   editor,
@@ -165,140 +217,152 @@ export const FloatingMenu: FC<FloatingMenuProps> = ({
     );
   }, [editor, $updateTextFormatFloatingToolbar]);
 
+  const actions = [
+    {
+      label: 'Bold',
+      cell: (
+        <SingleAction
+          label="Bold"
+          shortcuts={['⌘', 'B']}
+          isActive={isBold}
+          icon={<Bold size={16} />}
+          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
+        />
+      ),
+    },
+    {
+      label: 'Italic',
+      cell: (
+        <SingleAction
+          label="Italic"
+          shortcuts={['⌘', 'I']}
+          isActive={isItalic}
+          icon={<Italic size={16} />}
+          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
+        />
+      ),
+    },
+    {
+      label: 'Underline',
+      cell: (
+        <SingleAction
+          label="Underline"
+          shortcuts={['⌘', 'U']}
+          isActive={isUnderline}
+          icon={<Underline size={16} />}
+          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}
+        />
+      ),
+    },
+    {
+      label: 'Strikethrough',
+      cell: (
+        <SingleAction
+          label="Strikethrough"
+          shortcuts={['⌘', 'S']}
+          isActive={isStrikethrough}
+          icon={<Strikethrough size={18} />}
+          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')}
+        />
+      ),
+    },
+    {
+      label: 'Code',
+      cell: (
+        <SingleAction
+          label="Code"
+          shortcuts={['⌘', 'K']}
+          isActive={isCode}
+          icon={<CodeXml size={16} />}
+          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code')}
+        />
+      ),
+    },
+    {
+      label: 'Superscript',
+      cell: (
+        <SingleAction
+          label="Superscript"
+          shortcuts={['⌘', '↑']}
+          isActive={isSuperscript}
+          icon={<Superscript size={16} />}
+          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'superscript')}
+        />
+      ),
+    },
+    {
+      label: 'Subscript',
+      cell: (
+        <SingleAction
+          label="Subscript"
+          shortcuts={['⌘', '↓']}
+          isActive={isSubscript}
+          icon={<Subscript size={18} />}
+          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'subscript')}
+        />
+      ),
+    },
+    {
+      label: 'Uppercase',
+      cell: (
+        <SingleAction
+          label="Uppercase"
+          shortcuts={['⌘', 'U']}
+          isActive={isUppercase}
+          icon={<CaseUpper size={18} />}
+          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'uppercase')}
+        />
+      ),
+    },
+    {
+      label: 'Lowercase',
+      cell: (
+        <SingleAction
+          label="Lowercase"
+          shortcuts={['⌘', 'L']}
+          isActive={isLowercase}
+          icon={<CaseLower size={18} />}
+          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'lowercase')}
+        />
+      ),
+    },
+    {
+      label: 'Capitalize',
+      cell: (
+        <SingleAction
+          label="Capitalize"
+          shortcuts={['⌘', 'C']}
+          isActive={isCapitalize}
+          icon={<CaseSensitive size={18} />}
+          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'capitalize')}
+        />
+      ),
+    },
+    {
+      label: 'Link',
+      cell: (
+        <SingleAction
+          label="Link"
+          isActive={isLink}
+          icon={<Link size={16} />}
+          action={insertLink}
+        />
+      ),
+    },
+  ];
+
   return (
-    <div ref={popupCharStylesEditorRef} className="floating-text-format-popup">
+    <div
+      ref={popupCharStylesEditorRef}
+      className="floating-menu-container gap-1.5 bg-white rounded-xl shadow-1"
+    >
       {editor.isEditable() && (
         <>
-          <button
-            type="button"
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
-            }}
-            className={'popup-item spaced ' + (isBold ? 'active' : '')}
-            title="Bold"
-            aria-label="Format text as bold"
-          >
-            <i className="format bold" />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
-            }}
-            className={'popup-item spaced ' + (isItalic ? 'active' : '')}
-            title="Italic"
-            aria-label="Format text as italics"
-          >
-            <i className="format italic" />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
-            }}
-            className={'popup-item spaced ' + (isUnderline ? 'active' : '')}
-            title="Underline"
-            aria-label="Format text to underlined"
-          >
-            <i className="format underline" />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
-            }}
-            className={'popup-item spaced ' + (isStrikethrough ? 'active' : '')}
-            title="Strikethrough"
-            aria-label="Format text with a strikethrough"
-          >
-            <i className="format strikethrough" />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'subscript');
-            }}
-            className={'popup-item spaced ' + (isSubscript ? 'active' : '')}
-            title="Subscript"
-            aria-label="Format Subscript"
-          >
-            <i className="format subscript" />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'superscript');
-            }}
-            className={'popup-item spaced ' + (isSuperscript ? 'active' : '')}
-            title="Superscript"
-            aria-label="Format Superscript"
-          >
-            <i className="format superscript" />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'uppercase');
-            }}
-            className={'popup-item spaced ' + (isUppercase ? 'active' : '')}
-            title="Uppercase"
-            aria-label="Format text to uppercase"
-          >
-            <i className="format uppercase" />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'lowercase');
-            }}
-            className={'popup-item spaced ' + (isLowercase ? 'active' : '')}
-            title="Lowercase"
-            aria-label="Format text to lowercase"
-          >
-            <i className="format lowercase" />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'capitalize');
-            }}
-            className={'popup-item spaced ' + (isCapitalize ? 'active' : '')}
-            title="Capitalize"
-            aria-label="Format text to capitalize"
-          >
-            <i className="format capitalize" />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
-            }}
-            className={'popup-item spaced ' + (isCode ? 'active' : '')}
-            title="Insert code block"
-            aria-label="Insert code block"
-          >
-            <i className="format code" />
-          </button>
-          <button
-            type="button"
-            onClick={insertLink}
-            className={'popup-item spaced ' + (isLink ? 'active' : '')}
-            title="Insert link"
-            aria-label="Insert link"
-          >
-            <i className="format link" />
-          </button>
+          {actions.map((action) => {
+            return <Fragment key={action.label}>{action.cell}</Fragment>;
+          })}
         </>
       )}
-      {/* <button
-        type="button"
-        onClick={insertComment}
-        className={'popup-item spaced insert-comment'}
-        title="Insert comment"
-        aria-label="Insert comment"
-      >
-        <i className="format add-comment" />
-      </button> */}
     </div>
   );
 };

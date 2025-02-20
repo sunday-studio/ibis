@@ -1,108 +1,114 @@
-import { cloneElement, useRef } from 'react';
-
-import { DismissButton, Overlay, usePopover } from 'react-aria';
-import type { AriaPopoverProps, Placement } from 'react-aria';
-import { useOverlayTrigger } from 'react-aria';
-import type { OverlayTriggerState } from 'react-stately';
-import { useOverlayTriggerState } from 'react-stately';
-
-import { useHoverToggle } from '@/hooks/useHoverToggle';
-
-interface TooltipContentProps extends Omit<AriaPopoverProps, 'popoverRef'> {
-  children: React.ReactNode;
-  state: OverlayTriggerState;
-}
-
-export const Popover = (props: TooltipContentProps) => {
-  const { offset = 8, state, children } = props;
-
-  let popoverRef = useRef(null);
-  let { popoverProps, arrowProps, placement } = usePopover(
-    {
-      ...props,
-      offset,
-      popoverRef,
-    },
-    state,
-  );
-
-  return (
-    <Overlay>
-      <div {...popoverProps} ref={popoverRef} className="tooltip-container">
-        <svg {...arrowProps} className="arrow" data-placement={placement} viewBox="0 0 12 12">
-          <path d="M0 0 L6 6 L12 0" />
-        </svg>
-        <DismissButton onDismiss={state.close} />
-        {children}
-        <DismissButton onDismiss={state.close} />
-      </div>
-    </Overlay>
-  );
-};
+import { useRef, useState } from 'react';
+import {
+  useFloating,
+  useInteractions,
+  useHover,
+  useRole,
+  useDismiss,
+  useClick,
+  FloatingPortal,
+  arrow,
+  offset,
+  flip,
+  shift,
+  autoUpdate,
+} from '@floating-ui/react';
+import { FC } from 'react';
 
 interface TooltipProps {
-  trigger: any;
+  trigger: React.ReactNode;
   shortcuts?: string[];
   content: string | React.ReactElement;
   shouldFlip?: boolean;
-  placement?: Placement;
+  placement?: 'top' | 'right' | 'bottom' | 'left';
   leaveDuration?: number;
   hoverDuration?: number;
 }
 
-export const Tooltip = ({ trigger, content, shortcuts, ...rest }: TooltipProps) => {
-  const { shouldFlip = false, placement = 'bottom', leaveDuration, hoverDuration, ...props } = rest;
-  let ref = useRef(null);
-  let state = useOverlayTriggerState({
-    ...props,
+export const Tooltip: FC<TooltipProps> = ({
+  trigger,
+  content,
+  shortcuts,
+  placement = 'bottom',
+  shouldFlip = true,
+  leaveDuration = 200,
+  hoverDuration = 0,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const arrowRef = useRef(null);
+
+  const {
+    x,
+    y,
+    refs,
+    strategy,
+    context,
+    middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
+  } = useFloating({
+    placement,
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    middleware: [offset(8), shouldFlip && flip(), shift(), arrow({ element: arrowRef })],
+    whileElementsMounted: autoUpdate,
   });
-  let {
-    triggerProps: { onPress, ...restOfTriggerProps },
-    overlayProps,
-  } = useOverlayTrigger({ type: 'dialog' }, state, ref);
 
-  useHoverToggle({
-    ref,
-    leaveDuration,
-    hoverDuration,
-    onHoverCallback: () => state.setOpen(true),
-    onLeaveCallback: () => state.setOpen(false),
-  });
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    useHover(context, {
+      delay: {
+        open: hoverDuration,
+        close: leaveDuration,
+      },
+    }),
+    useRole(context),
+    useDismiss(context),
+    useClick(context),
+  ]);
 
-  const contentElemenet = () => {
-    if (typeof content === 'string') {
-      return (
-        <p className="tooltip-content">
-          {content}
-          {shortcuts?.length > 0 ? (
-            <span className="tooltip-shortcuts">
-              {shortcuts.map((s, i) => (
-                <span key={i}>{s}</span>
-              ))}
-            </span>
-          ) : null}
-        </p>
-      );
-    }
-
-    return content;
-  };
+  const contentElement =
+    typeof content === 'string' ? (
+      <p className="text-sm font-medium text-gray-50 flex flex-col gap-1">
+        {content}
+        {shortcuts && shortcuts.length > 0 ? (
+          <span className="text-xs text-neutral-400">
+            {shortcuts.map((s, i) => (
+              <span key={i}>{s}</span>
+            ))}
+          </span>
+        ) : null}
+      </p>
+    ) : (
+      content
+    );
 
   return (
     <>
-      <span {...restOfTriggerProps} ref={ref} className="tooltip-trigger">
+      <span ref={refs.setReference} {...getReferenceProps()}>
         {trigger}
       </span>
-      {state.isOpen && (
-        <Popover
-          {...props}
-          placement={placement}
-          shouldFlip={shouldFlip}
-          triggerRef={ref}
-          state={state}
-        >
-          {cloneElement(contentElemenet(), overlayProps)}
-        </Popover>
+      {isOpen && (
+        <FloatingPortal>
+          <div
+            ref={refs.setFloating}
+            className="text-sm font-semibold py-2 px-2 rounded-lg box-border max-w-xs shadow-1 bg-neutral-900"
+            style={{
+              position: strategy,
+              top: y ?? 0,
+              left: x ?? 0,
+            }}
+            {...getFloatingProps()}
+          >
+            <div
+              ref={arrowRef}
+              className="arrow"
+              style={{
+                position: 'absolute',
+                left: arrowX != null ? `${arrowX}px` : '',
+                top: arrowY != null ? `${arrowY}px` : '',
+              }}
+            />
+            {contentElement}
+          </div>
+        </FloatingPortal>
       )}
     </>
   );

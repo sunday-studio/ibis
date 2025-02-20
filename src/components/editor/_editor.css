@@ -63,6 +63,10 @@
   text-decoration: line-through;
 }
 
+.editor-text-underlineStrikethrough {
+  text-decoration: underline line-through;
+}
+
 .editor-text-overflowed {
   overflow: hidden;
   text-overflow: ellipsis;
