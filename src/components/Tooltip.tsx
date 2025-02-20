@@ -29,10 +29,10 @@ export const Tooltip: FC<TooltipProps> = ({
   trigger,
   content,
   shortcuts,
-  placement = 'bottom',
+  placement = 'top',
   shouldFlip = true,
-  leaveDuration = 200,
-  hoverDuration = 0,
+  leaveDuration = 10,
+  hoverDuration = 200,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
