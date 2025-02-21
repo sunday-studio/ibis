@@ -94,7 +94,7 @@ function FloatingMenuPlugin({ anchorElem = DEFAULT_DOM_ELEMENT }: { anchorElem?:
     return unregisterCommand;
   }, [editor, $handleSelectionChange]);
 
-  const updatePopup = useCallback(() => {
+  const $updatePopup = useCallback(() => {
     editor.getEditorState().read(() => {
       // Should not to pop up the floating toolbar when using IME input
       if (editor.isComposing()) {
@@ -119,8 +119,6 @@ function FloatingMenuPlugin({ anchorElem = DEFAULT_DOM_ELEMENT }: { anchorElem?:
       }
 
       const node = getSelectedNode(selection);
-
-      console.log('called');
 
       // Update text format
       setIsBold(selection.hasFormat('bold'));
@@ -156,18 +154,16 @@ function FloatingMenuPlugin({ anchorElem = DEFAULT_DOM_ELEMENT }: { anchorElem?:
   }, [editor]);
 
   useEffect(() => {
-    document.addEventListener('selectionchange', updatePopup);
+    document.addEventListener('selectionchange', $updatePopup);
     return () => {
-      document.removeEventListener('selectionchange', updatePopup);
+      document.removeEventListener('selectionchange', $updatePopup);
     };
-  }, [updatePopup]);
+  }, [$updatePopup]);
 
   useEffect(() => {
-    if (!show && isPointerReleased) {
-      editor.getEditorState().read(() => {
-        $handleSelectionChange();
-      });
-    }
+    editor.getEditorState().read(() => {
+      $handleSelectionChange();
+    });
     // Adding show to the dependency array causes an issue if
     // a range selection is dismissed by navigating via arrow keys.
     // eslint-disable-next-line react-hooks/exhaustive-deps
