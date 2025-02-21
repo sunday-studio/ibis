@@ -73,6 +73,32 @@
   white-space: nowrap;
 }
 
+.editor-text-highlight {
+  background-color: var(--color-yellow-100);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.editor-text-capitalize {
+  text-transform: capitalize;
+}
+
+.editor-text-uppercase {
+  text-transform: uppercase;
+}
+
+.editor-text-lowercase {
+  text-transform: lowercase;
+}
+
+.editor-text-superscript {
+  vertical-align: super;
+}
+
+.editor-text-subscript {
+  vertical-align: sub;
+}
+
 .editor-hashtag {
   padding: 2px 3px;
   border-radius: 4px;

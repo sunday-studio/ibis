@@ -1,4 +1,4 @@
-import { FC, ForwardedRef, Fragment, forwardRef, useMemo, useState } from 'react';
+import { FC, ForwardedRef, Fragment, forwardRef, useEffect, useMemo, useState } from 'react';
 import { $isAtNodeEnd } from '@lexical/selection';
 import { FORMAT_TEXT_COMMAND, LexicalEditor, RangeSelection } from 'lexical';
 import {
@@ -13,10 +13,12 @@ import {
   CaseUpper,
   CaseLower,
   CaseSensitive,
+  ChevronDown,
 } from 'lucide-react';
 import { Tooltip } from '@/components/Tooltip';
 import clsx from 'clsx';
 import { FloatingLinkEditor } from './FloatingLinkEditor';
+import { TextHighlightAction } from './components/TextHighlightAction';
 
 // Helper function to get selected node from editor selection
 export function getSelectedNode(selection: RangeSelection) {
@@ -58,6 +60,7 @@ interface FloatingMenuProps {
   isStrikethrough: boolean;
   isSubscript: boolean;
   isSuperscript: boolean;
+  show: boolean;
 }
 
 const SingleAction: FC<SingleActionProps> = ({
@@ -106,9 +109,9 @@ const FloatingMenuComponent = ({
   isStrikethrough,
   isSubscript,
   isSuperscript,
+  show,
 }: FloatingMenuComponentProps) => {
   const [showLinkInput, setShowLinkInput] = useState(false);
-  // const [linkValue, setLinkValue] = useState('');
 
   const actions = useMemo(() => {
     return [
@@ -243,6 +246,11 @@ const FloatingMenuComponent = ({
           />
         ),
       },
+      {
+        label: 'Text Highlight',
+        cell: <TextHighlightAction editor={editor} />,
+        separator: true,
+      },
     ];
   }, [
     isBold,
@@ -258,19 +266,29 @@ const FloatingMenuComponent = ({
     isLink,
   ]);
 
+  // HACK: to reset the link input when the menu is hidden
+  useEffect(() => {
+    if (!show) {
+      setShowLinkInput(false);
+    }
+  }, [show]);
+
   return (
     <div
       ref={ref}
-      className="transition-opacity duration-500 will-change-transform align-middle flex items-center justify-center p-1 gap-1.5 bg-white rounded-xl shadow-1"
+      className="transition-opacity duration-500 will-change-transform align-middle flex items-center justify-center p-1 bg-white rounded-xl shadow-1"
     >
       {showLinkInput ? (
         <FloatingLinkEditor editor={editor} onClose={() => setShowLinkInput(false)} />
       ) : (
-        <>
+        <div className="flex items-center justify-center gap-1.5">
           {actions.map((action, index) => (
-            <Fragment key={index}>{action.cell}</Fragment>
+            <Fragment key={index}>
+              {action.separator && <div className="h-6 bg-neutral-100 w-[1px]" />}
+              {action.cell}
+            </Fragment>
           ))}
-        </>
+        </div>
       )}
     </div>
   );

@@ -23,12 +23,22 @@ export const DropdownMenuTrigger = ({ children }: { children: React.ReactNode })
   );
 };
 
-export const Content = ({ children }: { children: React.ReactNode }) => {
+export const Content = ({
+  children,
+  withMenu = true,
+}: {
+  children: React.ReactNode;
+  withMenu?: boolean;
+}) => {
   return (
     <Popover>
-      <Menu className="w-[250px] bg-white p-1 shadow-1 rounded-lg flex flex-col gap-1">
-        {children}
-      </Menu>
+      {withMenu && (
+        <Menu className="w-[250px] bg-white p-1 shadow-1 rounded-lg flex flex-col gap-1">
+          {children}
+        </Menu>
+      )}
+
+      {!withMenu && children}
     </Popover>
   );
 };

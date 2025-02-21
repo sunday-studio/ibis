@@ -1,9 +1,12 @@
 import {
+  $createNodeSelection,
   $createParagraphNode,
+  $createRangeSelection,
   $createTextNode,
   $getSelection,
   $isParagraphNode,
   $isTextNode,
+  $setSelection,
   ParagraphNode,
 } from 'lexical';
 import { LexicalEditor } from 'lexical';
@@ -67,38 +70,30 @@ export const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({ editor, onClos
         const anchorOffset = selection.anchor.offset;
         const focusOffset = selection.focus.offset;
 
-        // Ensure correct order of offsets
         const [start, end] =
           anchorOffset < focusOffset ? [anchorOffset, focusOffset] : [focusOffset, anchorOffset];
+        const [, selectedNode, _] = anchorNode.splitText(start, end);
 
-        // Split the text node at selection boundaries
-        const [beforeNode, selectedNode, afterNode] = anchorNode.splitText(start, end);
-
-        const linkNode = $createLinkNode(sanitizeUrl(link));
-        linkNode.append(selectedNode);
-
-        // Replace the selected text with the LinkNode
         selectedNode.setTextContent(text);
-        selectedNode.replace(linkNode);
-      }
 
-      // const node = getSelectedNode(selection);
+        const rangeSelection = $createRangeSelection();
+        rangeSelection.setTextNodeRange(
+          selectedNode,
+          0,
+          selectedNode,
+          selectedNode.getTextContent().length,
+        );
+        $setSelection(rangeSelection);
+      }
     });
 
-    // onClose();
+    editor.dispatchCommand(TOGGLE_LINK_COMMAND, sanitizeUrl(link));
+
+    onClose();
   };
 
   return (
     <div className="w-[250px]">
-      <button
-        onClick={(e) => {
-          handleLinkSubmission(e);
-          // editor.dispatchCommand(TOGGLE_LINK_COMMAND, sanitizeUrl(link));
-          // onClose();
-        }}
-      >
-        Test
-      </button>
       <div className="flex items-center gap-2 p-1">
         <Link size={12} />
         <input

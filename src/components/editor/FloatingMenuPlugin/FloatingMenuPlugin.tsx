@@ -22,7 +22,7 @@ import { $isCodeHighlightNode } from '@lexical/code';
 const DEFAULT_DOM_ELEMENT = document.body;
 
 function FloatingMenuPlugin({ anchorElem = DEFAULT_DOM_ELEMENT }: { anchorElem?: HTMLElement }) {
-  const [isText, setIsText] = useState(false);
+  const [_, setIsText] = useState(false);
   const [isLink, setIsLink] = useState(false);
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
@@ -120,6 +120,8 @@ function FloatingMenuPlugin({ anchorElem = DEFAULT_DOM_ELEMENT }: { anchorElem?:
 
       const node = getSelectedNode(selection);
 
+      console.log('called');
+
       // Update text format
       setIsBold(selection.hasFormat('bold'));
       setIsItalic(selection.hasFormat('italic'));
@@ -171,10 +173,6 @@ function FloatingMenuPlugin({ anchorElem = DEFAULT_DOM_ELEMENT }: { anchorElem?:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPointerReleased, $handleSelectionChange, editor]);
 
-  // if (!isText) {
-  //   return null;
-  // }
-
   return createPortal(
     <div
       ref={ref}
@@ -201,6 +199,7 @@ function FloatingMenuPlugin({ anchorElem = DEFAULT_DOM_ELEMENT }: { anchorElem?:
         isSuperscript={isSuperscript}
         isUnderline={isUnderline}
         isCode={isCode}
+        show={show}
       />
     </div>,
     anchorElem,
