@@ -26,7 +26,7 @@ export const DropdownMenuTrigger = ({ children }: { children: React.ReactNode })
 export const Content = ({ children }: { children: React.ReactNode }) => {
   return (
     <Popover>
-      <Menu className="w-[250px] bg-white p-1 shadow-md border border-neutral-50 ring-1 ring-neutral-200 rounded-lg flex flex-col gap-1">
+      <Menu className="w-[250px] bg-white p-1 shadow-1 rounded-lg flex flex-col gap-1">
         {children}
       </Menu>
     </Popover>

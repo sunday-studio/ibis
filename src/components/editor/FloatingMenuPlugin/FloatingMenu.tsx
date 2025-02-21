@@ -1,14 +1,6 @@
-import { TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { mergeRegister } from '@lexical/utils';
-import {
-  $getSelection,
-  COMMAND_PRIORITY_LOW,
-  FORMAT_TEXT_COMMAND,
-  getDOMSelection,
-  LexicalEditor,
-  SELECTION_CHANGE_COMMAND,
-} from 'lexical';
-import { Dispatch, useCallback, useEffect, useRef } from 'react';
+import { FC, ForwardedRef, Fragment, forwardRef, useMemo, useState } from 'react';
+import { $isAtNodeEnd } from '@lexical/selection';
+import { FORMAT_TEXT_COMMAND, LexicalEditor, RangeSelection } from 'lexical';
 import {
   Bold,
   CodeXml,
@@ -22,13 +14,35 @@ import {
   CaseLower,
   CaseSensitive,
 } from 'lucide-react';
-
-import { getDOMRangeRect } from './utils/getDOMRangeRect';
-import { setFloatingElemPosition } from './utils/setFloatingElemPosition';
-import { FC } from 'react';
-import { Fragment } from 'react/jsx-runtime';
-import clsx from 'clsx';
 import { Tooltip } from '@/components/Tooltip';
+import clsx from 'clsx';
+import { FloatingLinkEditor } from './FloatingLinkEditor';
+
+// Helper function to get selected node from editor selection
+export function getSelectedNode(selection: RangeSelection) {
+  const anchor = selection.anchor;
+  const focus = selection.focus;
+  const anchorNode = selection.anchor.getNode();
+  const focusNode = selection.focus.getNode();
+
+  if (anchorNode === focusNode) {
+    return anchorNode;
+  }
+
+  const isBackward = selection.isBackward();
+  if (isBackward) {
+    return $isAtNodeEnd(focus) ? anchorNode : focusNode;
+  }
+  return $isAtNodeEnd(anchor) ? focusNode : anchorNode;
+}
+
+interface SingleActionProps {
+  icon: React.ReactNode;
+  action: () => void;
+  isActive: boolean;
+  label: string;
+  shortcuts?: string[];
+}
 
 interface FloatingMenuProps {
   editor: LexicalEditor;
@@ -44,15 +58,6 @@ interface FloatingMenuProps {
   isStrikethrough: boolean;
   isSubscript: boolean;
   isSuperscript: boolean;
-  setIsLinkEditMode: Dispatch<boolean>;
-}
-
-interface SingleActionProps {
-  icon: React.ReactNode;
-  action: () => void;
-  isActive: boolean;
-  label: string;
-  shortcuts?: string[];
 }
 
 const SingleAction: FC<SingleActionProps> = ({
@@ -69,7 +74,7 @@ const SingleAction: FC<SingleActionProps> = ({
         onClick={action}
         aria-label={label}
         className={clsx(
-          'flex items-center justify-center w-8 h-8 rounded-lg hover:bg-neutral-100 ',
+          'flex items-center justify-center w-8 h-8 rounded-lg hover:bg-neutral-100',
           {
             'text-orange-600': isActive,
           },
@@ -83,9 +88,13 @@ const SingleAction: FC<SingleActionProps> = ({
   />
 );
 
-export const FloatingMenu: FC<FloatingMenuProps> = ({
+interface FloatingMenuComponentProps extends FloatingMenuProps {
+  ref: ForwardedRef<HTMLDivElement>;
+}
+
+const FloatingMenuComponent = ({
+  ref,
   editor,
-  anchorElem,
   isLink,
   isBold,
   isItalic,
@@ -97,272 +106,176 @@ export const FloatingMenu: FC<FloatingMenuProps> = ({
   isStrikethrough,
   isSubscript,
   isSuperscript,
-  setIsLinkEditMode,
-}) => {
-  const popupCharStylesEditorRef = useRef<HTMLDivElement | null>(null);
+}: FloatingMenuComponentProps) => {
+  const [showLinkInput, setShowLinkInput] = useState(false);
+  // const [linkValue, setLinkValue] = useState('');
 
-  const insertLink = useCallback(() => {
-    if (!isLink) {
-      setIsLinkEditMode(true);
-      editor.dispatchCommand(TOGGLE_LINK_COMMAND, 'https://');
-    } else {
-      setIsLinkEditMode(false);
-      editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
-    }
-  }, [editor, isLink, setIsLinkEditMode]);
-
-  // const insertComment = () => {
-  //   editor.dispatchCommand(INSERT_INLINE_COMMAND, undefined);
-  // };
-
-  function mouseMoveListener(e: MouseEvent) {
-    if (popupCharStylesEditorRef?.current && (e.buttons === 1 || e.buttons === 3)) {
-      if (popupCharStylesEditorRef.current.style.pointerEvents !== 'none') {
-        const x = e.clientX;
-        const y = e.clientY;
-        const elementUnderMouse = document.elementFromPoint(x, y);
-
-        if (!popupCharStylesEditorRef.current.contains(elementUnderMouse)) {
-          // Mouse is not over the target element => not a normal click, but probably a drag
-          popupCharStylesEditorRef.current.style.pointerEvents = 'none';
-        }
-      }
-    }
-  }
-  function mouseUpListener(e: MouseEvent) {
-    if (popupCharStylesEditorRef?.current) {
-      if (popupCharStylesEditorRef.current.style.pointerEvents !== 'auto') {
-        popupCharStylesEditorRef.current.style.pointerEvents = 'auto';
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (popupCharStylesEditorRef?.current) {
-      document.addEventListener('mousemove', mouseMoveListener);
-      document.addEventListener('mouseup', mouseUpListener);
-
-      return () => {
-        document.removeEventListener('mousemove', mouseMoveListener);
-        document.removeEventListener('mouseup', mouseUpListener);
-      };
-    }
-  }, [popupCharStylesEditorRef]);
-
-  const $updateTextFormatFloatingToolbar = useCallback(() => {
-    const selection = $getSelection();
-
-    const popupCharStylesEditorElem = popupCharStylesEditorRef.current;
-    const nativeSelection = getDOMSelection(editor._window);
-
-    if (popupCharStylesEditorElem === null) {
-      return;
-    }
-
-    const rootElement = editor.getRootElement();
-    if (
-      selection !== null &&
-      nativeSelection !== null &&
-      !nativeSelection.isCollapsed &&
-      rootElement !== null &&
-      rootElement.contains(nativeSelection.anchorNode)
-    ) {
-      const rangeRect = getDOMRangeRect(nativeSelection, rootElement);
-
-      setFloatingElemPosition(rangeRect, popupCharStylesEditorElem, anchorElem, isLink);
-    }
-  }, [editor, anchorElem, isLink]);
-
-  useEffect(() => {
-    const scrollerElem = anchorElem.parentElement;
-
-    const update = () => {
-      editor.getEditorState().read(() => {
-        $updateTextFormatFloatingToolbar();
-      });
-    };
-
-    window.addEventListener('resize', update);
-    if (scrollerElem) {
-      scrollerElem.addEventListener('scroll', update);
-    }
-
-    return () => {
-      window.removeEventListener('resize', update);
-      if (scrollerElem) {
-        scrollerElem.removeEventListener('scroll', update);
-      }
-    };
-  }, [editor, $updateTextFormatFloatingToolbar, anchorElem]);
-
-  useEffect(() => {
-    editor.getEditorState().read(() => {
-      $updateTextFormatFloatingToolbar();
-    });
-    return mergeRegister(
-      editor.registerUpdateListener(({ editorState }) => {
-        editorState.read(() => {
-          $updateTextFormatFloatingToolbar();
-        });
-      }),
-
-      editor.registerCommand(
-        SELECTION_CHANGE_COMMAND,
-        () => {
-          $updateTextFormatFloatingToolbar();
-          return false;
-        },
-        COMMAND_PRIORITY_LOW,
-      ),
-    );
-  }, [editor, $updateTextFormatFloatingToolbar]);
-
-  const actions = [
-    {
-      label: 'Bold',
-      cell: (
-        <SingleAction
-          label="Bold"
-          shortcuts={['⌘', 'B']}
-          isActive={isBold}
-          icon={<Bold size={16} />}
-          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
-        />
-      ),
-    },
-    {
-      label: 'Italic',
-      cell: (
-        <SingleAction
-          label="Italic"
-          shortcuts={['⌘', 'I']}
-          isActive={isItalic}
-          icon={<Italic size={16} />}
-          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
-        />
-      ),
-    },
-    {
-      label: 'Underline',
-      cell: (
-        <SingleAction
-          label="Underline"
-          shortcuts={['⌘', 'U']}
-          isActive={isUnderline}
-          icon={<Underline size={16} />}
-          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}
-        />
-      ),
-    },
-    {
-      label: 'Strikethrough',
-      cell: (
-        <SingleAction
-          label="Strikethrough"
-          shortcuts={['⌘', 'S']}
-          isActive={isStrikethrough}
-          icon={<Strikethrough size={18} />}
-          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')}
-        />
-      ),
-    },
-    {
-      label: 'Code',
-      cell: (
-        <SingleAction
-          label="Code"
-          shortcuts={['⌘', 'K']}
-          isActive={isCode}
-          icon={<CodeXml size={16} />}
-          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code')}
-        />
-      ),
-    },
-    {
-      label: 'Superscript',
-      cell: (
-        <SingleAction
-          label="Superscript"
-          shortcuts={['⌘', '↑']}
-          isActive={isSuperscript}
-          icon={<Superscript size={16} />}
-          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'superscript')}
-        />
-      ),
-    },
-    {
-      label: 'Subscript',
-      cell: (
-        <SingleAction
-          label="Subscript"
-          shortcuts={['⌘', '↓']}
-          isActive={isSubscript}
-          icon={<Subscript size={18} />}
-          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'subscript')}
-        />
-      ),
-    },
-    {
-      label: 'Uppercase',
-      cell: (
-        <SingleAction
-          label="Uppercase"
-          shortcuts={['⌘', 'U']}
-          isActive={isUppercase}
-          icon={<CaseUpper size={18} />}
-          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'uppercase')}
-        />
-      ),
-    },
-    {
-      label: 'Lowercase',
-      cell: (
-        <SingleAction
-          label="Lowercase"
-          shortcuts={['⌘', 'L']}
-          isActive={isLowercase}
-          icon={<CaseLower size={18} />}
-          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'lowercase')}
-        />
-      ),
-    },
-    {
-      label: 'Capitalize',
-      cell: (
-        <SingleAction
-          label="Capitalize"
-          shortcuts={['⌘', 'C']}
-          isActive={isCapitalize}
-          icon={<CaseSensitive size={18} />}
-          action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'capitalize')}
-        />
-      ),
-    },
-    {
-      label: 'Link',
-      cell: (
-        <SingleAction
-          label="Link"
-          isActive={isLink}
-          icon={<Link size={16} />}
-          action={insertLink}
-        />
-      ),
-    },
-  ];
+  const actions = useMemo(() => {
+    return [
+      {
+        label: 'Bold',
+        cell: (
+          <SingleAction
+            label="Bold"
+            shortcuts={['⌘', 'B']}
+            isActive={isBold}
+            icon={<Bold size={16} />}
+            action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
+          />
+        ),
+      },
+      {
+        label: 'Italic',
+        cell: (
+          <SingleAction
+            label="Italic"
+            shortcuts={['⌘', 'I']}
+            isActive={isItalic}
+            icon={<Italic size={16} />}
+            action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
+          />
+        ),
+      },
+      {
+        label: 'Underline',
+        cell: (
+          <SingleAction
+            label="Underline"
+            shortcuts={['⌘', 'U']}
+            isActive={isUnderline}
+            icon={<Underline size={16} />}
+            action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline')}
+          />
+        ),
+      },
+      {
+        label: 'Strikethrough',
+        cell: (
+          <SingleAction
+            label="Strikethrough"
+            shortcuts={['⌘', 'S']}
+            isActive={isStrikethrough}
+            icon={<Strikethrough size={18} />}
+            action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough')}
+          />
+        ),
+      },
+      {
+        label: 'Code',
+        cell: (
+          <SingleAction
+            label="Code"
+            shortcuts={['⌘', 'K']}
+            isActive={isCode}
+            icon={<CodeXml size={16} />}
+            action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code')}
+          />
+        ),
+      },
+      {
+        label: 'Superscript',
+        cell: (
+          <SingleAction
+            label="Superscript"
+            shortcuts={['⌘', '↑']}
+            isActive={isSuperscript}
+            icon={<Superscript size={16} />}
+            action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'superscript')}
+          />
+        ),
+      },
+      {
+        label: 'Subscript',
+        cell: (
+          <SingleAction
+            label="Subscript"
+            shortcuts={['⌘', '↓']}
+            isActive={isSubscript}
+            icon={<Subscript size={18} />}
+            action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'subscript')}
+          />
+        ),
+      },
+      {
+        label: 'Uppercase',
+        cell: (
+          <SingleAction
+            label="Uppercase"
+            shortcuts={['⌘', 'U']}
+            isActive={isUppercase}
+            icon={<CaseUpper size={18} />}
+            action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'uppercase')}
+          />
+        ),
+      },
+      {
+        label: 'Lowercase',
+        cell: (
+          <SingleAction
+            label="Lowercase"
+            shortcuts={['⌘', 'L']}
+            isActive={isLowercase}
+            icon={<CaseLower size={18} />}
+            action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'lowercase')}
+          />
+        ),
+      },
+      {
+        label: 'Capitalize',
+        cell: (
+          <SingleAction
+            label="Capitalize"
+            shortcuts={['⌘', 'C']}
+            isActive={isCapitalize}
+            icon={<CaseSensitive size={18} />}
+            action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'capitalize')}
+          />
+        ),
+      },
+      {
+        label: 'Link',
+        cell: (
+          <SingleAction
+            label="Link"
+            isActive={isLink}
+            icon={<Link size={16} />}
+            action={() => setShowLinkInput(true)}
+          />
+        ),
+      },
+    ];
+  }, [
+    isBold,
+    isItalic,
+    isUnderline,
+    isStrikethrough,
+    isCode,
+    isSuperscript,
+    isSubscript,
+    isUppercase,
+    isLowercase,
+    isCapitalize,
+    isLink,
+  ]);
 
   return (
     <div
-      ref={popupCharStylesEditorRef}
-      className="floating-menu-container gap-1.5 bg-white rounded-xl shadow-1"
+      ref={ref}
+      className="transition-opacity duration-500 will-change-transform align-middle flex items-center justify-center p-1 gap-1.5 bg-white rounded-xl shadow-1"
     >
-      {editor.isEditable() && (
+      {showLinkInput ? (
+        <FloatingLinkEditor editor={editor} onClose={() => setShowLinkInput(false)} />
+      ) : (
         <>
-          {actions.map((action) => {
-            return <Fragment key={action.label}>{action.cell}</Fragment>;
-          })}
+          {actions.map((action, index) => (
+            <Fragment key={index}>{action.cell}</Fragment>
+          ))}
         </>
       )}
     </div>
   );
 };
+
+export const FloatingMenu = forwardRef<HTMLDivElement, FloatingMenuProps>((props, ref) => (
+  <FloatingMenuComponent {...props} ref={ref} />
+));

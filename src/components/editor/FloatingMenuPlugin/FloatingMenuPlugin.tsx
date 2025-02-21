@@ -1,28 +1,27 @@
-import type { JSX } from 'react';
-import './_floating-menu.css';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { $isCodeHighlightNode } from '@lexical/code';
-import { $isLinkNode } from '@lexical/link';
+import { createPortal } from 'react-dom';
+
+import { computePosition, flip, offset, shift } from '@floating-ui/react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { mergeRegister } from '@lexical/utils';
 import {
   $getSelection,
   $isParagraphNode,
   $isRangeSelection,
   $isTextNode,
   getDOMSelection,
-  LexicalEditor,
+  COMMAND_PRIORITY_NORMAL as NORMAL_PRIORITY,
+  SELECTION_CHANGE_COMMAND as ON_SELECTION_CHANGE,
 } from 'lexical';
-import { Dispatch, useCallback, useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 
-import { getSelectedNode } from './utils/getSelectedNode';
-import { FloatingMenu } from './FloatingMenu';
-function useFloatingTextFormatToolbar(
-  editor: LexicalEditor,
-  anchorElem: HTMLElement,
-  setIsLinkEditMode: Dispatch<boolean>,
-): JSX.Element | null {
+import { FloatingMenu, getSelectedNode } from './FloatingMenu';
+import { usePointerInteractions } from './utils/usePointerInteractions';
+import { $isLinkNode } from '@lexical/link';
+import { $isCodeHighlightNode } from '@lexical/code';
+
+const DEFAULT_DOM_ELEMENT = document.body;
+
+function FloatingMenuPlugin({ anchorElem = DEFAULT_DOM_ELEMENT }: { anchorElem?: HTMLElement }) {
   const [isText, setIsText] = useState(false);
   const [isLink, setIsLink] = useState(false);
   const [isBold, setIsBold] = useState(false);
@@ -35,6 +34,65 @@ function useFloatingTextFormatToolbar(
   const [isSubscript, setIsSubscript] = useState(false);
   const [isSuperscript, setIsSuperscript] = useState(false);
   const [isCode, setIsCode] = useState(false);
+
+  const ref = useRef(null);
+  const [coords, setCoords] = useState<{ x: number; y: number } | undefined>(undefined);
+  const show = coords !== undefined;
+
+  const [editor] = useLexicalComposerContext();
+  const { isPointerDown, isPointerReleased } = usePointerInteractions();
+
+  const calculatePosition = useCallback(() => {
+    const domSelection = getSelection();
+    const domRange = domSelection?.rangeCount !== 0 && domSelection?.getRangeAt(0);
+
+    if (!domRange || !ref.current || isPointerDown) return setCoords(undefined);
+
+    computePosition(domRange, ref.current, {
+      placement: 'top-start',
+      middleware: [
+        flip(),
+        shift(),
+        offset({
+          alignmentAxis: 10,
+        }),
+      ],
+    })
+      .then((pos) => {
+        setCoords({ y: pos.y - 10, x: pos.x });
+      })
+      .catch(() => {
+        setCoords(undefined);
+      });
+  }, [isPointerDown]);
+
+  const $handleSelectionChange = useCallback(() => {
+    if (editor.isComposing()) return false;
+
+    if (editor.getRootElement() !== document.activeElement) {
+      setCoords(undefined);
+      return true;
+    }
+
+    const selection = $getSelection();
+
+    if ($isRangeSelection(selection) && !selection.anchor.is(selection.focus)) {
+      calculatePosition();
+    } else {
+      setCoords(undefined);
+    }
+
+    return true;
+  }, [editor, calculatePosition]);
+
+  useEffect(() => {
+    const unregisterCommand = editor.registerCommand(
+      ON_SELECTION_CHANGE,
+      $handleSelectionChange,
+      NORMAL_PRIORITY,
+    );
+    return unregisterCommand;
+  }, [editor, $handleSelectionChange]);
 
   const updatePopup = useCallback(() => {
     editor.getEditorState().read(() => {
@@ -87,7 +145,6 @@ function useFloatingTextFormatToolbar(
       } else {
         setIsText(false);
       }
-
       const rawTextContent = selection.getTextContent().replace(/\n/g, '');
       if (!selection.isCollapsed() && rawTextContent === '') {
         setIsText(false);
@@ -104,50 +161,50 @@ function useFloatingTextFormatToolbar(
   }, [updatePopup]);
 
   useEffect(() => {
-    return mergeRegister(
-      editor.registerUpdateListener(() => {
-        updatePopup();
-      }),
-      editor.registerRootListener(() => {
-        if (editor.getRootElement() === null) {
-          setIsText(false);
-        }
-      }),
-    );
-  }, [editor, updatePopup]);
+    if (!show && isPointerReleased) {
+      editor.getEditorState().read(() => {
+        $handleSelectionChange();
+      });
+    }
+    // Adding show to the dependency array causes an issue if
+    // a range selection is dismissed by navigating via arrow keys.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPointerReleased, $handleSelectionChange, editor]);
 
-  if (!isText) {
-    return null;
-  }
+  // if (!isText) {
+  //   return null;
+  // }
 
   return createPortal(
-    <FloatingMenu
-      editor={editor}
-      anchorElem={anchorElem}
-      isLink={isLink}
-      isBold={isBold}
-      isItalic={isItalic}
-      isUppercase={isUppercase}
-      isLowercase={isLowercase}
-      isCapitalize={isCapitalize}
-      isStrikethrough={isStrikethrough}
-      isSubscript={isSubscript}
-      isSuperscript={isSuperscript}
-      isUnderline={isUnderline}
-      isCode={isCode}
-      setIsLinkEditMode={setIsLinkEditMode}
-    />,
+    <div
+      ref={ref}
+      aria-hidden={!show}
+      style={{
+        position: 'absolute',
+        top: coords?.y,
+        left: coords?.x,
+        visibility: show ? 'visible' : 'hidden',
+        opacity: show ? 1 : 0,
+      }}
+    >
+      <FloatingMenu
+        editor={editor}
+        anchorElem={anchorElem}
+        isLink={isLink}
+        isBold={isBold}
+        isItalic={isItalic}
+        isUppercase={isUppercase}
+        isLowercase={isLowercase}
+        isCapitalize={isCapitalize}
+        isStrikethrough={isStrikethrough}
+        isSubscript={isSubscript}
+        isSuperscript={isSuperscript}
+        isUnderline={isUnderline}
+        isCode={isCode}
+      />
+    </div>,
     anchorElem,
   );
 }
 
-export default function FloatingTextFormatToolbarPlugin({
-  anchorElem = document.body,
-  setIsLinkEditMode,
-}: {
-  anchorElem?: HTMLElement;
-  setIsLinkEditMode: Dispatch<boolean>;
-}): JSX.Element | null {
-  const [editor] = useLexicalComposerContext();
-  return useFloatingTextFormatToolbar(editor, anchorElem, setIsLinkEditMode);
-}
+export default FloatingMenuPlugin;

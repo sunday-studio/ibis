@@ -32,7 +32,12 @@ import { theme } from './plugins/theme';
 import { EditorState } from 'lexical';
 import DraggableBlockPlugin from './plugins/DraggableBlock';
 import { setNodePlaceholderFromSelection } from './NodePlaceholder/utils';
+
 import FloatingMenuPlugin from './FloatingMenuPlugin/FloatingMenuPlugin';
+
+// import FloatingMenuPlugin from './FloatingMenuPlugin/FloatingMenuPlugin';
+// import { FloatingLinkEditorPlugin } from './FloatingMenuPlugin/FloatingLinkEditor';
+// import { FloatingLinkEditorPlugin } from './FloatingMenuPlugin/FloatingLinkEditor';
 
 import './_editor.css';
 
@@ -132,7 +137,7 @@ export const Editor = ({
         {floatingAnchorElem && (
           <>
             <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
-            <FloatingMenuPlugin anchorElem={floatingAnchorElem} setIsLinkEditMode={() => {}} />
+            <FloatingMenuPlugin anchorElem={floatingAnchorElem} />
           </>
         )}
         <ClickableLinkPlugin />
