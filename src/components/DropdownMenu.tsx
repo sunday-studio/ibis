@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { FC } from 'react';
 import {
   Button,
@@ -13,10 +14,21 @@ const DropdownMenuRoot = ({ children }: { children: React.ReactNode }) => {
   return <MenuTrigger>{children}</MenuTrigger>;
 };
 
-export const DropdownMenuTrigger = ({ children }: { children: React.ReactNode }) => {
+export const DropdownMenuTrigger = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   return (
     <MenuTrigger>
-      <Button className="bg-transparent hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center p-1 rounded-md">
+      <Button
+        className={clsx(
+          'bg-transparent hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center p-1 rounded-md',
+          className,
+        )}
+      >
         {children}
       </Button>
     </MenuTrigger>

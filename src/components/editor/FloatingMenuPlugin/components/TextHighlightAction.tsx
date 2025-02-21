@@ -1,66 +1,224 @@
 import { Tooltip } from '@/components/Tooltip';
 import { DropdownMenu } from '@/components/DropdownMenu';
-import { LexicalEditor } from 'lexical';
+import {
+  $getSelection,
+  $isRangeSelection,
+  COMMAND_PRIORITY_CRITICAL,
+  LexicalEditor,
+  SELECTION_CHANGE_COMMAND,
+} from 'lexical';
+import { $getSelectionStyleValueForProperty, $patchStyleText } from '@lexical/selection';
 import { Ampersand, ChevronDown } from 'lucide-react';
-import { FC } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { mergeRegister } from '@lexical/utils';
 
 interface TextHighlightActionProps {
   editor: LexicalEditor;
 }
 
 export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) => {
+  const [updateToolbarState, setUpdateToolbarState] = useState<Record<string, string>>({});
+
   const foregroundColors = [
     {
       label: 'Default',
-      color: '#000000',
+      color: 'currentColor',
+      borderColor: 'var(--color-gray-100)',
+      activeColor: 'var(--color-gray-400)',
     },
     {
       label: 'Gray',
-      color: 'oklch(0.707 0.022 261.325)',
+      color: 'oklch(0.621 0.019 262.87)',
+      borderColor: 'var(--color-gray-200)',
+      activeColor: 'var(--color-gray-400)',
     },
     {
       label: 'Red',
-      color: 'oklch(0.704 0.191 22.216)',
+      color: 'oklch(0.627 0.182 27.014)',
+      borderColor: 'var(--color-red-200)',
+      activeColor: 'var(--color-red-400)',
     },
     {
       label: 'Orange',
-      color: '#f97316',
+      color: 'oklch(0.695 0.191 40.971)',
+      borderColor: 'var(--color-orange-200)',
+      activeColor: 'var(--color-orange-400)',
+    },
+    {
+      label: 'Yellow',
+      color: 'oklch(0.806 0.201 93.555)',
+      borderColor: 'var(--color-yellow-200)',
+      activeColor: 'var(--color-yellow-400)',
+    },
+    {
+      label: 'Green',
+      color: 'oklch(0.736 0.177 142.73)',
+      borderColor: 'var(--color-green-200)',
+      activeColor: 'var(--color-green-400)',
+    },
+    {
+      label: 'Blue',
+      color: 'oklch(0.647 0.205 263.821)',
+      borderColor: 'var(--color-blue-200)',
+      activeColor: 'var(--color-blue-400)',
+    },
+    {
+      label: 'Violet',
+      color: 'oklch(0.636 0.22 295.556)',
+      borderColor: 'var(--color-purple-200)',
+      activeColor: 'var(--color-purple-400)',
+    },
+    {
+      label: 'Pink',
+      color: 'oklch(0.647 0.22 332.77)',
+      borderColor: 'var(--color-pink-200)',
+      activeColor: 'var(--color-pink-400)',
+    },
+    {
+      label: 'Rose',
+      color: 'oklch(0.637 0.199 15.743)',
+      borderColor: 'var(--color-rose-200)',
+      activeColor: 'var(--color-rose-400)',
+    },
+  ];
+
+  const backgroundColors = [
+    {
+      label: 'Default',
+      color: 'transparent',
+      borderColor: 'var(--color-gray-100)',
+      activeColor: 'var(--color-gray-400)',
+    },
+    {
+      label: 'Gray',
+      color: 'oklch(0.967 0.003 264.542)',
+      borderColor: 'var(--color-gray-200)',
+      activeColor: 'var(--color-gray-400)',
+    },
+    {
+      label: 'Red',
+      color: 'oklch(0.936 0.032 17.717)',
+      borderColor: 'var(--color-red-200)',
+      activeColor: 'var(--color-red-400)',
+    },
+    {
+      label: 'Orange',
+      color: 'oklch(0.954 0.038 75.164)',
+      borderColor: 'var(--color-orange-200)',
+      activeColor: 'var(--color-orange-400)',
     },
 
     {
       label: 'Yellow',
-      color: 'oklch(0.852 0.199 91.936)',
+      color: 'oklch(0.973 0.071 103.193)',
+      borderColor: 'var(--color-yellow-200)',
+      activeColor: 'var(--color-yellow-400)',
     },
     {
       label: 'Green',
-      color: 'oklch(0.792 0.209 151.711)',
+      color: 'oklch(0.962 0.044 156.743)',
+      borderColor: 'var(--color-green-200)',
+      activeColor: 'var(--color-green-400)',
     },
 
     {
       label: 'Blue',
-      color: 'oklch(0.707 0.165 254.624)',
+      color: 'oklch(0.932 0.032 255.585)',
+      borderColor: 'var(--color-blue-200)',
+      activeColor: 'var(--color-blue-400)',
     },
 
     {
       label: 'Violet',
-      color: 'oklch(0.702 0.183 293.541)',
+      color: 'oklch(0.943 0.029 294.588)',
+      borderColor: 'var(--color-purple-200)',
+      activeColor: 'var(--color-purple-400)',
     },
 
     {
       label: 'Pink',
-      color: 'oklch(0.718 0.202 349.761)',
+      color: 'oklch(0.948 0.028 342.258)',
+      borderColor: 'var(--color-pink-200)',
+      activeColor: 'var(--color-pink-400)',
     },
     {
       label: 'Rose',
-      color: 'oklch(0.712 0.194 13.428)',
+      color: 'oklch(0.941 0.03 12.58)',
+      borderColor: 'var(--color-rose-200)',
+      activeColor: 'var(--color-rose-400)',
     },
   ];
 
-  const backgroundColors = ['#f97316', '#ec4899', '#818cf8', '#6366f1', '#374151', '#111827'];
+  const applyStyleText = useCallback(
+    (styles: Record<string, string>) => {
+      editor.update(() => {
+        const selection = $getSelection();
+        if (selection !== null) {
+          $patchStyleText(selection, styles);
+        }
+      });
+    },
+    [editor],
+  );
+
+  const onFontColorSelect = useCallback(
+    (value: string) => {
+      applyStyleText({ color: value });
+    },
+    [applyStyleText],
+  );
+
+  const onBgColorSelect = useCallback(
+    (value: string) => {
+      applyStyleText({ 'background-color': value });
+    },
+    [applyStyleText],
+  );
+
+  const $updateToolbar = useCallback(() => {
+    const selection = $getSelection();
+    if ($isRangeSelection(selection)) {
+      setUpdateToolbarState({
+        foregroundColor: $getSelectionStyleValueForProperty(selection, 'color', 'currentColor'),
+        bgColor: $getSelectionStyleValueForProperty(selection, 'background-color', 'transparent'),
+      });
+    }
+  }, [editor]);
+
+  useEffect(() => {
+    return editor.registerCommand(
+      SELECTION_CHANGE_COMMAND,
+      (_payload) => {
+        $updateToolbar();
+        return false;
+      },
+      COMMAND_PRIORITY_CRITICAL,
+    );
+  }, [editor]);
+
+  useEffect(() => {
+    editor.getEditorState().read(() => {
+      $updateToolbar();
+    });
+  }, [editor, $updateToolbar]);
+
+  useEffect(() => {
+    return mergeRegister(
+      editor.registerUpdateListener(({ editorState }) => {
+        editorState.read(() => {
+          $updateToolbar();
+        });
+      }),
+    );
+  }, [$updateToolbar, editor]);
+
+  const isActiveColor = (color1: string, color2: string) => {
+    return color1 === color2;
+  };
 
   return (
     <DropdownMenu>
-      <DropdownMenu.Trigger>
+      <DropdownMenu.Trigger className="ring-0 hover:ring-0! p-0! rounded-lg!">
         <Tooltip
           shortcuts={['⌘', 'H']}
           trigger={
@@ -83,44 +241,66 @@ export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) =>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content withMenu={false}>
         <div className="p-4 flex flex-col gap-3 bg-white rounded-lg shadow-1 max-w-[200px]">
-          <div className="flex gap-1.5 flex-col">
+          <div className="flex gap-2 flex-col">
             <h4 className="text-sm text-neutral-600 font-semibold">Text color</h4>
             <div className="grid grid-cols-5 gap-2">
-              {foregroundColors.map((color, index) => (
-                <Tooltip
-                  key={index}
-                  trigger={
-                    <button
-                      key={index}
-                      type="button"
-                      className="w-8 h-8 ring-1 ring-neutral-200 rounded-md flex items-center justify-center"
-                    >
-                      <Ampersand color={color.color} size={16} />
-                    </button>
-                  }
-                  content={`${color.label} text`}
-                ></Tooltip>
-              ))}
+              {foregroundColors.map((color, index) => {
+                const isActive = isActiveColor(color.color, updateToolbarState.foregroundColor);
+                return (
+                  <Tooltip
+                    key={index}
+                    trigger={
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => onFontColorSelect(isActive ? 'currentColor' : color.color)}
+                        style={
+                          {
+                            boxShadow: isActive
+                              ? `0 0 0 2px ${color.activeColor}`
+                              : `0 0 0 1px ${color.borderColor}`,
+                          } as React.CSSProperties
+                        }
+                        className="w-8 h-8 ring-1 rounded-md flex items-center justify-center"
+                      >
+                        <Ampersand color={color.color} size={16} />
+                      </button>
+                    }
+                    content={`${color.label} text`}
+                  />
+                );
+              })}
             </div>
           </div>
 
-          <div className="flex gap-1.5 flex-col">
+          <div className="flex gap-2 flex-col">
             <h4 className="text-sm text-neutral-600 font-semibold">Background color</h4>
             <div className="grid grid-cols-5 gap-2">
-              {foregroundColors.map((color, index) => (
-                <Tooltip
-                  key={index}
-                  trigger={
-                    <button
-                      key={index}
-                      type="button"
-                      style={{ background: color.color } as React.CSSProperties}
-                      className="w-8 h-8 rounded-md flex items-center justify-center"
-                    ></button>
-                  }
-                  content={`${color.label} background`}
-                ></Tooltip>
-              ))}
+              {backgroundColors.map((color, index) => {
+                const isActive = isActiveColor(color.color, updateToolbarState.bgColor);
+                return (
+                  <Tooltip
+                    key={index}
+                    trigger={
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => onBgColorSelect(isActive ? 'transparent' : color.color)}
+                        style={
+                          {
+                            background: color.color,
+                            boxShadow: isActive
+                              ? `0 0 0 2px ${color.activeColor}`
+                              : `0 0 0 1px ${color.borderColor}`,
+                          } as React.CSSProperties
+                        }
+                        className="w-8 h-8 rounded-md flex items-center justify-center"
+                      />
+                    }
+                    content={`${color.label} background`}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
