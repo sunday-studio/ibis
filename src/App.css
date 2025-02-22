@@ -1,8 +1,10 @@
 @import 'tailwindcss';
 
-html {
-  font-weight: 350;
-  font-family: 'Inter', system-ui, sans-serif;
+body,
+#root {
+  border-radius: 10px;
+  background-color: transparent;
+  overflow: hidden;
 }
 
 @layer base {

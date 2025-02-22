@@ -10,12 +10,16 @@
     "frontendDist": "../dist"
   },
   "app": {
+    "macOSPrivateApi": true,
     "windows": [
       {
         "title": "Ibis",
         "width": 1400,
         "height": 1000,
-        "dragDropEnabled": false
+        "dragDropEnabled": false,
+        "decorations": false,
+        "transparent": true,
+        "shadow": false
       }
     ],
     "security": {

@@ -4,17 +4,18 @@ import { Sidebar, ProductNavigation } from './Sidebar';
 
 export const AppLayout = () => {
   return (
-    <div className="flex h-screen font-display text-md overflow-hidden border-t border-gray-100 p-2 bg-[#e5dfd5b4]">
-      <div className="rounded-lg flex overflow-hidden w-full bg-white">
-        <div className="w-[50px] h-full shrink-0 border-r border-gray-100">
-          <ProductNavigation />
+    <div className="flex h-screen font-display text-md overflow-hidden bg-stone-100 dark:bg-stone-900">
+      <div
+        className="rounded-lg flex overflow-hidden w-full bg-transparent p-1.5"
+        data-tauri-drag-region
+      >
+        <div className="w-[50px] h-full shrink-0" data-tauri-drag-region>
+          {/* <ProductNavigation /> */}
         </div>
-
-        <div className="w-[250px] h-full border-r border-neutral-100 shrink-0 bg-white">
-          <Sidebar />
+        <div className="w-[250px] h-full  shrink-0" data-tauri-drag-region>
+          {/* <Sidebar /> */}
         </div>
-
-        <div className="bg-white w-full overflow-y-auto">
+        <div className="bg-white w-full overflow-y-auto shadow-1 rounded-lg dark:bg-stone-800">
           <Outlet />
         </div>
       </div>
