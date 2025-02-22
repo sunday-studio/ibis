@@ -8,42 +8,87 @@ import {
   MenuItem,
   Separator,
   MenuItemProps,
+  MenuTriggerProps,
 } from 'react-aria-components';
+import { proxy, useSnapshot } from 'valtio';
 
-const DropdownMenuRoot = ({ children }: { children: React.ReactNode }) => {
-  return <MenuTrigger>{children}</MenuTrigger>;
+export const menuState = proxy({
+  isOpen: false,
+  onOpenChange: (_: boolean) => {},
+  setOnOpenChange: (onOpenChange: (state: boolean) => void) => {
+    menuState.onOpenChange = onOpenChange;
+  },
+  setIsOpen: (isOpen: boolean) => {
+    menuState.isOpen = isOpen;
+  },
+});
+
+interface DropdownMenuRootProps extends MenuTriggerProps {
+  children: React.ReactNode;
+}
+
+const DropdownMenuRoot: FC<DropdownMenuRootProps> = ({
+  children,
+  onOpenChange = () => {},
+  isOpen = false,
+  ...rest
+}) => {
+  const state = useSnapshot(menuState);
+  state.setOnOpenChange(onOpenChange);
+  state.setIsOpen(isOpen);
+
+  return <MenuTrigger {...rest}>{children}</MenuTrigger>;
 };
 
-export const DropdownMenuTrigger = ({
-  children,
-  className,
-}: {
+interface DropdownMenuTriggerProps {
   children: React.ReactNode;
   className?: string;
+  onPress?: () => void;
+}
+
+export const DropdownMenuTrigger: FC<DropdownMenuTriggerProps> = ({
+  children,
+  className,
+  ...rest
 }) => {
+  const state = useSnapshot(menuState);
+
   return (
-    <MenuTrigger>
-      <Button
-        className={clsx(
-          'bg-transparent hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center p-1 rounded-md',
-          className,
-        )}
-      >
-        {children}
-      </Button>
-    </MenuTrigger>
+    <Button
+      {...rest}
+      onPress={() => {
+        state.setIsOpen(!state.isOpen);
+      }}
+      className={clsx(
+        'bg-transparent hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center p-1 rounded-md',
+        className,
+      )}
+    >
+      {children}
+    </Button>
   );
 };
 
 export const Content = ({
   children,
   withMenu = true,
+  ...rest
 }: {
   children: React.ReactNode;
   withMenu?: boolean;
+  handleClose?: () => void;
 }) => {
+  const state = useSnapshot(menuState);
+
   return (
-    <Popover>
+    <Popover
+      {...rest}
+      shouldCloseOnInteractOutside={() => {
+        state.onOpenChange(false);
+        menuState.setIsOpen(false);
+        return true;
+      }}
+    >
       {withMenu && (
         <Menu className="w-[250px] bg-white p-1 shadow-1 rounded-lg flex flex-col gap-1">
           {children}
@@ -98,3 +143,13 @@ export const DropdownMenu = Object.assign(DropdownMenuRoot, {
   Separator: DropdownMenuSeparator,
   Content: Content,
 });
+
+export const useDropdownMenuToggle = () => {
+  const state = useSnapshot(menuState);
+
+  const toggle = () => {
+    menuState.setIsOpen(!state.isOpen);
+  };
+
+  return { isOpen: state.isOpen, toggle, setIsOpen: menuState.setIsOpen };
+};

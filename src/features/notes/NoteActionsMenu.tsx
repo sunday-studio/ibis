@@ -21,7 +21,7 @@ import {
   useLockNote,
   useUnlockNote,
 } from '@/services/db/notes';
-import { DropdownMenu } from '@/components/DropdownMenu';
+import { DropdownMenu, useDropdownMenuToggle } from '@/components/DropdownMenu';
 import { Note } from '@/services/db/types';
 
 interface NoteActionsMenuProps {
@@ -38,6 +38,8 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
   const { mutate: unlockNote } = useUnlockNote(note.id);
   const [isDoubleClicked, setIsDoubleClicked] = useState(false);
   const { mutate: deleteNote } = useDeleteNote();
+
+  const { isOpen, setIsOpen } = useDropdownMenuToggle();
 
   const pinnedNotesIds = pinnedNotes?.map((note) => note.id);
 
@@ -127,7 +129,7 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
 
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu isOpen={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenu.Trigger>
           <EllipsisIcon />
         </DropdownMenu.Trigger>

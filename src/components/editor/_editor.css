@@ -75,8 +75,7 @@
 
 .editor-text-highlight {
   background-color: var(--color-yellow-100);
-  padding: 2px 4px;
-  border-radius: 4px;
+  box-shadow: 0 2px 0 0 var(--color-yellow-200);
 }
 
 .editor-text-capitalize {

@@ -1,23 +1,20 @@
 import { Tooltip } from '@/components/Tooltip';
 import { DropdownMenu } from '@/components/DropdownMenu';
-import {
-  $getSelection,
-  $isRangeSelection,
-  COMMAND_PRIORITY_CRITICAL,
-  LexicalEditor,
-  SELECTION_CHANGE_COMMAND,
-} from 'lexical';
-import { $getSelectionStyleValueForProperty, $patchStyleText } from '@lexical/selection';
+import { $getSelection, LexicalEditor } from 'lexical';
+import { $patchStyleText } from '@lexical/selection';
 import { Ampersand, ChevronDown } from 'lucide-react';
-import { FC, useCallback, useEffect, useState } from 'react';
-import { mergeRegister } from '@lexical/utils';
+import { FC, useCallback, useState } from 'react';
+import { floatingToolbarStore } from '../floating-toolbar.store';
+import { useSnapshot } from 'valtio';
+import { Button } from 'react-aria-components';
 
 interface TextHighlightActionProps {
   editor: LexicalEditor;
 }
 
 export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) => {
-  const [updateToolbarState, setUpdateToolbarState] = useState<Record<string, string>>({});
+  const { textColor, backgroundColor } = useSnapshot(floatingToolbarStore);
+  const [isOpen, setIsOpen] = useState(false);
 
   const foregroundColors = [
     {
@@ -175,57 +172,17 @@ export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) =>
     [applyStyleText],
   );
 
-  const $updateToolbar = useCallback(() => {
-    const selection = $getSelection();
-    if ($isRangeSelection(selection)) {
-      setUpdateToolbarState({
-        foregroundColor: $getSelectionStyleValueForProperty(selection, 'color', 'currentColor'),
-        bgColor: $getSelectionStyleValueForProperty(selection, 'background-color', 'transparent'),
-      });
-    }
-  }, [editor]);
-
-  useEffect(() => {
-    return editor.registerCommand(
-      SELECTION_CHANGE_COMMAND,
-      (_payload) => {
-        $updateToolbar();
-        return false;
-      },
-      COMMAND_PRIORITY_CRITICAL,
-    );
-  }, [editor]);
-
-  useEffect(() => {
-    editor.getEditorState().read(() => {
-      $updateToolbar();
-    });
-  }, [editor, $updateToolbar]);
-
-  useEffect(() => {
-    return mergeRegister(
-      editor.registerUpdateListener(({ editorState }) => {
-        editorState.read(() => {
-          $updateToolbar();
-        });
-      }),
-    );
-  }, [$updateToolbar, editor]);
-
   const isActiveColor = (color1: string, color2: string) => {
     return color1 === color2;
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu isOpen={isOpen} onOpenChange={(state) => setIsOpen(!state)}>
       <DropdownMenu.Trigger className="ring-0 hover:ring-0! p-0! rounded-lg!">
         <Tooltip
           shortcuts={['⌘', 'H']}
           trigger={
-            <div
-              role="button"
-              className="flex items-center justify-center gap-1 h-8 rounded-lg hover:bg-neutral-100 px-2"
-            >
+            <div className="flex items-center justify-center gap-1 h-8 rounded-lg hover:bg-neutral-100 px-2">
               <div
                 className="size-4 rounded-full"
                 style={{
@@ -245,15 +202,17 @@ export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) =>
             <h4 className="text-sm text-neutral-600 font-semibold">Text color</h4>
             <div className="grid grid-cols-5 gap-2">
               {foregroundColors.map((color, index) => {
-                const isActive = isActiveColor(color.color, updateToolbarState.foregroundColor);
+                const isActive = isActiveColor(color.color, textColor);
                 return (
                   <Tooltip
                     key={index}
                     trigger={
-                      <button
+                      <Button
                         key={index}
-                        type="button"
-                        onClick={() => onFontColorSelect(isActive ? 'currentColor' : color.color)}
+                        preventFocusOnPress
+                        onPress={() => {
+                          onFontColorSelect(isActive ? 'currentColor' : color.color);
+                        }}
                         style={
                           {
                             boxShadow: isActive
@@ -264,7 +223,7 @@ export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) =>
                         className="w-8 h-8 ring-1 rounded-md flex items-center justify-center"
                       >
                         <Ampersand color={color.color} size={16} />
-                      </button>
+                      </Button>
                     }
                     content={`${color.label} text`}
                   />
@@ -277,15 +236,16 @@ export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) =>
             <h4 className="text-sm text-neutral-600 font-semibold">Background color</h4>
             <div className="grid grid-cols-5 gap-2">
               {backgroundColors.map((color, index) => {
-                const isActive = isActiveColor(color.color, updateToolbarState.bgColor);
+                const isActive = isActiveColor(color.color, backgroundColor);
                 return (
                   <Tooltip
                     key={index}
                     trigger={
-                      <button
+                      <Button
                         key={index}
+                        preventFocusOnPress
                         type="button"
-                        onClick={() => onBgColorSelect(isActive ? 'transparent' : color.color)}
+                        onPress={() => onBgColorSelect(isActive ? 'transparent' : color.color)}
                         style={
                           {
                             background: color.color,
