@@ -14,7 +14,8 @@ import {
   SELECTION_CHANGE_COMMAND as ON_SELECTION_CHANGE,
 } from 'lexical';
 
-import { FloatingMenu, getSelectedNode } from './FloatingMenu';
+import { FloatingMenu } from './FloatingMenu';
+import { getSelectedNode } from './utils/getSelectedNode';
 import { usePointerInteractions } from './utils/usePointerInteractions';
 import { $isLinkNode } from '@lexical/link';
 import { $isCodeHighlightNode } from '@lexical/code';

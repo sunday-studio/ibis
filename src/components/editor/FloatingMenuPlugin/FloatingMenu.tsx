@@ -1,6 +1,5 @@
 import { FC, ForwardedRef, Fragment, forwardRef, useEffect, useMemo, useState } from 'react';
-import { $isAtNodeEnd } from '@lexical/selection';
-import { FORMAT_TEXT_COMMAND, LexicalEditor, RangeSelection } from 'lexical';
+import { FORMAT_TEXT_COMMAND, LexicalEditor } from 'lexical';
 import {
   Bold,
   CodeXml,
@@ -13,30 +12,11 @@ import {
   CaseUpper,
   CaseLower,
   CaseSensitive,
-  ChevronDown,
 } from 'lucide-react';
 import { Tooltip } from '@/components/Tooltip';
 import clsx from 'clsx';
-import { FloatingLinkEditor } from './FloatingLinkEditor';
+import { FloatingLinkEditor } from './components/FloatingLinkEditor';
 import { TextHighlightAction } from './components/TextHighlightAction';
-
-// Helper function to get selected node from editor selection
-export function getSelectedNode(selection: RangeSelection) {
-  const anchor = selection.anchor;
-  const focus = selection.focus;
-  const anchorNode = selection.anchor.getNode();
-  const focusNode = selection.focus.getNode();
-
-  if (anchorNode === focusNode) {
-    return anchorNode;
-  }
-
-  const isBackward = selection.isBackward();
-  if (isBackward) {
-    return $isAtNodeEnd(focus) ? anchorNode : focusNode;
-  }
-  return $isAtNodeEnd(anchor) ? focusNode : anchorNode;
-}
 
 interface SingleActionProps {
   icon: React.ReactNode;
@@ -237,14 +217,7 @@ const FloatingMenuComponent = ({
       },
       {
         label: 'Link',
-        cell: (
-          <SingleAction
-            label="Link"
-            isActive={isLink}
-            icon={<Link size={16} />}
-            action={() => setShowLinkInput(true)}
-          />
-        ),
+        cell: <FloatingLinkEditor editor={editor} onClose={() => setShowLinkInput(false)} />,
       },
       {
         label: 'Text Highlight',

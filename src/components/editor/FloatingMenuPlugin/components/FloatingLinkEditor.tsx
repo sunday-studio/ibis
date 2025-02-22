@@ -1,28 +1,20 @@
-import {
-  $createNodeSelection,
-  $createParagraphNode,
-  $createRangeSelection,
-  $createTextNode,
-  $getSelection,
-  $isParagraphNode,
-  $isTextNode,
-  $setSelection,
-  ParagraphNode,
-} from 'lexical';
+import { $createRangeSelection, $getSelection, $isTextNode, $setSelection } from 'lexical';
 import { LexicalEditor } from 'lexical';
 import { $isRangeSelection } from 'lexical';
-import { Text, Link } from 'lucide-react';
+import { Text, Link, ChevronDown } from 'lucide-react';
 import { FC, useEffect, useState } from 'react';
-import { getSelectedNode } from './FloatingMenu';
-import { $createLinkNode, $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { sanitizeUrl } from '../plugins/AutolinkPlugin';
+import { getSelectedNode } from '../utils/getSelectedNode';
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
+import { sanitizeUrl } from '@/components/editor/plugins/AutolinkPlugin';
+import { Tooltip } from '@/components/Tooltip';
+import { DropdownMenu } from '@/components/DropdownMenu';
 
-interface FloatingLinkEditorProps {
+interface LinkEditorProps {
   editor: LexicalEditor;
   onClose: () => void;
 }
 
-export const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({ editor, onClose }) => {
+const LinkEditor: FC<LinkEditorProps> = ({ editor, onClose }) => {
   const [link, setLink] = useState('https://www.google.com');
   const [text, setText] = useState('');
 
@@ -93,7 +85,7 @@ export const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({ editor, onClos
   };
 
   return (
-    <div className="w-[250px]">
+    <div>
       <div className="flex items-center gap-2 p-1">
         <Link size={12} />
         <input
@@ -118,5 +110,36 @@ export const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({ editor, onClos
         />
       </div>
     </div>
+  );
+};
+
+interface FloatingLinkEditorProps {
+  editor: LexicalEditor;
+  onClose: () => void;
+}
+
+export const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({ editor, onClose }) => {
+  return (
+    <DropdownMenu>
+      <DropdownMenu.Trigger className="ring-0 hover:ring-0! p-0! rounded-lg!">
+        <Tooltip
+          trigger={
+            <div
+              role="button"
+              className="flex items-center justify-center gap-1 h-8 rounded-lg hover:bg-neutral-100 px-2"
+            >
+              <Link size={14} />
+              <ChevronDown size={16} />
+            </div>
+          }
+          content="Link"
+        />
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content withMenu={false}>
+        <div className="p-2 w-[250px] bg-white rounded-lg shadow-1">
+          <LinkEditor editor={editor} onClose={onClose} />
+        </div>
+      </DropdownMenu.Content>
+    </DropdownMenu>
   );
 };
