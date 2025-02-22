@@ -167,6 +167,7 @@ export const useFloatingToolbarStoreListener = ({ editor }: useFloatingToolbarSt
 
       // update link state
       const parent = node.getParent();
+      console.log('parent', { parent, node });
       if ($isLinkNode(parent) || $isLinkNode(node)) {
         setLinkState(true);
       } else {

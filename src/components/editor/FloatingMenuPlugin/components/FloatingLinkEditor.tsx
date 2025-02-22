@@ -7,7 +7,8 @@ import { getSelectedNode } from '../utils/getSelectedNode';
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { sanitizeUrl } from '@/components/editor/plugins/AutolinkPlugin';
 import { Tooltip } from '@/components/Tooltip';
-import { DropdownMenu } from '@/components/DropdownMenu';
+import { DropdownMenu, useDropdownMenuToggle } from '@/components/DropdownMenu';
+import clsx from 'clsx';
 
 interface LinkEditorProps {
   editor: LexicalEditor;
@@ -115,21 +116,28 @@ const LinkEditor: FC<LinkEditorProps> = ({ editor, onClose }) => {
 
 interface FloatingLinkEditorProps {
   editor: LexicalEditor;
-  onClose: () => void;
+  isLinkActive: boolean;
 }
 
-export const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({ editor, onClose }) => {
+export const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({ editor, isLinkActive }) => {
+  const { isOpen, setIsOpen } = useDropdownMenuToggle();
+
   return (
-    <DropdownMenu>
+    <DropdownMenu isOpen={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenu.Trigger className="ring-0 hover:ring-0! p-0! rounded-lg!">
         <Tooltip
           trigger={
             <div
               role="button"
-              className="flex items-center justify-center gap-1 h-8 rounded-lg hover:bg-neutral-100 px-2"
+              className={clsx(
+                'flex items-center justify-center gap-1 h-8 rounded-lg hover:bg-neutral-100 px-2',
+              )}
             >
               <Link size={14} />
-              <ChevronDown size={16} />
+              <ChevronDown
+                color={isLinkActive ? 'var(--color-orange-600)' : 'var(--color-gray-600)'}
+                size={16}
+              />
             </div>
           }
           content="Link"
@@ -137,7 +145,7 @@ export const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({ editor, onClos
       </DropdownMenu.Trigger>
       <DropdownMenu.Content withMenu={false}>
         <div className="p-2 w-[250px] bg-white rounded-lg shadow-1">
-          <LinkEditor editor={editor} onClose={onClose} />
+          <LinkEditor onClose={() => setIsOpen(false)} editor={editor} />
         </div>
       </DropdownMenu.Content>
     </DropdownMenu>

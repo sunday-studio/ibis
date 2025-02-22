@@ -1,9 +1,9 @@
 import { Tooltip } from '@/components/Tooltip';
-import { DropdownMenu } from '@/components/DropdownMenu';
+import { DropdownMenu, useDropdownMenuToggle } from '@/components/DropdownMenu';
 import { $getSelection, LexicalEditor } from 'lexical';
 import { $patchStyleText } from '@lexical/selection';
 import { Ampersand, ChevronDown } from 'lucide-react';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { floatingToolbarStore } from '../floating-toolbar.store';
 import { useSnapshot } from 'valtio';
 import { Button } from 'react-aria-components';
@@ -14,7 +14,11 @@ interface TextHighlightActionProps {
 
 export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) => {
   const { textColor, backgroundColor } = useSnapshot(floatingToolbarStore);
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, setIsOpen } = useDropdownMenuToggle();
+
+  const hasTextHighlight = useMemo(() => {
+    return textColor !== 'currentColor' || backgroundColor !== 'transparent';
+  }, [textColor, backgroundColor]);
 
   const foregroundColors = [
     {
@@ -190,7 +194,10 @@ export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) =>
                     'linear-gradient(45deg, rgb(110, 182, 242) 0%, rgb(168, 85, 247) 35%, rgb(234, 88, 12) 65%, rgb(234, 179, 8) 100%)',
                 }}
               ></div>
-              <ChevronDown size={16} />
+              <ChevronDown
+                color={hasTextHighlight ? 'var(--color-orange-600)' : 'var(--color-gray-600)'}
+                size={16}
+              />
             </div>
           }
           content="Text Highlight"

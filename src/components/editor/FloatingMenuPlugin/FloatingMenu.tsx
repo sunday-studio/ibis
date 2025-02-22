@@ -1,11 +1,10 @@
-import { FC, ForwardedRef, Fragment, forwardRef, useState } from 'react';
+import { FC, ForwardedRef, Fragment, forwardRef } from 'react';
 import { $isAtNodeEnd } from '@lexical/selection';
 import { FORMAT_TEXT_COMMAND, LexicalEditor, RangeSelection } from 'lexical';
 import {
   Bold,
   CodeXml,
   Italic,
-  Link,
   Strikethrough,
   Underline,
   Superscript,
@@ -21,6 +20,7 @@ import { Button } from 'react-aria-components';
 import { TextHighlightAction } from './components/TextHighlightAction';
 import { floatingToolbarStore } from './floating-toolbar.store';
 import { useSnapshot } from 'valtio';
+import { FloatingLinkEditor } from './components/FloatingLinkEditor';
 
 // Helper function to get selected node from editor selection
 export function getSelectedNode(selection: RangeSelection) {
@@ -86,9 +86,7 @@ interface FloatingMenuComponentProps extends FloatingMenuProps {
   ref: ForwardedRef<HTMLDivElement>;
 }
 
-const FloatingMenuComponent = ({ ref, editor, show }: FloatingMenuComponentProps) => {
-  const [showLinkInput, setShowLinkInput] = useState(false);
-
+const FloatingMenuComponent = ({ ref, editor }: FloatingMenuComponentProps) => {
   const {
     isBold,
     isItalic,
@@ -239,19 +237,12 @@ const FloatingMenuComponent = ({ ref, editor, show }: FloatingMenuComponentProps
     },
     {
       label: 'Link',
-      cell: (
-        <SingleAction
-          label="Link"
-          isActive={isLink}
-          icon={<Link size={16} />}
-          action={() => setShowLinkInput(true)}
-        />
-      ),
+      cell: <FloatingLinkEditor editor={editor} isLinkActive={isLink} />,
+      separator: true,
     },
     {
       label: 'Text Highlight',
       cell: <TextHighlightAction editor={editor} />,
-      separator: true,
     },
   ];
 
@@ -263,8 +254,8 @@ const FloatingMenuComponent = ({ ref, editor, show }: FloatingMenuComponentProps
       <div className="flex items-center justify-center gap-1.5">
         {actions.map((action, index) => (
           <Fragment key={index}>
-            {/* {action.separator && <div className="h-6 bg-neutral-100 w-[1px]" />} */}
             {action.cell}
+            {action.separator && <div className="h-6 bg-neutral-100 w-[1px]" />}
           </Fragment>
         ))}
       </div>
