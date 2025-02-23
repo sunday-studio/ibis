@@ -2,7 +2,7 @@ import { JSX, useLayoutEffect } from 'react';
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 
-import { toggleSidebarState } from '@/app.store';
+import { toggleCommandDialogState, toggleSidebarState } from '@/app.store';
 
 export const ShortcutPlugin = (): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
@@ -10,8 +10,7 @@ export const ShortcutPlugin = (): JSX.Element | null => {
   useLayoutEffect(() => {
     const onkeyDown = (e: KeyboardEvent) => {
       if (e.metaKey && e.key == 'k') {
-        // TODO: figure out a way to return the focus back to page when this is closed
-        // searchStore.toggleSearchModal();
+        toggleCommandDialogState();
       }
 
       if ((e.metaKey || e.ctrlKey) && e.key == 'd') {

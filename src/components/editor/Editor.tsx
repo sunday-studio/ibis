@@ -25,7 +25,6 @@ import CodeHighlightPlugin from './plugins/CodeHighlightPlugin';
 import { MarkdownShortcutPlugin } from './plugins/MarkdownShortcut';
 import PageBreakPlugin from './plugins/PageBreakPlugin/PageBreakPlugin';
 import { PageBreakNode } from './plugins/PageBreakPlugin/nodes/PageBreakNode';
-import SearchDialogPlugin from './plugins/SearchDialogPlugin';
 import SlashCommandPickerPlugin from './plugins/SlashCommandPicker';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
 import { theme } from './plugins/theme';
@@ -152,7 +151,6 @@ export const Editor = ({
         <MarkdownShortcutPlugin />
         <CodeHighlightPlugin />
         <PageBreakPlugin />
-        <SearchDialogPlugin />
         <HashtagPlugin />
         <ShortcutPlugin />
         <FocusModePlugin />

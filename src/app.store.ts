@@ -8,6 +8,10 @@ export const editorModeState = proxy({
   isFocusMode: false,
 });
 
+export const commandDialogState = proxy({
+  isCommandDialogOpen: false,
+});
+
 export const setSidebarState = (isSidebarOpen: boolean) => {
   sidebarState.isSidebarOpen = isSidebarOpen;
 };
@@ -19,4 +23,8 @@ export const toggleSidebarState = () => {
 export const toggleFocusModeState = () => {
   editorModeState.isFocusMode = !editorModeState.isFocusMode;
   sidebarState.isSidebarOpen = false;
+};
+
+export const toggleCommandDialogState = () => {
+  commandDialogState.isCommandDialogOpen = !commandDialogState.isCommandDialogOpen;
 };
