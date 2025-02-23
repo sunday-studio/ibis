@@ -85,7 +85,9 @@ function SlashCommandMenuItem({
       aria-selected={isSelected}
       onMouseEnter={onMouseEnter}
       onClick={onClick}
-      className="flex cursor-pointer items-center justify-start p-2 rounded-lg gap-2 aria-[selected='true']:bg-stone-100 aria-[selected='true']:inset-ring aria-[selected='true']:inset-ring-stone-200 dark:aria-[selected='true']:bg-stone-800 dark:aria-[selected='true']:inset-ring-stone-700"
+      className="flex cursor-pointer items-center justify-start p-2 rounded-lg gap-2 
+      aria-[selected='true']:bg-stone-100 aria-[selected='true']:inset-ring aria-[selected='true']:inset-ring-stone-200
+      dark:aria-[selected='true']:bg-stone-700 dark:aria-[selected='true']:inset-ring-0"
     >
       <div className="text-stone-500 w-6 h-6 flex items-center justify-center">{option.icon}</div>
       <p className="text-stone-900 dark:text-stone-300">{option.title}</p>
@@ -220,7 +222,7 @@ export default function SlashCommandPickerPlugin() {
       ) =>
         anchorElementRef.current && options.length
           ? ReactDOM.createPortal(
-              <div className="shadow-1 rounded-lg p-2 bg-white dark:bg-stone-900 w-[250px]">
+              <div className="shadow-1 rounded-xl p-2 bg-white dark:bg-stone-800 w-[250px]">
                 <ul className="list-none p-0 m-0">
                   {options.map((option, i) => (
                     <SlashCommandMenuItem

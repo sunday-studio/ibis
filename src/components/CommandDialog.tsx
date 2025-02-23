@@ -22,7 +22,14 @@ import { useSnapshot } from 'valtio';
 // import { searchStore } from '@/store/search';
 // import { meili } from '@/lib/data-engine/syncing-engine';
 
-import { commandDialogState, toggleCommandDialogState, toggleFocusModeState } from '@/app.store';
+import {
+  commandDialogState,
+  editorModeState,
+  setSidebarState,
+  toggleCommandDialogState,
+  toggleFocusModeState,
+  toggleSidebarState,
+} from '@/app.store';
 
 type ActionProps = {
   name: string;
@@ -42,6 +49,7 @@ const ActionItem = (props: ActionProps) => {
 
 export const CommandDialog = () => {
   const showCommandModal = useSnapshot(commandDialogState).isCommandDialogOpen;
+  const isFocusModeActive = useSnapshot(editorModeState).isFocusMode;
   // const { showSearchModal } = searchStore;
   // const navigate = useNavigate();
   // const [results, setResults] = useState([]);
@@ -109,6 +117,10 @@ export const CommandDialog = () => {
       name: 'Toggle focus mode',
       onClick: () => {
         toggleFocusModeState();
+
+        if (!isFocusModeActive) {
+          setSidebarState(false);
+        }
       },
       icon: Construction,
     },

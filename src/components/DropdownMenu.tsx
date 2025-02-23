@@ -90,7 +90,7 @@ export const Content = ({
       }}
     >
       {withMenu && (
-        <Menu className="w-[250px] bg-white p-1 shadow-1 rounded-lg flex flex-col gap-1">
+        <Menu className="w-[250px] bg-white p-2 shadow-1 rounded-xl flex flex-col gap-1 dark:bg-stone-800">
           {children}
         </Menu>
       )}
@@ -121,14 +121,18 @@ export const DropdownMenuItem: FC<DropdownMenuItemProps> = ({
       isDisabled={disabled}
       className={`
         transition-all
-        rounded-md
-        hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center px-2 py-1.5 
+        rounded-lg
+        hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center px-2 py-1.5 dark:hover:bg-stone-700
         ${disabled ? 'opacity-50 hover:ring-transparent hover:bg-transparent' : 'cursor-pointer'}
       `}
     >
-      {icon && <span className="mr-2">{icon}</span>}
-      <span>{children}</span>
-      {shortcut && <span className="ml-auto text-gray-800 font-light text-xs">{shortcut}</span>}
+      {icon && <span className="mr-2 text-stone-500">{icon}</span>}
+      <span className="text-stone-900 dark:text-stone-300">{children}</span>
+      {shortcut && (
+        <span className="ml-auto text-stone-900 dark:text-stone-300 font-light text-xs">
+          {shortcut}
+        </span>
+      )}
     </MenuItem>
   );
 };

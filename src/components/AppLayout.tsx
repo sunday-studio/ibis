@@ -19,7 +19,7 @@ export const AppLayout = () => {
         data-editor-mode={isFocusMode ? 'focus' : 'normal'}
       >
         <div
-          className="rounded-lg flex overflow-hidden w-full bg-transparent p-1.5"
+          className="rounded-lg flex overflow-hidden w-full bg-transparent p-2"
           data-tauri-drag-region
         >
           <motion.div

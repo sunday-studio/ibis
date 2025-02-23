@@ -43,7 +43,7 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
 
   const pinnedNotesIds = pinnedNotes?.map((note) => note.id);
 
-  const defaultIconColor = 'var(--color-neutral-800)';
+  const defaultIconColor = 'currentColor';
 
   const options = useMemo(() => {
     return [
@@ -131,7 +131,7 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
     <>
       <DropdownMenu isOpen={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenu.Trigger>
-          <EllipsisIcon />
+          <EllipsisIcon className="text-stone-600 dark:text-stone-400" />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           {options.map((option) => (
