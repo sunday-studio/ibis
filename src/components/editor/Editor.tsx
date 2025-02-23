@@ -34,6 +34,7 @@ import DraggableBlockPlugin from './plugins/DraggableBlock';
 import { setNodePlaceholderFromSelection } from './NodePlaceholder/utils';
 
 import FloatingMenuPlugin from './FloatingMenuPlugin/FloatingMenuPlugin';
+import ShortcutPlugin from './plugins/ShortcutPlugin';
 
 // import FloatingMenuPlugin from './FloatingMenuPlugin/FloatingMenuPlugin';
 // import { FloatingLinkEditorPlugin } from './FloatingMenuPlugin/FloatingLinkEditor';
@@ -155,6 +156,7 @@ export const Editor = ({
         <PageBreakPlugin />
         <SearchDialogPlugin />
         <HashtagPlugin />
+        <ShortcutPlugin />
       </div>
     </LexicalComposer>
   );

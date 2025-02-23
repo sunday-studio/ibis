@@ -84,8 +84,8 @@ export const Sidebar = () => {
     : null;
 
   return (
-    <div className="flex h-full">
-      <div className="w-full h-full">
+    <div className="flex h-full" data-tauri-drag-region>
+      <div className="w-full h-full" data-tauri-drag-region>
         {/* {currentSidebarMenu} */}
         <NotesSidebarMenu />
       </div>

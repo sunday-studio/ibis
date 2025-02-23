@@ -68,8 +68,8 @@ export const NotesSidebarMenu = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full h-full">
-      <div className="px-4 flex flex-col gap-2">
+    <div className="flex flex-col gap-2 w-full h-full" data-tauri-drag-region>
+      <div className="px-4 flex flex-col gap-2" data-tauri-drag-region>
         {isNotesLoading ? (
           <p>Loading...</p>
         ) : (

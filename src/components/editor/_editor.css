@@ -9,6 +9,13 @@
   background-color: var(--color-white);
 }
 
+@media (prefers-color-scheme: dark) {
+  .editor-wrapper,
+  .editor-inner {
+    background-color: var(--color-stone-800);
+  }
+}
+
 .editor-root {
   padding: 0 var(--editor-padding);
   outline: none;

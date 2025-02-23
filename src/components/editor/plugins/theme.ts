@@ -20,7 +20,6 @@ export const theme: EditorThemeClasses = {
     h4: 'editor-heading-h4',
     h5: 'editor-heading-h5',
   },
-
   list: {
     checklist: 'editor-checklist',
     listitem: 'editor-list-item',
