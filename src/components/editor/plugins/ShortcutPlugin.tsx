@@ -4,7 +4,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 
 import { toggleSidebarState } from '@/app.store';
 
-export default function ShortcutPlugin(): JSX.Element | null {
+export const ShortcutPlugin = (): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
 
   useLayoutEffect(() => {
@@ -31,4 +31,4 @@ export default function ShortcutPlugin(): JSX.Element | null {
   }, [editor]);
 
   return null;
-}
+};

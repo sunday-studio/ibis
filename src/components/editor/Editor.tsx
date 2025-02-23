@@ -33,13 +33,11 @@ import { EditorState } from 'lexical';
 import DraggableBlockPlugin from './plugins/DraggableBlock';
 import { setNodePlaceholderFromSelection } from './NodePlaceholder/utils';
 
-import FloatingMenuPlugin from './FloatingMenuPlugin/FloatingMenuPlugin';
-import ShortcutPlugin from './plugins/ShortcutPlugin';
+import { FloatingMenuPlugin } from './FloatingMenuPlugin/FloatingMenuPlugin';
+import { ShortcutPlugin } from './plugins/ShortcutPlugin';
+import { FocusModePlugin } from './plugins/FocusModePlugin';
 
-// import FloatingMenuPlugin from './FloatingMenuPlugin/FloatingMenuPlugin';
-// import { FloatingLinkEditorPlugin } from './FloatingMenuPlugin/FloatingLinkEditor';
-// import { FloatingLinkEditorPlugin } from './FloatingMenuPlugin/FloatingLinkEditor';
-
+import './_editor.css';
 import './_editor.css';
 
 const OnChangePlugin = ({ onChange }: { onChange: (editorState: EditorState) => void }) => {
@@ -157,6 +155,7 @@ export const Editor = ({
         <SearchDialogPlugin />
         <HashtagPlugin />
         <ShortcutPlugin />
+        <FocusModePlugin />
       </div>
     </LexicalComposer>
   );

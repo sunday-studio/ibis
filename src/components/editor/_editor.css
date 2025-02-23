@@ -9,10 +9,35 @@
   background-color: var(--color-white);
 }
 
+@media (prefers-color-scheme: light) {
+  /* TODO: add styling for other elements */
+  [data-editor-mode='focus'] {
+    .editor-root,
+    .app-content {
+      color: var(--color-gray-300);
+    }
+
+    .active-block {
+      color: var(--color-gray-800);
+    }
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .editor-wrapper,
   .editor-inner {
     background-color: var(--color-stone-800);
+  }
+
+  [data-editor-mode='focus'] {
+    .editor-root,
+    .app-content {
+      color: var(--color-stone-600);
+    }
+
+    .active-block {
+      color: var(--color-gray-100);
+    }
   }
 }
 

@@ -17,7 +17,11 @@ import { useFloatingToolbarStoreListener } from './floating-toolbar.store';
 
 const DEFAULT_DOM_ELEMENT = document.body;
 
-function FloatingMenuPlugin({ anchorElem = DEFAULT_DOM_ELEMENT }: { anchorElem?: HTMLElement }) {
+export const FloatingMenuPlugin = ({
+  anchorElem = DEFAULT_DOM_ELEMENT,
+}: {
+  anchorElem?: HTMLElement;
+}) => {
   const ref = useRef(null);
   const [coords, setCoords] = useState<{ x: number; y: number } | undefined>(undefined);
   const show = coords !== undefined;
@@ -104,6 +108,4 @@ function FloatingMenuPlugin({ anchorElem = DEFAULT_DOM_ELEMENT }: { anchorElem?:
     </div>,
     anchorElem,
   );
-}
-
-export default FloatingMenuPlugin;
+};

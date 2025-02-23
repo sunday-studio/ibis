@@ -61,7 +61,7 @@ function getCollapsedMargins(elem: HTMLElement): {
   return { marginBottom: collapsedBottomMargin, marginTop: collapsedTopMargin };
 }
 
-function getBlockElement(
+export function getBlockElement(
   anchorElem: HTMLElement,
   editor: LexicalEditor,
   event: MouseEvent,
@@ -394,7 +394,11 @@ function useDraggableBlockMenu(
       return;
     }
 
-    targetBlockElem.classList.add('draggable-element');
+    if (!targetBlockElem.classList.contains('draggable-element')) {
+      targetBlockElem.classList.add('draggable-element');
+    } else {
+      targetBlockElem.classList.remove('draggable-element');
+    }
 
     console.log('targetBlockElem', targetBlockElem);
 
