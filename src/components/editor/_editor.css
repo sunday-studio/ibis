@@ -266,7 +266,6 @@
   border-radius: var(--radius-md);
   background-color: var(--color-blue-500);
   background-repeat: no-repeat;
-  box-shadow: 0 0 0 3px var(--color-blue-200);
 }
 
 .editor-list-item-checked:before {

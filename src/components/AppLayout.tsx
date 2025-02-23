@@ -36,7 +36,7 @@ export const AppLayout = () => {
             </div>
           </motion.div>
 
-          <div className="bg-white w-full overflow-y-auto shadow-1 rounded-lg dark:bg-stone-950 app-content">
+          <div className="bg-white w-full overflow-y-auto shadow-1 rounded-lg dark:bg-stone-950 app-content relative">
             <Outlet />
           </div>
         </div>

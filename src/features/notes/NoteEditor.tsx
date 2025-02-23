@@ -39,13 +39,19 @@ export const NoteEditor = () => {
     isPinVerificationOpen === undefined ? data.isLocked : isPinVerificationOpen;
 
   return (
-    <div className="flex flex-col w-full min-h-screen p-4 relative px-20">
-      <div className="flex absolute top-0 right-0 w-full justify-between items-center p-2 px-4">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+    <div className="flex flex-col w-full min-h-screen relative">
+      <div className="flex sticky top-0 w-full flex-col z-1 px-10 py-2 bg-white dark:bg-stone-950 border">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <span className="relative flex size-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex size-2 rounded-full bg-green-500"></span>
+            </span>
+          </div>
+          <p>{headerTitle}</p>
+          <NoteActionsMenu note={data} />
         </div>
-        <p>{headerTitle}</p>
-        <NoteActionsMenu note={data} />
+        <div className="bottom-mask absolute bottom-0 left-0 w-full h-20"></div>
       </div>
 
       {showPinVerification && (
@@ -62,7 +68,7 @@ export const NoteEditor = () => {
       )}
 
       {data && (
-        <div className="flex flex-col w-full h-full mt-24">
+        <div className="flex flex-col w-full h-full mt-24 px-20">
           <input
             value={title ?? data?.title ?? 'Untitled'}
             className="mb-6 font-semibold text-4xl text-gray-800 outline-none editor-title dark:text-stone-100"

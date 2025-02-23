@@ -34,6 +34,18 @@ body,
 @theme {
   --shadow-1: rgba(0, 0, 0, 0.07) 0px 16px 24px 0px, rgba(0, 0, 0, 0.1) 0px 2px 6px 0px,
     rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  --animation-contentShow: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  @keyframes contentShow {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -48%) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
 }
 
 .debug {
@@ -103,6 +115,10 @@ body,
     right: 100%;
     transform: translateY(-50%) rotate(90deg);
   }
+
+  .bottom-mask {
+    mask-image: linear-gradient(to top, black calc(100% - 40px), transparent 100%);
+  }
 }
 
 @keyframes pulse {
@@ -167,17 +183,6 @@ body,
   }
   to {
     opacity: 1;
-  }
-}
-
-@keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -48%) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
   }
 }
 

@@ -1,7 +1,7 @@
 import { proxy } from 'valtio';
 
 export const sidebarState = proxy({
-  isSidebarOpen: false,
+  isSidebarOpen: true,
 });
 
 export const editorModeState = proxy({
