@@ -18,4 +18,5 @@ export const toggleSidebarState = () => {
 
 export const toggleFocusModeState = () => {
   editorModeState.isFocusMode = !editorModeState.isFocusMode;
+  sidebarState.isSidebarOpen = false;
 };

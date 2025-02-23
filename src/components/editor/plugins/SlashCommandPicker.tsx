@@ -1,7 +1,5 @@
-import { useCallback, useMemo, useState } from 'react';
-
+import { JSX, useCallback, useMemo, useState } from 'react';
 import * as ReactDOM from 'react-dom';
-
 import { $createCodeNode } from '@lexical/code';
 import {
   INSERT_CHECK_LIST_COMMAND,
@@ -14,12 +12,12 @@ import {
   MenuOption,
   useBasicTypeaheadTriggerMatch,
 } from '@lexical/react/LexicalTypeaheadMenuPlugin';
-import { $createHeadingNode, $createQuoteNode } from '@lexical/rich-text';
+import { $createHeadingNode, $createQuoteNode, HeadingTagType } from '@lexical/rich-text';
 import { $setBlocksType } from '@lexical/selection';
-import { $createParagraphNode, $getSelection, $isRangeSelection } from 'lexical';
+import { $createParagraphNode, $getSelection, $isRangeSelection, TextNode } from 'lexical';
 import {
   CheckSquare,
-  Code,
+  CodeXml,
   Heading1,
   Heading2,
   Heading3,
@@ -29,54 +27,46 @@ import {
   Quote,
   ScissorsIcon,
 } from 'lucide-react';
-
 import { INSERT_PAGE_BREAK } from './PageBreakPlugin/PageBreakPlugin';
 
-const headingIconMap: Record<'h1' | 'h2' | 'h3', JSX.Element> & {
-  [index: string]: JSX.Element;
-} = {
+const headingIconMap = {
   h1: <Heading1 size={18} />,
   h2: <Heading2 size={18} />,
   h3: <Heading3 size={18} />,
-};
+} as const;
 
-type ComponentPickerOptionParams = {
+interface ComponentPickerOptionParams {
   keywords?: string[];
   icon?: JSX.Element | string;
   keyboardShortcut?: string;
   onSelect: (v1: any, v2?: any) => void;
-};
-
-type Option = ComponentPickerOptionParams & {
-  title: string;
-  keywords: string[];
-  key: string;
-  setRefElement?: React.RefObject<HTMLLIElement>;
-};
-
-type SlashCommandMenuItem = {
-  index: number;
-  isSelected: boolean;
-  onClick: () => void;
-  onMouseEnter: React.MouseEventHandler<HTMLLIElement>;
-  option: Option;
-};
+}
 
 class ComponentPickerOption extends MenuOption {
-  title: any;
-  icon: any;
-  keywords: any;
-  keyboardShortcut: any;
-  onSelect: any;
+  title: string;
+  icon: JSX.Element | string;
+  keywords: string[];
+  keyboardShortcut: string | undefined;
+  onSelect: (v1: any, v2?: any) => void;
+  key: string;
 
   constructor(title: string, options: ComponentPickerOptionParams) {
     super(title);
     this.title = title;
     this.keywords = options.keywords || [];
-    this.icon = options.icon;
+    this.icon = options.icon || '';
     this.keyboardShortcut = options.keyboardShortcut;
     this.onSelect = options.onSelect.bind(this);
+    this.key = title.toLowerCase().replace(/\s+/g, '-');
   }
+}
+
+interface SlashCommandMenuItem {
+  index: number;
+  isSelected: boolean;
+  onClick: () => void;
+  onMouseEnter: React.MouseEventHandler<HTMLLIElement>;
+  option: ComponentPickerOption;
 }
 
 function SlashCommandMenuItem({
@@ -90,22 +80,22 @@ function SlashCommandMenuItem({
     <li
       key={option.key}
       tabIndex={-1}
-      ref={option.setRefElement}
       role="option"
-      id={'typeahead-item-' + index}
+      id={`typeahead-item-${index}`}
       aria-selected={isSelected}
       onMouseEnter={onMouseEnter}
       onClick={onClick}
+      className="flex cursor-pointer items-center justify-start p-2 rounded-lg gap-2 aria-[selected='true']:bg-stone-100 aria-[selected='true']:inset-ring aria-[selected='true']:inset-ring-stone-200"
     >
-      <div className="icon">{option?.icon}</div>
-      <p className="text">{option?.title}</p>
+      <div className="text-stone-500 w-6 h-6 flex items-center justify-center">{option.icon}</div>
+      <p className="text-stone-900">{option.title}</p>
     </li>
   );
 }
 
 export default function SlashCommandPickerPlugin() {
   const [editor] = useLexicalComposerContext();
-  const [queryString, setQueryString] = useState(null);
+  const [queryString, setQueryString] = useState<string | null>(null);
 
   const checkForTriggerMatch = useBasicTypeaheadTriggerMatch('/', {
     minLength: 0,
@@ -125,18 +115,15 @@ export default function SlashCommandPickerPlugin() {
           }),
       }),
       ...Array.from({ length: 3 }, (_, i) => i + 1).map(
-        (n: number) =>
+        (n) =>
           new ComponentPickerOption(`Heading ${n}`, {
-            icon: headingIconMap[`h${n}`],
+            icon: headingIconMap[`h${n}` as keyof typeof headingIconMap],
             keywords: ['heading', 'header', `h${n}`],
             onSelect: () =>
               editor.update(() => {
                 const selection = $getSelection();
                 if ($isRangeSelection(selection)) {
-                  $setBlocksType(selection, () =>
-                    // @ts-ignore Correct types, but since they're dynamic TS doesn't like it.
-                    $createHeadingNode(`h${n}`),
-                  );
+                  $setBlocksType(selection, () => $createHeadingNode(`h${n}` as HeadingTagType));
                 }
               }),
           }),
@@ -146,20 +133,18 @@ export default function SlashCommandPickerPlugin() {
         keywords: ['bulleted list', 'unordered list', 'ul'],
         onSelect: () => editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined),
       }),
-
       new ComponentPickerOption('Numbered list', {
         icon: <ListOrdered size={18} />,
         keywords: ['numbered list', 'ordered list', 'ol'],
         onSelect: () => editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined),
       }),
-
       new ComponentPickerOption('Check list', {
         icon: <CheckSquare size={18} />,
         keywords: ['check list', 'todo list'],
         onSelect: () => editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined),
       }),
       new ComponentPickerOption('Code', {
-        icon: <Code size={18} />,
+        icon: <CodeXml size={18} />,
         keywords: ['javascript', 'python', 'js', 'codeblock'],
         onSelect: () =>
           editor.update(() => {
@@ -187,7 +172,6 @@ export default function SlashCommandPickerPlugin() {
             }
           }),
       }),
-
       new ComponentPickerOption('Page break', {
         icon: <ScissorsIcon size={18} />,
         keywords: ['page break', 'divider'],
@@ -197,28 +181,26 @@ export default function SlashCommandPickerPlugin() {
       }),
     ];
 
-    return queryString
-      ? [
-          ...baseOptions.filter((option: Omit<Option, 'setRefElement'>) => {
-            return new RegExp(queryString, 'gi').exec(option.title) || option.keywords != null
-              ? option.keywords.some((keyword) => new RegExp(queryString, 'gi').exec(keyword))
-              : false;
-          }),
-        ]
-      : baseOptions;
+    if (!queryString) return baseOptions;
+
+    return baseOptions.filter((option) => {
+      const titleMatch = new RegExp(queryString, 'gi').test(option.title);
+      const keywordMatch = option.keywords?.some((keyword) =>
+        new RegExp(queryString, 'gi').test(keyword),
+      );
+      return titleMatch || keywordMatch;
+    });
   }, [editor, queryString]);
 
   const onSelectOption = useCallback(
     (
-      selectedOption: Option,
-      nodeToRemove: { remove: () => void },
+      selectedOption: ComponentPickerOption,
+      nodeToRemove: TextNode | null,
       closeMenu: () => void,
-      matchingString: any,
+      matchingString: string,
     ) => {
       editor.update(() => {
-        if (nodeToRemove) {
-          nodeToRemove.remove();
-        }
+        nodeToRemove?.remove();
         selectedOption.onSelect(matchingString);
         closeMenu();
       });
@@ -227,45 +209,40 @@ export default function SlashCommandPickerPlugin() {
   );
 
   return (
-    <>
-      <LexicalTypeaheadMenuPlugin
-        // @ts-ignore
-        onQueryChange={setQueryString}
-        // @ts-ignore
-        onSelectOption={onSelectOption}
-        triggerFn={checkForTriggerMatch}
-        options={options}
-        menuRenderFn={(
-          anchorElementRef,
-          { selectedIndex, selectOptionAndCleanUp, setHighlightedIndex },
-        ) =>
-          anchorElementRef.current && options.length
-            ? ReactDOM.createPortal(
-                <div className="component-picker-menu popover-container">
-                  <ul>
-                    {options.map((option: Omit<Option, 'setRefElement'>, i) => (
-                      <SlashCommandMenuItem
-                        index={i}
-                        isSelected={selectedIndex === i}
-                        onClick={() => {
-                          setHighlightedIndex(i);
-                          // @ts-ignore
-                          selectOptionAndCleanUp(option);
-                        }}
-                        onMouseEnter={() => {
-                          setHighlightedIndex(i);
-                        }}
-                        key={option.key}
-                        option={option}
-                      />
-                    ))}
-                  </ul>
-                </div>,
-                anchorElementRef.current,
-              )
-            : null
-        }
-      />
-    </>
+    <LexicalTypeaheadMenuPlugin
+      onQueryChange={setQueryString}
+      onSelectOption={onSelectOption}
+      triggerFn={checkForTriggerMatch}
+      options={options}
+      menuRenderFn={(
+        anchorElementRef,
+        { selectedIndex, selectOptionAndCleanUp, setHighlightedIndex },
+      ) =>
+        anchorElementRef.current && options.length
+          ? ReactDOM.createPortal(
+              <div className="shadow-1 rounded-lg p-2 bg-white dark:bg-stone-800 w-[250px]">
+                <ul className="list-none p-0 m-0">
+                  {options.map((option, i) => (
+                    <SlashCommandMenuItem
+                      index={i}
+                      isSelected={selectedIndex === i}
+                      onClick={() => {
+                        setHighlightedIndex(i);
+                        selectOptionAndCleanUp(option);
+                      }}
+                      onMouseEnter={() => {
+                        setHighlightedIndex(i);
+                      }}
+                      key={option.key}
+                      option={option}
+                    />
+                  ))}
+                </ul>
+              </div>,
+              anchorElementRef.current,
+            )
+          : null
+      }
+    />
   );
 }

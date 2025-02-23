@@ -1,14 +1,6 @@
 import { editorModeState } from '@/app.store';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import {
-  $getRoot,
-  $getSelection,
-  $isNodeSelection,
-  $isRangeSelection,
-  COMMAND_PRIORITY_LOW,
-  LexicalEditor,
-  SELECTION_CHANGE_COMMAND,
-} from 'lexical';
+import { $getSelection, $isNodeSelection, $isRangeSelection, LexicalEditor } from 'lexical';
 import { useEffect, useRef } from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -53,7 +45,6 @@ export const FocusModePlugin = () => {
   const isFocusMode = useSnapshot(editorModeState).isFocusMode;
   const currentBlock = useRef<HTMLElement | null>(null);
 
-  // console.log('editorModeState.isFocusMode', editorModeState.isFocusMode, editor);
   useEffect(() => {
     if (!isFocusMode) {
       return;
@@ -84,9 +75,6 @@ export const FocusModePlugin = () => {
       unregister();
     };
   }, [editor, isFocusMode]);
-  // useEffect(() => {
-  //   editor.setEditable(editorModeState.isFocusMode);
-  // }, [editor, editorModeState.isFocusMode]);
 
   return null;
 };

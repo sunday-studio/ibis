@@ -9,42 +9,11 @@
   background-color: var(--color-white);
 }
 
-@media (prefers-color-scheme: light) {
-  /* TODO: add styling for other elements */
-  [data-editor-mode='focus'] {
-    .editor-root,
-    .app-content {
-      color: var(--color-gray-300);
-    }
-
-    .active-block {
-      color: var(--color-gray-800);
-    }
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .editor-wrapper,
-  .editor-inner {
-    background-color: var(--color-stone-800);
-  }
-
-  [data-editor-mode='focus'] {
-    .editor-root,
-    .app-content {
-      color: var(--color-stone-600);
-    }
-
-    .active-block {
-      color: var(--color-gray-100);
-    }
-  }
-}
-
 .editor-root {
   padding: 0 var(--editor-padding);
   outline: none;
   font-size: var(--editor-font-size);
+  color: var(--color-stone-700);
 }
 
 .editor-title {
@@ -403,4 +372,40 @@
   color: var(--color-gray-500);
   padding-left: 4px;
   font-style: italic;
+}
+
+@media (prefers-color-scheme: light) {
+  /* TODO: add styling for other elements */
+  [data-editor-mode='focus'] {
+    .editor-root,
+    .app-content {
+      color: var(--color-gray-300);
+    }
+
+    .active-block {
+      color: var(--color-gray-800);
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .editor-root {
+    color: var(--color-stone-300);
+  }
+
+  .editor-wrapper,
+  .editor-inner {
+    background-color: var(--color-stone-800);
+  }
+
+  [data-editor-mode='focus'] {
+    .editor-root,
+    .app-content {
+      color: var(--color-stone-600);
+    }
+
+    .active-block {
+      color: var(--color-gray-100);
+    }
+  }
 }
