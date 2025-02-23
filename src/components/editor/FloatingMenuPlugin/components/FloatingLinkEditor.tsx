@@ -124,13 +124,13 @@ export const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({ editor, isLink
 
   return (
     <DropdownMenu isOpen={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenu.Trigger className="ring-0 hover:ring-0! p-0! rounded-lg!">
+      <DropdownMenu.Trigger className="ring-0! hover:ring-0! p-0! rounded-lg!">
         <Tooltip
           trigger={
             <div
               role="button"
               className={clsx(
-                'flex items-center justify-center gap-1 h-8 rounded-lg hover:bg-neutral-100 px-2',
+                'flex items-center justify-center gap-1 h-8 rounded-lg hover:bg-neutral-100 px-2 dark:hover:bg-stone-700',
               )}
             >
               <Link size={14} />

@@ -395,7 +395,7 @@
 
   .editor-wrapper,
   .editor-inner {
-    background-color: var(--color-stone-800);
+    background-color: var(--color-stone-950);
   }
 
   [data-editor-mode='focus'] {

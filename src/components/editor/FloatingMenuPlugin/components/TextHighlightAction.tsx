@@ -186,7 +186,7 @@ export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) =>
         <Tooltip
           shortcuts={['⌘', 'H']}
           trigger={
-            <div className="flex items-center justify-center gap-1 h-8 rounded-lg hover:bg-neutral-100 px-2">
+            <div className="flex items-center justify-center gap-1 h-8 rounded-lg hover:bg-neutral-100 px-2 dark:hover:bg-stone-700">
               <div
                 className="size-4 rounded-full"
                 style={{
@@ -204,9 +204,11 @@ export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) =>
         />
       </DropdownMenu.Trigger>
       <DropdownMenu.Content withMenu={false}>
-        <div className="p-4 flex flex-col gap-3 bg-white rounded-lg shadow-1 max-w-[200px]">
+        <div className="p-4 flex flex-col gap-3 bg-white rounded-lg shadow-1 max-w-[200px] dark:bg-stone-800">
           <div className="flex gap-2 flex-col">
-            <h4 className="text-sm text-neutral-600 font-semibold">Text color</h4>
+            <h4 className="text-sm text-neutral-600 font-semibold dark:text-stone-400">
+              Text color
+            </h4>
             <div className="grid grid-cols-5 gap-2">
               {foregroundColors.map((color, index) => {
                 const isActive = isActiveColor(color.color, textColor);
@@ -240,7 +242,9 @@ export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) =>
           </div>
 
           <div className="flex gap-2 flex-col">
-            <h4 className="text-sm text-neutral-600 font-semibold">Background color</h4>
+            <h4 className="text-sm text-neutral-600 font-semibold dark:text-stone-400">
+              Background color
+            </h4>
             <div className="grid grid-cols-5 gap-2">
               {backgroundColors.map((color, index) => {
                 const isActive = isActiveColor(color.color, backgroundColor);

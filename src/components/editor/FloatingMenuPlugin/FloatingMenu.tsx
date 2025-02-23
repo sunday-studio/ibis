@@ -68,7 +68,7 @@ const SingleAction: FC<SingleActionProps> = ({
         onPress={action}
         aria-label={label}
         className={clsx(
-          'flex items-center justify-center w-8 h-8 rounded-lg hover:bg-neutral-100',
+          'flex items-center justify-center w-8 h-8 rounded-lg hover:bg-neutral-100 dark:hover:bg-stone-700',
           {
             'text-orange-600': isActive,
           },
@@ -161,7 +161,6 @@ const FloatingMenuComponent = ({ ref, editor }: FloatingMenuComponentProps) => {
           action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'highlight')}
         />
       ),
-      separator: true,
     },
     {
       label: 'Code',
@@ -174,6 +173,7 @@ const FloatingMenuComponent = ({ ref, editor }: FloatingMenuComponentProps) => {
           action={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code')}
         />
       ),
+      separator: true,
     },
     {
       label: 'Superscript',
@@ -249,13 +249,13 @@ const FloatingMenuComponent = ({ ref, editor }: FloatingMenuComponentProps) => {
   return (
     <div
       ref={ref}
-      className="transition-opacity duration-500 will-change-transform align-middle flex items-center justify-center p-1 bg-white rounded-xl shadow-1"
+      className="transition-opacity duration-500 will-change-transform align-middle flex items-center justify-center p-1 bg-white rounded-xl shadow-1 dark:bg-stone-800"
     >
       <div className="flex items-center justify-center gap-1.5">
         {actions.map((action, index) => (
           <Fragment key={index}>
             {action.cell}
-            {action.separator && <div className="h-6 bg-neutral-100 w-[1px]" />}
+            {action.separator && <div className="h-6 bg-neutral-100 w-[1px] dark:bg-stone-700" />}
           </Fragment>
         ))}
       </div>
