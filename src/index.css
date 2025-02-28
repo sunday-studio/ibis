@@ -1,1 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Ojuju:wght@200..800&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+@font-face {
+  font-family: 'HypatiaSansPro';
+  src: url('/fonts/HypatiaSansPro/ExtraLight.woff2') format('woff2');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HypatiaSansPro';
+  src: url('/fonts/HypatiaSansPro/Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HypatiaSansPro';
+  src: url('/fonts/HypatiaSansPro/Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HypatiaSansPro';
+  src: url('/fonts/HypatiaSansPro/SemiBold.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HypatiaSansPro';
+  src: url('/fonts/HypatiaSansPro/Bold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HypatiaSansPro';
+  src: url('/fonts/HypatiaSansPro/ExtraBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
