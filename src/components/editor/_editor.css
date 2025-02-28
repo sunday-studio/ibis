@@ -26,7 +26,7 @@
 
 .editor-placeholder {
   position: absolute;
-  margin-top: -26px;
+  margin-top: -24px;
   font-style: italic;
   color: var(--color-gray-500);
   font-size: var(--editor-font-size);

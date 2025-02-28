@@ -49,12 +49,13 @@ export const NoteEditor = () => {
     <div className="flex flex-col w-full min-h-screen relative">
       <div className="flex sticky top-0 w-full flex-col z-1">
         <div
-          className="flex justify-between items-center bg-white dark:bg-stone-950 px-20 py-2"
+          className="flex justify-between items-center bg-white dark:bg-stone-950 px-20 h-14"
           data-tauri-drag-region
         >
           <div className="flex items-center gap-2" data-tauri-drag-region>
             {!isSidebarOpen && (
               <Tooltip
+                shortcuts={['⌘', 'D']}
                 key="sidebar-toggle"
                 leaveDuration={0}
                 hoverDuration={300}
