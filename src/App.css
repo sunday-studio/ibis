@@ -75,14 +75,14 @@ body,
   font-style: normal;
 }
 
-.sticky-header {
+.note-header {
   mask-image: linear-gradient(to bottom, black calc(100% - 40px), transparent 100%);
   background-color: var(--color-white);
   height: 40px;
 }
 
 @media (prefers-color-scheme: dark) {
-  .sticky-header {
+  .note-header {
     background-color: var(--color-stone-950);
   }
 }

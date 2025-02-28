@@ -51,7 +51,7 @@ export const NoteEditor = () => {
           <p>{headerTitle}</p>
           <NoteActionsMenu note={data} />
         </div>
-        <div className="sticky-header" />
+        <div className="note-header" />
       </div>
 
       {showPinVerification && (
