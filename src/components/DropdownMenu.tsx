@@ -60,7 +60,7 @@ export const DropdownMenuTrigger: FC<DropdownMenuTriggerProps> = ({
         state.setIsOpen(!state.isOpen);
       }}
       className={clsx(
-        'bg-transparent hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center p-1 rounded-md dark:hover:bg-stone-700 z-2',
+        'bg-transparent hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center rounded-lg dark:hover:bg-stone-700 z-2 px-1 py-0.5',
         className,
       )}
     >

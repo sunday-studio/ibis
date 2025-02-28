@@ -6,9 +6,15 @@ import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
 import { NoteActionsMenu } from './NoteActionsMenu';
 import { PinVerification } from '@/components/PinVerification';
+import { Tooltip } from '@/components/Tooltip';
+import { PanelRight } from 'lucide-react';
+import { toggleSidebarState } from '@/app.store';
+import { useSnapshot } from 'valtio';
+import { sidebarState } from '@/app.store';
 
 export const NoteEditor = () => {
   const { noteId } = useParams();
+  const isSidebarOpen = useSnapshot(sidebarState).isSidebarOpen;
   const { data, isLoading } = useGetNote({ noteId: noteId as string });
   const { mutate: updateNote } = useUpdateNote({ noteId: noteId as string });
 
@@ -41,8 +47,27 @@ export const NoteEditor = () => {
   return (
     <div className="flex flex-col w-full min-h-screen relative">
       <div className="flex sticky top-0 w-full flex-col z-1">
-        <div className="flex justify-between items-center h-10 bg-white dark:bg-stone-950 px-20  pt-4">
-          <div className="flex items-center gap-2">
+        <div
+          className="flex justify-between items-center h-10 bg-white dark:bg-stone-950 px-20  pt-4"
+          data-tauri-drag-region
+        >
+          <div className="flex items-center gap-2" data-tauri-drag-region>
+            {!isSidebarOpen && (
+              <Tooltip
+                leaveDuration={0}
+                hoverDuration={300}
+                trigger={
+                  <button
+                    className="flex items-center hover:bg-stone-100 rounded-lg p-2"
+                    onClick={() => toggleSidebarState()}
+                  >
+                    <PanelRight size={18} />
+                  </button>
+                }
+                content="Open in sidebar"
+              />
+            )}
+
             <span className="relative flex size-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex size-2 rounded-full bg-green-500"></span>
@@ -51,7 +76,7 @@ export const NoteEditor = () => {
           <p>{headerTitle}</p>
           <NoteActionsMenu note={data} />
         </div>
-        <div className="note-header" />
+        {/* <div className="note-header" data-tauri-drag-region /> */}
       </div>
 
       {showPinVerification && (
@@ -68,7 +93,7 @@ export const NoteEditor = () => {
       )}
 
       {data && (
-        <div className="flex flex-col w-full h-full mt-24 px-20">
+        <div className="flex flex-col h-full mt-24 w-2/3 mx-auto">
           <input
             value={title ?? data?.title ?? 'Untitled'}
             className="mb-6 font-semibold text-4xl text-gray-800 outline-none editor-title dark:text-stone-100"
