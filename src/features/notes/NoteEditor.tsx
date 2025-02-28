@@ -40,8 +40,8 @@ export const NoteEditor = () => {
 
   return (
     <div className="flex flex-col w-full min-h-screen relative">
-      <div className="flex sticky top-0 w-full flex-col z-1 px-10 py-2 bg-white dark:bg-stone-950 border">
-        <div className="flex justify-between items-center">
+      <div className="flex sticky top-0 w-full flex-col z-1">
+        <div className="flex justify-between items-center h-10 bg-white dark:bg-stone-950 px-20  pt-4">
           <div className="flex items-center gap-2">
             <span className="relative flex size-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
@@ -51,7 +51,7 @@ export const NoteEditor = () => {
           <p>{headerTitle}</p>
           <NoteActionsMenu note={data} />
         </div>
-        <div className="bottom-mask absolute bottom-0 left-0 w-full h-20"></div>
+        <div className="sticky-header" />
       </div>
 
       {showPinVerification && (
