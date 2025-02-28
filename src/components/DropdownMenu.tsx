@@ -138,7 +138,7 @@ export const DropdownMenuItem: FC<DropdownMenuItemProps> = ({
 };
 
 export const DropdownMenuSeparator = () => {
-  return <Separator />;
+  return <Separator className="w-full border-neutral-200 dark:border-stone-700 border-b" />;
 };
 
 export const DropdownMenu = Object.assign(DropdownMenuRoot, {

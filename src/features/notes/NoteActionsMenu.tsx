@@ -139,8 +139,6 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
               {option.title}
             </DropdownMenu.Item>
           ))}
-
-          <DropdownMenu.Separator />
         </DropdownMenu.Content>
       </DropdownMenu>
     </>

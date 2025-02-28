@@ -11,6 +11,7 @@ import { PanelRight } from 'lucide-react';
 import { toggleSidebarState } from '@/app.store';
 import { useSnapshot } from 'valtio';
 import { sidebarState } from '@/app.store';
+import { AnimatePresence, motion } from 'motion/react';
 
 export const NoteEditor = () => {
   const { noteId } = useParams();
@@ -48,12 +49,13 @@ export const NoteEditor = () => {
     <div className="flex flex-col w-full min-h-screen relative">
       <div className="flex sticky top-0 w-full flex-col z-1">
         <div
-          className="flex justify-between items-center h-10 bg-white dark:bg-stone-950 px-20  pt-4"
+          className="flex justify-between items-center bg-white dark:bg-stone-950 px-20 py-2"
           data-tauri-drag-region
         >
           <div className="flex items-center gap-2" data-tauri-drag-region>
             {!isSidebarOpen && (
               <Tooltip
+                key="sidebar-toggle"
                 leaveDuration={0}
                 hoverDuration={300}
                 trigger={
@@ -76,7 +78,7 @@ export const NoteEditor = () => {
           <p>{headerTitle}</p>
           <NoteActionsMenu note={data} />
         </div>
-        {/* <div className="note-header" data-tauri-drag-region /> */}
+        <div className="note-header" data-tauri-drag-region />
       </div>
 
       {showPinVerification && (
