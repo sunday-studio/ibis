@@ -7,162 +7,127 @@
 
 .editor-wrapper,
 .editor-inner {
-  position: relative;
-  background-color: var(--color-white);
+  @apply relative bg-white dark:bg-stone-950;
 }
 
 .editor-root {
-  padding: 0 var(--editor-padding);
-  outline: none;
+  @apply px-[var(--editor-padding)] outline-none text-stone-700;
   font-size: var(--editor-font-size);
-  color: var(--color-stone-700);
 }
 
 .editor-title {
-  padding: 0 var(--editor-padding);
+  @apply px-[var(--editor-padding)];
 }
 
 .editor-text-code {
-  padding: 2px 4px;
-  border-radius: var(--radius-sm);
-  background-color: var(--color-gray-100);
+  @apply px-1 py-0.5 rounded-[var(--radius-sm)] bg-gray-100;
 }
 
 .editor-placeholder {
-  position: absolute;
-  margin-top: -26px;
-  font-style: italic;
-  color: var(--color-gray-500);
+  @apply absolute -mt-[26px] italic text-gray-500 truncate pointer-events-none pl-[calc(var(--editor-padding)+4px)] z-[2];
   font-size: var(--editor-font-size);
-  text-overflow: ellipsis;
-  pointer-events: none;
-  padding-left: calc(var(--editor-padding) + 4px);
-  z-index: 2;
 }
 
 .editor-paragraph {
-  margin: 2px 0;
-  line-height: 26px;
+  @apply my-0.5 leading-[26px];
 }
 
 .editor-input {
+  @apply outline-none font-normal text-gray-800;
   font-size: 16px;
-  outline: none;
-  font-weight: 400;
-  color: var(--color-gray-800);
 }
 
 .editor-text-bold {
-  font-weight: 600;
+  @apply font-semibold;
 }
 
 .editor-text-italic {
-  font-style: italic;
+  @apply italic;
 }
 
 .editor-text-underline {
-  text-decoration: underline;
+  @apply underline;
 }
 
 .editor-text-strikethrough {
-  text-decoration: line-through;
+  @apply line-through;
 }
 
 .editor-text-underlineStrikethrough {
-  text-decoration: underline line-through;
+  @apply underline line-through;
 }
 
 .editor-text-overflowed {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  @apply overflow-hidden truncate whitespace-nowrap;
 }
 
 .editor-text-highlight {
-  background-color: var(--color-yellow-100);
-  box-shadow: 0 2px 0 0 var(--color-yellow-200);
+  @apply bg-yellow-100 shadow-[0_2px_0_0_var(--color-yellow-200)];
 }
 
 .editor-text-capitalize {
-  text-transform: capitalize;
+  @apply capitalize;
 }
 
 .editor-text-uppercase {
-  text-transform: uppercase;
+  @apply uppercase;
 }
 
 .editor-text-lowercase {
-  text-transform: lowercase;
+  @apply lowercase;
 }
 
 .editor-text-superscript {
-  vertical-align: super;
+  @apply align-super;
 }
 
 .editor-text-subscript {
-  vertical-align: sub;
+  @apply align-sub;
 }
 
 .editor-hashtag {
-  padding: 2px 3px;
-  border-radius: 4px;
-  background-color: var(--color-blue-100);
-  color: var(--color-blue-800);
-  box-shadow: 0 0 0 1px var(--color-blue-200);
+  @apply px-[3px] py-0.5 rounded bg-blue-100 text-blue-800 shadow-[0_0_0_1px_var(--color-blue-200)];
 }
 
 .editor-heading-h1 {
   font-size: 30px;
-  font-weight: 600;
+  @apply font-semibold;
 }
 
 .editor-heading-h2 {
   font-size: 24px;
-  font-weight: 600;
+  @apply font-semibold;
 }
 
 .editor-heading-h3 {
   font-size: 20px;
-  font-weight: 600;
+  @apply font-semibold;
 }
 
 .editor-heading-h4 {
   font-size: 16px;
-  font-weight: 600;
+  @apply font-semibold;
 }
 
 .editor-heading-h5 {
   font-size: 14px;
-  font-weight: 600;
+  @apply font-semibold;
 }
 
 .editor-quote {
-  border-left: 2.5px solid var(--color-gray-600);
-  padding: 4px 0;
-  padding-left: 10px;
+  @apply border-l-[2.5px] border-gray-600 py-1 pl-[10px];
 }
 
 .editor-link {
-  color: var(--color-blue-500);
-  cursor: pointer;
-}
-
-.editor-link:hover {
-  text-decoration: underline;
+  @apply text-blue-500 cursor-pointer hover:underline;
 }
 
 .editor-block-cursor {
-  display: block;
-  pointer-events: none;
-  position: absolute;
+  @apply block pointer-events-none absolute;
 }
 
 .editor-block-cursor::after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: -2px;
-  width: 20px;
+  @apply content-[''] block absolute -top-0.5 w-5;
   animation: CursorBlink 1.1s steps(2, start) infinite;
 }
 
@@ -174,229 +139,202 @@
 
 /* lists */
 .editor-ol-1 {
-  padding: 0;
-  margin: 0;
-  list-style-position: outside;
+  @apply p-0 m-0 list-outside;
 }
+
 .editor-ol-2 {
-  padding: 0;
-  margin: 0;
-  list-style-type: upper-alpha;
-  list-style-position: outside;
+  @apply p-0 m-0 list-[upper-alpha] list-outside;
 }
+
 .editor-ol-3 {
-  padding: 0;
-  margin: 0;
-  list-style-type: lower-alpha;
-  list-style-position: outside;
+  @apply p-0 m-0 list-[lower-alpha] list-outside;
 }
+
 .editor-ol-4 {
-  padding: 0;
-  margin: 0;
-  list-style-type: upper-roman;
-  list-style-position: outside;
+  @apply p-0 m-0 list-[upper-roman] list-outside;
 }
+
 .editor-ol-5 {
-  padding: 0;
-  margin: 0;
-  list-style-type: lower-roman;
-  list-style-position: outside;
+  @apply p-0 m-0 list-[lower-roman] list-outside;
 }
+
 .editor-ul {
-  padding: 0;
-  margin: 0;
-  list-style-position: outside;
+  @apply p-0 m-0 list-outside;
 }
+
 .editor-list-item {
-  margin: 0.24rem 32px;
-  line-height: 24px;
+  @apply mx-8 my-[0.24rem] leading-6;
 }
+
 .editor-list-item-checked,
 .editor-list-item-unchecked {
-  position: relative;
-  margin-left: 8px;
-  margin-right: 8px;
-  padding-left: 24px;
-  padding-right: 24px;
-  list-style-type: none;
-  outline: none;
-  cursor: pointer;
-  margin-bottom: 10px;
+  @apply relative mx-2 px-6 pl-6 list-none outline-none cursor-pointer mb-[10px];
 }
 
 .editor-list-item-checked,
 .editor-list-item-unchecked span {
-  line-height: 24px;
+  @apply leading-6;
 }
 
 .editor-list-item-checked {
-  text-decoration: line-through;
-  color: var(--color-gray-500);
+  @apply line-through text-gray-500;
 }
 
 .editor-list-item-unchecked:before,
 .editor-list-item-checked:before {
-  content: '';
-  width: 18px;
-  height: 18px;
-  top: 2px;
-  left: 0;
-  cursor: pointer;
-  display: block;
-  background-size: cover;
-  position: absolute;
+  @apply content-[''] w-[18px] h-[18px] top-0.5 left-0 cursor-pointer block bg-cover absolute;
 }
 
 .editor-list-item-unchecked[dir='rtl']:before,
 .editor-list-item-checked[dir='rtl']:before {
-  left: auto;
-  right: 0;
+  @apply left-auto right-0;
 }
 
 .editor-list-item-unchecked:focus:before,
 .editor-list-item-checked:focus:before {
-  box-shadow: 0 0 0 3px var(--color-blue-200);
-  border-radius: var(--radius-md);
-  border-color: var(--color-blue-500);
+  @apply shadow-[0_0_0_3px_var(--color-blue-200)] rounded-[var(--radius-md)] border-blue-500;
 }
+
 .editor-list-item-unchecked:before {
-  border: 1px solid var(--color-gray-300);
-  border-radius: var(--radius-md);
+  @apply border border-gray-300 rounded-[var(--radius-md)];
 }
 
 .editor-list-item-checked:before {
-  border: 1px solid var(--color-blue-500);
-  border-radius: var(--radius-md);
-  background-color: var(--color-blue-500);
-  background-repeat: no-repeat;
+  @apply border border-blue-500 rounded-[var(--radius-md)] bg-blue-500 bg-no-repeat;
 }
 
 .editor-list-item-checked:before {
-  background-repeat: no-repeat;
-  background-color: var(--color-blue-500);
+  @apply bg-no-repeat bg-blue-500;
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
 }
+
 .editor-nested-list-item {
-  list-style-type: none;
-}
-.editor-nested-list-item:before,
-.editor-nested-list-item:after {
-  display: none;
+  @apply list-none before:hidden after:hidden;
 }
 
 .editor-code {
-  @apply bg-gray-100 dark:bg-neutral-800 text-gray-900 dark:text-gray-100 rounded-lg ring-1 ring-neutral-200 dark:ring-neutral-700;
-  display: block;
-  padding: 12px 24px;
-  line-height: 1.6;
+  @apply bg-gray-100 dark:bg-neutral-800 text-gray-900 dark:text-gray-100 rounded-lg ring-1 ring-neutral-200 dark:ring-neutral-700 block px-6 py-3 overflow-x-auto relative [tab-size:2];
   font-size: 14px;
+  line-height: 1.6;
   margin: 8px 0;
-  overflow-x: auto;
-  position: relative;
-  tab-size: 2;
 }
 
 .editor-tokenAtrule {
   @apply text-red-600 dark:text-red-400;
 }
+
 .editor-tokenAttr {
   @apply text-purple-600 dark:text-purple-400;
 }
+
 .editor-tokenBoolean {
   @apply text-blue-600 dark:text-blue-400;
 }
+
 .editor-tokenBuiltin {
   @apply text-orange-600 dark:text-orange-400;
 }
+
 .editor-tokenCdata {
   @apply text-green-600 dark:text-green-400;
 }
+
 .editor-tokenChar {
   @apply text-orange-600 dark:text-orange-400;
 }
+
 .editor-tokenClass,
 .editor-tokenClassName {
-  @apply text-purple-600 dark:text-purple-400 font-bold;
+  @apply text-purple-600 dark:text-purple-400;
 }
+
 .editor-tokenComment {
   @apply text-gray-500 dark:text-gray-400 italic;
 }
+
 .editor-tokenConstant {
   @apply text-blue-600 dark:text-blue-400;
 }
+
 .editor-tokenDeleted {
   @apply text-red-700 dark:text-red-500 bg-red-100 dark:bg-red-900;
 }
+
 .editor-tokenDoctype,
 .editor-tokenEntity {
   @apply text-green-600 dark:text-green-400;
 }
+
 .editor-tokenFunction {
   @apply text-purple-600 dark:text-purple-400;
 }
+
 .editor-tokenImportant {
-  @apply text-red-600 dark:text-red-400 font-bold;
+  @apply text-red-600 dark:text-red-400;
 }
+
 .editor-tokenInserted {
   @apply text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900;
 }
+
 .editor-tokenKeyword {
   @apply text-red-600 dark:text-red-400;
 }
+
 .editor-tokenNamespace {
   @apply text-blue-600 dark:text-blue-400;
 }
+
 .editor-tokenNumber {
   @apply text-blue-600 dark:text-blue-400;
 }
+
 .editor-tokenOperator {
   @apply text-red-600 dark:text-red-400;
 }
+
 .editor-tokenProlog {
   @apply text-gray-500 dark:text-gray-400;
 }
+
 .editor-tokenProperty {
   @apply text-blue-600 dark:text-blue-400;
 }
+
 .editor-tokenPunctuation {
   @apply text-gray-900 dark:text-gray-300;
 }
+
 .editor-tokenRegex {
   @apply text-green-600 dark:text-green-400;
 }
+
 .editor-tokenSelector {
   @apply text-red-600 dark:text-red-400;
 }
+
 .editor-tokenString {
   @apply text-blue-800 dark:text-blue-300;
 }
+
 .editor-tokenSymbol {
   @apply text-blue-600 dark:text-blue-400;
 }
+
 .editor-tokenTag {
-  @apply text-green-600 dark:text-green-400 font-bold;
+  @apply text-green-600 dark:text-green-400;
 }
+
 .editor-tokenUrl {
   @apply text-green-600 dark:text-green-400 underline;
 }
+
 .editor-tokenVariable {
   @apply text-orange-600 dark:text-orange-400;
 }
 
 .editor-container {
-  background-color: #f6f8fa;
-  color: #24292e;
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  padding: 10px;
-  border-radius: 6px;
-}
-
-.editor-container {
-  background-color: #f6f8fa; /* GitHub background */
-  color: #24292e; /* Default text color */
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  padding: 10px;
-  border-radius: 6px;
+  @apply bg-[#f6f8fa] text-[#24292e] font-mono p-[10px] rounded-md;
 }
 
 /* end of lists */
@@ -406,123 +344,61 @@
 }
 
 [type='page-break'] {
-  position: relative;
-  display: block;
-  overflow: unset;
-  margin-left: calc(var(--editor-input-padding, 28px) * -1);
-  margin-top: var(--editor-input-padding, 28px);
-  margin-bottom: var(--editor-input-padding, 28px);
-  border: none;
-  border-top: 1px dashed var(--color-neutral-200);
-  border-bottom: 1px dashed var(--color-neutral-200);
+  @apply relative block overflow-visible -ml-[var(--editor-input-padding,28px)] mt-[var(--editor-input-padding,28px)] mb-[var(--editor-input-padding,28px)] border-0 border-t border-b border-dashed border-neutral-200;
 }
 
 [type='page-break'] .page-break-svg {
-  position: absolute;
-  top: 50%;
-  left: calc(var(--editor-input-padding, 28px));
-  transform: translateY(-50%);
-  color: var(--color-neutral-600);
+  @apply absolute top-1/2 left-[var(--editor-input-padding,28px)] -translate-y-1/2 text-neutral-600;
 }
 
 .selected[type='page-break'] {
-  border-color: var(--color-blue-500);
+  @apply border-blue-500;
 }
 
 .selected[type='page-break'] .page-break-svg {
-  opacity: 1;
-  color: var(--color-blue-500);
+  @apply opacity-100 text-blue-500;
 }
 
 .selected[type='page-break']::before {
-  opacity: 1;
+  @apply opacity-100;
 }
 
 /* draggable block */
 .draggable-block-menu {
-  border-radius: 4px;
-  padding: 2px 1px;
-  cursor: grab;
-  opacity: 0;
-  position: absolute;
-  left: -10px;
-  top: 0;
-  will-change: transform;
+  @apply rounded px-[1px] py-0.5 cursor-grab opacity-0 absolute -left-[10px] top-0 will-change-transform;
 }
 
 .draggable-block-menu .icon {
-  width: 18px;
-  height: 18px;
+  @apply w-[18px] h-[18px];
 }
 
 .draggable-block-menu:active {
-  cursor: grabbing;
+  @apply cursor-grabbing;
 }
 
 .draggable-block-menu:hover {
-  background-color: var(--color-gray-100);
-  box-shadow: 0 0 0 1px var(--color-gray-200);
+  @apply bg-gray-100 shadow-[0_0_0_1px_var(--color-gray-200)];
 }
 
 .draggable-block-target-line {
-  pointer-events: none;
-  background: var(--color-orange-500);
-  height: 4px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-  will-change: transform;
+  @apply pointer-events-none bg-orange-500 h-1 absolute left-0 top-0 opacity-0 will-change-transform;
 }
 
 .draggable-element {
-  transform: translateZ(0);
-  background-color: var(--color-orange-50);
-  border: none;
-  border-radius: var(--radius-md);
-  box-shadow: 0 0 0 1px var(--color-orange-100);
+  @apply translate-z-0 bg-orange-50 border-none rounded-[var(--radius-md)] shadow-[0_0_0_1px_var(--color-orange-100)];
 }
 
 .node-placeholder:has(br):not(:has(span))::before {
-  position: absolute;
-  content: attr(data-placeholder);
-  color: var(--color-gray-500);
-  padding-left: 4px;
-  font-style: italic;
+  @apply absolute content-[attr(data-placeholder)] text-gray-500 pl-1 italic;
 }
 
-@media (prefers-color-scheme: light) {
-  /* TODO: add styling for other elements */
-  [data-editor-mode='focus'] {
-    .editor-root,
-    .app-content {
-      color: var(--color-gray-300);
-    }
-
-    .active-block {
-      color: var(--color-gray-800);
-    }
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .editor-root {
-    color: var(--color-stone-300);
+[data-editor-mode='focus'] {
+  .editor-root,
+  .app-content {
+    @apply text-gray-300 dark:text-gray-600;
   }
 
-  .editor-wrapper,
-  .editor-inner {
-    background-color: var(--color-stone-950);
-  }
-
-  [data-editor-mode='focus'] {
-    .editor-root,
-    .app-content {
-      color: var(--color-stone-600);
-    }
-
-    .active-block {
-      color: var(--color-gray-100);
-    }
+  .active-block {
+    @apply text-gray-800 dark:text-gray-100;
   }
 }
