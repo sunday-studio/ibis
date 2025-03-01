@@ -3,6 +3,7 @@
 :root {
   --editor-padding: 20px;
   --editor-font-size: 16px;
+  --editor-input-padding: 20px;
 }
 
 .editor-wrapper,
@@ -11,7 +12,7 @@
 }
 
 .editor-root {
-  @apply px-[var(--editor-padding)] outline-none text-stone-700;
+  @apply px-[var(--editor-padding)] outline-none text-stone-700 dark:text-gray-300;
   font-size: var(--editor-font-size);
 }
 
@@ -29,7 +30,7 @@
 }
 
 .editor-paragraph {
-  @apply my-0.5 leading-[26px];
+  @apply my-0.5 leading-[26px] dark:text-gray-100;
 }
 
 .editor-input {
@@ -339,10 +340,6 @@
 
 /* end of lists */
 
-:root {
-  --editor-input-padding: 20px;
-}
-
 [type='page-break'] {
   @apply relative block overflow-visible -ml-[var(--editor-input-padding,28px)] mt-[var(--editor-input-padding,28px)] mb-[var(--editor-input-padding,28px)] border-0 border-t border-b border-dashed border-neutral-200;
 }
@@ -393,8 +390,7 @@
 }
 
 [data-editor-mode='focus'] {
-  .editor-root,
-  .app-content {
+  .editor-root {
     @apply text-gray-300 dark:text-gray-600;
   }
 
