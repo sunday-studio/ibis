@@ -15,6 +15,7 @@ import { createPortal } from 'react-dom';
 import { DropdownMenu } from '../DropdownMenu';
 
 import { useDebounce } from '@/hooks/use-debounce';
+import { ChevronDownIcon } from 'lucide-react';
 
 const CODE_PADDING = 8;
 
@@ -22,6 +23,8 @@ interface Position {
   top: string;
   right: string;
 }
+
+// TODO: rewrite later after moving to shiki
 
 function getCodeLanguageOptions(): [string, string][] {
   const options: [string, string][] = [];
@@ -45,12 +48,14 @@ function CodeActionMenuContainer({ anchorElem }: { anchorElem: HTMLElement }): J
     right: '0',
     top: '0',
   });
+
   const codeSetRef = useRef<Set<string>>(new Set());
   const codeDOMNodeRef = useRef<HTMLElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const debouncedOnMouseMove = useDebounce(
     (event: MouseEvent) => {
-      const { codeDOMNode, isOutside } = getMouseInfo(event);
+      const { codeDOMNode, isOutside } = getMouseInfo(event, dropdownRef.current);
       if (isOutside) {
         setShown(false);
         return;
@@ -97,11 +102,11 @@ function CodeActionMenuContainer({ anchorElem }: { anchorElem: HTMLElement }): J
     document.addEventListener('mousemove', debouncedOnMouseMove);
 
     return () => {
-      setShown(false);
-      debouncedOnMouseMove.cancel();
-      document.removeEventListener('mousemove', debouncedOnMouseMove);
+      // setShown(false);
+      // debouncedOnMouseMove.cancel();
+      // document.removeEventListener('mousemove', debouncedOnMouseMove);
     };
-  }, [shouldListenMouseMove, debouncedOnMouseMove]);
+  }, [shouldListenMouseMove, debouncedOnMouseMove, dropdownRef]);
 
   useEffect(() => {
     return editor.registerMutationListener(
@@ -129,7 +134,6 @@ function CodeActionMenuContainer({ anchorElem }: { anchorElem: HTMLElement }): J
     );
   }, [editor]);
 
-  const normalizedLang = normalizeCodeLang(lang);
   const codeFriendlyName = getLanguageFriendlyName(lang);
 
   const onCodeLanguageSelect = useCallback(
@@ -149,14 +153,22 @@ function CodeActionMenuContainer({ anchorElem }: { anchorElem: HTMLElement }): J
   return (
     <>
       {isShown ? (
-        <div className="code-action-menu-container flex gap-2 bg-white" style={{ ...position }}>
+        <div
+          className="code-action-menu-container flex h-[35.8px] absolute  items-center flex-row select-none"
+          style={{ ...position }}
+        >
           <DropdownMenu>
-            <DropdownMenu.Trigger>
-              <button>{codeFriendlyName}</button>
+            <DropdownMenu.Trigger className="text-sm flex items-center gap-1">
+              <>{codeFriendlyName}</>
+              <ChevronDownIcon className="w-4 h-4" />
             </DropdownMenu.Trigger>
-            <DropdownMenu.Content>
+            <DropdownMenu.Content ref={dropdownRef} className="gap-0!">
               {CODE_LANGUAGE_OPTIONS.map(([lang, friendlyName]) => (
-                <DropdownMenu.Item key={lang} action={() => onCodeLanguageSelect(lang)}>
+                <DropdownMenu.Item
+                  key={lang}
+                  action={() => onCodeLanguageSelect(lang)}
+                  className="p-1! text-md"
+                >
                   {friendlyName}
                 </DropdownMenu.Item>
               ))}
@@ -168,17 +180,19 @@ function CodeActionMenuContainer({ anchorElem }: { anchorElem: HTMLElement }): J
   );
 }
 
-function getMouseInfo(event: MouseEvent): {
+function getMouseInfo(
+  event: MouseEvent,
+  dropdownRef: HTMLDivElement | null,
+): {
   codeDOMNode: HTMLElement | null;
   isOutside: boolean;
 } {
   const target = event.target;
-
   if (isHTMLElement(target)) {
     const codeDOMNode = target.closest<HTMLElement>('code.editor-code');
-    const isOutside = !(
-      codeDOMNode || target.closest<HTMLElement>('div.code-action-menu-container')
-    );
+    const menuContainer = target.closest<HTMLElement>('div.code-action-menu-container');
+
+    const isOutside = !codeDOMNode && !menuContainer && !dropdownRef?.contains(target);
 
     return { codeDOMNode, isOutside };
   } else {

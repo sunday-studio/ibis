@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { FC } from 'react';
+import { FC, forwardRef } from 'react';
 import {
   Button,
   Menu,
@@ -69,20 +69,21 @@ export const DropdownMenuTrigger: FC<DropdownMenuTriggerProps> = ({
   );
 };
 
-export const Content = ({
-  children,
-  withMenu = true,
-  ...rest
-}: {
-  children: React.ReactNode;
-  withMenu?: boolean;
-  handleClose?: () => void;
-}) => {
+export const Content = forwardRef<
+  HTMLDivElement,
+  {
+    children: React.ReactNode;
+    withMenu?: boolean;
+    handleClose?: () => void;
+    className?: string;
+  }
+>(({ children, withMenu = true, className, ...rest }, ref) => {
   const state = useSnapshot(menuState);
 
   return (
     <Popover
       {...rest}
+      ref={ref}
       shouldCloseOnInteractOutside={() => {
         state.onOpenChange(false);
         menuState.setIsOpen(false);
@@ -90,7 +91,12 @@ export const Content = ({
       }}
     >
       {withMenu && (
-        <Menu className="w-[250px] bg-white p-2 shadow-1 rounded-xl flex flex-col gap-1 dark:bg-stone-800">
+        <Menu
+          className={clsx(
+            'w-[250px] bg-white p-2 shadow-1 rounded-xl flex flex-col gap-1 dark:bg-stone-800 overflow-y-auto',
+            className,
+          )}
+        >
           {children}
         </Menu>
       )}
@@ -98,7 +104,9 @@ export const Content = ({
       {!withMenu && children}
     </Popover>
   );
-};
+});
+
+Content.displayName = 'Content';
 
 interface DropdownMenuItemProps extends MenuItemProps {
   children: React.ReactNode;
@@ -114,17 +122,17 @@ export const DropdownMenuItem: FC<DropdownMenuItemProps> = ({
   shortcut,
   disabled,
   action,
+  className,
 }) => {
   return (
     <MenuItem
       onAction={action}
       isDisabled={disabled}
-      className={`
-        transition-all
-        rounded-lg
-        hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center px-2 py-1.5 dark:hover:bg-stone-700
-        ${disabled ? 'opacity-50 hover:ring-transparent hover:bg-transparent' : 'cursor-pointer'}
-      `}
+      className={clsx(
+        'transition-all rounded-lg hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center px-2 py-1.5 dark:hover:bg-stone-700',
+        disabled ? 'opacity-50 hover:ring-transparent hover:bg-transparent' : 'cursor-pointer',
+        className,
+      )}
     >
       {icon && <span className="mr-2 text-stone-500">{icon}</span>}
       <span className="text-stone-900 dark:text-stone-300">{children}</span>
