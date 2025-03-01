@@ -20,13 +20,15 @@
   padding: 0 var(--editor-padding);
 }
 
-.editor-code {
-  border: 1px solid var(--color-red-200) !important;
+.editor-text-code {
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-gray-100);
 }
 
 .editor-placeholder {
   position: absolute;
-  margin-top: -24px;
+  margin-top: -26px;
   font-style: italic;
   color: var(--color-gray-500);
   font-size: var(--editor-font-size);
@@ -148,7 +150,6 @@
 }
 
 .editor-block-cursor {
-  outline: 1px solid red;
   display: block;
   pointer-events: none;
   position: absolute;
@@ -281,6 +282,137 @@
   display: none;
 }
 
+.editor-code {
+  background-color: var(--color-gray-100);
+  display: block;
+  padding: 12px 24px;
+  line-height: 1.6;
+  font-size: 14px;
+  margin: 0;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  position: relative;
+  tab-size: 2;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 0 0 1px var(--color-gray-200);
+}
+
+.editor-tokenAtrule {
+  color: #d73a49;
+}
+.editor-tokenAttr {
+  color: #6f42c1;
+}
+.editor-tokenBoolean {
+  color: #005cc5;
+}
+.editor-tokenBuiltin {
+  color: #e36209;
+}
+.editor-tokenCdata {
+  color: #22863a;
+}
+.editor-tokenChar {
+  color: #e36209;
+}
+.editor-tokenClass {
+  color: #6f42c1;
+  font-weight: bold;
+}
+.editor-tokenClassName {
+  color: #6f42c1;
+  font-weight: bold;
+}
+.editor-tokenComment {
+  color: #6a737d;
+  font-style: italic;
+}
+.editor-tokenConstant {
+  color: #005cc5;
+}
+.editor-tokenDeleted {
+  color: #b31d28;
+  background: #ffeef0;
+}
+.editor-tokenDoctype {
+  color: #22863a;
+}
+.editor-tokenEntity {
+  color: #22863a;
+}
+.editor-tokenFunction {
+  color: #6f42c1;
+}
+.editor-tokenImportant {
+  color: #d73a49;
+  font-weight: bold;
+}
+.editor-tokenInserted {
+  color: #22863a;
+  background: #f0fff4;
+}
+.editor-tokenKeyword {
+  color: #d73a49;
+}
+.editor-tokenNamespace {
+  color: #005cc5;
+}
+.editor-tokenNumber {
+  color: #005cc5;
+}
+.editor-tokenOperator {
+  color: #d73a49;
+}
+.editor-tokenProlog {
+  color: #6a737d;
+}
+.editor-tokenProperty {
+  color: #005cc5;
+}
+.editor-tokenPunctuation {
+  color: #24292e;
+}
+.editor-tokenRegex {
+  color: #22863a;
+}
+.editor-tokenSelector {
+  color: #d73a49;
+}
+.editor-tokenString {
+  color: #032f62;
+}
+.editor-tokenSymbol {
+  color: #005cc5;
+}
+.editor-tokenTag {
+  color: #22863a;
+  font-weight: bold;
+}
+.editor-tokenUrl {
+  color: #22863a;
+  text-decoration: underline;
+}
+.editor-tokenVariable {
+  color: #e36209;
+}
+
+.editor-container {
+  background-color: #f6f8fa;
+  color: #24292e;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.editor-container {
+  background-color: #f6f8fa; /* GitHub background */
+  color: #24292e; /* Default text color */
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  padding: 10px;
+  border-radius: 6px;
+}
+
 /* end of lists */
 
 :root {
@@ -407,4 +539,51 @@
       color: var(--color-gray-100);
     }
   }
+}
+
+.code-action-menu-container {
+  height: 35.8px;
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  user-select: none;
+}
+
+.code-action-menu-container .code-highlight-language {
+  margin-right: 4px;
+}
+
+.code-action-menu-container button.menu-item {
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 4px;
+  background: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+}
+
+.code-action-menu-container button.menu-item i.format {
+  height: 16px;
+  width: 16px;
+  opacity: 0.6;
+  display: flex;
+  color: rgba(0, 0, 0, 0.5);
+  background-size: contain;
+}
+
+.code-action-menu-container button.menu-item:hover {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+}
+
+.code-action-menu-container button.menu-item:active {
+  background-color: rgba(223, 232, 250);
+  border: 1px solid rgba(0, 0, 0, 0.45);
 }

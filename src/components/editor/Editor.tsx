@@ -35,9 +35,12 @@ import { setNodePlaceholderFromSelection } from './NodePlaceholder/utils';
 import { FloatingMenuPlugin } from './FloatingMenuPlugin/FloatingMenuPlugin';
 import { ShortcutPlugin } from './plugins/ShortcutPlugin';
 import { FocusModePlugin } from './plugins/FocusModePlugin';
+import CodeActionPlugin from './CodeActionPlugin';
+import './_editor.css';
+import clsx from 'clsx';
+import { getFontFamily } from './utils';
 
-import './_editor.css';
-import './_editor.css';
+// import { getEditorTheme } from './utils';
 
 const OnChangePlugin = ({ onChange }: { onChange: (editorState: EditorState) => void }) => {
   const [editor] = useLexicalComposerContext();
@@ -67,7 +70,6 @@ interface EditorType {
   id: string;
   content: string | null;
   onChange: (state: any) => void;
-  extendTheme?: {};
   placeholderClassName?: string;
 }
 
@@ -75,7 +77,6 @@ export const Editor = ({
   id,
   content,
   onChange,
-  extendTheme,
   placeholderClassName = 'editor-placeholder',
 }: EditorType) => {
   const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
@@ -97,10 +98,7 @@ export const Editor = ({
   const editorConfig = {
     editorState: content ?? null,
     namespace: 'ContentEditor',
-    theme: {
-      ...theme,
-      ...extendTheme,
-    },
+    theme,
     onError,
     nodes: [
       HashtagNode,
@@ -124,9 +122,11 @@ export const Editor = ({
     onChange(JSON.stringify(editorStateJSON));
   }, 750);
 
+  const fontFamilyClass = getFontFamily();
+
   return (
     <LexicalComposer initialConfig={editorConfig} key={id}>
-      <div className="editor-wrapper">
+      <div className={clsx('editor-wrapper', fontFamilyClass)}>
         <RichTextPlugin
           contentEditable={CustomContent}
           placeholder={<Placeholder className={placeholderClassName} />}
@@ -136,6 +136,7 @@ export const Editor = ({
           <>
             <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
             <FloatingMenuPlugin anchorElem={floatingAnchorElem} />
+            <CodeActionPlugin anchorElem={floatingAnchorElem} />
           </>
         )}
         <ClickableLinkPlugin />

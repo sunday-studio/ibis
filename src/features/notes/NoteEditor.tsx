@@ -11,7 +11,6 @@ import { PanelRight } from 'lucide-react';
 import { toggleSidebarState } from '@/app.store';
 import { useSnapshot } from 'valtio';
 import { sidebarState } from '@/app.store';
-import { AnimatePresence, motion } from 'motion/react';
 
 export const NoteEditor = () => {
   const { noteId } = useParams();

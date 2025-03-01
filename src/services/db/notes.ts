@@ -118,10 +118,11 @@ export function useGetAllActiveNotes() {
 }
 
 export function useCreateNote() {
+  const invalidateQueries = useInvalidateQueries([NoteKeys.ALL_ACTIVE_NOTES]);
   return useMutation({
     mutationFn: (params: CreateNoteType) => rq(() => createNote(db.getDb(), params)),
     onSuccess: () => {
-      useInvalidateQueries([NoteKeys.ALL_ACTIVE_NOTES]);
+      invalidateQueries();
     },
   });
 }
