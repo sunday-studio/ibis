@@ -1,6 +1,11 @@
 import { Editor } from '@/components/editor/Editor';
 import { getEditorContent } from '@/components/editor/utils';
-import { useGetNote, useUpdateNote } from '@/services/db/notes';
+import {
+  useCreateNoteHistory,
+  useGetNote,
+  useGetNoteHistory,
+  useUpdateNote,
+} from '@/services/db/notes';
 import { useState } from 'react';
 import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
@@ -17,6 +22,10 @@ export const NoteEditor = () => {
   const isSidebarOpen = useSnapshot(sidebarState).isSidebarOpen;
   const { data, isLoading } = useGetNote({ noteId: noteId as string });
   const { mutate: updateNote } = useUpdateNote({ noteId: noteId as string });
+  const { data: history, isLoading: historyLoading } = useGetNoteHistory(noteId as string);
+  const { mutate: createNoteHistory } = useCreateNoteHistory();
+
+  console.log('history', history);
 
   const [isPinVerificationOpen, setIsPinVerificationOpen] = useState<boolean | undefined>(
     data?.isLocked,
@@ -109,6 +118,13 @@ export const NoteEditor = () => {
           <Editor
             id={noteId ?? ''}
             content={getEditorContent(data?.content ?? '')}
+            onHistoryChange={(state) => {
+              createNoteHistory({
+                entry_id: data.id,
+                title: data.title,
+                content: state,
+              });
+            }}
             onChange={(content) => {
               updateNote({
                 id: data.id,

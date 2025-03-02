@@ -1,6 +1,6 @@
 import { DatabaseType, db } from './index';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { CreateNoteType, Note } from './types';
+import { CreateNoteType, Note, CreateNoteHistoryEntry, NoteHistoryEntry } from './types';
 import { useInvalidateQueries, rq } from '@/lib/use-rq';
 import { normalizeNote } from '@/services/normalizers/note.normalizer';
 import { toast } from 'sonner';
@@ -11,6 +11,8 @@ enum NoteKeys {
   ALL_PINNED_NOTES = 'notes/pinned',
   ALL_ARCHIVED_NOTES = 'notes/archived',
   DETAIL_ARCHIVED_STATUS = 'notes/archived/status',
+  NOTE_HISTORY = 'notes/history',
+  NOTE_HISTORY_DETAIL = 'notes/history',
 }
 
 export async function getAll(database: DatabaseType) {
@@ -92,6 +94,21 @@ async function archiveNote(database: DatabaseType, noteId: string) {
 
 async function unarchiveNote(database: DatabaseType, noteId: string) {
   return await database?.execute('UPDATE entries SET isArchived = 0 WHERE id = ?', [noteId]);
+}
+
+async function createNoteHistory(database: DatabaseType, history: CreateNoteHistoryEntry) {
+  const { entry_id, title, content } = history;
+
+  return await database?.execute(
+    'INSERT INTO entries_history (entry_id, title, content) VALUES (?, ?, ?)',
+    [entry_id, title, content],
+  );
+}
+
+async function getNoteHistory(database: DatabaseType, noteId: string) {
+  return (await database?.select('SELECT * FROM entries_history WHERE entry_id = ?', [
+    noteId,
+  ])) as NoteHistoryEntry[];
 }
 
 async function getAllArchivedNotes(database: DatabaseType) {
@@ -265,5 +282,25 @@ export function useUnlockNote(noteId: string) {
       toast.success('Note unlocked');
       invalidateQueries();
     },
+  });
+}
+
+export function useCreateNoteHistory() {
+  return useMutation({
+    mutationFn: (history: CreateNoteHistoryEntry) =>
+      rq(() => createNoteHistory(db.getDb(), history)),
+    onError: (error) => {
+      console.log('error =>', error);
+    },
+    onSuccess: () => {
+      console.log('success');
+    },
+  });
+}
+
+export function useGetNoteHistory(noteId: string) {
+  return useQuery({
+    queryKey: [`${NoteKeys.NOTE_HISTORY}/${noteId}`],
+    queryFn: () => rq(() => getNoteHistory(db.getDb(), noteId)),
   });
 }

@@ -21,7 +21,7 @@
 }
 
 .editor-text-code {
-  @apply px-1 py-0.5 rounded-[var(--radius-sm)] bg-gray-100;
+  @apply px-1 py-0.5 rounded-[var(--radius-sm)] bg-gray-100 dark:bg-neutral-800;
 }
 
 .editor-placeholder {
@@ -30,7 +30,7 @@
 }
 
 .editor-paragraph {
-  @apply my-0.5 leading-[26px] dark:text-gray-100;
+  @apply my-0.5 dark:text-gray-100;
 }
 
 .editor-input {

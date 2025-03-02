@@ -27,7 +27,7 @@ export type CreateNoteType = {
   isDuplicate: number;
   isPinned: number;
   isLocked: number;
-}
+};
 
 export type ArchivedEntry = {
   entry_id: number;
@@ -65,3 +65,13 @@ export type Preference = {
   userId: number;
   appearance: string;
 };
+
+export type NoteHistoryEntry = {
+  id: string;
+  entry_id: string;
+  title: string;
+  content: string;
+  createdAt?: string;
+};
+
+export type CreateNoteHistoryEntry = Omit<NoteHistoryEntry, 'id'>;

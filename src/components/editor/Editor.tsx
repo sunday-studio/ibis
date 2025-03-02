@@ -42,6 +42,9 @@ import { getFontFamily } from './utils';
 
 // import { getEditorTheme } from './utils';
 
+const ONCHANGE_DEBOUNCE_TIME = 750;
+const ONHISTORYCHANGE_DEBOUNCE_TIME = 600000; // 10 minutes in milliseconds
+
 const OnChangePlugin = ({ onChange }: { onChange: (editorState: EditorState) => void }) => {
   const [editor] = useLexicalComposerContext();
   useEffect(() => {
@@ -71,6 +74,7 @@ interface EditorType {
   content: string | null;
   onChange: (state: any) => void;
   placeholderClassName?: string;
+  onHistoryChange: (state: string) => void;
 }
 
 export const Editor = ({
@@ -78,6 +82,7 @@ export const Editor = ({
   content,
   onChange,
   placeholderClassName = 'editor-placeholder',
+  onHistoryChange,
 }: EditorType) => {
   const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
 
@@ -117,10 +122,17 @@ export const Editor = ({
     ],
   };
 
-  const debouncedUpdates = useDebouncedCallback(async (editorState) => {
-    const editorStateJSON = editorState.toJSON();
-    onChange(JSON.stringify(editorStateJSON));
-  }, 750);
+  const parseEditorOnChange = (editorState: EditorState) => {
+    return JSON.stringify(editorState.toJSON());
+  };
+
+  const debouncedOnChange = useDebouncedCallback(async (state: string) => {
+    onChange(state);
+  }, ONCHANGE_DEBOUNCE_TIME);
+
+  const debouncedOnHistoryChange = useDebouncedCallback(async (state: string) => {
+    onHistoryChange(state);
+  }, ONHISTORYCHANGE_DEBOUNCE_TIME);
 
   const fontFamilyClass = getFontFamily();
 
@@ -140,7 +152,13 @@ export const Editor = ({
           </>
         )}
         <ClickableLinkPlugin />
-        <OnChangePlugin onChange={debouncedUpdates} />
+        <OnChangePlugin
+          onChange={(editorState) => {
+            const editorStateJSON = parseEditorOnChange(editorState);
+            debouncedOnChange(editorStateJSON);
+            debouncedOnHistoryChange(editorStateJSON);
+          }}
+        />
         <SlashCommandPickerPlugin />
         <TabFocusPlugin />
         <LinkPlugin validateUrl={validateUrl} />

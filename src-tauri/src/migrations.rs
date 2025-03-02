@@ -215,5 +215,14 @@ pub fn get_migrations() -> Vec<Migration> {
         ",
         kind: MigrationKind::Up,
     },
+    Migration {
+        version: 13,
+        description: "remove_version_column_from_entries_history",
+        sql: "
+            DROP INDEX IF EXISTS idx_entries_history_version;
+            ALTER TABLE entries_history DROP COLUMN version;
+        ",
+        kind: MigrationKind::Up,
+    },
     ]
 }
