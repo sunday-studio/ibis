@@ -12,8 +12,8 @@ import {
 } from 'lexical';
 
 import { FloatingMenu } from './FloatingMenu';
-import { usePointerInteractions } from './utils/usePointerInteractions';
 import { useFloatingToolbarStoreListener } from './floating-toolbar.store';
+import { usePointerInteractions } from './utils/usePointerInteractions';
 
 const DEFAULT_DOM_ELEMENT = document.body;
 

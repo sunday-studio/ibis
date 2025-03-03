@@ -1,27 +1,30 @@
+import { FC, useMemo, useState } from 'react';
+
 import {
   Columns,
-  CornerUpRight,
   Copy,
+  CornerUpRight,
+  EllipsisIcon,
+  KeySquareIcon,
+  Link,
+  Lock,
   Package,
   StarIcon,
   Trash2,
-  EllipsisIcon,
-  Link,
-  Lock,
-  KeySquareIcon,
 } from 'lucide-react';
-import { FC, useMemo, useState } from 'react';
-import {
-  useDeleteNote,
-  useArchiveNote,
-  useGetAllPinnedNotes,
-  usePinNote,
-  useUnpinNote,
-  useUnarchiveNote,
-  useLockNote,
-  useUnlockNote,
-} from '@/services/db/notes';
+
 import { DropdownMenu, useDropdownMenuToggle } from '@/components/DropdownMenu';
+
+import {
+  useArchiveNote,
+  useDeleteNote,
+  useGetAllPinnedNotes,
+  useLockNote,
+  usePinNote,
+  useUnarchiveNote,
+  useUnlockNote,
+  useUnpinNote,
+} from '@/services/db/notes';
 import { Note } from '@/services/db/types';
 
 interface NoteActionsMenuProps {

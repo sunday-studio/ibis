@@ -1,10 +1,11 @@
-import './App.css';
-import './index.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'sonner';
 
 import { Router } from '@/router/Router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+import './App.css';
+import './index.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {

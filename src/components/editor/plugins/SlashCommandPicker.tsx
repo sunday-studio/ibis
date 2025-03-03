@@ -1,5 +1,7 @@
 import { JSX, useCallback, useMemo, useState } from 'react';
+
 import * as ReactDOM from 'react-dom';
+
 import { $createCodeNode } from '@lexical/code';
 import {
   INSERT_CHECK_LIST_COMMAND,
@@ -27,6 +29,7 @@ import {
   Quote,
   ScissorsIcon,
 } from 'lucide-react';
+
 import { INSERT_PAGE_BREAK } from './PageBreakPlugin/PageBreakPlugin';
 
 const headingIconMap = {

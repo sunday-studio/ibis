@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
+import { HashtagNode } from '@lexical/hashtag';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
@@ -8,6 +9,7 @@ import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
@@ -15,29 +17,26 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { HashtagNode } from '@lexical/hashtag';
+import clsx from 'clsx';
+import { EditorState } from 'lexical';
 import { useDebouncedCallback } from 'use-debounce';
-import { HashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
 
+import CodeActionPlugin from './CodeActionPlugin';
+import { FloatingMenuPlugin } from './FloatingMenuPlugin/FloatingMenuPlugin';
+import { setNodePlaceholderFromSelection } from './NodePlaceholder/utils';
+import './_editor.css';
 import AutoLinkPlugin, { validateUrl } from './plugins/AutolinkPlugin';
 import ClickableLinkPlugin from './plugins/ClickableLinkPlugin';
 import CodeHighlightPlugin from './plugins/CodeHighlightPlugin';
+import DraggableBlockPlugin from './plugins/DraggableBlock';
+import { FocusModePlugin } from './plugins/FocusModePlugin';
 import { MarkdownShortcutPlugin } from './plugins/MarkdownShortcut';
 import PageBreakPlugin from './plugins/PageBreakPlugin/PageBreakPlugin';
 import { PageBreakNode } from './plugins/PageBreakPlugin/nodes/PageBreakNode';
+import { ShortcutPlugin } from './plugins/ShortcutPlugin';
 import SlashCommandPickerPlugin from './plugins/SlashCommandPicker';
 import TabFocusPlugin from './plugins/TabFocusPlugin';
 import { theme } from './plugins/theme';
-import { EditorState } from 'lexical';
-import DraggableBlockPlugin from './plugins/DraggableBlock';
-import { setNodePlaceholderFromSelection } from './NodePlaceholder/utils';
-
-import { FloatingMenuPlugin } from './FloatingMenuPlugin/FloatingMenuPlugin';
-import { ShortcutPlugin } from './plugins/ShortcutPlugin';
-import { FocusModePlugin } from './plugins/FocusModePlugin';
-import CodeActionPlugin from './CodeActionPlugin';
-import './_editor.css';
-import clsx from 'clsx';
 import { getFontFamily } from './utils';
 
 // import { getEditorTheme } from './utils';

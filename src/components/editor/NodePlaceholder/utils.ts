@@ -1,11 +1,11 @@
 import {
+  $getNodeByKey,
+  $getRoot,
   $getSelection,
   $isRangeSelection,
   LexicalEditor,
-  RangeSelection,
-  $getNodeByKey,
-  $getRoot,
   PointType,
+  RangeSelection,
 } from 'lexical';
 
 const PLACEHOLDER_CLASS_NAME = 'node-placeholder';

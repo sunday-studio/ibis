@@ -1,8 +1,10 @@
-import { editorModeState } from '@/app.store';
+import { useEffect, useRef } from 'react';
+
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $getSelection, $isNodeSelection, $isRangeSelection, LexicalEditor } from 'lexical';
-import { useEffect, useRef } from 'react';
 import { useSnapshot } from 'valtio';
+
+import { editorModeState } from '@/app.store';
 
 function getBlockElement(editor: LexicalEditor): HTMLElement | null {
   let blockElem: HTMLElement | null = null;

@@ -1,26 +1,29 @@
 import { FC, ForwardedRef, Fragment, forwardRef } from 'react';
+
 import { $isAtNodeEnd } from '@lexical/selection';
+import clsx from 'clsx';
 import { FORMAT_TEXT_COMMAND, LexicalEditor, RangeSelection } from 'lexical';
 import {
   Bold,
-  CodeXml,
-  Italic,
-  Strikethrough,
-  Underline,
-  Superscript,
-  Subscript,
-  CaseUpper,
   CaseLower,
   CaseSensitive,
+  CaseUpper,
+  CodeXml,
   Highlighter,
+  Italic,
+  Strikethrough,
+  Subscript,
+  Superscript,
+  Underline,
 } from 'lucide-react';
-import { Tooltip } from '@/components/Tooltip';
-import clsx from 'clsx';
 import { Button } from 'react-aria-components';
+import { useSnapshot } from 'valtio';
+
+import { Tooltip } from '@/components/Tooltip';
+
+import { FloatingLinkEditor } from './components/FloatingLinkEditor';
 import { TextHighlightAction } from './components/TextHighlightAction';
 import { floatingToolbarStore } from './floating-toolbar.store';
-import { useSnapshot } from 'valtio';
-import { FloatingLinkEditor } from './components/FloatingLinkEditor';
 
 // Helper function to get selected node from editor selection
 export function getSelectedNode(selection: RangeSelection) {

@@ -1,8 +1,11 @@
 import { FC } from 'react';
-import { PinInput } from './PinInput';
-import { useGetUser, useVerifyUserPin } from '@/services/db/user';
-import { CreateUserModal } from './CreateUserModal';
+
 import { toast } from 'sonner';
+
+import { useGetUser, useVerifyUserPin } from '@/services/db/user';
+
+import { CreateUserModal } from './CreateUserModal';
+import { PinInput } from './PinInput';
 
 interface PinVerificationProps {
   onSubmit: (fullPin: string) => void;

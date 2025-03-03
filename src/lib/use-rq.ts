@@ -10,8 +10,6 @@ export const useInvalidateQueries = (queryKeys: string[]) => {
   };
 };
 
-
-
 export async function rq<T>(fn: () => Promise<T>): Promise<T> {
   try {
     return await fn();

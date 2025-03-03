@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { DatabaseType, db } from '.';
+
 import { encryptPin, generateRecoveryToken, verifyPin } from '@/lib/security';
+
+import { DatabaseType, db } from '.';
 import { User } from './types';
 
 enum UserKeys {

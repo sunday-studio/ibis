@@ -1,5 +1,6 @@
-import { DatabaseType, db } from './index';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { DatabaseType, db } from './index';
 import { Folder } from './types';
 
 enum FolderKeys {

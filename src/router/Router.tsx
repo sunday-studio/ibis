@@ -1,11 +1,13 @@
-import { Routes, Route } from 'react-router';
-import { AppLayout } from '../components/AppLayout';
-import { NotesScene } from '@/features/notes/NotesScene';
+import { Route, Routes } from 'react-router';
+
 import { JournalScene } from '@/features/journal/JournalScene';
+import { NoteEditor } from '@/features/notes/NoteEditor';
+import { NotesScene } from '@/features/notes/NotesScene';
+import { SettingsScene } from '@/features/settings/SettingsScene';
 import { TasksScene } from '@/features/tasks/TasksScene';
 import { MappedThoughtsScene } from '@/features/thought/ThoughtsScene';
-import { NoteEditor } from '@/features/notes/NoteEditor';
-import { SettingsScene } from '@/features/settings/SettingsScene';
+
+import { AppLayout } from '../components/AppLayout';
 
 export const Router = () => {
   return (

@@ -1,16 +1,17 @@
-import { NavLink, useLocation } from 'react-router';
 import {
-  TrashIcon,
+  CableIcon,
   FeatherIcon,
   ListTodoIcon,
-  CableIcon,
   NotebookPenIcon,
   SettingsIcon,
+  TrashIcon,
 } from 'lucide-react';
+import { NavLink, useLocation } from 'react-router';
+
+import { JournalSidebarMenu } from '@/features/journal/JournalSidebarMenu';
 import { NotesSidebarMenu } from '@/features/notes/NotesSidebarMenu';
 import { TasksSidebarMenu } from '@/features/tasks/TasksSidebarMenu';
 import { ThoughtsSidebarMenu } from '@/features/thought/ThoughtsSidebarMenu';
-import { JournalSidebarMenu } from '@/features/journal/JournalSidebarMenu';
 
 type TopLevelProducts = {
   name: string;

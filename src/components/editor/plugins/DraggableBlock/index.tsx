@@ -1,8 +1,10 @@
 import type { JSX, RefObject } from 'react';
-
 import { useRef } from 'react';
+
 import { GripVerticalIcon } from 'lucide-react';
+
 import { DraggableBlockPluginInternal } from './DraggableBlockPlugin';
+
 const DRAGGABLE_BLOCK_MENU_CLASSNAME = 'draggable-block-menu';
 
 function isOnMenu(element: HTMLElement): boolean {

@@ -1,8 +1,10 @@
 import { useState } from 'react';
+
 import { ValidationResult } from 'react-aria-components';
-import { Input, FieldError } from './Field';
-import { composeTailwindRenderProps } from './utils';
+
+import { FieldError, Input } from './Field';
 import { inputStyles } from './Input';
+import { composeTailwindRenderProps } from './utils';
 
 interface PinInputProps {
   onSubmit: (pin: string) => void;

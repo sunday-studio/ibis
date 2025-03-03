@@ -1,18 +1,20 @@
+import { useCallback, useEffect } from 'react';
+
+import { $isCodeHighlightNode } from '@lexical/code';
+import { $isLinkNode } from '@lexical/link';
+import { $getSelectionStyleValueForProperty } from '@lexical/selection';
 import { mergeRegister } from '@lexical/utils';
 import {
   $getSelection,
-  LexicalEditor,
-  $isRangeSelection,
-  getDOMSelection,
-  $isTextNode,
   $isParagraphNode,
+  $isRangeSelection,
+  $isTextNode,
+  LexicalEditor,
+  getDOMSelection,
 } from 'lexical';
-import { useCallback, useEffect } from 'react';
 import { proxy } from 'valtio';
+
 import { getSelectedNode } from './utils/getSelectedNode';
-import { $getSelectionStyleValueForProperty } from '@lexical/selection';
-import { $isLinkNode } from '@lexical/link';
-import { $isCodeHighlightNode } from '@lexical/code';
 
 interface FloatingToolbarStore {
   show: boolean;

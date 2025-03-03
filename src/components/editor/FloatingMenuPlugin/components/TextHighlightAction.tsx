@@ -1,12 +1,15 @@
-import { Tooltip } from '@/components/Tooltip';
-import { DropdownMenu, useDropdownMenuToggle } from '@/components/DropdownMenu';
-import { $getSelection, LexicalEditor } from 'lexical';
-import { $patchStyleText } from '@lexical/selection';
-import { Ampersand, ChevronDown } from 'lucide-react';
 import { FC, useCallback, useMemo } from 'react';
-import { floatingToolbarStore } from '../floating-toolbar.store';
-import { useSnapshot } from 'valtio';
+
+import { $patchStyleText } from '@lexical/selection';
+import { $getSelection, LexicalEditor } from 'lexical';
+import { Ampersand, ChevronDown } from 'lucide-react';
 import { Button } from 'react-aria-components';
+import { useSnapshot } from 'valtio';
+
+import { DropdownMenu, useDropdownMenuToggle } from '@/components/DropdownMenu';
+import { Tooltip } from '@/components/Tooltip';
+
+import { floatingToolbarStore } from '../floating-toolbar.store';
 
 interface TextHighlightActionProps {
   editor: LexicalEditor;

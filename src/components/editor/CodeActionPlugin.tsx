@@ -1,4 +1,8 @@
 import type { JSX } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import * as React from 'react';
+
+import { createPortal } from 'react-dom';
 
 import {
   $isCodeNode,
@@ -9,13 +13,11 @@ import {
 } from '@lexical/code';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $getNearestNodeFromDOMNode, isHTMLElement } from 'lexical';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import * as React from 'react';
-import { createPortal } from 'react-dom';
-import { DropdownMenu } from '../DropdownMenu';
+import { ChevronDownIcon } from 'lucide-react';
 
 import { useDebounce } from '@/hooks/use-debounce';
-import { ChevronDownIcon } from 'lucide-react';
+
+import { DropdownMenu } from '../DropdownMenu';
 
 const CODE_PADDING = 8;
 

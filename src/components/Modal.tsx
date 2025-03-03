@@ -1,11 +1,12 @@
 import React, { FC, PropsWithChildren } from 'react';
+
+import { XIcon } from 'lucide-react';
 import {
   DialogProps,
   ModalOverlay,
   Dialog as RACDialog,
   Modal as RACModal,
 } from 'react-aria-components';
-import { XIcon } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 

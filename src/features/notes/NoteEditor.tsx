@@ -1,31 +1,33 @@
+import { useState } from 'react';
+
+import { PanelRight } from 'lucide-react';
+import { useParams } from 'react-router';
+import { useDebouncedCallback } from 'use-debounce';
+import { useSnapshot } from 'valtio';
+
+import { PinVerification } from '@/components/PinVerification';
+import { Tooltip } from '@/components/Tooltip';
 import { Editor } from '@/components/editor/Editor';
 import { getEditorContent } from '@/components/editor/utils';
+
+import { toggleSidebarState } from '@/app.store';
+import { sidebarState } from '@/app.store';
 import {
   useCreateNoteHistory,
   useGetNote,
-  useGetNoteHistory,
+  // useGetNoteHistory,
   useUpdateNote,
 } from '@/services/db/notes';
-import { useState } from 'react';
-import { useParams } from 'react-router';
-import { useDebouncedCallback } from 'use-debounce';
+
 import { NoteActionsMenu } from './NoteActionsMenu';
-import { PinVerification } from '@/components/PinVerification';
-import { Tooltip } from '@/components/Tooltip';
-import { PanelRight } from 'lucide-react';
-import { toggleSidebarState } from '@/app.store';
-import { useSnapshot } from 'valtio';
-import { sidebarState } from '@/app.store';
 
 export const NoteEditor = () => {
   const { noteId } = useParams();
   const isSidebarOpen = useSnapshot(sidebarState).isSidebarOpen;
   const { data, isLoading } = useGetNote({ noteId: noteId as string });
   const { mutate: updateNote } = useUpdateNote({ noteId: noteId as string });
-  const { data: history, isLoading: historyLoading } = useGetNoteHistory(noteId as string);
+  // const { data: history, isLoading: historyLoading } = useGetNoteHistory(noteId as string);
   const { mutate: createNoteHistory } = useCreateNoteHistory();
-
-  console.log('history', history);
 
   const [isPinVerificationOpen, setIsPinVerificationOpen] = useState<boolean | undefined>(
     data?.isLocked,

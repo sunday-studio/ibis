@@ -1,15 +1,16 @@
 import { forwardRef } from 'react';
+
 import { clsx } from 'clsx';
 import {
   TextField as AriaTextField,
   TextFieldProps as AriaTextFieldProps,
   ValidationResult,
 } from 'react-aria-components';
+import { ControllerFieldState } from 'react-hook-form';
 import { tv } from 'tailwind-variants';
 
-import { fieldBorderStyles, FieldError, FieldTextarea, Input, Label } from './Field';
+import { FieldError, FieldTextarea, Input, Label, fieldBorderStyles } from './Field';
 import { composeTailwindRenderProps, focusRing } from './utils.ts';
-import { ControllerFieldState } from 'react-hook-form';
 
 export const inputStyles = tv({
   extend: focusRing,

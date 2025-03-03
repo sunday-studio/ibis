@@ -1,4 +1,7 @@
 import type { JSX } from 'react';
+import { DragEvent as ReactDragEvent, ReactNode, useEffect, useRef, useState } from 'react';
+
+import { createPortal } from 'react-dom';
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { eventFiles } from '@lexical/rich-text';
@@ -13,8 +16,6 @@ import {
   DROP_COMMAND,
   LexicalEditor,
 } from 'lexical';
-import { DragEvent as ReactDragEvent, ReactNode, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 
 import { Point } from '../shared/point';
 import { Rectangle } from '../shared/rect';

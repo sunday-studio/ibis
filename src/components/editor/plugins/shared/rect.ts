@@ -1,4 +1,4 @@
-import { isPoint, Point } from './point';
+import { Point, isPoint } from './point';
 
 type ContainsPointReturn = {
   result: boolean;

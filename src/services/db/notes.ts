@@ -1,9 +1,11 @@
-import { DatabaseType, db } from './index';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { CreateNoteType, Note, CreateNoteHistoryEntry, NoteHistoryEntry } from './types';
-import { useInvalidateQueries, rq } from '@/lib/use-rq';
-import { normalizeNote } from '@/services/normalizers/note.normalizer';
 import { toast } from 'sonner';
+
+import { rq, useInvalidateQueries } from '@/lib/use-rq';
+import { normalizeNote } from '@/services/normalizers/note.normalizer';
+
+import { DatabaseType, db } from './index';
+import { CreateNoteHistoryEntry, CreateNoteType, Note, NoteHistoryEntry } from './types';
 
 enum NoteKeys {
   ALL_ACTIVE_NOTES = 'notes/active',

@@ -1,15 +1,18 @@
-import { Button } from './Button';
-import { Modal, ModalProps } from './Modal';
 import { FC, useState } from 'react';
-import { z } from 'zod';
-import { Controller, useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TextInput } from './Input';
-import { PinInput } from './PinInput';
-import { Label } from './Field';
-import { useCreateUser } from '@/services/db/user';
+import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
+
 import { useClipboard } from '@/hooks/useClipboard';
+import { useCreateUser } from '@/services/db/user';
+
+import { Button } from './Button';
+import { Label } from './Field';
+import { TextInput } from './Input';
+import { Modal, ModalProps } from './Modal';
+import { PinInput } from './PinInput';
 
 interface CreateUserModalProps
   extends Omit<ModalProps, 'isOpen' | 'title' | 'showCloseButton' | 'footerActions'> {

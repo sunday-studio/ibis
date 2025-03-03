@@ -1,8 +1,10 @@
+import { FC, useState } from 'react';
+
 import { Button } from '@/components/Button';
 import { TextInput } from '@/components/Input';
 import { Modal, type SubModalProps } from '@/components/Modal';
+
 import { useCreateFolder } from '@/services/db/folders';
-import { FC, useState } from 'react';
 
 interface CreateFolderModalProps extends SubModalProps {
   onSubmit: () => void;

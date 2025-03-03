@@ -1,14 +1,15 @@
-import clsx from 'clsx';
 import { FC, forwardRef } from 'react';
+
+import clsx from 'clsx';
 import {
   Button,
   Menu,
-  Popover,
-  MenuTrigger,
   MenuItem,
-  Separator,
   MenuItemProps,
+  MenuTrigger,
   MenuTriggerProps,
+  Popover,
+  Separator,
 } from 'react-aria-components';
 import { proxy, useSnapshot } from 'valtio';
 

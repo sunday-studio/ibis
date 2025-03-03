@@ -1,5 +1,6 @@
-import { debounce } from 'lodash-es';
 import { useMemo, useRef } from 'react';
+
+import { debounce } from 'lodash-es';
 
 export function useDebounce<T extends (...args: never[]) => void>(
   fn: T,

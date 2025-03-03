@@ -1,14 +1,17 @@
+import { FC, useEffect, useState } from 'react';
+
+import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
+import clsx from 'clsx';
 import { $createRangeSelection, $getSelection, $isTextNode, $setSelection } from 'lexical';
 import { LexicalEditor } from 'lexical';
 import { $isRangeSelection } from 'lexical';
-import { Text, Link, ChevronDown } from 'lucide-react';
-import { FC, useEffect, useState } from 'react';
-import { getSelectedNode } from '../utils/getSelectedNode';
-import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { sanitizeUrl } from '@/components/editor/plugins/AutolinkPlugin';
-import { Tooltip } from '@/components/Tooltip';
+import { ChevronDown, Link, Text } from 'lucide-react';
+
 import { DropdownMenu, useDropdownMenuToggle } from '@/components/DropdownMenu';
-import clsx from 'clsx';
+import { Tooltip } from '@/components/Tooltip';
+import { sanitizeUrl } from '@/components/editor/plugins/AutolinkPlugin';
+
+import { getSelectedNode } from '../utils/getSelectedNode';
 
 interface LinkEditorProps {
   editor: LexicalEditor;

@@ -1,19 +1,20 @@
 import { useRef, useState } from 'react';
+import { FC } from 'react';
+
 import {
-  useFloating,
-  useInteractions,
-  useHover,
-  useRole,
-  useDismiss,
-  useClick,
   FloatingPortal,
   arrow,
-  offset,
-  flip,
-  shift,
   autoUpdate,
+  flip,
+  offset,
+  shift,
+  useClick,
+  useDismiss,
+  useFloating,
+  useHover,
+  useInteractions,
+  useRole,
 } from '@floating-ui/react';
-import { FC } from 'react';
 
 interface TooltipProps {
   trigger: React.ReactNode;

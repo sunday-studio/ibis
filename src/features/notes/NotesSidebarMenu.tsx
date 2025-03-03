@@ -1,3 +1,6 @@
+import clsx from 'clsx';
+import { NavLink } from 'react-router';
+
 import {
   useCreateNote,
   useGetAllActiveNotes,
@@ -5,8 +8,6 @@ import {
   useGetAllPinnedNotes,
 } from '@/services/db/notes';
 import { Note } from '@/services/db/types';
-import clsx from 'clsx';
-import { NavLink } from 'react-router';
 
 const EmptyState = ({ text }: { text: string }) => {
   return (
@@ -79,9 +80,7 @@ export const NotesSidebarMenu = () => {
               emptyStateText="No pinned notes yet"
               showEmptyState={pinnedNotes?.length === 0}
             >
-              {pinnedNotes?.map((note) => (
-                <NoteItem key={note.id} note={note} />
-              ))}
+              {pinnedNotes?.map((note) => <NoteItem key={note.id} note={note} />)}
             </Section>
 
             <Section
@@ -89,9 +88,7 @@ export const NotesSidebarMenu = () => {
               emptyStateText="No notes yet"
               showEmptyState={activeNotes?.length === 0}
             >
-              {activeNotes?.map((note) => (
-                <NoteItem key={note.id} note={note} />
-              ))}
+              {activeNotes?.map((note) => <NoteItem key={note.id} note={note} />)}
             </Section>
 
             <Section
@@ -99,9 +96,7 @@ export const NotesSidebarMenu = () => {
               emptyStateText="No archived notes yet"
               showEmptyState={archivedNotes?.length === 0}
             >
-              {archivedNotes?.map((note) => (
-                <NoteItem key={note.id} note={note} />
-              ))}
+              {archivedNotes?.map((note) => <NoteItem key={note.id} note={note} />)}
             </Section>
           </>
         )}
