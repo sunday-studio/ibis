@@ -26,7 +26,7 @@ const SelectedTile: FC<SelectedTileProps> = ({ title, onClose, isActive, id, onC
         'bg-stone-200 hover:bg-stone-300 dark:bg-stone-700 dark:hover:bg-stone-600': isActive,
       })}
     >
-      <span className="relative flex items-center justify-center size-4 mr-2 ml-1">
+      <span className="relative flex items-center justify-center size-4 mx-1">
         {isActive ? (
           <>
             <span className="relative flex items-center justify-center size-2">
@@ -38,8 +38,8 @@ const SelectedTile: FC<SelectedTileProps> = ({ title, onClose, isActive, id, onC
           <span className="relative inline-flex rounded-full text-sm">👻</span>
         )}
       </span>
-      <p className="text-sm font-medium ">{title}</p>
-      <span className="p-1 rounded-lg hover:bg-stone-200 dark:hover:bg-stone-800">
+      <p className="text-sm font-medium">{title}</p>
+      <span className="p-1 rounded-lg hover:bg-stone-200 dark:hover:bg-stone-800 ml-1">
         <X size={14} onClick={() => onClose(id)} />
       </span>
     </Button>

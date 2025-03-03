@@ -23,7 +23,7 @@ export const AppLayout = () => {
       >
         <Header />
         <div
-          className="flex overflow-hidden w-full bg-transparent px-2 py-0.5 h-full"
+          className="flex overflow-hidden w-full bg-transparent px-2 pt-0.7 pb-2 h-full"
           data-tauri-drag-region
         >
           <motion.div
