@@ -6,7 +6,7 @@ import {
 import { tv } from 'tailwind-variants';
 
 export interface ButtonProps extends RACButtonProps {
-  variant?: 'primary' | 'secondary' | 'destructive';
+  variant?: 'primary' | 'secondary' | 'destructive' | 'unstyled';
   size?: 'default' | 'small' | 'medium';
   isLoading?: boolean;
 }
@@ -21,6 +21,8 @@ let button = tv({
         'bg-white border border-neutral-200 text-gray-700 hover:bg-gray-50 pressed:bg-gray-100 focus-visible:ring-neutral-500/20 focus-visible:border-neutral-400',
       destructive:
         'bg-red-600 hover:bg-red-700 pressed:bg-red-800 focus-visible:ring-red-500/20 text-white',
+      unstyled:
+        'bg-transparent border-none shadow-none hover:bg-transparent pressed:bg-transparent focus-visible:ring-0 focus-visible:border-none text-inherit',
     },
 
     size: {

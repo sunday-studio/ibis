@@ -22,7 +22,10 @@ export const AppLayout = () => {
         data-editor-mode={isFocusMode ? 'focus' : 'normal'}
       >
         <Header />
-        {/* <div className="flex overflow-hidden w-full bg-transparent p-2" data-tauri-drag-region>
+        <div
+          className="flex overflow-hidden w-full bg-transparent px-2 py-0.5 h-full"
+          data-tauri-drag-region
+        >
           <motion.div
             animate={{ width: isSidebarOpen ? 'auto' : 0 }}
             transition={{ duration: 0.2, ease: 'easeInOut' }}
@@ -37,10 +40,10 @@ export const AppLayout = () => {
             </div>
           </motion.div>
 
-          <div className="bg-white w-full overflow-y-auto shadow-1 rounded-lg dark:bg-stone-950 app-content relative">
+          <div className="bg-white w-full overflow-y-auto shadow-1 rounded-lg dark:bg-stone-950 app-content relative h-full">
             <Outlet />
           </div>
-        </div> */}
+        </div>
       </div>
     </>
   );

@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { FC } from 'react';
 
 import {
+  FloatingArrow,
   FloatingPortal,
   arrow,
   autoUpdate,
@@ -38,14 +39,7 @@ export const Tooltip: FC<TooltipProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
 
-  const {
-    x,
-    y,
-    refs,
-    strategy,
-    context,
-    middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
-  } = useFloating({
+  const { x, y, refs, strategy, context } = useFloating({
     placement,
     open: isOpen,
     onOpenChange: setIsOpen,
@@ -98,15 +92,7 @@ export const Tooltip: FC<TooltipProps> = ({
             }}
             {...getFloatingProps()}
           >
-            <div
-              ref={arrowRef}
-              className="arrow"
-              style={{
-                position: 'absolute',
-                left: arrowX != null ? `${arrowX}px` : '',
-                top: arrowY != null ? `${arrowY}px` : '',
-              }}
-            />
+            <FloatingArrow ref={arrowRef} context={context} />
             {contentElement}
           </div>
         </FloatingPortal>

@@ -63,24 +63,6 @@ export const NoteEditor = () => {
           data-tauri-drag-region
         >
           <div className="flex items-center gap-2" data-tauri-drag-region>
-            {!isSidebarOpen && (
-              <Tooltip
-                shortcuts={['⌘', 'D']}
-                key="sidebar-toggle"
-                leaveDuration={0}
-                hoverDuration={300}
-                trigger={
-                  <button
-                    className="flex items-center hover:bg-stone-100 rounded-lg p-2"
-                    onClick={() => toggleSidebarState()}
-                  >
-                    <PanelRight size={18} />
-                  </button>
-                }
-                content="Open in sidebar"
-              />
-            )}
-
             <span className="relative flex size-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex size-2 rounded-full bg-green-500"></span>

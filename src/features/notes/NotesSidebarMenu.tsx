@@ -1,5 +1,7 @@
 import clsx from 'clsx';
-import { NavLink } from 'react-router';
+import { useNavigate } from 'react-router';
+
+import { TileType, addTile } from '@/components/Header/header.store';
 
 import {
   useCreateNote,
@@ -35,17 +37,29 @@ const Section = ({ title, children, emptyStateText, showEmptyState }: SectionPro
 };
 
 const NoteItem = ({ note }: { note: Note }) => {
+  const navigate = useNavigate();
+
   return (
-    <NavLink
-      to={`/notes/${note.id}`}
-      className={({ isActive }) =>
-        clsx('hover:bg-gray-100 p-1 rounded-md cursor-pointer hover:ring-1 hover:ring-gray-200', {
-          'text-orange-500': isActive,
-        })
-      }
+    <button
+      className="text-start hover:bg-gray-100 p-1 rounded-md cursor-pointer hover:ring-1 hover:ring-gray-200"
+      onClick={() => {
+        navigate(`/notes/${note.id}`);
+        addTile({
+          id: note.id,
+          title: note.title,
+          type: TileType.NOTE,
+        });
+      }}
+
+      // to={`/notes/${note.id}`}
+      // className={({ isActive }) =>
+      //   clsx('hover:bg-gray-100 p-1 rounded-md cursor-pointer hover:ring-1 hover:ring-gray-200', {
+      //     'text-orange-500': isActive,
+      //   })
+      // }
     >
       {note.title}
-    </NavLink>
+    </button>
   );
 };
 
