@@ -26,6 +26,18 @@ const SelectedTile: FC<SelectedTileProps> = ({ title, onClose, isActive, id, onC
         'bg-stone-200 hover:bg-stone-300 dark:bg-stone-700 dark:hover:bg-stone-600': isActive,
       })}
     >
+      <span className="relative flex items-center justify-center size-4 mr-2 ml-1">
+        {isActive ? (
+          <>
+            <span className="relative flex items-center justify-center size-2">
+              <span className="absolute inline-flex h-full size-2  w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex size-2 rounded-full bg-green-500"></span>
+            </span>
+          </>
+        ) : (
+          <span className="relative inline-flex rounded-full text-sm">👻</span>
+        )}
+      </span>
       <p className="text-sm font-medium ">{title}</p>
       <span className="p-1 rounded-lg hover:bg-stone-200 dark:hover:bg-stone-800">
         <X size={14} onClick={() => onClose(id)} />

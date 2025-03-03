@@ -57,21 +57,8 @@ export const NoteEditor = () => {
 
   return (
     <div className="flex flex-col w-full min-h-screen relative">
-      <div className="flex sticky top-0 w-full flex-col z-1">
-        <div
-          className="flex justify-between items-center bg-white dark:bg-stone-950 px-20 h-14"
-          data-tauri-drag-region
-        >
-          <div className="flex items-center gap-2" data-tauri-drag-region>
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex size-2 rounded-full bg-green-500"></span>
-            </span>
-          </div>
-          <p>{headerTitle}</p>
-          <NoteActionsMenu note={data} />
-        </div>
-        <div className="note-header" data-tauri-drag-region />
+      <div className="z-1 top-0 right-0 mx-4 my-2 fixed">
+        <NoteActionsMenu note={data} />
       </div>
 
       {showPinVerification && (
