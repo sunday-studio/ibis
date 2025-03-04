@@ -66,7 +66,7 @@ export const NoteEditor = () => {
       )}
 
       {data && (
-        <div className="flex flex-col h-full mt-24 w-2/3 mx-auto">
+        <div className="flex flex-col h-full mt-24 w-3/5 mx-auto">
           <input
             value={title ?? data?.title ?? 'Untitled'}
             className="mb-6 font-semibold text-4xl text-gray-800 outline-none editor-title dark:text-stone-100"

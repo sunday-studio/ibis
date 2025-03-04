@@ -65,6 +65,7 @@ const SingleAction: FC<SingleActionProps> = ({
   shortcuts = [],
 }) => (
   <Tooltip
+    showArrow={false}
     trigger={
       <Button
         type="button"

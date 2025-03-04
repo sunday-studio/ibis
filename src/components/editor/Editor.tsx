@@ -39,8 +39,6 @@ import TabFocusPlugin from './plugins/TabFocusPlugin';
 import { theme } from './plugins/theme';
 import { getFontFamily } from './utils';
 
-// import { getEditorTheme } from './utils';
-
 const ONCHANGE_DEBOUNCE_TIME = 750;
 const ONHISTORYCHANGE_DEBOUNCE_TIME = 600000; // 10 minutes in milliseconds
 
@@ -55,9 +53,9 @@ const OnChangePlugin = ({ onChange }: { onChange: (editorState: EditorState) => 
   return null;
 };
 
-function Placeholder({ className }: { className: string }) {
-  return <div className={className}>Write or type '/' for slash commands....</div>;
-}
+// function Placeholder({ className }: { className: string }) {
+//   return <div className={className}>Write or type '/' for slash commands....</div>;
+// }
 
 function onError(error: any) {
   console.error(error);
@@ -140,7 +138,7 @@ export const Editor = ({
       <div className={clsx('editor-wrapper', fontFamilyClass)}>
         <RichTextPlugin
           contentEditable={CustomContent}
-          placeholder={<Placeholder className={placeholderClassName} />}
+          // placeholder={<Placeholder className={placeholderClassName} />}
           ErrorBoundary={LexicalErrorBoundary}
         />
         {floatingAnchorElem && (

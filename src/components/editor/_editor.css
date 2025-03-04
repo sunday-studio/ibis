@@ -11,6 +11,10 @@
   @apply relative bg-white dark:bg-stone-950;
 }
 
+.editor-container {
+  @apply bg-[#f6f8fa] text-[#24292e] font-mono p-[10px] rounded-md;
+}
+
 .editor-root {
   @apply px-[var(--editor-padding)] outline-none text-stone-700 dark:text-gray-300;
   font-size: var(--editor-font-size);
@@ -30,7 +34,7 @@
 }
 
 .editor-paragraph {
-  @apply my-0.5 dark:text-gray-100;
+  @apply my-0.5 dark:text-gray-100 leading-7;
 }
 
 .editor-input {
@@ -55,7 +59,7 @@
 }
 
 .editor-text-underlineStrikethrough {
-  @apply underline line-through;
+  text-decoration: underline line-through;
 }
 
 .editor-text-overflowed {
@@ -164,7 +168,7 @@
 }
 
 .editor-list-item {
-  @apply mx-8 my-[0.24rem] leading-6;
+  @apply mx-8 my-[0.24rem] leading-7;
 }
 
 .editor-list-item-checked,
@@ -174,7 +178,7 @@
 
 .editor-list-item-checked,
 .editor-list-item-unchecked span {
-  @apply leading-6;
+  @apply leading-7;
 }
 
 .editor-list-item-checked {
@@ -183,12 +187,7 @@
 
 .editor-list-item-unchecked:before,
 .editor-list-item-checked:before {
-  @apply content-[''] w-[18px] h-[18px] top-0.5 left-0 cursor-pointer block bg-cover absolute;
-}
-
-.editor-list-item-unchecked[dir='rtl']:before,
-.editor-list-item-checked[dir='rtl']:before {
-  @apply left-auto right-0;
+  @apply content-[''] w-[16px] h-[16px] top-1 left-0 cursor-pointer block bg-cover absolute;
 }
 
 .editor-list-item-unchecked:focus:before,
@@ -213,6 +212,9 @@
   @apply list-none before:hidden after:hidden;
 }
 
+/* end of list */
+
+/* start of code block */
 .editor-code {
   @apply bg-gray-100 dark:bg-neutral-800 text-gray-900 dark:text-gray-100 rounded-lg ring-1 ring-neutral-200 dark:ring-neutral-700 block px-6 py-3 overflow-x-auto relative [tab-size:2];
   font-size: 14px;
@@ -334,11 +336,7 @@
   @apply text-orange-600 dark:text-orange-400;
 }
 
-.editor-container {
-  @apply bg-[#f6f8fa] text-[#24292e] font-mono p-[10px] rounded-md;
-}
-
-/* end of lists */
+/* end of code block */
 
 [type='page-break'] {
   @apply relative block overflow-visible -ml-[var(--editor-input-padding,28px)] mt-[var(--editor-input-padding,28px)] mb-[var(--editor-input-padding,28px)] border-0 border-t border-b border-dashed border-neutral-200;
@@ -386,7 +384,12 @@
 }
 
 .node-placeholder:has(br):not(:has(span))::before {
-  @apply absolute content-[attr(data-placeholder)] text-gray-500 pl-1 italic;
+  @apply absolute content-[attr(data-placeholder)] text-gray-500 pl-1;
+}
+
+.node-placeholder-after:has(br):not(:has(span))::after {
+  @apply absolute content-[attr(data-placeholder)] text-gray-500 pl-1;
+  margin-top: -24px;
 }
 
 [data-editor-mode='focus'] {

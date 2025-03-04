@@ -42,7 +42,7 @@ function getCurrentIndex(keysLength: number): number {
   return Math.floor(keysLength / 2);
 }
 
-function getTopLevelNodeKeys(editor: LexicalEditor): string[] {
+export function getTopLevelNodeKeys(editor: LexicalEditor): string[] {
   return editor.getEditorState().read(() => $getRoot().getChildrenKeys());
 }
 

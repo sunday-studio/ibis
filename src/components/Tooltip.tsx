@@ -25,6 +25,7 @@ interface TooltipProps {
   placement?: 'top' | 'right' | 'bottom' | 'left';
   leaveDuration?: number;
   hoverDuration?: number;
+  showArrow?: boolean;
 }
 
 export const Tooltip: FC<TooltipProps> = ({
@@ -35,6 +36,7 @@ export const Tooltip: FC<TooltipProps> = ({
   shouldFlip = true,
   leaveDuration = 10,
   hoverDuration = 200,
+  showArrow = true,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
@@ -92,7 +94,7 @@ export const Tooltip: FC<TooltipProps> = ({
             }}
             {...getFloatingProps()}
           >
-            <FloatingArrow ref={arrowRef} context={context} />
+            {showArrow && <FloatingArrow ref={arrowRef} context={context} />}
             {contentElement}
           </div>
         </FloatingPortal>
