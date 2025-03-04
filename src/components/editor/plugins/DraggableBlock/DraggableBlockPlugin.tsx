@@ -401,8 +401,6 @@ function useDraggableBlockMenu(
       targetBlockElem.classList.remove('draggable-element');
     }
 
-    console.log('targetBlockElem', targetBlockElem);
-
     e.stopPropagation();
     e.preventDefault();
   };
