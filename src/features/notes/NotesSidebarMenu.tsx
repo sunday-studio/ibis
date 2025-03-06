@@ -58,7 +58,7 @@ const NoteItem = ({ note }: { note: Note }) => {
       //   })
       // }
     >
-      {note.title}
+      {note.title ?? 'Untitled'}
     </button>
   );
 };
@@ -81,7 +81,6 @@ export const NotesSidebarMenu = () => {
       isArchived: 0,
     });
   };
-
   return (
     <div className="flex flex-col gap-2 w-full h-full" data-tauri-drag-region>
       <div className="px-4 flex flex-col gap-2" data-tauri-drag-region>
@@ -110,7 +109,7 @@ export const NotesSidebarMenu = () => {
               emptyStateText="No archived notes yet"
               showEmptyState={archivedNotes?.length === 0}
             >
-              {archivedNotes?.map((note) => <NoteItem key={note.id} note={note} />)}
+              {archivedNotes?.map((note, index) => <NoteItem key={index} note={note} />)}
             </Section>
           </>
         )}

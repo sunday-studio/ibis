@@ -5,6 +5,7 @@
   src: url('/fonts/HypatiaSansPro/ExtraLight.woff2') format('woff2');
   font-weight: 200;
   font-style: normal;
+  font-optical-sizing: auto;
 }
 
 @font-face {
@@ -12,6 +13,7 @@
   src: url('/fonts/HypatiaSansPro/Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
+  font-optical-sizing: auto;
 }
 
 @font-face {
@@ -19,6 +21,7 @@
   src: url('/fonts/HypatiaSansPro/Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
+  font-optical-sizing: auto;
 }
 
 @font-face {
@@ -26,6 +29,7 @@
   src: url('/fonts/HypatiaSansPro/SemiBold.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
+  font-optical-sizing: auto;
 }
 
 @font-face {
@@ -33,6 +37,7 @@
   src: url('/fonts/HypatiaSansPro/Bold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
+  font-optical-sizing: auto;
 }
 
 @font-face {
@@ -40,6 +45,7 @@
   src: url('/fonts/HypatiaSansPro/ExtraBold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
+  font-optical-sizing: auto;
 }
 
 @font-face {
@@ -47,6 +53,7 @@
   src: url('/fonts/BerkeleyMono-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
+  font-optical-sizing: auto;
 }
 
 @font-face {
@@ -54,4 +61,5 @@
   src: url('/fonts/BerkeleyMono-Italic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
+  font-optical-sizing: auto;
 }

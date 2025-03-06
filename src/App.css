@@ -53,9 +53,12 @@ html {
     'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   --font-mono: 'IBM Plex Mono', 'BerkeleyMono', monospace;
+  --font-sohne:
+    'Sohne', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+    'Open Sans', 'Helvetica Neue', sans-serif;
 
-  --font-display--font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-  --font-display--font-variation-settings: 'opsz' 32;
+  /* --font-display--font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  --font-display--font-variation-settings: 'opsz' 32; */
 
   --font-hypatia-sans-pro:
     'HypatiaSansPro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
@@ -83,12 +86,6 @@ html {
       transform: translate(-50%, -50%) scale(1);
     }
   }
-}
-
-.test-font {
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
-    'Helvetica Neue', sans-serif;
 }
 
 .debug {

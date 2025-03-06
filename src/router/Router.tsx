@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router';
 
 import { JournalScene } from '@/features/journal/JournalScene';
+import { NotesEmptyState } from '@/features/notes/EmptyState';
 import { NoteEditor } from '@/features/notes/NoteEditor';
 import { NotesScene } from '@/features/notes/NotesScene';
 import { SettingsScene } from '@/features/settings/SettingsScene';
@@ -14,6 +15,7 @@ export const Router = () => {
     <Routes>
       <Route path="/" element={<AppLayout />}>
         <Route path="/notes" element={<NotesScene />}>
+          <Route index element={<NotesEmptyState />} />
           <Route path="/notes/:noteId" element={<NoteEditor />} />
         </Route>
         <Route path="/journal" element={<JournalScene />} />

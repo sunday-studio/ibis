@@ -150,8 +150,8 @@ export const Editor = ({
         )}
         <ClickableLinkPlugin />
         <OnChangePlugin
-          onChange={(editorState) => {
-            const editorStateJSON = parseEditorOnChange(editorState);
+          onChange={(state) => {
+            const editorStateJSON = parseEditorOnChange(state);
             debouncedOnChange(editorStateJSON);
             debouncedOnHistoryChange(editorStateJSON);
           }}

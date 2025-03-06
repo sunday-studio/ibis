@@ -35,8 +35,17 @@ export const addTile = (tile: HeaderTile) => {
   }
 };
 
-export const removeTile = (tileId: string) => {
-  headerState.tiles = headerState.tiles.filter((t) => t.id !== tileId);
+export const useRemoveTile = () => {
+  const navigate = useNavigate();
+
+  const handleRemoveTile = (tileId: string) => {
+    headerState.tiles = headerState.tiles.filter((t) => t.id !== tileId);
+
+    if (headerState.tiles.length === 0) {
+      navigate('/notes');
+    }
+  };
+  return handleRemoveTile;
 };
 
 export const useSelectTile = () => {
@@ -49,6 +58,5 @@ export const useSelectTile = () => {
       navigate(tile.type === TileType.NOTE ? `/notes/${tile.id}` : `/${tile.type}`);
     }
   };
-
   return handleSelectTile;
 };

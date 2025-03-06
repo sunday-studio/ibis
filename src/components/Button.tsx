@@ -18,7 +18,7 @@ let button = tv({
       primary:
         'bg-orange-600 hover:bg-orange-700 pressed:bg-orange-800 text-white shadow-orange-500/20 focus-visible:ring-orange-500/20',
       secondary:
-        'bg-white border border-neutral-200 text-gray-700 hover:bg-gray-50 pressed:bg-gray-100 focus-visible:ring-neutral-500/20 focus-visible:border-neutral-400',
+        'bg-white border border-neutral-200 text-gray-700 hover:bg-gray-50 pressed:bg-gray-100 focus-visible:ring-neutral-500/20 focus-visible:border-neutral-400 dark:bg-neutral-800 dark:text-gray-300 dark:hover:bg-neutral-700 dark:pressed:bg-neutral-600 dark:focus-visible:ring-neutral-500/20 dark:focus-visible:border-neutral-400',
       destructive:
         'bg-red-600 hover:bg-red-700 pressed:bg-red-800 focus-visible:ring-red-500/20 text-white',
       unstyled:

@@ -9,7 +9,7 @@ import { sidebarState, toggleSidebarState } from '@/app.store';
 
 import { Button } from '../Button';
 import { Tooltip } from '../Tooltip';
-import { type HeaderTile, headerState, removeTile, useSelectTile } from './header.store';
+import { type HeaderTile, headerState, useRemoveTile, useSelectTile } from './header.store';
 
 interface SelectedTileProps extends HeaderTile {
   onClose: (tileId: string) => void;
@@ -52,7 +52,7 @@ export const Header = () => {
   const { tiles, selectedTile } = useSnapshot(headerState);
 
   const selectTile = useSelectTile();
-
+  const removeTile = useRemoveTile();
   return (
     <div className="flex h-12" data-tauri-drag-region>
       <div

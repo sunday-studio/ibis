@@ -31,6 +31,7 @@ export function getFontFamily(fontFamily?: FontFamily) {
       return 'font-ojuju';
     case 'PlusJakartaSans':
       return 'font-plus-jakarta-sans';
+
     default:
       return 'font-plus-jakarta-sans';
   }

@@ -1,5 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
+
+import { TileType, addTile } from '@/components/Header/header.store';
 
 import { rq, useInvalidateQueries } from '@/lib/use-rq';
 import { normalizeNote } from '@/services/normalizers/note.normalizer';
@@ -138,10 +141,20 @@ export function useGetAllActiveNotes() {
 
 export function useCreateNote() {
   const invalidateQueries = useInvalidateQueries([NoteKeys.ALL_ACTIVE_NOTES]);
+  const navigate = useNavigate();
+
   return useMutation({
     mutationFn: (params: CreateNoteType) => rq(() => createNote(db.getDb(), params)),
-    onSuccess: () => {
+    onSuccess: (data) => {
       invalidateQueries();
+      if (data?.lastInsertId) {
+        navigate(`/notes/${data?.lastInsertId}`);
+        addTile({
+          id: data?.lastInsertId?.toString(),
+          title: 'Untitled',
+          type: TileType.NOTE,
+        });
+      }
     },
   });
 }
