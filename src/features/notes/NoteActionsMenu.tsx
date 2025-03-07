@@ -1,5 +1,6 @@
 import { FC, useMemo, useState } from 'react';
 
+import { formatRelative } from 'date-fns';
 import {
   Columns,
   Copy,
@@ -105,30 +106,26 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
         icon: <Trash2 size={16} />,
         disabled: false,
         active: isDoubleClicked,
+        isDestructive: true,
       },
 
-      {
-        title: 'Move to',
-        action: () => {},
-        icon: <CornerUpRight size={16} />,
-        disabled: true,
-      },
+      // {
+      //   title: 'Move to',
+      //   action: () => {},
+      //   icon: <CornerUpRight size={16} />,
+      //   disabled: true,
+      // },
 
-      {
-        title: 'Open in split view',
-        action: () => {},
-        icon: <Columns size={16} />,
-        disabled: true,
-      },
-
-      {
-        title: 'Share',
-        action: () => {},
-        icon: <Link size={16} />,
-        disabled: true,
-      },
+      // {
+      //   title: 'Share',
+      //   action: () => {},
+      //   icon: <Link size={16} />,
+      //   disabled: true,
+      // },
     ];
   }, [pinnedNotesIds, isDoubleClicked]);
+
+  // console.log('note =>', note);
 
   return (
     <>
@@ -137,11 +134,30 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
           <EllipsisIcon className="text-stone-600 dark:text-stone-400" />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
-          {options.map((option) => (
-            <DropdownMenu.Item key={option.title} {...option}>
-              {option.title}
-            </DropdownMenu.Item>
-          ))}
+          <DropdownMenu.MenuContent>
+            {options.map((option) => (
+              <>
+                <DropdownMenu.Item key={option.title} {...option}>
+                  {option.title}
+                </DropdownMenu.Item>
+                <DropdownMenu.Separator />
+              </>
+            ))}
+          </DropdownMenu.MenuContent>
+          <DropdownMenu.Separator />
+          <div className="py-3 px-4 text-sm flex flex-col gap-1.5 text-stone-400 dark:text-stone-400 font-medium">
+            <p className="flex items-center gap-2">
+              <span>Word count:</span>
+              <span>1332</span>
+            </p>
+            <p className="flex items-center gap-2">
+              <span>Character count:</span>
+              <span>1332</span>
+            </p>
+            <p className="flex items-center gap-2">
+              <span>{formatRelative(new Date(note.updatedAt || note.createdAt), new Date())}</span>
+            </p>
+          </div>
         </DropdownMenu.Content>
       </DropdownMenu>
     </>

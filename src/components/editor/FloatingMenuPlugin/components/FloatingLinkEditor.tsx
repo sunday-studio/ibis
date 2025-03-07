@@ -146,7 +146,7 @@ export const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({ editor, isLink
           content="Link"
         />
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content withMenu={false}>
+      <DropdownMenu.Content>
         <div className="p-2 w-[250px] bg-white rounded-lg shadow-1">
           <LinkEditor onClose={() => setIsOpen(false)} editor={editor} />
         </div>

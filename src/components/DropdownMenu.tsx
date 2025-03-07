@@ -70,7 +70,82 @@ export const DropdownMenuTrigger: FC<DropdownMenuTriggerProps> = ({
   );
 };
 
-export const Content = forwardRef<
+export const MenuContent = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <Menu
+      className={clsx(
+        'py-1',
+        // 'w-[250px] bg-white p-2 shadow-1 rounded-xl flex flex-col gap-1 dark:bg-stone-800 overflow-y-auto',
+        className,
+      )}
+    >
+      {children}
+    </Menu>
+  );
+};
+
+MenuContent.displayName = 'MenuContent';
+
+interface DropdownMenuItemProps extends MenuItemProps {
+  children: React.ReactNode;
+  icon?: React.ReactNode;
+  shortcut?: string;
+  disabled?: boolean;
+  action?: () => void;
+  isDestructive?: boolean;
+}
+
+export const DropdownMenuItem: FC<DropdownMenuItemProps> = ({
+  children,
+  icon,
+  shortcut,
+  disabled,
+  action,
+  className,
+  isDestructive,
+}) => {
+  return (
+    <MenuItem onAction={action} isDisabled={disabled} className="outline-none px-1">
+      {({ isFocused }) => (
+        <div
+          className={clsx(
+            'transition-all rounded-lg outline-none overflow-hidden flex items-center px-2 py-1',
+            {
+              'cursor-pointer': !disabled,
+              'opacity-50 hover:bg-transparent': disabled,
+              'bg-red-50 text-red-500 dark:bg-red-950 dark:text-red-400':
+                isFocused && isDestructive,
+              'bg-neutral-100 dark:bg-stone-700': isFocused && !isDestructive,
+              'hover:text-stone-800 dark:text-stone-300': !isDestructive,
+            },
+            className,
+          )}
+        >
+          {icon && (
+            <span
+              className={clsx('mr-2 ', {
+                'text-red-500': isFocused && isDestructive,
+                'text-stone-500': !isDestructive || !isFocused,
+              })}
+            >
+              {icon}
+            </span>
+          )}
+          <span className="inherit">{children}</span>
+          {shortcut && <kbd className="ml-auto font-light text-xs">{shortcut}</kbd>}
+        </div>
+      )}
+    </MenuItem>
+  );
+};
+
+const Content = forwardRef<
   HTMLDivElement,
   {
     children: React.ReactNode;
@@ -78,7 +153,7 @@ export const Content = forwardRef<
     handleClose?: () => void;
     className?: string;
   }
->(({ children, withMenu = true, className, ...rest }, ref) => {
+>(({ children, className, ...rest }, ref) => {
   const state = useSnapshot(menuState);
 
   return (
@@ -91,70 +166,30 @@ export const Content = forwardRef<
         return true;
       }}
     >
-      {withMenu && (
-        <Menu
-          className={clsx(
-            'w-[250px] bg-white p-2 shadow-1 rounded-xl flex flex-col gap-1 dark:bg-stone-800 overflow-y-auto',
-            className,
-          )}
-        >
-          {children}
-        </Menu>
-      )}
-
-      {!withMenu && children}
+      <div
+        className={clsx(
+          'w-[250px] bg-white shadow-1 rounded-xl flex flex-col gap-1 dark:bg-stone-800 overflow-y-auto',
+          className,
+        )}
+      >
+        {children}
+      </div>
     </Popover>
   );
 });
 
 Content.displayName = 'Content';
 
-interface DropdownMenuItemProps extends MenuItemProps {
-  children: React.ReactNode;
-  icon?: React.ReactNode;
-  shortcut?: string;
-  disabled?: boolean;
-  action?: () => void;
-}
-
-export const DropdownMenuItem: FC<DropdownMenuItemProps> = ({
-  children,
-  icon,
-  shortcut,
-  disabled,
-  action,
-  className,
-}) => {
-  return (
-    <MenuItem
-      onAction={action}
-      isDisabled={disabled}
-      className={clsx(
-        'transition-all rounded-lg hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center px-2 py-1.5 dark:hover:bg-stone-700',
-        disabled ? 'opacity-50 hover:ring-transparent hover:bg-transparent' : 'cursor-pointer',
-        className,
-      )}
-    >
-      {icon && <span className="mr-2 text-stone-500">{icon}</span>}
-      <span className="text-stone-900 dark:text-stone-300">{children}</span>
-      {shortcut && (
-        <span className="ml-auto text-stone-900 dark:text-stone-300 font-light text-xs">
-          {shortcut}
-        </span>
-      )}
-    </MenuItem>
-  );
-};
-
 export const DropdownMenuSeparator = () => {
-  return <Separator className="w-full border-neutral-200 dark:border-stone-700 border-b" />;
+  return <Separator className="w-full dark:border-stone-700 border-stone-200" />;
 };
 
 export const DropdownMenu = Object.assign(DropdownMenuRoot, {
   Trigger: DropdownMenuTrigger,
   Item: DropdownMenuItem,
   Separator: DropdownMenuSeparator,
-  Content: Content,
+  MenuContent,
+  Content,
 });
 
 export const useDropdownMenuToggle = () => {

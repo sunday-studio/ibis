@@ -206,7 +206,7 @@ export const TextHighlightAction: FC<TextHighlightActionProps> = ({ editor }) =>
           content="Text Highlight"
         />
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content withMenu={false}>
+      <DropdownMenu.Content>
         <div className="p-4 flex flex-col gap-3 bg-white rounded-lg shadow-1 max-w-[200px] dark:bg-stone-800">
           <div className="flex gap-2 flex-col">
             <h4 className="text-sm text-neutral-600 font-semibold dark:text-stone-400">

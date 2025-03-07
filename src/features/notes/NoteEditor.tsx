@@ -47,8 +47,8 @@ export const NoteEditor = () => {
     isPinVerificationOpen === undefined ? data.isLocked : isPinVerificationOpen;
 
   return (
-    <div className="flex flex-col w-full min-h-screen relative">
-      <div className="z-1 top-0 right-0 mx-4 my-2 fixed">
+    <div className="flex flex-col w-full min-h-screen relative isolate">
+      <div className="z-1 top-0 left-0 mx-6 py-2 sticky flex justify-end">
         <NoteActionsMenu note={data} />
       </div>
 

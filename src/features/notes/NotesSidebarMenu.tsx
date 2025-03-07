@@ -58,7 +58,7 @@ const NoteItem = ({ note }: { note: Note }) => {
       //   })
       // }
     >
-      {note.title ?? 'Untitled'}
+      {note.title || 'Untitled'}
     </button>
   );
 };
