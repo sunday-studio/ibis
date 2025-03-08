@@ -3,16 +3,12 @@ import { useState } from 'react';
 import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
 
+import { updateTile } from '@/components/Header/header.store';
 import { PinVerification } from '@/components/PinVerification';
 import { Editor } from '@/components/editor/Editor';
 import { getEditorContent } from '@/components/editor/utils';
 
-import {
-  useCreateNoteHistory,
-  useGetNote,
-  // useGetNoteHistory,
-  useUpdateNote,
-} from '@/services/db/notes';
+import { useCreateNoteHistory, useGetNote, useUpdateNote } from '@/services/db/notes';
 
 import { NoteActionsMenu } from './NoteActionsMenu';
 
@@ -36,6 +32,10 @@ export const NoteEditor = () => {
       entry: {
         title,
       },
+    });
+
+    updateTile({
+      title,
     });
   }, 500);
 
@@ -91,7 +91,6 @@ export const NoteEditor = () => {
               updateNote({
                 id: data.id,
                 entry: {
-                  // ...data,
                   content,
                 },
               });

@@ -1,18 +1,7 @@
 import { FC, useMemo, useState } from 'react';
 
 import { formatRelative } from 'date-fns';
-import {
-  Columns,
-  Copy,
-  CornerUpRight,
-  EllipsisIcon,
-  KeySquareIcon,
-  Link,
-  Lock,
-  Package,
-  StarIcon,
-  Trash2,
-} from 'lucide-react';
+import { Copy, EllipsisIcon, KeySquareIcon, Lock, Package, StarIcon, Trash2 } from 'lucide-react';
 
 import { DropdownMenu, useDropdownMenuToggle } from '@/components/DropdownMenu';
 
@@ -108,24 +97,8 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
         active: isDoubleClicked,
         isDestructive: true,
       },
-
-      // {
-      //   title: 'Move to',
-      //   action: () => {},
-      //   icon: <CornerUpRight size={16} />,
-      //   disabled: true,
-      // },
-
-      // {
-      //   title: 'Share',
-      //   action: () => {},
-      //   icon: <Link size={16} />,
-      //   disabled: true,
-      // },
     ];
   }, [pinnedNotesIds, isDoubleClicked]);
-
-  // console.log('note =>', note);
 
   return (
     <>
@@ -136,12 +109,9 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
         <DropdownMenu.Content>
           <DropdownMenu.MenuContent>
             {options.map((option) => (
-              <>
-                <DropdownMenu.Item key={option.title} {...option}>
-                  {option.title}
-                </DropdownMenu.Item>
-                <DropdownMenu.Separator />
-              </>
+              <DropdownMenu.Item key={option.title} {...option}>
+                {option.title}
+              </DropdownMenu.Item>
             ))}
           </DropdownMenu.MenuContent>
           <DropdownMenu.Separator />

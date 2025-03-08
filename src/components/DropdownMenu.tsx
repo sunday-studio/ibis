@@ -61,7 +61,7 @@ export const DropdownMenuTrigger: FC<DropdownMenuTriggerProps> = ({
         state.setIsOpen(!state.isOpen);
       }}
       className={clsx(
-        'bg-transparent hover:ring-1 hover:ring-neutral-200 hover:bg-neutral-100 outline-none overflow-hidden flex items-center rounded-lg dark:hover:bg-stone-700 z-2 px-1 py-0.5',
+        'bg-transparent px-0.5 hover:bg-neutral-100 outline-none overflow-hidden flex items-center rounded-lg dark:hover:bg-stone-700 z-2',
         className,
       )}
     >
@@ -77,17 +77,7 @@ export const MenuContent = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  return (
-    <Menu
-      className={clsx(
-        'py-1',
-        // 'w-[250px] bg-white p-2 shadow-1 rounded-xl flex flex-col gap-1 dark:bg-stone-800 overflow-y-auto',
-        className,
-      )}
-    >
-      {children}
-    </Menu>
-  );
+  return <Menu className={clsx('py-1', className)}>{children}</Menu>;
 };
 
 MenuContent.displayName = 'MenuContent';
@@ -115,14 +105,14 @@ export const DropdownMenuItem: FC<DropdownMenuItemProps> = ({
       {({ isFocused }) => (
         <div
           className={clsx(
-            'transition-all rounded-lg outline-none overflow-hidden flex items-center px-2 py-1',
+            'transition-all  rounded-lg outline-none overflow-hidden flex items-center px-2 py-1',
             {
               'cursor-pointer': !disabled,
               'opacity-50 hover:bg-transparent': disabled,
               'bg-red-50 text-red-500 dark:bg-red-950 dark:text-red-400':
                 isFocused && isDestructive,
               'bg-neutral-100 dark:bg-stone-700': isFocused && !isDestructive,
-              'hover:text-stone-800 dark:text-stone-300': !isDestructive,
+              'hover:text-stone-800 dark:text-stone-300': !isFocused,
             },
             className,
           )}
@@ -168,7 +158,7 @@ const Content = forwardRef<
     >
       <div
         className={clsx(
-          'w-[250px] bg-white shadow-1 rounded-xl flex flex-col gap-1 dark:bg-stone-800 overflow-y-auto',
+          'w-[230px] bg-white shadow-1 rounded-xl flex flex-col gap-1 dark:bg-stone-800 overflow-y-auto',
           className,
         )}
       >

@@ -1,5 +1,8 @@
 import { useNavigate } from 'react-router';
-import { proxy } from 'valtio';
+import { proxy, subscribe } from 'valtio';
+
+import { StorageKeys } from '@/lib/storage';
+import { storage } from '@/lib/storage';
 
 export enum TileType {
   NOTE = 'note',
@@ -19,9 +22,15 @@ interface HeaderState {
   selectedTile: HeaderTile | null;
 }
 
-export const headerState = proxy<HeaderState>({
-  tiles: [],
-  selectedTile: null,
+export const headerState = proxy<HeaderState>(
+  storage.get(StorageKeys.headerState) || {
+    tiles: [],
+    selectedTile: null,
+  },
+);
+
+subscribe(headerState, () => {
+  storage.set(StorageKeys.headerState, headerState);
 });
 
 export const addTile = (tile: HeaderTile) => {
@@ -59,4 +68,18 @@ export const useSelectTile = () => {
     }
   };
   return handleSelectTile;
+};
+
+export const updateTile = (tile: Partial<HeaderTile>) => {
+  const updatedTile = {
+    ...headerState.selectedTile,
+    ...tile,
+  };
+
+  if (updatedTile.id) {
+    const tileIndex = headerState.tiles.findIndex((t) => t.id === updatedTile.id);
+    if (tileIndex !== -1) {
+      headerState.tiles[tileIndex] = updatedTile as HeaderTile;
+    }
+  }
 };

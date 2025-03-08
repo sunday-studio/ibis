@@ -165,15 +165,13 @@ function CodeActionMenuContainer({ anchorElem }: { anchorElem: HTMLElement }): J
               <ChevronDownIcon className="w-4 h-4" />
             </DropdownMenu.Trigger>
             <DropdownMenu.Content ref={dropdownRef} className="gap-0!">
-              {CODE_LANGUAGE_OPTIONS.map(([lang, friendlyName]) => (
-                <DropdownMenu.Item
-                  key={lang}
-                  action={() => onCodeLanguageSelect(lang)}
-                  className="p-1! text-md"
-                >
-                  {friendlyName}
-                </DropdownMenu.Item>
-              ))}
+              <DropdownMenu.MenuContent>
+                {CODE_LANGUAGE_OPTIONS.map(([lang, friendlyName]) => (
+                  <DropdownMenu.Item key={lang} action={() => onCodeLanguageSelect(lang)}>
+                    {friendlyName}
+                  </DropdownMenu.Item>
+                ))}
+              </DropdownMenu.MenuContent>
             </DropdownMenu.Content>
           </DropdownMenu>
         </div>
