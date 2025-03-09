@@ -29,7 +29,7 @@
 }
 
 .editor-placeholder {
-  @apply absolute -mt-[30px] text-gray-500 truncate pointer-events-none pl-[calc(var(--editor-padding)+6px)] z-[2];
+  @apply absolute -mt-[23px] text-gray-500 truncate pointer-events-none pl-[calc(var(--editor-padding)+2px)] z-[2];
   font-size: var(--editor-font-size);
 }
 

@@ -11,12 +11,28 @@ import { useNavigate } from 'react-router';
 
 import { Entries } from '@/components/Sidebar/Entries';
 
+import { useCreateNote } from '@/services/db/notes';
+
 import { Button } from '../Button';
 import { Tooltip } from '../Tooltip';
 import { RouteLink } from './RouteLink';
 
 export const Sidebar = () => {
   const navigate = useNavigate();
+
+  const { mutate: createNote } = useCreateNote();
+
+  const handleCreateNote = () => {
+    createNote({
+      title: 'Untitled',
+      content: '',
+      tagsId: null,
+      isArchived: 0,
+      isDuplicate: 0,
+      isPinned: 0,
+      isLocked: 0,
+    });
+  };
 
   return (
     <div className="flex h-full pb-2" data-tauri-drag-region>
@@ -40,6 +56,7 @@ export const Sidebar = () => {
             <Button
               variant="unstyled"
               className="p-2 m-0 rounded-xl bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 ring-2 ring-stone-200 dark:ring-stone-700 ring-inset"
+              onPress={handleCreateNote}
             >
               <PlusIcon size={16} />
             </Button>

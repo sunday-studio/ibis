@@ -69,7 +69,7 @@ export const NoteEditor = () => {
 
       {data && (
         <div
-          className={clsx('flex flex-col transition-all duration-300 h-full mt-24 mx-auto', {
+          className={clsx('flex flex-col transition-all duration-300 h-full mt-24 mx-auto pb-12', {
             'w-3/5': !data.isFullWidth,
             'w-full px-16': data.isFullWidth,
           })}
