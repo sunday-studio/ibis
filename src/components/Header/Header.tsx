@@ -6,6 +6,7 @@ import { Maximize2, Minus, PanelRight, RefreshCcw, X } from 'lucide-react';
 import { useSnapshot } from 'valtio';
 
 import { sidebarState, toggleSidebarState } from '@/app.store';
+import { EmojiRenderer } from '@/features/notes/NoteIconPicker';
 
 import { Tooltip } from '../Tooltip';
 import { type HeaderTile, headerState, useRemoveTile, useSelectTile } from './header.store';
@@ -93,7 +94,7 @@ const WindowActions = () => {
   );
 };
 
-const HeaderTile: FC<SelectedTileProps> = ({ title, onClose, isActive, id, onClick }) => {
+const HeaderTile: FC<SelectedTileProps> = ({ title, onClose, isActive, id, onClick, icon }) => {
   return (
     <button
       onClick={() => {
@@ -112,7 +113,9 @@ const HeaderTile: FC<SelectedTileProps> = ({ title, onClose, isActive, id, onCli
             </span>
           </>
         ) : (
-          <span className="relative inline-flex rounded-full text-sm">👻</span>
+          <div className="w-4 h-4 rounded-full flex items-center justify-center -mt-1">
+            <EmojiRenderer emoji={icon} size={12} />
+          </div>
         )}
       </span>
       <p className="text-sm font-medium">{title}</p>
@@ -160,10 +163,8 @@ export const Header = () => {
         >
           {tiles.map((tile, index) => (
             <HeaderTile
+              {...tile}
               key={index}
-              id={tile.id}
-              title={tile.title}
-              type={tile.type}
               onClose={(id) => {
                 removeTile(id);
               }}

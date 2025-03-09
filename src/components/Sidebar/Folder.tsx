@@ -50,7 +50,7 @@ export const Folder: FC<FolderProps> = ({
                 animate={{ height: 'auto' }}
                 exit={{ height: 0 }}
                 transition={{ type: 'spring', duration: 0.2, bounce: 0 }}
-                className="overflow-hidden flex flex-col justify-end w-full pl-1"
+                className="overflow-hidden flex flex-col justify-end w-full gap-0.5"
               >
                 {items?.map((item) => (
                   <motion.li

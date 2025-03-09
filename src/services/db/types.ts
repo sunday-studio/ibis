@@ -9,6 +9,7 @@ export type Folder = {
 export type Note = {
   id: string;
   title: string;
+  icon: string | null;
   content: string | null;
   isPinned: boolean;
   isDuplicate: boolean;
@@ -76,3 +77,9 @@ export type NoteHistoryEntry = {
 };
 
 export type CreateNoteHistoryEntry = Omit<NoteHistoryEntry, 'id'>;
+
+export type NoteEmoji = {
+  id: string;
+  shortcodes: string;
+  native: string;
+};

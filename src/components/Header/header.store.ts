@@ -12,7 +12,7 @@ export enum TileType {
 
 export interface HeaderTile {
   title: string;
-  icon?: React.ReactNode;
+  icon: string | null;
   id: string;
   type: TileType;
 }

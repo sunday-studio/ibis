@@ -1,11 +1,15 @@
+import data from '@emoji-mart/data';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { init } from 'emoji-mart';
 import { Toaster } from 'sonner';
 
 import { Router } from '@/router/Router';
 
 import './App.css';
 import './index.css';
+
+init({ data });
 
 const queryClient = new QueryClient({
   defaultOptions: {

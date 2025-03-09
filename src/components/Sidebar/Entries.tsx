@@ -2,7 +2,7 @@ import { EntryItem } from '@/components/Sidebar/EntryItem';
 import { Folder } from '@/components/Sidebar/Folder';
 
 import {
-  useCreateNote,
+  // useCreateNote,
   useGetAllActiveNotes,
   useGetAllArchivedNotes,
   useGetAllPinnedNotes,
@@ -13,7 +13,7 @@ export const Entries = () => {
   const { data: pinnedNotes } = useGetAllPinnedNotes();
   const { data: archivedNotes } = useGetAllArchivedNotes();
 
-  const { mutate: createNote } = useCreateNote();
+  // const { mutate: createNote } = useCreateNote();
 
   // const handleCreateNote = async () => {
   //   createNote({

@@ -12,6 +12,7 @@ import { getEditorContent } from '@/components/editor/utils';
 import { useCreateNoteHistory, useGetNote, useUpdateNote } from '@/services/db/notes';
 
 import { NoteActionsMenu } from './NoteActionsMenu';
+import { NoteIconPicker } from './NoteIconPicker';
 
 export const NoteEditor = () => {
   const { noteId } = useParams();
@@ -73,16 +74,18 @@ export const NoteEditor = () => {
             'w-full px-16': data.isFullWidth,
           })}
         >
-          <input
-            value={title ?? data?.title ?? 'Untitled'}
-            className="mb-6 font-semibold text-4xl text-gray-800 outline-none editor-title dark:text-stone-100"
-            onChange={(e) => {
-              const value = e.target.value;
-              setTitle(value);
-              updateTitle(value);
-            }}
-          />
-
+          <div className="flex flex-col gap-2 items-start editor-title">
+            <NoteIconPicker note={data} />
+            <input
+              value={title ?? data?.title ?? 'Untitled'}
+              className="mb-6 font-semibold text-4xl text-gray-800 outline-none dark:text-stone-100"
+              onChange={(e) => {
+                const value = e.target.value;
+                setTitle(value);
+                updateTitle(value);
+              }}
+            />
+          </div>
           <Editor
             id={noteId ?? ''}
             content={getEditorContent(data?.content ?? '')}
