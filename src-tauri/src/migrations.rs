@@ -224,5 +224,13 @@ pub fn get_migrations() -> Vec<Migration> {
         ",
         kind: MigrationKind::Up,
     },
+    Migration {
+        version: 14,
+        description: "add_isFullWidth_column_to_entries",
+        sql: "
+            ALTER TABLE entries ADD COLUMN isFullWidth BOOLEAN DEFAULT 0;
+        ",
+        kind: MigrationKind::Up,
+    },
     ]
 }

@@ -85,7 +85,7 @@ MenuContent.displayName = 'MenuContent';
 interface DropdownMenuItemProps extends MenuItemProps {
   children: React.ReactNode;
   icon?: React.ReactNode;
-  shortcut?: string;
+  shortcut?: string[];
   disabled?: boolean;
   action?: () => void;
   isDestructive?: boolean;
@@ -128,7 +128,15 @@ export const DropdownMenuItem: FC<DropdownMenuItemProps> = ({
             </span>
           )}
           <span className="inherit">{children}</span>
-          {shortcut && <kbd className="ml-auto font-light text-xs">{shortcut}</kbd>}
+          {shortcut && (
+            <span className="ml-auto font-mono">
+              {shortcut.map((s) => (
+                <kbd key={s} className="px-1 py-0.5">
+                  {s}
+                </kbd>
+              ))}
+            </span>
+          )}
         </div>
       )}
     </MenuItem>

@@ -21,7 +21,12 @@ function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <Router />
-        <Toaster />
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            className: 'flex flex-col items-center justify-end w-full',
+          }}
+        />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>

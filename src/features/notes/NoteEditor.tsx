@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import clsx from 'clsx';
 import { useParams } from 'react-router';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -48,7 +49,7 @@ export const NoteEditor = () => {
 
   return (
     <div className="flex flex-col w-full min-h-screen relative isolate">
-      <div className="z-1 top-0 left-0 mx-6 py-2 sticky flex justify-end">
+      <div className="z-1 top-0 left-0 mx-6 py-3 sticky flex justify-end">
         <NoteActionsMenu note={data} />
       </div>
 
@@ -66,7 +67,12 @@ export const NoteEditor = () => {
       )}
 
       {data && (
-        <div className="flex flex-col h-full mt-24 w-3/5 mx-auto">
+        <div
+          className={clsx('flex flex-col transition-all duration-300 h-full mt-24 mx-auto', {
+            'w-3/5': !data.isFullWidth,
+            'w-full px-16': data.isFullWidth,
+          })}
+        >
           <input
             value={title ?? data?.title ?? 'Untitled'}
             className="mb-6 font-semibold text-4xl text-gray-800 outline-none editor-title dark:text-stone-100"

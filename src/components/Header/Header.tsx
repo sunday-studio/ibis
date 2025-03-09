@@ -64,10 +64,7 @@ const WindowActions = () => {
           content="You are currently on the latest version"
           hoverDuration={400}
           trigger={
-            <div
-              className="w-[14px] h-[14px] rounded-full flex items-center justify-center cursor-pointer transition-colors duration-300 ease-out text-black border bg-blue-400 border-blue-500"
-              // onClick={() => navigate(0)}
-            >
+            <div className="w-[14px] h-[14px] rounded-full flex items-center justify-center cursor-pointer transition-colors duration-300 ease-out text-black border bg-blue-400 border-blue-500">
               <RefreshCcw
                 size={8}
                 strokeWidth={3}
@@ -84,7 +81,7 @@ const WindowActions = () => {
         hoverDuration={700}
         trigger={
           <button
-            className="flex items-center hover:bg-stone-100 rounded-lg p-2"
+            className="flex items-center hover:bg-stone-100 rounded-lg p-2 dark:hover:bg-stone-800"
             onClick={() => toggleSidebarState()}
           >
             <PanelRight size={18} />
@@ -157,13 +154,13 @@ export const Header = () => {
           }}
         />
 
-        <div
+        <ul
           className="flex w-full overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-stone-300 dark:scrollbar-thumb-stone-700 scrollbar-track-transparent"
           data-tauri-drag-region
         >
-          {tiles.map((tile) => (
+          {tiles.map((tile, index) => (
             <HeaderTile
-              key={tile.title}
+              key={index}
               id={tile.id}
               title={tile.title}
               type={tile.type}
@@ -176,7 +173,7 @@ export const Header = () => {
               }}
             />
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   );

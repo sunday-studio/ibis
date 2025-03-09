@@ -7,7 +7,7 @@ import { useRegisterAllShortcuts } from '@/hooks/useRegisterGlobalShortcuts';
 
 import { CommandDialog } from './CommandDialog';
 import { Header } from './Header/Header';
-import { ProductNavigation, Sidebar } from './Sidebar';
+import { Sidebar } from './Sidebar/Sidebar';
 
 export const AppLayout = () => {
   const isSidebarOpen = useSnapshot(sidebarState).isSidebarOpen;
@@ -30,11 +30,8 @@ export const AppLayout = () => {
             animate={{ width: isSidebarOpen ? 'auto' : 0 }}
             transition={{ duration: 0.2, ease: 'easeInOut' }}
           >
-            <div className="flex h-full">
-              <div className="w-[50px] h-full shrink-0" data-tauri-drag-region>
-                <ProductNavigation />
-              </div>
-              <div className="w-[250px] h-full shrink-0" data-tauri-drag-region>
+            <div className="flex h-full w-[300px] flex-col">
+              <div className="h-full shrink-0 w-full" data-tauri-drag-region>
                 <Sidebar />
               </div>
             </div>

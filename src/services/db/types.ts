@@ -1,9 +1,9 @@
 export type Folder = {
   folder_id: number;
-  folder_name: string;
-  child_folder_id: number | null;
-  child_folder_name: string | null;
-  child_entry_id: number | null;
+  name: string;
+  parent_id?: number | null;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type Note = {
@@ -17,6 +17,7 @@ export type Note = {
   tagsId: string | null;
   isArchived: boolean;
   isLocked: boolean;
+  isFullWidth: boolean;
 };
 
 export type CreateNoteType = {

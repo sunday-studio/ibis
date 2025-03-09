@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
 
 import { TileType, addTile } from '@/components/Header/header.store';
 
+import { toaster } from '@/lib/toaster';
 import { rq, useInvalidateQueries } from '@/lib/use-rq';
 import { normalizeNote } from '@/services/normalizers/note.normalizer';
 
@@ -74,7 +74,9 @@ async function updateNote(database: DatabaseType, noteId: string, params: Partia
     if (entries.length === 0) return;
 
     const setClause = entries.map(([key]) => `${key} = ?`).join(', ');
-    const values = entries.map(([_, value]) => value);
+    const values = entries.map(([_, value]) =>
+      typeof value === 'boolean' ? (value ? 1 : 0) : value,
+    );
 
     return await database?.execute(`UPDATE entries SET ${setClause} WHERE id = ?`, [
       ...values,
@@ -282,7 +284,9 @@ export function useLockNote(noteId: string) {
   return useMutation({
     mutationFn: () => rq(() => lockNote(db.getDb(), noteId)),
     onSuccess: () => {
-      toast.success('Note locked');
+      toaster({
+        title: 'Note locked',
+      });
       invalidateQueries();
     },
   });
@@ -294,7 +298,9 @@ export function useUnlockNote(noteId: string) {
   return useMutation({
     mutationFn: () => rq(() => unlockNote(db.getDb(), noteId)),
     onSuccess: () => {
-      toast.success('Note unlocked');
+      toaster({
+        title: 'Note unlocked',
+      });
       invalidateQueries();
     },
   });
@@ -304,12 +310,6 @@ export function useCreateNoteHistory() {
   return useMutation({
     mutationFn: (history: CreateNoteHistoryEntry) =>
       rq(() => createNoteHistory(db.getDb(), history)),
-    onError: (error) => {
-      console.log('error =>', error);
-    },
-    onSuccess: () => {
-      console.log('success');
-    },
   });
 }
 

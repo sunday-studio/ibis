@@ -7,5 +7,6 @@ export const normalizeNote = (note: Note) => {
     isPinned: Boolean(note.isPinned),
     isArchived: Boolean(note.isArchived),
     isDuplicate: Boolean(note.isDuplicate),
+    isFullWidth: Boolean(note.isFullWidth),
   };
 };

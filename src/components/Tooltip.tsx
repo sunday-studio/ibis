@@ -86,7 +86,7 @@ export const Tooltip: FC<TooltipProps> = ({
         <FloatingPortal>
           <div
             ref={refs.setFloating}
-            className="text-sm font-semibold py-2 px-2 rounded-lg box-border max-w-xs shadow-1 bg-neutral-900 z-100000"
+            className="text-sm font-semibold py-2 px-2 rounded-lg box-border max-w-xs shadow-1 bg-neutral-800 z-100000"
             style={{
               position: strategy,
               top: y ?? 0,
@@ -94,7 +94,14 @@ export const Tooltip: FC<TooltipProps> = ({
             }}
             {...getFloatingProps()}
           >
-            {showArrow && <FloatingArrow ref={arrowRef} context={context} />}
+            {showArrow && (
+              <FloatingArrow
+                ref={arrowRef}
+                context={context}
+                tipRadius={3}
+                className="fill-neutral-800"
+              />
+            )}
             {contentElement}
           </div>
         </FloatingPortal>
