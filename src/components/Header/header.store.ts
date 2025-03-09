@@ -64,9 +64,11 @@ export const useSelectTile = () => {
     const tile = headerState.tiles.find((t) => t.id === tileId);
     if (tile) {
       headerState.selectedTile = tile;
-      navigate(tile.type === TileType.NOTE ? `/notes/${tile.id}` : `/${tile.type}`);
+      const path = tile.type === TileType.NOTE ? `/notes/${tile.id}` : `/${tile.type}`;
+      navigate(path, { replace: true });
     }
   };
+
   return handleSelectTile;
 };
 

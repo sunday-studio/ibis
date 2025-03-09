@@ -1,18 +1,13 @@
 import {
   BoltIcon,
   BookOpenIcon,
-  CableIcon,
   CalendarDaysIcon,
-  FeatherIcon,
   LaptopMinimalCheckIcon,
-  ListTodoIcon,
-  NotebookPenIcon,
   PlusIcon,
   SearchIcon,
-  SettingsIcon,
   TrashIcon,
 } from 'lucide-react';
-import { NavLink, useLocation } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { Entries } from '@/components/Sidebar/Entries';
 
@@ -20,63 +15,9 @@ import { Button } from '../Button';
 import { Tooltip } from '../Tooltip';
 import { RouteLink } from './RouteLink';
 
-type TopLevelProducts = {
-  name: string;
-  icon: any;
-  route: string;
-};
-
-const ProductNavigationItem = ({ product }: { product: TopLevelProducts }) => (
-  <NavLink
-    to={product.route}
-    className={({ isActive }) => (isActive ? 'text-orange-500' : 'text-gray-600')}
-  >
-    <button className="flex h-10 w-10 items-center justify-center font-medium transition-all duration-300 cursor-pointer">
-      {<product.icon size={18} strokeWidth={2} className="text-inherit" />}
-    </button>
-  </NavLink>
-);
-
-export const ProductNavigation = () => {
-  const topRoutes: TopLevelProducts[] = [
-    { name: 'Journal', icon: FeatherIcon, route: '/journal' },
-    {
-      name: 'Notes',
-      icon: NotebookPenIcon,
-      route: '/notes',
-    },
-
-    { name: 'Tasks', icon: ListTodoIcon, route: '/tasks' },
-    { name: 'Networked thoughts', icon: CableIcon, route: '/thoughts' },
-  ];
-
-  const bottomRoutes: TopLevelProducts[] = [
-    { name: 'Settings', icon: SettingsIcon, route: '/settings' },
-    { name: 'Bin', icon: TrashIcon, route: '/bin' },
-  ];
-
-  return (
-    <div className="h-full flex flex-col border-gray-200 px-2 pb-4 pt-2 ">
-      <div className="flex items-center justify-center">
-        <img src="/icon.png" alt="logo" className="w-10 h-10" />
-      </div>
-      <div className="flex flex-col gap-2 mt-8">
-        {topRoutes.slice(0, -1).map((product, index) => (
-          <ProductNavigationItem key={index} product={product} />
-        ))}
-      </div>
-      <div className="flex-1" />
-
-      <div className="flex flex-col gap-2 mt-8">
-        {bottomRoutes.map((product, index) => (
-          <ProductNavigationItem key={index} product={product} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
 export const Sidebar = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex h-full pb-2" data-tauri-drag-region>
       <div className="w-full flex flex-col h-full py-4" data-tauri-drag-region>
@@ -109,6 +50,9 @@ export const Sidebar = () => {
                   <Button
                     variant="unstyled"
                     className="p-2 m-0 rounded-xl hover:bg-stone-200 hover:dark:bg-stone-600"
+                    onPress={() => {
+                      navigate('/trash');
+                    }}
                   >
                     <TrashIcon
                       className="text-stone-600 dark:text-stone-400"

@@ -11,8 +11,10 @@ import {
   StarIcon,
   Trash2,
 } from 'lucide-react';
+import { useNavigate } from 'react-router';
 
 import { DropdownMenu, useDropdownMenuToggle } from '@/components/DropdownMenu';
+import { useRemoveTile } from '@/components/Header/header.store';
 
 import {
   useArchiveNote,
@@ -42,6 +44,8 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
   const { mutate: deleteNote } = useDeleteNote();
   const { mutate: updateNote } = useUpdateNote({ noteId: note.id });
   const { isOpen, setIsOpen } = useDropdownMenuToggle();
+  const removeTile = useRemoveTile();
+  const navigate = useNavigate();
 
   const pinnedNotesIds = pinnedNotes?.map((note) => note.id);
 
@@ -105,7 +109,9 @@ export const NoteActionsMenu: FC<NoteActionsMenuProps> = ({ note }) => {
       {
         title: 'Delete',
         action: () => {
+          removeTile(note.id);
           deleteNote(note.id);
+          navigate('/notes');
         },
         icon: <Trash2 size={16} />,
         disabled: false,

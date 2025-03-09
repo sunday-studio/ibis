@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { forwardRef } from 'react';
 
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import clsx from 'clsx';
@@ -94,49 +94,63 @@ const WindowActions = () => {
   );
 };
 
-const HeaderTile: FC<SelectedTileProps> = ({ title, onClose, isActive, id, onClick, icon }) => {
-  return (
-    <button
-      onClick={() => {
-        onClick(id);
-      }}
-      className={clsx('flex gap-1 pl-2 pr-1 py-1 items-center justify-between rounded-xl', {
-        'bg-stone-200 hover:bg-stone-300 dark:bg-stone-700 dark:hover:bg-stone-600': isActive,
-      })}
-    >
-      <span className="relative flex items-center justify-center size-4 mx-1">
-        {isActive ? (
-          <>
-            <span className="relative flex items-center justify-center size-2">
-              <span className="absolute inline-flex h-full size-2  w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex size-2 rounded-full bg-green-500"></span>
-            </span>
-          </>
-        ) : (
-          <div className="w-4 h-4 rounded-full flex items-center justify-center -mt-1">
-            <EmojiRenderer emoji={icon} size={12} />
-          </div>
-        )}
-      </span>
-      <p className="text-sm font-medium">{title}</p>
-      <span
-        className="p-1 rounded-lg hover:bg-stone-200 dark:hover:bg-stone-800 ml-1"
-        onClick={(e) => {
-          e.stopPropagation();
-          onClose(id);
+const HeaderTile = forwardRef<HTMLButtonElement, SelectedTileProps>(
+  ({ title, onClose, isActive, id, onClick, icon }, ref) => {
+    return (
+      <button
+        ref={ref}
+        onClick={() => {
+          onClick(id);
         }}
+        className={clsx('flex gap-1 pl-2 pr-1 py-1 items-center justify-between rounded-xl', {
+          'bg-stone-200 hover:bg-stone-300 dark:bg-stone-700 dark:hover:bg-stone-600': isActive,
+        })}
       >
-        <X size={14} />
-      </span>
-    </button>
-  );
-};
+        <span className="relative flex items-center justify-center size-4 mx-1">
+          {isActive ? (
+            <>
+              <span className="relative flex items-center justify-center size-2">
+                <span className="absolute inline-flex h-full size-2  w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex size-2 rounded-full bg-green-500"></span>
+              </span>
+            </>
+          ) : (
+            <div className="w-4 h-4 rounded-full flex items-center justify-center -mt-1">
+              <EmojiRenderer emoji={icon} size={12} />
+            </div>
+          )}
+        </span>
+        <p className="text-sm font-medium">{title}</p>
+        <span
+          className="p-1 rounded-lg hover:bg-stone-200 dark:hover:bg-stone-800 ml-1"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose(id);
+          }}
+        >
+          <X size={14} />
+        </span>
+      </button>
+    );
+  },
+);
 
 export const Header = () => {
   const { tiles, selectedTile } = useSnapshot(headerState);
 
   const selectTile = useSelectTile();
   const removeTile = useRemoveTile();
+
+  const scrollToSelectedTile = (element: HTMLElement) => {
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  };
+
   return (
     <div className="flex h-12" data-tauri-drag-region>
       <WindowActions />
@@ -172,6 +186,13 @@ export const Header = () => {
               onClick={() => {
                 selectTile(tile.id);
               }}
+              ref={
+                tile.id === selectedTile?.id
+                  ? (element: HTMLButtonElement | null) => {
+                      if (element) scrollToSelectedTile(element);
+                    }
+                  : null
+              }
             />
           ))}
         </ul>

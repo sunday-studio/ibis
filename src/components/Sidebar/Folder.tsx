@@ -36,7 +36,7 @@ export const Folder: FC<FolderProps> = ({
       className="text-start rounded-xl cursor-pointer flex items-start gap-2 flex-col"
       onClick={() => setIsOpen(!isOpen)}
     >
-      <div className="flex items-center gap-2 w-full py-1 px-2 rounded-xl hover:bg-neutral-200 hover:dark:bg-stone-800">
+      <div className="flex items-center gap-3 w-full py-1 px-2 rounded-xl hover:bg-neutral-200 hover:dark:bg-stone-800">
         <FolderOpen size={16} strokeWidth={2.5} className="text-stone-500 dark:text-stone-200" />
         <p className="font-medium text-md text-stone-800 dark:text-stone-200">{name}</p>
       </div>
@@ -53,14 +53,7 @@ export const Folder: FC<FolderProps> = ({
                 className="overflow-hidden flex flex-col justify-end w-full gap-0.5"
               >
                 {items?.map((item) => (
-                  <motion.li
-                    className="list-none"
-                    key={item.id}
-                    // initial={{ height: 0 }}
-                    // animate={{ height: 'auto' }}
-                    // exit={{ height: 0 }}
-                    // style={{ overflow: 'hidden' }}
-                  >
+                  <motion.li className="list-none" key={item.id}>
                     {renderItem(item)}
                   </motion.li>
                 ))}

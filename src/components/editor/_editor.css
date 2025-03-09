@@ -411,3 +411,13 @@
     @apply text-gray-800 dark:text-gray-100;
   }
 }
+
+/* TODO: update styling to make it look better  */
+.trash-editor-root {
+  font-size: 12px;
+  @apply px-2 py-2;
+}
+
+.trash-editor-paragraph {
+  @apply my-0.5 text-sm dark:text-gray-100 leading-7;
+}

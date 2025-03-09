@@ -87,7 +87,7 @@ export const NoteEditor = () => {
             />
           </div>
           <Editor
-            id={noteId ?? ''}
+            id={data.id}
             content={getEditorContent(data?.content ?? '')}
             onHistoryChange={(state) => {
               createNoteHistory({

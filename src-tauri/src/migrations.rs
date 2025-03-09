@@ -232,5 +232,21 @@ pub fn get_migrations() -> Vec<Migration> {
         ",
         kind: MigrationKind::Up,
     },
-    ]
+    Migration {
+        version: 15,
+        description: "add_isDeleted_column_to_entries",
+        sql: "
+            ALTER TABLE entries ADD COLUMN isDeleted BOOLEAN DEFAULT 0;
+        ",
+        kind: MigrationKind::Up,
+    },
+    Migration {
+        version: 16,
+        description: "tear_down_bin_table",
+        sql: "
+            DROP TABLE IF EXISTS bin;
+        ",  
+        kind: MigrationKind::Up,
+    }
+  ]
 }

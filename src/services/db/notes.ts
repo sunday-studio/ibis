@@ -18,6 +18,7 @@ enum NoteKeys {
   DETAIL_ARCHIVED_STATUS = 'notes/archived/status',
   NOTE_HISTORY = 'notes/history',
   NOTE_HISTORY_DETAIL = 'notes/history',
+  ALL_DELETED_NOTES = 'notes/deleted',
 }
 
 export async function getAll(database: DatabaseType) {
@@ -29,11 +30,7 @@ export async function getAll(database: DatabaseType) {
 async function getActiveNotes(database: DatabaseType) {
   return (await database?.select(`
     SELECT * FROM entries 
-    WHERE id NOT IN (
-      SELECT entry_id 
-      FROM bin 
-      WHERE restoredAt IS NULL
-    )
+    WHERE isDeleted = 0
     AND isPinned = 0
     AND isArchived = 0
   `)) as Note[];
@@ -64,8 +61,16 @@ async function unpinNote(database: DatabaseType, noteId: string) {
   return await database?.execute('UPDATE entries SET isPinned = 0 WHERE id = ?', [noteId]);
 }
 
-async function deleteNote(database: DatabaseType, noteId: string) {
-  return await database?.execute('DELETE FROM entries WHERE id = ?', [noteId]);
+async function softDeleteNote(database: DatabaseType, noteId: string) {
+  return await database?.execute('UPDATE entries SET isDeleted = 1 WHERE id = ?', [noteId]);
+}
+
+async function restoreNote(database: DatabaseType, noteId: string) {
+  return await database?.execute('UPDATE entries SET isDeleted = 0 WHERE id = ?', [noteId]);
+}
+
+async function getAllDeletedNotes(database: DatabaseType) {
+  return (await database?.select('SELECT * FROM entries WHERE isDeleted = 1')) as Note[];
 }
 
 async function updateNote(database: DatabaseType, noteId: string, params: Partial<Note>) {
@@ -128,7 +133,7 @@ async function getAllArchivedNotes(database: DatabaseType) {
 
 async function getAllPinnedNotes(database: DatabaseType) {
   return (await database?.select(
-    'SELECT * FROM entries WHERE isPinned = 1 AND isArchived = 0',
+    'SELECT * FROM entries WHERE isPinned = 1 AND isArchived = 0 AND isDeleted = 0',
   )) as Note[];
 }
 
@@ -155,6 +160,7 @@ export function useCreateNote() {
           id: data?.lastInsertId?.toString(),
           title: 'Untitled',
           type: TileType.NOTE,
+          icon: null,
         });
       }
     },
@@ -216,7 +222,7 @@ export function useDeleteNote() {
   ]);
 
   return useMutation({
-    mutationFn: (noteId: string) => rq(() => deleteNote(db.getDb(), noteId)),
+    mutationFn: (noteId: string) => rq(() => softDeleteNote(db.getDb(), noteId)),
     onSuccess: () => {
       invalidateQueries();
     },
@@ -317,5 +323,12 @@ export function useGetNoteHistory(noteId: string) {
   return useQuery({
     queryKey: [`${NoteKeys.NOTE_HISTORY}/${noteId}`],
     queryFn: () => rq(() => getNoteHistory(db.getDb(), noteId)),
+  });
+}
+
+export function useGetAllDeletedNotes() {
+  return useQuery({
+    queryKey: [NoteKeys.ALL_DELETED_NOTES],
+    queryFn: () => rq(() => getAllDeletedNotes(db.getDb())),
   });
 }
