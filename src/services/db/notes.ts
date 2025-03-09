@@ -65,6 +65,10 @@ async function softDeleteNote(database: DatabaseType, noteId: string) {
   return await database?.execute('UPDATE entries SET isDeleted = 1 WHERE id = ?', [noteId]);
 }
 
+async function hardDeleteNote(database: DatabaseType, noteId: string) {
+  return await database?.execute('DELETE FROM entries WHERE id = ?', [noteId]);
+}
+
 async function restoreNote(database: DatabaseType, noteId: string) {
   return await database?.execute('UPDATE entries SET isDeleted = 0 WHERE id = ?', [noteId]);
 }
@@ -330,5 +334,38 @@ export function useGetAllDeletedNotes() {
   return useQuery({
     queryKey: [NoteKeys.ALL_DELETED_NOTES],
     queryFn: () => rq(() => getAllDeletedNotes(db.getDb())),
+  });
+}
+
+export function useRestoreNote() {
+  const invalidateQueries = useInvalidateQueries([
+    NoteKeys.ALL_ACTIVE_NOTES,
+    NoteKeys.ALL_PINNED_NOTES,
+    NoteKeys.ALL_ARCHIVED_NOTES,
+    NoteKeys.ALL_DELETED_NOTES,
+  ]);
+
+  return useMutation({
+    mutationFn: (noteId: string) => rq(() => restoreNote(db.getDb(), noteId)),
+    onSuccess: () => {
+      invalidateQueries();
+      toaster({
+        title: 'Note restored',
+      });
+    },
+  });
+}
+
+export function useHardDeleteNote() {
+  const invalidateQueries = useInvalidateQueries([NoteKeys.ALL_DELETED_NOTES]);
+
+  return useMutation({
+    mutationFn: (noteId: string) => rq(() => hardDeleteNote(db.getDb(), noteId)),
+    onSuccess: () => {
+      invalidateQueries();
+      toaster({
+        title: 'Note permanently deleted',
+      });
+    },
   });
 }

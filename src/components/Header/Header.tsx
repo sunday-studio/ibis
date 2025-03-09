@@ -75,21 +75,24 @@ const WindowActions = () => {
           }
         />
       </div>
-      <Tooltip
+
+      <button
+        className="flex items-center hover:bg-stone-100 rounded-lg p-2 dark:hover:bg-stone-800"
+        onClick={() => toggleSidebarState()}
+      >
+        <PanelRight size={18} />
+      </button>
+      {/* TODO: Fix tooltip here */}
+      {/* <Tooltip
         shortcuts={['⌘', 'D']}
         key="sidebar-toggle"
         leaveDuration={0}
         hoverDuration={700}
         trigger={
-          <button
-            className="flex items-center hover:bg-stone-100 rounded-lg p-2 dark:hover:bg-stone-800"
-            onClick={() => toggleSidebarState()}
-          >
-            <PanelRight size={18} />
-          </button>
+        
         }
         content={isSidebarOpen ? 'Close sidebar' : 'Open in sidebar'}
-      />
+      /> */}
     </div>
   );
 };
